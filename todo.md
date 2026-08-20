@@ -34,3 +34,10 @@
 - [x] Keep the active in-song search panel reachable below the fixed header on desktop and mobile.
 - [x] Move the home-page statistics block below the search results, then verify its position in filtered and unfiltered states.
 - [x] Verify desktop and mobile scrolling behavior, run build checks, and save a checkpoint.
+
+## Recent search history
+
+- [x] Define a resilient localStorage model for a small, deduplicated list of recent text queries.
+- [x] Save meaningful global-search queries without recording blank values or filter-only states.
+- [x] Show recent queries on focus, support applying an item, and provide an accessible clear-history action.
+- [x] Verify persistence after reload, query reuse, clearing history, and responsive presentation; then save a checkpoint.

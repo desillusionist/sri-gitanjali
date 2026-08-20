@@ -19,15 +19,18 @@ import {
   groupSongsByCategory,
   hasActiveSongFilters,
 } from "@/domain/song";
-import { ArrowUpRight, BookOpen, DatabaseZap, Loader2, Search, Sparkles, X } from "lucide-react";
+import { useRecentSearches } from "@/hooks/useRecentSearches";
+import { ArrowUpRight, BookOpen, Clock3, DatabaseZap, Loader2, Search, Sparkles, Trash2, X } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
 import { Link } from "wouter";
 
 function LibraryHome() {
-  const { songs, status, source, error, reload } = useSongLibrary();
+  const { songs, status, error, reload } = useSongLibrary();
   const { copy } = useTranslation();
   const [filters, setFilters] = useState(defaultSongSearchFilters);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const { recentSearches, rememberSearch, clearRecentSearches } = useRecentSearches();
 
   const filteredSongs = useMemo(() => filterSongs(songs, filters), [filters, songs]);
   const authors = useMemo(() => getSongAuthors(songs), [songs]);
@@ -38,6 +41,19 @@ function LibraryHome() {
   const categories = useMemo(() => groupSongsByCategory(filteredSongs), [filteredSongs]);
   const updateFilters = (patch: Partial<typeof filters>) => setFilters((current) => ({ ...current, ...patch }));
   const clearFilters = () => setFilters(defaultSongSearchFilters);
+  const handleSearchBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)) return;
+    rememberSearch(filters.query);
+    setIsSearchFocused(false);
+  };
+  const handleSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") rememberSearch(filters.query);
+  };
+  const applyRecentSearch = (query: string) => {
+    updateFilters({ query });
+    rememberSearch(query);
+    setIsSearchFocused(false);
+  };
 
   return (
     <div className="library-page">
@@ -59,16 +75,53 @@ function LibraryHome() {
           <span className="eyebrow">{copy.library.searchEyebrow}</span>
           <h2 id="search-heading">{copy.library.searchTitle}</h2>
         </div>
-        <label className="library-search">
-          <Search size={20} aria-hidden="true" />
-          <input
-            value={filters.query}
-            onChange={(event) => updateFilters({ query: event.target.value })}
-            placeholder={copy.library.searchPlaceholder}
-            aria-label={copy.library.searchLabel}
-          />
-          {filtersActive && <span className="search-count">{filteredSongs.length}</span>}
-        </label>
+        <div className="library-search-stack" onFocusCapture={() => setIsSearchFocused(true)} onBlurCapture={handleSearchBlur}>
+          <label className="library-search">
+            <Search size={20} aria-hidden="true" />
+            <input
+              value={filters.query}
+              onChange={(event) => updateFilters({ query: event.target.value })}
+              onKeyDown={handleSearchKeyDown}
+              placeholder={copy.library.searchPlaceholder}
+              aria-label={copy.library.searchLabel}
+            />
+            {filtersActive && <span className="search-count">{filteredSongs.length}</span>}
+          </label>
+
+          {isSearchFocused && recentSearches.length > 0 ? (
+            <section className="recent-searches" aria-label={copy.library.recentSearches}>
+              <div className="recent-searches-heading">
+                <span><Clock3 size={14} aria-hidden="true" />{copy.library.recentSearches}</span>
+                <button
+                  className="clear-history-button"
+                  type="button"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => {
+                    clearRecentSearches();
+                    setIsSearchFocused(false);
+                  }}
+                >
+                  <Trash2 size={13} aria-hidden="true" />{copy.library.clearSearchHistory}
+                </button>
+              </div>
+              <div className="recent-searches-list">
+                {recentSearches.map((query) => (
+                  <button
+                    className="recent-search-chip"
+                    type="button"
+                    key={query}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => applyRecentSearch(query)}
+                    aria-label={copy.library.applyRecentSearch.replace("{query}", query)}
+                  >
+                    <Search size={13} aria-hidden="true" />
+                    <span>{query}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          ) : null}
+        </div>
         <div className="filter-controls" role="group" aria-label={copy.library.filtersLabel}>
           <label className="filter-field">
             <span>{copy.library.filterAuthor}</span>
@@ -144,6 +197,7 @@ function LibraryHome() {
                       <h3>{category.name}</h3>
                       <span>{category.songs.length} {copy.library.songCount}</span>
                     </header>
+                    <span className="mantra-line category-mantra" aria-hidden="true" />
                     <div className="song-list">
                       {category.songs.slice(0, filtersActive ? category.songs.length : 4).map((song) => <SongListItem song={song} query={filters.query} key={song.id} />)}
                     </div>
@@ -159,7 +213,11 @@ function LibraryHome() {
             )}
           </section>
 
-          <section className="library-metrics" aria-label="Data migration status">
+          <section className="library-metrics" aria-label={copy.library.libraryTrustLabel}>
+            <div className="library-metrics-intro">
+              <span className="eyebrow">{copy.library.metricsEyebrow}</span>
+              <p>{copy.library.metricsNote}</p>
+            </div>
             <div className="metric-card metric-primary">
               <DatabaseZap size={19} />
               <p><strong>{songs.length}</strong><span>{copy.library.metricSongs}</span></p>
@@ -168,9 +226,9 @@ function LibraryHome() {
               <BookOpen size={19} />
               <p><strong>{groupSongsByCategory(songs).length}</strong><span>{copy.library.metricSections}</span></p>
             </div>
-            <div className="metric-card metric-source">
+            <div className="metric-card metric-return">
               <Sparkles size={19} />
-              <p><strong>{source?.toUpperCase()}</strong><span>{copy.library.metricSource}</span></p>
+              <p><strong>∞</strong><span>{copy.library.metricReturn}</span></p>
             </div>
           </section>
         </>
