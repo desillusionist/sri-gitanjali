@@ -20,3 +20,10 @@
 - [x] Add diacritic-insensitive match ranges and contextual excerpt generation.
 - [x] Render highlighted query fragments in live-search result rows without changing the empty-filter view.
 - [x] Verify word and phrase matches on real songs, then run build checks and save a checkpoint.
+
+## In-song search navigation
+
+- [ ] Audit song routes and define a URL-safe query handoff from live-search results.
+- [ ] Add a full-song match model that identifies each matching title, author, line, translation, or comment fragment.
+- [ ] Add the compact in-song search bar, active-match highlight, and previous/next controls with scroll behavior.
+- [ ] Verify routed phrase search and multi-match navigation on real songs, then run build checks and save a checkpoint.

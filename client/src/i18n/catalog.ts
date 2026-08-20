@@ -73,6 +73,13 @@ export const translations = {
       neighbourLabel: "Adjacent songs",
       previous: "Previous",
       next: "Next",
+      inSongSearchLabel: "Search within this song",
+      inSongSearchPlaceholder: "Find a word or phrase in this song",
+      clearInSongSearch: "Clear in-song search",
+      previousMatch: "Previous match",
+      nextMatch: "Next match",
+      matchPosition: "Match {current} of {total}",
+      noInSongMatches: "No matches in this song",
     },
     favorites: {
       eyebrow: "Your reading shelf",

@@ -24,7 +24,7 @@ export function SongListItem({ song, query = "" }: { song: Song; query?: string 
 
   return (
     <div className={`song-row ${favorite ? "is-favorite" : ""} ${excerpt ? "has-search-excerpt" : ""}`}>
-      <Link href={`/song/${song.id}`} className="song-row-link">
+      <Link href={`/song/${song.id}${hasTextQuery ? `?q=${encodeURIComponent(query.trim())}` : ""}`} className="song-row-link">
         <span className="song-row-ornament" aria-hidden="true" />
         <span className="song-row-copy">
           <strong><HighlightedText value={song.title} query={query} /></strong>

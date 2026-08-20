@@ -48,6 +48,17 @@ export type SongSearchFilters = {
 export type HighlightPart = {
   text: string;
   isMatch: boolean;
+  matchIndex?: number;
+};
+
+export type SongSearchMatchKind = "title" | "author" | "comment" | "line" | "translation";
+
+export type SongSearchMatch = {
+  id: string;
+  fieldId: string;
+  matchIndex: number;
+  kind: SongSearchMatchKind;
+  verseId?: string;
 };
 
 export type SongSearchExcerpt = {
@@ -110,30 +121,47 @@ function normalizedTextWithIndexMap(value: string): { normalized: string; indexe
   return { normalized, indexes };
 }
 
-function getOriginalMatchRange(value: string, query: string): { start: number; end: number } | null {
+export type TextMatchRange = { start: number; end: number };
+
+export function getOriginalMatchRanges(value: string, query: string): TextMatchRange[] {
   const normalizedQuery = normalizeSearchText(query);
-  if (!normalizedQuery) return null;
+  if (!normalizedQuery) return [];
 
   const { normalized, indexes } = normalizedTextWithIndexMap(value);
-  const matchStart = normalized.indexOf(normalizedQuery);
-  if (matchStart === -1) return null;
+  const ranges: TextMatchRange[] = [];
+  let searchFrom = 0;
 
-  const matchEnd = matchStart + normalizedQuery.length;
-  return {
-    start: indexes[matchStart],
-    end: indexes[matchEnd] ?? value.length,
-  };
+  while (searchFrom < normalized.length) {
+    const matchStart = normalized.indexOf(normalizedQuery, searchFrom);
+    if (matchStart === -1) break;
+
+    const matchEnd = matchStart + normalizedQuery.length;
+    ranges.push({ start: indexes[matchStart], end: indexes[matchEnd] ?? value.length });
+    searchFrom = matchEnd;
+  }
+
+  return ranges;
 }
 
 export function getHighlightParts(value: string, query: string): HighlightPart[] {
-  const range = getOriginalMatchRange(value, query);
-  if (!range) return [{ text: value, isMatch: false }];
+  const ranges = getOriginalMatchRanges(value, query);
+  if (!ranges.length) return [{ text: value, isMatch: false }];
 
-  return [
-    ...(range.start ? [{ text: value.slice(0, range.start), isMatch: false }] : []),
-    { text: value.slice(range.start, range.end), isMatch: true },
-    ...(range.end < value.length ? [{ text: value.slice(range.end), isMatch: false }] : []),
-  ];
+  const parts: HighlightPart[] = [];
+  let cursor = 0;
+
+  ranges.forEach((range, matchIndex) => {
+    if (range.start > cursor) parts.push({ text: value.slice(cursor, range.start), isMatch: false });
+    parts.push({ text: value.slice(range.start, range.end), isMatch: true, matchIndex });
+    cursor = range.end;
+  });
+
+  if (cursor < value.length) parts.push({ text: value.slice(cursor), isMatch: false });
+  return parts;
+}
+
+function getOriginalMatchRange(value: string, query: string): TextMatchRange | null {
+  return getOriginalMatchRanges(value, query)[0] ?? null;
 }
 
 function buildContextExcerpt(value: string, query: string, radius = 44): string | null {
@@ -166,6 +194,27 @@ export function getSongSearchExcerpt(song: Song, query: string): SongSearchExcer
   }
 
   return null;
+}
+
+export function getSongSearchMatches(song: Song, query: string): SongSearchMatch[] {
+  if (!normalizeSearchText(query)) return [];
+
+  const matches: SongSearchMatch[] = [];
+  const addMatches = (value: string, fieldId: string, kind: SongSearchMatchKind, verseId?: string) => {
+    getOriginalMatchRanges(value, query).forEach((_range, matchIndex) => {
+      matches.push({ id: `${fieldId}:${matchIndex}`, fieldId, matchIndex, kind, verseId });
+    });
+  };
+
+  addMatches(song.title, "title", "title");
+  if (song.poet) addMatches(song.poet, "author", "author");
+  if (song.comment) addMatches(song.comment, "comment", "comment");
+  song.verses.forEach((verse) => {
+    verse.lines.forEach((line) => addMatches(line.transliteration, `line:${line.id}`, "line", verse.id));
+    if (verse.translation) addMatches(verse.translation, `translation:${verse.id}`, "translation", verse.id);
+  });
+
+  return matches;
 }
 
 export function songSearchText(song: Song): string {
