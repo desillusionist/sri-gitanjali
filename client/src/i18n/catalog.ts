@@ -87,6 +87,12 @@ export const translations = {
       nextMatch: "Next match",
       matchPosition: "Match {current} of {total}",
       noInSongMatches: "No matches in this song",
+      translationsLabel: "English translations",
+      translationsDescription: "Keep the meaning close, or read the original on its own.",
+      showAllTranslations: "Show all translations",
+      hideAllTranslations: "Hide all translations",
+      showVerseTranslation: "Show translation",
+      hideVerseTranslation: "Hide translation",
     },
     favorites: {
       eyebrow: "Your reading shelf",

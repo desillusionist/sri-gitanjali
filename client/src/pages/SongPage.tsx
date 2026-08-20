@@ -4,6 +4,7 @@
  */
 
 import { AppShell } from "@/components/AppShell";
+import { Switch } from "@/components/ui/switch";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
@@ -54,6 +55,8 @@ function SongPageContent() {
   const routeQuery = typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("q") ?? "";
   const [query, setQuery] = useState(routeQuery);
   const [activeMatchIndex, setActiveMatchIndex] = useState(0);
+  const [areTranslationsShown, setAreTranslationsShown] = useState(true);
+  const [translationOverrides, setTranslationOverrides] = useState<Record<string, boolean>>({});
   const matchElements = useRef(new Map<string, HTMLElement>());
   const song = songs.find((item) => item.id === params?.id);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
@@ -74,6 +77,17 @@ function SongPageContent() {
   useEffect(() => {
     setActiveMatchIndex(0);
   }, [query, song?.id]);
+
+  useEffect(() => {
+    setAreTranslationsShown(true);
+    setTranslationOverrides({});
+  }, [song?.id]);
+
+  useEffect(() => {
+    const translationVerseId = activeMatch?.kind === "translation" ? activeMatch.verseId : undefined;
+    if (!translationVerseId) return;
+    setTranslationOverrides((current) => current[translationVerseId] === true ? current : { ...current, [translationVerseId]: true });
+  }, [activeMatch]);
 
   useEffect(() => {
     if (!activeMatch) return;
@@ -144,12 +158,24 @@ function SongPageContent() {
     setActiveMatchIndex((current) => (current + direction + matches.length) % matches.length);
   };
 
+  const setAllTranslationsVisibility = (nextVisible: boolean) => {
+    setAreTranslationsShown(nextVisible);
+    setTranslationOverrides({});
+  };
+
+  const isVerseTranslationVisible = (verseId: string) => translationOverrides[verseId] ?? areTranslationsShown;
+
+  const toggleVerseTranslation = (verseId: string) => {
+    setTranslationOverrides((current) => ({ ...current, [verseId]: !(current[verseId] ?? areTranslationsShown) }));
+  };
+
   const registerMatch = (matchId: string) => (element: HTMLElement | null) => {
     if (element) matchElements.current.set(matchId, element);
     else matchElements.current.delete(matchId);
   };
 
   const songHref = (songId: string) => `/song/${songId}${normalizeSearchText(query) ? `?q=${encodeURIComponent(query.trim())}` : ""}`;
+  const hasTranslations = song.verses.some((verse) => Boolean(verse.translation));
 
   return (
     <div className="song-page">
@@ -208,22 +234,61 @@ function SongPageContent() {
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
 
+        {hasTranslations && (
+          <section className="translation-controls" aria-label={copy.song.translationsLabel}>
+            <div className="translation-controls-copy">
+              <span className="eyebrow">{copy.song.translationsLabel}</span>
+              <p>{copy.song.translationsDescription}</p>
+            </div>
+            <label className="translation-switch-label" htmlFor="translation-visibility">
+              <span>{areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}</span>
+              <Switch
+                id="translation-visibility"
+                className="translation-switch"
+                checked={areTranslationsShown}
+                onCheckedChange={setAllTranslationsVisibility}
+                aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}
+              />
+            </label>
+          </section>
+        )}
+
         <div className="song-verses">
-          {song.verses.map((verse, verseIndex) => (
-            <section className="verse-block" id={verse.id} key={verse.id}>
-              <div className="verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>
-                {String(verseIndex + 1).padStart(2, "0")}
-              </div>
-              <div className="verse-copy">
-                {verse.lines.map((line) => (
-                  <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
-                    <SongMatchText value={line.transliteration} query={query} fieldId={`line:${line.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
-                  </p>
-                ))}
-                {verse.translation && <p className="translation"><SongMatchText value={verse.translation} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
-              </div>
-            </section>
-          ))}
+          {song.verses.map((verse, verseIndex) => {
+            const translationVisible = isVerseTranslationVisible(verse.id);
+
+            return (
+              <section className="verse-block" id={verse.id} key={verse.id}>
+                <div className="verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>
+                  {String(verseIndex + 1).padStart(2, "0")}
+                </div>
+                <div className="verse-copy">
+                  {verse.lines.map((line) => (
+                    <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
+                      <SongMatchText value={line.transliteration} query={query} fieldId={`line:${line.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
+                    </p>
+                  ))}
+                  {verse.translation && (
+                    <>
+                      <button
+                        className="verse-translation-toggle"
+                        type="button"
+                        onClick={() => toggleVerseTranslation(verse.id)}
+                        aria-controls={`translation-${verse.id}`}
+                        aria-expanded={translationVisible}
+                      >
+                        <span>{translationVisible ? copy.song.hideVerseTranslation : copy.song.showVerseTranslation}</span>
+                        {translationVisible ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </button>
+                      <div id={`translation-${verse.id}`} hidden={!translationVisible}>
+                        <p className="translation"><SongMatchText value={verse.translation} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
         <div className="song-sheet-footer">

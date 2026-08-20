@@ -47,3 +47,10 @@
 - [x] Identify why the in-song search panel leaves the viewport during long-page scrolling.
 - [x] Make the panel persist below the global navigation without clipping or overlapping song content on desktop and mobile.
 - [x] Verify actual scroll behavior on a long song, run build checks, and save a checkpoint.
+
+## Collapsible verse translations
+
+- [x] Define clear, accessible states for the global translation switch and independent verse overrides.
+- [x] Add a global show/hide control and per-verse disclosure controls without changing the transliterated source text.
+- [x] Ensure combined global and individual actions remain predictable on desktop and mobile.
+- [x] Verify keyboard access, different states, build checks, and save a checkpoint.
