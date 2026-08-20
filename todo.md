@@ -54,3 +54,9 @@
 - [x] Add a global show/hide control and per-verse disclosure controls without changing the transliterated source text.
 - [x] Ensure combined global and individual actions remain predictable on desktop and mobile.
 - [x] Verify keyboard access, different states, build checks, and save a checkpoint.
+
+## Minimal verse translation control
+
+- [x] Replace the text-only per-verse translation action with an interactive verse-number marker and compact disclosure cue.
+- [x] Use an inverted marker state to communicate that the corresponding translation is open, while preserving an accessible name.
+- [x] Verify independent and global translation states, mobile layout, build checks, and save a checkpoint.

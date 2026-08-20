@@ -264,15 +264,17 @@ a { color: inherit; text-decoration: none; }
 .translation-switch [data-slot="switch-thumb"] { width: 1rem; height: 1rem; background: #fffaf3; }
 .song-verses { display: grid; gap: 2.7rem; margin-top: 3.3rem; }
 .verse-block { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 1.3rem; }
-.verse-number { display: grid; width: 2rem; height: 2rem; place-items: center; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.58); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; }
+.verse-number { display: grid; width: 2rem; height: 2rem; place-items: center; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.58); background: transparent; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; }
+.verse-translation-marker { align-content: center; gap: 0.03rem; padding: 0; transition: color 160ms var(--ease-out), background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.verse-translation-marker svg { transition: transform 160ms var(--ease-out); }
+.verse-translation-marker:hover { color: var(--ink); border-color: var(--ink-soft); }
+.verse-translation-marker[aria-expanded="true"] { color: #fffaf3; border-color: var(--saffron-deep); background: var(--saffron-deep); }
+.verse-translation-marker[aria-expanded="true"] svg { transform: rotate(180deg); }
+.verse-translation-marker:active { transform: scale(0.94); }
+.verse-translation-marker:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.2rem; }
 .verse-copy { max-width: 48rem; }
 .transliteration { margin: 0.06rem 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(1.38rem, 2.1vw, 1.75rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.12; }
 .transliteration.is-indented { padding-left: clamp(0.8rem, 3vw, 2.2rem); color: var(--saffron-deep); }
-.verse-translation-toggle { display: inline-flex; gap: 0.34rem; align-items: center; margin: 0.78rem 0 0; padding: 0.26rem 0; color: var(--saffron-deep); background: transparent; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.075em; text-transform: uppercase; transition: color 160ms var(--ease-out), transform 160ms var(--ease-out); }
-.verse-translation-toggle::before { content: ""; width: 1.15rem; height: 1px; margin-right: 0.18rem; background: currentColor; opacity: 0.52; }
-.verse-translation-toggle:hover { color: var(--ink); }
-.verse-translation-toggle:active { transform: scale(0.97); }
-.verse-translation-toggle:focus-visible { outline: 2px solid rgba(217,109,50,0.55); outline-offset: 0.2rem; }
 .translation { max-width: 55ch; margin: 1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.85rem; font-style: italic; white-space: pre-line; line-height: 1.65; }
 .song-sheet-footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1.1rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.69rem; }
 .song-sheet-footer p { margin: 0; }

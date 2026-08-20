@@ -259,9 +259,23 @@ function SongPageContent() {
 
             return (
               <section className="verse-block" id={verse.id} key={verse.id}>
-                <div className="verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>
-                  {String(verseIndex + 1).padStart(2, "0")}
-                </div>
+                {verse.translation ? (
+                  <button
+                    className="verse-number verse-translation-marker"
+                    type="button"
+                    onClick={() => toggleVerseTranslation(verse.id)}
+                    aria-controls={`translation-${verse.id}`}
+                    aria-expanded={translationVisible}
+                    aria-label={`${translationVisible ? copy.song.hideVerseTranslation : copy.song.showVerseTranslation}: ${copy.song.verse} ${verse.originalVerseNumber}`}
+                  >
+                    <span>{String(verseIndex + 1).padStart(2, "0")}</span>
+                    <ChevronDown size={11} aria-hidden="true" />
+                  </button>
+                ) : (
+                  <div className="verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>
+                    {String(verseIndex + 1).padStart(2, "0")}
+                  </div>
+                )}
                 <div className="verse-copy">
                   {verse.lines.map((line) => (
                     <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
@@ -270,16 +284,6 @@ function SongPageContent() {
                   ))}
                   {verse.translation && (
                     <>
-                      <button
-                        className="verse-translation-toggle"
-                        type="button"
-                        onClick={() => toggleVerseTranslation(verse.id)}
-                        aria-controls={`translation-${verse.id}`}
-                        aria-expanded={translationVisible}
-                      >
-                        <span>{translationVisible ? copy.song.hideVerseTranslation : copy.song.showVerseTranslation}</span>
-                        {translationVisible ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                      </button>
                       <div id={`translation-${verse.id}`} hidden={!translationVisible}>
                         <p className="translation"><SongMatchText value={verse.translation} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
                       </div>
