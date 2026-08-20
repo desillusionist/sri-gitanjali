@@ -13,3 +13,10 @@
 - [x] Add a reusable text-search and combined-filter model for title, verse text, author, and category.
 - [x] Add author and category controls, active-filter feedback, and a clear-all action.
 - [x] Verify empty, single-filter, and combined-filter states; run build checks and save a checkpoint.
+
+## Search excerpts and highlights
+
+- [x] Audit result-row rendering and define matching priorities for title, author, lines, and translations.
+- [x] Add diacritic-insensitive match ranges and contextual excerpt generation.
+- [x] Render highlighted query fragments in live-search result rows without changing the empty-filter view.
+- [x] Verify word and phrase matches on real songs, then run build checks and save a checkpoint.

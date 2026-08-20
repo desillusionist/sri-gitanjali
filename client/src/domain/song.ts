@@ -45,6 +45,16 @@ export type SongSearchFilters = {
   category: string;
 };
 
+export type HighlightPart = {
+  text: string;
+  isMatch: boolean;
+};
+
+export type SongSearchExcerpt = {
+  text: string;
+  source: "line" | "translation" | "comment";
+};
+
 export const defaultSongSearchFilters: SongSearchFilters = {
   query: "",
   author: ALL_AUTHORS_FILTER,
@@ -77,6 +87,85 @@ export function normalizeSearchText(value: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .trim()
     .toLowerCase();
+}
+
+function normalizedTextWithIndexMap(value: string): { normalized: string; indexes: number[] } {
+  let normalized = "";
+  const indexes: number[] = [];
+  let originalOffset = 0;
+
+  for (const character of value) {
+    const normalizedCharacter = character
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+    for (const normalizedPart of normalizedCharacter) {
+      normalized += normalizedPart;
+      indexes.push(originalOffset);
+    }
+    originalOffset += character.length;
+  }
+
+  return { normalized, indexes };
+}
+
+function getOriginalMatchRange(value: string, query: string): { start: number; end: number } | null {
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) return null;
+
+  const { normalized, indexes } = normalizedTextWithIndexMap(value);
+  const matchStart = normalized.indexOf(normalizedQuery);
+  if (matchStart === -1) return null;
+
+  const matchEnd = matchStart + normalizedQuery.length;
+  return {
+    start: indexes[matchStart],
+    end: indexes[matchEnd] ?? value.length,
+  };
+}
+
+export function getHighlightParts(value: string, query: string): HighlightPart[] {
+  const range = getOriginalMatchRange(value, query);
+  if (!range) return [{ text: value, isMatch: false }];
+
+  return [
+    ...(range.start ? [{ text: value.slice(0, range.start), isMatch: false }] : []),
+    { text: value.slice(range.start, range.end), isMatch: true },
+    ...(range.end < value.length ? [{ text: value.slice(range.end), isMatch: false }] : []),
+  ];
+}
+
+function buildContextExcerpt(value: string, query: string, radius = 44): string | null {
+  const range = getOriginalMatchRange(value, query);
+  if (!range) return null;
+
+  const provisionalStart = Math.max(0, range.start - radius);
+  const provisionalEnd = Math.min(value.length, range.end + radius);
+  const startBreak = value.lastIndexOf(" ", provisionalStart);
+  const endBreak = value.indexOf(" ", provisionalEnd);
+  const start = startBreak === -1 ? 0 : startBreak + 1;
+  const end = endBreak === -1 ? value.length : endBreak;
+  const excerpt = value.slice(start, end).trim();
+
+  return `${start > 0 ? "…" : ""}${excerpt}${end < value.length ? "…" : ""}`;
+}
+
+export function getSongSearchExcerpt(song: Song, query: string): SongSearchExcerpt | null {
+  if (!normalizeSearchText(query)) return null;
+
+  const candidates: Array<{ text: string; source: SongSearchExcerpt["source"] }> = [
+    ...song.verses.flatMap((verse) => verse.lines.map((line) => ({ text: line.transliteration, source: "line" as const }))),
+    ...song.verses.map((verse) => ({ text: verse.translation, source: "translation" as const })),
+    ...(song.comment ? [{ text: song.comment, source: "comment" as const }] : []),
+  ];
+
+  for (const candidate of candidates) {
+    const text = buildContextExcerpt(candidate.text, query);
+    if (text) return { text, source: candidate.source };
+  }
+
+  return null;
 }
 
 export function songSearchText(song: Song): string {

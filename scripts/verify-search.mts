@@ -6,6 +6,8 @@ import {
   filterSongs,
   getSongAuthors,
   getSongCategories,
+  getHighlightParts,
+  getSongSearchExcerpt,
   type Song,
 } from "../client/src/domain/song.ts";
 
@@ -33,5 +35,10 @@ assert.ok(textMatches.some((song) => song.id === firstSong.id), "Full-text searc
 
 const combinedMatches = filterSongs(catalog, { query: "", author, category: authorMatches[0].category });
 assert.ok(combinedMatches.every((song) => song.poet === author && song.category === authorMatches[0].category), "Combined filters must use AND semantics.");
-
-console.log(`Verified search filters against ${catalog.length} songs: text, author, category, and combined conditions.`);
+const excerpt = getSongSearchExcerpt(firstSong, textNeedle);
+assert.ok(excerpt?.source === "line" && excerpt.text.includes(textNeedle), "A matching line must produce a contextual excerpt.");
+const phraseParts = getHighlightParts(excerpt.text, textNeedle);
+assert.ok(phraseParts.some((part) => part.isMatch && part.text === textNeedle), "A full phrase match must be returned as a highlight part.");
+const diacriticInsensitiveParts = getHighlightParts(firstSong.title, "vandana");
+assert.ok(diacriticInsensitiveParts.some((part) => part.isMatch && part.text === "Vandanā"), "Highlighting must preserve the original diacritic form.");
+console.log(`Verified search filters and excerpts against ${catalog.length} songs: text, author, category, combined conditions, phrase excerpts, and highlights.`);

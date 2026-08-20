@@ -4,23 +4,32 @@
  */
 
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { songFirstLine, type Song } from "@/domain/song";
+import { getHighlightParts, getSongSearchExcerpt, normalizeSearchText, songFirstLine, type Song } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { Bookmark, BookmarkCheck, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 
-export function SongListItem({ song }: { song: Song }) {
+function HighlightedText({ value, query }: { value: string; query: string }) {
+  return getHighlightParts(value, query).map((part, index) =>
+    part.isMatch ? <mark className="search-highlight" key={`${part.text}-${index}`}>{part.text}</mark> : <span key={`${part.text}-${index}`}>{part.text}</span>,
+  );
+}
+
+export function SongListItem({ song, query = "" }: { song: Song; query?: string }) {
   const { isFavorite, toggleFavorite } = useSongLibrary();
   const { copy } = useTranslation();
   const favorite = isFavorite(song.id);
+  const hasTextQuery = Boolean(normalizeSearchText(query));
+  const excerpt = hasTextQuery ? getSongSearchExcerpt(song, query) : null;
 
   return (
-    <div className={`song-row ${favorite ? "is-favorite" : ""}`}>
+    <div className={`song-row ${favorite ? "is-favorite" : ""} ${excerpt ? "has-search-excerpt" : ""}`}>
       <Link href={`/song/${song.id}`} className="song-row-link">
         <span className="song-row-ornament" aria-hidden="true" />
         <span className="song-row-copy">
-          <strong>{song.title}</strong>
-          <small>{song.poet || copy.library.noAuthor} · {songFirstLine(song)}</small>
+          <strong><HighlightedText value={song.title} query={query} /></strong>
+          <small className="song-row-meta"><HighlightedText value={song.poet || copy.library.noAuthor} query={query} /> · <HighlightedText value={songFirstLine(song)} query={query} /></small>
+          {excerpt && <span className="song-search-excerpt"><span aria-hidden="true">↳</span><HighlightedText value={excerpt.text} query={query} /></span>}
         </span>
         <ChevronRight size={18} aria-hidden="true" />
       </Link>

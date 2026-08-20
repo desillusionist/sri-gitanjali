@@ -160,7 +160,7 @@ function LibraryHome() {
                       <span>{category.songs.length} {copy.library.songCount}</span>
                     </header>
                     <div className="song-list">
-                      {category.songs.slice(0, filtersActive ? category.songs.length : 4).map((song) => <SongListItem song={song} key={song.id} />)}
+                      {category.songs.slice(0, filtersActive ? category.songs.length : 4).map((song) => <SongListItem song={song} query={filters.query} key={song.id} />)}
                     </div>
                   </section>
                 ))}
