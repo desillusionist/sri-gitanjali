@@ -125,21 +125,6 @@ function LibraryHome() {
 
       {status === "ready" ? (
         <>
-          <section className="library-metrics" aria-label="Data migration status">
-            <div className="metric-card metric-primary">
-              <DatabaseZap size={19} />
-              <p><strong>{songs.length}</strong><span>{copy.library.metricSongs}</span></p>
-            </div>
-            <div className="metric-card">
-              <BookOpen size={19} />
-              <p><strong>{groupSongsByCategory(songs).length}</strong><span>{copy.library.metricSections}</span></p>
-            </div>
-            <div className="metric-card metric-source">
-              <Sparkles size={19} />
-              <p><strong>{source?.toUpperCase()}</strong><span>{copy.library.metricSource}</span></p>
-            </div>
-          </section>
-
           <section className="library-content" id="library" aria-labelledby="library-heading">
             <div className="section-heading">
               <div>
@@ -172,6 +157,21 @@ function LibraryHome() {
                 <button type="button" className="text-action" onClick={clearFilters}>{copy.library.clearAllFilters} <ArrowUpRight size={16} /></button>
               </section>
             )}
+          </section>
+
+          <section className="library-metrics" aria-label="Data migration status">
+            <div className="metric-card metric-primary">
+              <DatabaseZap size={19} />
+              <p><strong>{songs.length}</strong><span>{copy.library.metricSongs}</span></p>
+            </div>
+            <div className="metric-card">
+              <BookOpen size={19} />
+              <p><strong>{groupSongsByCategory(songs).length}</strong><span>{copy.library.metricSections}</span></p>
+            </div>
+            <div className="metric-card metric-source">
+              <Sparkles size={19} />
+              <p><strong>{source?.toUpperCase()}</strong><span>{copy.library.metricSource}</span></p>
+            </div>
           </section>
         </>
       ) : null}

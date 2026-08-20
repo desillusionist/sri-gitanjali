@@ -23,7 +23,14 @@
 
 ## In-song search navigation
 
-- [ ] Audit song routes and define a URL-safe query handoff from live-search results.
-- [ ] Add a full-song match model that identifies each matching title, author, line, translation, or comment fragment.
-- [ ] Add the compact in-song search bar, active-match highlight, and previous/next controls with scroll behavior.
-- [ ] Verify routed phrase search and multi-match navigation on real songs, then run build checks and save a checkpoint.
+- [x] Audit song routes and define a URL-safe query handoff from live-search results.
+- [x] Add a full-song match model that identifies each matching title, author, line, translation, or comment fragment.
+- [x] Add the compact in-song search bar, active-match highlight, and previous/next controls with scroll behavior.
+- [x] Verify routed phrase search and multi-match navigation on real songs, then run build checks and save a checkpoint.
+
+## Scroll persistence and library flow
+
+- [x] Make the global application header and all navigation controls persist at the top of the viewport while scrolling.
+- [x] Keep the active in-song search panel reachable below the fixed header on desktop and mobile.
+- [x] Move the home-page statistics block below the search results, then verify its position in filtered and unfiltered states.
+- [x] Verify desktop and mobile scrolling behavior, run build checks, and save a checkpoint.

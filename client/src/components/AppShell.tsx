@@ -24,7 +24,7 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="app-shell">
-      <aside className="reading-rail" aria-label={copy.navigation.mainLabel}>
+      <header className="reading-rail" aria-label={copy.navigation.mainLabel}>
         <Link href="/" className="brand-lockup" aria-label="Kīrtan Guide library">
           <img className="brand-mark" src={brandAssets.mark} alt="" />
           <span className="brand-name">Kīrtan<br />Guide</span>
@@ -52,7 +52,7 @@ export function AppShell({ children }: AppShellProps) {
           <BookOpenText aria-hidden="true" size={17} />
           <p>{copy.railNote}</p>
         </div>
-      </aside>
+      </header>
 
       <main className="app-main">{children}</main>
     </div>
