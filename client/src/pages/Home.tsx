@@ -156,7 +156,7 @@ function LibraryHome() {
               <span>{copy.library.filtersApplied}</span>
               <button className="clear-filters-button" type="button" onClick={clearFilters}>{copy.library.clearAllFilters} <X size={14} /></button>
             </>
-          ) : <span>{copy.library.searchIdleNote}</span>}
+          ) : <span>{copy.library.searchStatusIdle}</span>}
         </div>
         <p className="search-note">{filtersActive ? copy.library.searchActiveNote : copy.library.searchIdleNote}</p>
       </section>

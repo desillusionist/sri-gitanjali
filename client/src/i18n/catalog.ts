@@ -28,6 +28,7 @@ export const translations = {
       applyRecentSearch: "Search again for {query}",
       searchActiveNote: "Results update as you type.",
       searchIdleNote: "Begin with a remembered line, then gently narrow the collection by author or chapter.",
+      searchStatusIdle: "The full songbook is ready to explore.",
       filterAuthor: "Author",
       filterCategory: "Category",
       allAuthors: "All authors",
