@@ -22,7 +22,7 @@ import {
 import { useRecentSearches } from "@/hooks/useRecentSearches";
 import { ArrowUpRight, BookOpen, Clock3, DatabaseZap, Loader2, Search, Sparkles, Trash2, X } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
 import { Link } from "wouter";
 
 function LibraryHome() {
@@ -39,6 +39,26 @@ function LibraryHome() {
   const filtersActive = hasActiveSongFilters(filters);
 
   const categories = useMemo(() => groupSongsByCategory(filteredSongs), [filteredSongs]);
+  useEffect(() => {
+    const parameters = new URLSearchParams(window.location.search);
+    const nextFilters = {
+      query: parameters.get("q") ?? defaultSongSearchFilters.query,
+      author: parameters.get("author") ?? defaultSongSearchFilters.author,
+      category: parameters.get("category") ?? defaultSongSearchFilters.category,
+    };
+
+    setFilters((current) => (
+      current.query === nextFilters.query && current.author === nextFilters.author && current.category === nextFilters.category
+        ? current
+        : nextFilters
+    ));
+
+    const targetId = window.location.hash.slice(1);
+    if (targetId && (targetId === "search" || status === "ready")) {
+      window.requestAnimationFrame(() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    }
+  }, [status]);
+
   const updateFilters = (patch: Partial<typeof filters>) => setFilters((current) => ({ ...current, ...patch }));
   const clearFilters = () => setFilters(defaultSongSearchFilters);
   const handleSearchBlur = (event: FocusEvent<HTMLDivElement>) => {

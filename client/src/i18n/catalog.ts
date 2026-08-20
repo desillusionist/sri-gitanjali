@@ -60,6 +60,7 @@ export const translations = {
       noMatchesEyebrow: "No matches",
       noMatchesTitle: "Try another line or author name.",
       clearSearch: "Clear search",
+      matchCountLabel: "{count} matches",
     },
     song: {
       opening: "Opening the songbook…",
@@ -93,6 +94,8 @@ export const translations = {
       hideAllTranslations: "Hide all translations",
       showVerseTranslation: "Show translation",
       hideVerseTranslation: "Hide translation",
+      filterByCategory: "Open the library filtered by {category}",
+      filterByAuthor: "Open the library filtered by {author}",
     },
     favorites: {
       eyebrow: "Your reading shelf",

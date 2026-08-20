@@ -7,7 +7,7 @@ import { brandAssets } from "@/data/sources";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { BookOpenText, Bookmark, LibraryBig, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
-import type { ReactNode } from "react";
+import { useEffect, useState, type MouseEvent, type ReactNode } from "react";
 
 type AppShellProps = {
   children: ReactNode;
@@ -16,9 +16,31 @@ type AppShellProps = {
 export function AppShell({ children }: AppShellProps) {
   const [location] = useLocation();
   const { copy } = useTranslation();
+  const [activeHash, setActiveHash] = useState(() => window.location.hash);
+
+  useEffect(() => {
+    const syncHash = () => setActiveHash(window.location.hash);
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
+
+  useEffect(() => {
+    setActiveHash(window.location.hash);
+  }, [location]);
+
+  const navigateToHomeSection = (event: MouseEvent<HTMLAnchorElement>, targetId: "search" | "library") => {
+    if (location !== "/" || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    event.preventDefault();
+    const hash = `#${targetId}`;
+    window.history.pushState(null, "", `/${hash}`);
+    setActiveHash(hash);
+    document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const rails = [
-    { href: "/", label: copy.navigation.library, icon: LibraryBig, match: (path: string) => path === "/" },
-    { href: "/#search", label: copy.navigation.search, icon: Search, match: (path: string) => path === "/" },
+    { href: "/#library", targetId: "library" as const, label: copy.navigation.library, icon: LibraryBig, match: (path: string) => path === "/" && activeHash !== "#search" },
+    { href: "/#search", targetId: "search" as const, label: copy.navigation.search, icon: Search, match: (path: string) => path === "/" && activeHash === "#search" },
     { href: "/favorites", label: copy.navigation.favorites, icon: Bookmark, match: (path: string) => path === "/favorites" },
   ];
 
@@ -31,7 +53,7 @@ export function AppShell({ children }: AppShellProps) {
         </Link>
 
         <nav className="rail-nav">
-          {rails.map(({ href, label, icon: Icon, match }) => {
+          {rails.map(({ href, targetId, label, icon: Icon, match }) => {
             const isActive = match(location);
             return (
               <Link
@@ -39,6 +61,7 @@ export function AppShell({ children }: AppShellProps) {
                 href={href}
                 className={`rail-nav-link ${isActive ? "is-active" : ""}`}
                 aria-current={isActive ? "page" : undefined}
+                onClick={targetId ? (event) => navigateToHomeSection(event, targetId) : undefined}
               >
                 <Icon aria-hidden="true" size={18} strokeWidth={1.7} />
                 <span>{label}</span>

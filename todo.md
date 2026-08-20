@@ -60,3 +60,10 @@
 - [x] Replace the text-only per-verse translation action with an interactive verse-number marker and compact disclosure cue.
 - [x] Use an inverted marker state to communicate that the corresponding translation is open, while preserving an accessible name.
 - [x] Verify independent and global translation states, mobile layout, build checks, and save a checkpoint.
+
+## Contextual library navigation
+
+- [ ] Make the Library and Search navigation items route to the home page and scroll to their respective library and search anchors.
+- [ ] Add an accessible per-song badge that reports the total number of text matches in global search results.
+- [ ] Link song authors and categories to the home page with the corresponding author or category filter preselected.
+- [ ] Verify anchored navigation, filter links, match badges, desktop/mobile presentation, build checks, and save a checkpoint.

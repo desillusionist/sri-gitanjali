@@ -140,10 +140,13 @@ function SongPageContent() {
   };
 
   const favorite = isFavorite(song.id);
+  const author = song.poet;
   const toggleSongFavorite = () => {
     toggleFavorite(song.id);
     toast.success(favorite ? copy.song.removedFavorite : copy.song.addedFavorite);
   };
+  const categoryFilterHref = `/?category=${encodeURIComponent(song.category)}#search`;
+  const authorFilterHref = author ? `/?author=${encodeURIComponent(author)}#search` : null;
 
   const updateQuery = (nextQuery: string) => {
     setQuery(nextQuery);
@@ -221,9 +224,9 @@ function SongPageContent() {
       <article className="song-sheet">
           <div className="song-sheet-intro">
           <div>
-            <span className="eyebrow">{song.category}</span>
+            <Link className="eyebrow song-category-link" href={categoryFilterHref} aria-label={copy.song.filterByCategory.replace("{category}", song.category)}>{song.category}</Link>
             <h1><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
-            <p className="song-poet"><SongMatchText value={song.poet || copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
+            <p className="song-poet">{author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
           </div>
           <div className="song-insight">
             <Music2 size={19} />

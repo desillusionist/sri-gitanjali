@@ -4,7 +4,7 @@
  */
 
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchExcerpt, normalizeSearchText, songFirstLine, type Song } from "@/domain/song";
+import { getHighlightParts, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, songFirstLine, type Song } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { Bookmark, BookmarkCheck, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
@@ -21,6 +21,7 @@ export function SongListItem({ song, query = "" }: { song: Song; query?: string 
   const favorite = isFavorite(song.id);
   const hasTextQuery = Boolean(normalizeSearchText(query));
   const excerpt = hasTextQuery ? getSongSearchExcerpt(song, query) : null;
+  const matchCount = hasTextQuery ? getSongSearchMatches(song, query).length : 0;
 
   return (
     <div className={`song-row ${favorite ? "is-favorite" : ""} ${excerpt ? "has-search-excerpt" : ""}`}>
@@ -31,6 +32,7 @@ export function SongListItem({ song, query = "" }: { song: Song; query?: string 
           <small className="song-row-meta"><HighlightedText value={song.poet || copy.library.noAuthor} query={query} /> · <HighlightedText value={songFirstLine(song)} query={query} /></small>
           {excerpt && <span className="song-search-excerpt"><span aria-hidden="true">↳</span><HighlightedText value={excerpt.text} query={query} /></span>}
         </span>
+        {matchCount > 0 && <span className="song-match-count" aria-label={copy.library.matchCountLabel.replace("{count}", String(matchCount))}>{copy.library.matchCountLabel.replace("{count}", String(matchCount))}</span>}
         <ChevronRight size={18} aria-hidden="true" />
       </Link>
       <button

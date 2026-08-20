@@ -194,6 +194,7 @@ a { color: inherit; text-decoration: none; }
 .song-row-meta { display: block; }
 .song-search-excerpt { display: -webkit-box; gap: 0.35rem; margin-top: 0.16rem; overflow: hidden; color: var(--ink-soft); font-size: 0.69rem; font-style: italic; line-height: 1.42; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .song-search-excerpt > span:first-child { display: inline-block; margin-right: 0.35rem; color: var(--saffron-deep); font-family: "DM Sans", Arial, sans-serif; font-style: normal; font-weight: 700; }
+.song-match-count { flex: 0 0 auto; padding: 0.26rem 0.42rem; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.32); background: #fff3e2; font-size: 0.61rem; font-weight: 700; letter-spacing: 0.035em; line-height: 1; white-space: nowrap; }
 .search-highlight { padding: 0.02em 0.12em; border-radius: 0.08em; background: rgba(217, 109, 50, 0.23); color: var(--ink); font: inherit; font-style: inherit; }
 .song-row:hover .search-highlight { background: rgba(217, 109, 50, 0.32); }
 .song-row-link > svg { flex: 0 0 auto; color: var(--saffron); }
@@ -252,6 +253,9 @@ a { color: inherit; text-decoration: none; }
 .song-sheet-mantra { width: 8rem; margin: 1.25rem 0 -0.4rem; }
 .song-sheet h1 { max-width: 15ch; margin: 0.6rem 0 0.5rem; font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(3rem, 6vw, 5.4rem); font-weight: 600; letter-spacing: -0.07em; line-height: 0.82; }
 .song-poet { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+.song-category-link, .song-poet-link { color: inherit; text-decoration: none; transition: color 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
+.song-category-link:hover, .song-poet-link:hover { color: var(--saffron-deep); text-decoration: underline; text-decoration-color: rgba(217,109,50,0.5); text-underline-offset: 0.24rem; }
+.song-category-link:focus-visible, .song-poet-link:focus-visible { outline: 2px solid rgba(217,109,50,0.55); outline-offset: 0.2rem; }
 .song-insight { display: grid; min-width: 98px; gap: 0.4rem; padding: 0.9rem; color: var(--saffron-deep); background: #fcf4e8; font-size: 0.68rem; font-weight: 700; line-height: 1.25; text-transform: uppercase; letter-spacing: 0.08em; }
 .song-comment { max-width: 55ch; margin: 2rem 0 0; color: var(--ink-soft); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.3rem; font-style: italic; line-height: 1.25; }
 .translation-controls { display: flex; justify-content: space-between; gap: 1.25rem; align-items: center; margin-top: 2.4rem; padding: 0.9rem 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
