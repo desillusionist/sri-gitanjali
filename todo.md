@@ -6,3 +6,10 @@
 - [x] Add a dedicated Favorites route and navigation entry.
 - [x] Connect favorite/unfavorite actions on song detail and cards, then verify persistence.
 - [x] Run TypeScript/build checks, visually verify key routes, and save a checkpoint.
+
+## Search and filters
+
+- [x] Audit existing song fields and derive normalized filter options.
+- [x] Add a reusable text-search and combined-filter model for title, verse text, author, and category.
+- [x] Add author and category controls, active-filter feedback, and a clear-all action.
+- [x] Verify empty, single-filter, and combined-filter states; run build checks and save a checkpoint.

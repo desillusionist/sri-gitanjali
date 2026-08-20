@@ -5,10 +5,21 @@
 
 import { AppShell } from "@/components/AppShell";
 import { SongListItem } from "@/components/SongListItem";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { brandAssets } from "@/data/sources";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { groupSongsByCategory, songSearchText } from "@/domain/song";
-import { ArrowUpRight, BookOpen, DatabaseZap, Loader2, Search, Sparkles } from "lucide-react";
+import {
+  ALL_AUTHORS_FILTER,
+  ALL_CATEGORIES_FILTER,
+  UNLISTED_AUTHOR_FILTER,
+  defaultSongSearchFilters,
+  filterSongs,
+  getSongAuthors,
+  getSongCategories,
+  groupSongsByCategory,
+  hasActiveSongFilters,
+} from "@/domain/song";
+import { ArrowUpRight, BookOpen, DatabaseZap, Loader2, Search, Sparkles, X } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
@@ -16,19 +27,17 @@ import { Link } from "wouter";
 function LibraryHome() {
   const { songs, status, source, error, reload } = useSongLibrary();
   const { copy } = useTranslation();
-  const [query, setQuery] = useState("");
-  const normalizedQuery = query
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim()
-    .toLowerCase();
+  const [filters, setFilters] = useState(defaultSongSearchFilters);
 
-  const filteredSongs = useMemo(() => {
-    if (!normalizedQuery) return songs;
-    return songs.filter((song) => songSearchText(song).includes(normalizedQuery));
-  }, [songs, normalizedQuery]);
+  const filteredSongs = useMemo(() => filterSongs(songs, filters), [filters, songs]);
+  const authors = useMemo(() => getSongAuthors(songs), [songs]);
+  const availableCategories = useMemo(() => getSongCategories(songs), [songs]);
+  const hasUnlistedAuthors = useMemo(() => songs.some((song) => !song.poet?.trim()), [songs]);
+  const filtersActive = hasActiveSongFilters(filters);
 
   const categories = useMemo(() => groupSongsByCategory(filteredSongs), [filteredSongs]);
+  const updateFilters = (patch: Partial<typeof filters>) => setFilters((current) => ({ ...current, ...patch }));
+  const clearFilters = () => setFilters(defaultSongSearchFilters);
 
   return (
     <div className="library-page">
@@ -53,14 +62,50 @@ function LibraryHome() {
         <label className="library-search">
           <Search size={20} aria-hidden="true" />
           <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            value={filters.query}
+            onChange={(event) => updateFilters({ query: event.target.value })}
             placeholder={copy.library.searchPlaceholder}
             aria-label={copy.library.searchLabel}
           />
-          {query && <span className="search-count">{filteredSongs.length}</span>}
+          {filtersActive && <span className="search-count">{filteredSongs.length}</span>}
         </label>
-        <p className="search-note">{query ? copy.library.searchActiveNote : copy.library.searchIdleNote}</p>
+        <div className="filter-controls" role="group" aria-label={copy.library.filtersLabel}>
+          <label className="filter-field">
+            <span>{copy.library.filterAuthor}</span>
+            <Select value={filters.author} onValueChange={(author) => updateFilters({ author })}>
+              <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterAuthor}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="filter-select-content">
+                <SelectItem value={ALL_AUTHORS_FILTER}>{copy.library.allAuthors}</SelectItem>
+                {hasUnlistedAuthors && <SelectItem value={UNLISTED_AUTHOR_FILTER}>{copy.library.unlistedAuthor}</SelectItem>}
+                {authors.map((author) => <SelectItem value={author} key={author}>{author}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </label>
+          <label className="filter-field">
+            <span>{copy.library.filterCategory}</span>
+            <Select value={filters.category} onValueChange={(category) => updateFilters({ category })}>
+              <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterCategory}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="filter-select-content">
+                <SelectItem value={ALL_CATEGORIES_FILTER}>{copy.library.allCategories}</SelectItem>
+                {availableCategories.map((category) => <SelectItem value={category} key={category}>{category}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </label>
+        </div>
+        <div className="filter-summary" aria-live="polite">
+          <p><strong>{filteredSongs.length}</strong> {copy.library.matchingSongs}</p>
+          {filtersActive ? (
+            <>
+              <span>{copy.library.filtersApplied}</span>
+              <button className="clear-filters-button" type="button" onClick={clearFilters}>{copy.library.clearAllFilters} <X size={14} /></button>
+            </>
+          ) : <span>{copy.library.searchIdleNote}</span>}
+        </div>
+        <p className="search-note">{filtersActive ? copy.library.searchActiveNote : copy.library.searchIdleNote}</p>
       </section>
 
       {status === "loading" || status === "idle" ? (
@@ -99,9 +144,9 @@ function LibraryHome() {
             <div className="section-heading">
               <div>
                 <span className="eyebrow">{copy.library.structureEyebrow}</span>
-                <h2 id="library-heading">{query ? copy.library.resultsHeading.replace("{count}", String(filteredSongs.length)) : copy.library.sectionsHeading}</h2>
+                <h2 id="library-heading">{filtersActive ? copy.library.resultsHeading.replace("{count}", String(filteredSongs.length)) : copy.library.sectionsHeading}</h2>
               </div>
-              <p>{query ? copy.library.resultsDetail : copy.library.sectionsDetail}</p>
+              <p>{filtersActive ? copy.library.filterResultsDetail : copy.library.sectionsDetail}</p>
             </div>
             <span className="mantra-line section-mantra" aria-hidden="true" />
 
@@ -115,7 +160,7 @@ function LibraryHome() {
                       <span>{category.songs.length} {copy.library.songCount}</span>
                     </header>
                     <div className="song-list">
-                      {category.songs.slice(0, query ? 12 : 4).map((song) => <SongListItem song={song} key={song.id} />)}
+                      {category.songs.slice(0, filtersActive ? category.songs.length : 4).map((song) => <SongListItem song={song} key={song.id} />)}
                     </div>
                   </section>
                 ))}
@@ -124,7 +169,7 @@ function LibraryHome() {
               <section className="empty-search">
                 <span className="eyebrow">{copy.library.noMatchesEyebrow}</span>
                 <h2>{copy.library.noMatchesTitle}</h2>
-                <button type="button" className="text-action" onClick={() => setQuery("")}>{copy.library.clearSearch} <ArrowUpRight size={16} /></button>
+                <button type="button" className="text-action" onClick={clearFilters}>{copy.library.clearAllFilters} <ArrowUpRight size={16} /></button>
               </section>
             )}
           </section>
