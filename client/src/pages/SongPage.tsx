@@ -6,13 +6,15 @@
 import { AppShell } from "@/components/AppShell";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { songFirstLine } from "@/domain/song";
-import { ArrowLeft, Bookmark, ChevronLeft, ChevronRight, Copy, Music2 } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Copy, Music2 } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
 
 function SongPageContent() {
   const [, params] = useRoute("/song/:id");
-  const { songs, status } = useSongLibrary();
+  const { songs, status, isFavorite, toggleFavorite } = useSongLibrary();
+  const { copy } = useTranslation();
   const song = songs.find((item) => item.id === params?.id);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
@@ -22,7 +24,7 @@ function SongPageContent() {
     return (
       <section className="song-loading" aria-live="polite">
         <div className="paper-spinner" />
-        <p>Открываем песенник…</p>
+        <p>{copy.song.opening}</p>
       </section>
     );
   }
@@ -30,9 +32,9 @@ function SongPageContent() {
   if (!song) {
     return (
       <section className="not-found-panel">
-        <span className="eyebrow">Страница не найдена</span>
-        <h1>Этой песни нет в текущей библиотеке.</h1>
-        <Link href="/" className="text-action"><ArrowLeft size={16} /> Вернуться к библиотеке</Link>
+        <span className="eyebrow">{copy.song.notFoundEyebrow}</span>
+        <h1>{copy.song.notFoundTitle}</h1>
+        <Link href="/" className="text-action"><ArrowLeft size={16} /> {copy.song.backToLibrary}</Link>
       </section>
     );
   }
@@ -54,37 +56,44 @@ function SongPageContent() {
 
     try {
       await navigator.clipboard.writeText(plainText);
-      toast.success("Текст песни скопирован.");
+      toast.success(copy.song.copied);
     } catch {
-      toast.error("Браузер не позволил скопировать текст.");
+      toast.error(copy.song.copyFailed);
     }
+  };
+
+  const favorite = isFavorite(song.id);
+  const toggleSongFavorite = () => {
+    toggleFavorite(song.id);
+    toast.success(favorite ? copy.song.removedFavorite : copy.song.addedFavorite);
   };
 
   return (
     <div className="song-page">
       <div className="song-toolbar">
-        <Link href="/" className="back-link"><ArrowLeft size={17} /> Библиотека</Link>
+        <Link href="/" className="back-link"><ArrowLeft size={17} /> {copy.song.backToLibrary}</Link>
         <div className="song-toolbar-actions">
-          <button className="quiet-icon-button" type="button" onClick={copySong} aria-label="Скопировать текст песни">
+          <button className="quiet-icon-button" type="button" onClick={copySong} aria-label={copy.song.copyLabel}>
             <Copy size={17} />
           </button>
-          <button className="quiet-icon-button" type="button" onClick={() => toast.message("Закладки будут добавлены в следующем вертикальном срезе.")} aria-label="Добавить в закладки">
-            <Bookmark size={17} />
+          <button className={`quiet-icon-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>
+            {favorite ? <BookmarkCheck size={17} /> : <Bookmark size={17} />}
           </button>
         </div>
       </div>
 
       <article className="song-sheet">
-        <div className="song-sheet-intro">
+          <div className="song-sheet-intro">
           <div>
             <span className="eyebrow">{song.category}</span>
             <h1>{song.title}</h1>
-            <p className="song-poet">{song.poet || "Автор не указан"}</p>
+            <p className="song-poet">{song.poet || copy.library.noAuthor}</p>
           </div>
           <div className="song-insight">
             <Music2 size={19} />
-            <span>{song.verses.length} {song.verses.length === 1 ? "куплет" : "куплетов"}</span>
+            <span>{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</span>
           </div>
+          <span className="mantra-line song-sheet-mantra" aria-hidden="true" />
         </div>
 
         {song.comment && <p className="song-comment">{song.comment}</p>}
@@ -92,7 +101,7 @@ function SongPageContent() {
         <div className="song-verses">
           {song.verses.map((verse, verseIndex) => (
             <section className="verse-block" id={verse.id} key={verse.id}>
-              <div className="verse-number" aria-label={`Куплет ${verse.originalVerseNumber}`}>
+              <div className="verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>
                 {String(verseIndex + 1).padStart(2, "0")}
               </div>
               <div className="verse-copy">
@@ -108,21 +117,21 @@ function SongPageContent() {
         </div>
 
         <div className="song-sheet-footer">
-          <p>Начальная строка: <em>{songFirstLine(song)}</em></p>
-          <p>Код песни: <span>{song.id}</span></p>
+          <p>{copy.song.initialLine} <em>{songFirstLine(song)}</em></p>
+          <p>{copy.song.songCode} <span>{song.id}</span></p>
         </div>
       </article>
 
-      <nav className="song-neighbours" aria-label="Соседние песни">
+      <nav className="song-neighbours" aria-label={copy.song.neighbourLabel}>
         {previous ? (
           <Link href={`/song/${previous.id}`} className="neighbour-link previous">
             <ChevronLeft size={18} />
-            <span><small>Предыдущая</small>{previous.title}</span>
+            <span><small>{copy.song.previous}</small>{previous.title}</span>
           </Link>
         ) : <div />}
         {next ? (
           <Link href={`/song/${next.id}`} className="neighbour-link next">
-            <span><small>Следующая</small>{next.title}</span>
+            <span><small>{copy.song.next}</small>{next.title}</span>
             <ChevronRight size={18} />
           </Link>
         ) : <div />}

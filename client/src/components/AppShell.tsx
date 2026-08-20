@@ -4,7 +4,8 @@
  */
 
 import { brandAssets } from "@/data/sources";
-import { BookOpenText, LibraryBig, Search } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
+import { BookOpenText, Bookmark, LibraryBig, Search } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import type { ReactNode } from "react";
 
@@ -12,25 +13,26 @@ type AppShellProps = {
   children: ReactNode;
 };
 
-const rails = [
-  { href: "/", label: "Библиотека", icon: LibraryBig },
-  { href: "/#search", label: "Поиск", icon: Search },
-];
-
 export function AppShell({ children }: AppShellProps) {
   const [location] = useLocation();
+  const { copy } = useTranslation();
+  const rails = [
+    { href: "/", label: copy.navigation.library, icon: LibraryBig, match: (path: string) => path === "/" },
+    { href: "/#search", label: copy.navigation.search, icon: Search, match: (path: string) => path === "/" },
+    { href: "/favorites", label: copy.navigation.favorites, icon: Bookmark, match: (path: string) => path === "/favorites" },
+  ];
 
   return (
     <div className="app-shell">
-      <aside className="reading-rail" aria-label="Основная навигация">
-        <Link href="/" className="brand-lockup" aria-label="Kīrtan Guide — библиотека">
+      <aside className="reading-rail" aria-label={copy.navigation.mainLabel}>
+        <Link href="/" className="brand-lockup" aria-label="Kīrtan Guide library">
           <img className="brand-mark" src={brandAssets.mark} alt="" />
           <span className="brand-name">Kīrtan<br />Guide</span>
         </Link>
 
         <nav className="rail-nav">
-          {rails.map(({ href, label, icon: Icon }) => {
-            const isActive = href === "/" ? location === "/" : location.startsWith("/search");
+          {rails.map(({ href, label, icon: Icon, match }) => {
+            const isActive = match(location);
             return (
               <Link
                 key={href}
@@ -48,7 +50,7 @@ export function AppShell({ children }: AppShellProps) {
         <div className="rail-note">
           <span className="rail-note-rule" />
           <BookOpenText aria-hidden="true" size={17} />
-          <p>Песни — рядом, даже когда вы далеко от бумажного сборника.</p>
+          <p>{copy.railNote}</p>
         </div>
       </aside>
 

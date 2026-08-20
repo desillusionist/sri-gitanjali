@@ -1,5 +1,5 @@
-/* Kīrtan Guide PWA: cache the app shell and the verified local song sources. */
-const CACHE_NAME = "kirtan-guide-shell-v1";
+/* Kīrtan Guide PWA: retain song sources offline while navigating to the newest app shell first. */
+const CACHE_NAME = "kirtan-guide-shell-v2";
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
@@ -24,18 +24,35 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // In development, Vite modules must always arrive from the live server.
+  if (url.pathname.startsWith("/src/") || url.pathname.startsWith("/@")) return;
+
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put("/", response.clone()));
+          return response;
+        })
+        .catch(() => caches.match("/").then((cached) => cached || Response.error())),
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       const networkResponse = fetch(event.request)
         .then((response) => {
-          if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+          if (response.ok) {
             const copy = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
           }
           return response;
         })
-        .catch(() => cachedResponse || (event.request.mode === "navigate" ? caches.match("/") : Response.error()));
+        .catch(() => cachedResponse || Response.error());
 
       return cachedResponse || networkResponse;
     }),

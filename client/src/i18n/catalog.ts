@@ -1,0 +1,85 @@
+/**
+ * Паломнический свиток: интерфейс говорит ясно и спокойно; английский — исходный язык,
+ * а новые словари регистрируются здесь без изменения экранов.
+ */
+
+export const translations = {
+  en: {
+    navigation: {
+      library: "Library",
+      search: "Search",
+      favorites: "Favorites",
+      mainLabel: "Main navigation",
+    },
+    railNote: "Songs stay close, even when the printed book is far away.",
+    library: {
+      eyebrow: "Kīrtan Guide / local library",
+      title: "Find the line,",
+      titleEmphasis: "that begins the singing.",
+      lede: "This PWA reads the real SwiftUI songbook: songs, verses, translations, and line indents.",
+      heroAlt: "An open songbook on a warm paper surface",
+      heroCaption: "compiled notebook · web edition",
+      searchEyebrow: "Open the library",
+      searchTitle: "Search by title, author, or line.",
+      searchPlaceholder: "For example, jaya rādhā or morning…",
+      searchLabel: "Search the song library",
+      searchActiveNote: "Results update as you type.",
+      searchIdleNote: "Advanced syntax and phonetic search will arrive in a later release.",
+      loadingEyebrow: "Importing the songbook",
+      loadingText: "Converting CSV lines into web-ready song models…",
+      errorEyebrow: "Source unavailable",
+      retry: "Try again",
+      metricSongs: "songs transferred from the source CSV",
+      metricSections: "sections in the navigation map",
+      metricSource: "active source with a CSV fallback",
+      structureEyebrow: "Source songbook structure",
+      resultsHeading: "Found: {count}",
+      sectionsHeading: "Library sections",
+      resultsDetail: "Matches are searched against the transferred Song model.",
+      sectionsDetail: "Open a song to check its route, verses, and translation.",
+      songCount: "songs",
+      noAuthor: "Author not listed",
+      noMatchesEyebrow: "No matches",
+      noMatchesTitle: "Try another line or author name.",
+      clearSearch: "Clear search",
+    },
+    song: {
+      opening: "Opening the songbook…",
+      notFoundEyebrow: "Page not found",
+      notFoundTitle: "This song is not in the current library.",
+      backToLibrary: "Back to library",
+      copyLabel: "Copy song text",
+      addFavorite: "Add to favorites",
+      removeFavorite: "Remove from favorites",
+      copied: "Song text copied.",
+      copyFailed: "The browser could not copy the text.",
+      addedFavorite: "Added to Favorites.",
+      removedFavorite: "Removed from Favorites.",
+      verse: "verse",
+      verses: "verses",
+      initialLine: "Opening line:",
+      songCode: "Song code:",
+      neighbourLabel: "Adjacent songs",
+      previous: "Previous",
+      next: "Next",
+    },
+    favorites: {
+      eyebrow: "Your reading shelf",
+      title: "Keep the songs",
+      titleEmphasis: "you return to.",
+      lede: "Favorites are stored only on this device, so your personal shelf stays available between visits.",
+      count: "saved songs",
+      sectionTitle: "Favorite songs",
+      sectionDetail: "Remove a song here or open it to read and lead from the page.",
+      emptyEyebrow: "The shelf is waiting",
+      emptyTitle: "Save the songs you want to find quickly.",
+      emptyDetail: "Use the bookmark button on any song page, and it will appear here on this device.",
+      browseLibrary: "Browse the library",
+    },
+  },
+} as const;
+
+export type Locale = keyof typeof translations;
+export type Copy = (typeof translations)[Locale];
+
+export const defaultLocale: Locale = "en";

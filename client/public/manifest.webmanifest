@@ -1,8 +1,8 @@
 {
   "name": "Kīrtan Guide",
   "short_name": "Kīrtan Guide",
-  "description": "Переносимая библиотека песен для практики и ведения киртан.",
-  "lang": "ru",
+  "description": "A portable song library for practice and leading kīrtan.",
+  "lang": "en",
   "dir": "ltr",
   "start_url": "/",
   "display": "standalone",
