@@ -41,3 +41,9 @@
 - [x] Save meaningful global-search queries without recording blank values or filter-only states.
 - [x] Show recent queries on focus, support applying an item, and provide an accessible clear-history action.
 - [x] Verify persistence after reload, query reuse, clearing history, and responsive presentation; then save a checkpoint.
+
+## In-song search stickiness fix
+
+- [x] Identify why the in-song search panel leaves the viewport during long-page scrolling.
+- [x] Make the panel persist below the global navigation without clipping or overlapping song content on desktop and mobile.
+- [x] Verify actual scroll behavior on a long song, run build checks, and save a checkpoint.
