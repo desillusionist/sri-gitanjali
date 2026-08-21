@@ -63,7 +63,14 @@
 
 ## Contextual library navigation
 
-- [ ] Make the Library and Search navigation items route to the home page and scroll to their respective library and search anchors.
-- [ ] Add an accessible per-song badge that reports the total number of text matches in global search results.
-- [ ] Link song authors and categories to the home page with the corresponding author or category filter preselected.
-- [ ] Verify anchored navigation, filter links, match badges, desktop/mobile presentation, build checks, and save a checkpoint.
+- [x] Make the Library and Search navigation items route to the home page and scroll to their respective library and search anchors.
+- [x] Add an accessible per-song badge that reports the total number of text matches in global search results.
+- [x] Link song authors and categories to the home page with the corresponding author or category filter preselected.
+- [x] Verify anchored navigation, filter links, match badges, desktop/mobile presentation, build checks, and save a checkpoint.
+
+## Teleprompter mode
+
+- [x] Design an accessible reading-mode toggle and play/pause control for automatic song scrolling.
+- [x] Implement automatic scrolling with adjustable speed and safe cancellation on user interaction or page exit.
+- [x] Preserve the reading context and make controls usable on desktop and mobile.
+- [x] Verify start, pause, speed adjustment, manual interruption, TypeScript, production build, and responsive presentation before saving a checkpoint.

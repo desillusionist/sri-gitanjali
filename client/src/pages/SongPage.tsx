@@ -4,11 +4,13 @@
  */
 
 import { AppShell } from "@/components/AppShell";
+import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Music2, Search, X } from "lucide-react";
+import { useTeleprompter } from "@/hooks/useTeleprompter";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Music2, Pause, Play, ScrollText, Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
@@ -57,6 +59,8 @@ function SongPageContent() {
   const [activeMatchIndex, setActiveMatchIndex] = useState(0);
   const [areTranslationsShown, setAreTranslationsShown] = useState(true);
   const [translationOverrides, setTranslationOverrides] = useState<Record<string, boolean>>({});
+  const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
+  const [teleprompterSpeed, setTeleprompterSpeed] = useState(30);
   const matchElements = useRef(new Map<string, HTMLElement>());
   const song = songs.find((item) => item.id === params?.id);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
@@ -69,6 +73,7 @@ function SongPageContent() {
     return byField;
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
+  const { isPlaying: isTeleprompterPlaying, pause: pauseTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen, teleprompterSpeed);
 
   useEffect(() => {
     setQuery(routeQuery);
@@ -81,6 +86,7 @@ function SongPageContent() {
   useEffect(() => {
     setAreTranslationsShown(true);
     setTranslationOverrides({});
+    setIsTeleprompterOpen(false);
   }, [song?.id]);
 
   useEffect(() => {
@@ -172,6 +178,11 @@ function SongPageContent() {
     setTranslationOverrides((current) => ({ ...current, [verseId]: !(current[verseId] ?? areTranslationsShown) }));
   };
 
+  const closeTeleprompter = () => {
+    pauseTeleprompter();
+    setIsTeleprompterOpen(false);
+  };
+
   const registerMatch = (matchId: string) => (element: HTMLElement | null) => {
     if (element) matchElements.current.set(matchId, element);
     else matchElements.current.delete(matchId);
@@ -181,10 +192,14 @@ function SongPageContent() {
   const hasTranslations = song.verses.some((verse) => Boolean(verse.translation));
 
   return (
-    <div className="song-page">
+    <div className={`song-page ${isTeleprompterOpen ? "is-teleprompter" : ""}`}>
       <div className="song-toolbar">
         <Link href="/" className="back-link"><ArrowLeft size={17} /> {copy.song.backToLibrary}</Link>
         <div className="song-toolbar-actions">
+          <button className={`teleprompter-toggle ${isTeleprompterOpen ? "is-active" : ""}`} type="button" onClick={() => setIsTeleprompterOpen((current) => !current)} aria-expanded={isTeleprompterOpen} aria-controls="teleprompter-controls" aria-label={copy.song.teleprompterOpen}>
+            <ScrollText size={16} aria-hidden="true" />
+            <span>{copy.song.teleprompterToggle}</span>
+          </button>
           <button className="quiet-icon-button" type="button" onClick={copySong} aria-label={copy.song.copyLabel}>
             <Copy size={17} />
           </button>
@@ -193,6 +208,44 @@ function SongPageContent() {
           </button>
         </div>
       </div>
+
+      {isTeleprompterOpen && (
+        <section className={`teleprompter-panel ${isTeleprompterPlaying ? "is-playing" : ""}`} id="teleprompter-controls" data-teleprompter-controls aria-label={copy.song.teleprompterTitle}>
+          <div className="teleprompter-panel-copy">
+            <span className="eyebrow">{copy.song.teleprompterEyebrow}</span>
+            <h2>{copy.song.teleprompterTitle}</h2>
+            <p>{copy.song.teleprompterDescription}</p>
+          </div>
+          <div className="teleprompter-panel-controls">
+            <div className="teleprompter-status" aria-live="polite">
+              <span aria-hidden="true" />
+              {isTeleprompterPlaying ? copy.song.teleprompterPlaying : copy.song.teleprompterReady}
+            </div>
+            <div className="teleprompter-speed-control">
+              <label htmlFor="teleprompter-speed"><Gauge size={15} aria-hidden="true" /> {copy.song.teleprompterSpeed}</label>
+              <Slider
+                id="teleprompter-speed"
+                value={[teleprompterSpeed]}
+                min={12}
+                max={72}
+                step={2}
+                onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed)}
+                aria-label={copy.song.teleprompterSpeed}
+              />
+              <output htmlFor="teleprompter-speed">{copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))}</output>
+            </div>
+            <div className="teleprompter-actions">
+              <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={toggleTeleprompter}>
+                {isTeleprompterPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
+                <span>{isTeleprompterPlaying ? copy.song.teleprompterPause : copy.song.teleprompterStart}</span>
+              </button>
+              <button className="teleprompter-close-button" type="button" onClick={closeTeleprompter} aria-label={copy.song.teleprompterClose}>
+                <X size={17} aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="in-song-search" aria-label={copy.song.inSongSearchLabel}>
         <Search size={16} aria-hidden="true" />
