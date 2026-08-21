@@ -17,19 +17,23 @@ import {
   getSongAuthors,
   getSongCategories,
   groupSongsByCategory,
+  groupSongsByFirstLine,
   hasActiveSongFilters,
 } from "@/domain/song";
 import { useRecentSearches } from "@/hooks/useRecentSearches";
-import { ArrowUpRight, BookOpen, Clock3, DatabaseZap, Loader2, Search, Sparkles, Trash2, X } from "lucide-react";
+import { ArrowUpRight, ArrowDownAZ, BookOpen, Clock3, DatabaseZap, LibraryBig, Loader2, Search, Sparkles, Trash2, X } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
 import { Link } from "wouter";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function LibraryHome() {
   const { songs, status, error, reload } = useSongLibrary();
   const { copy } = useTranslation();
   const [filters, setFilters] = useState(defaultSongSearchFilters);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [expandedCategoryIds, setExpandedCategoryIds] = useState<Set<string>>(() => new Set());
+  const [libraryView, setLibraryView] = useState<"library" | "index">("library");
   const { recentSearches, rememberSearch, clearRecentSearches } = useRecentSearches();
 
   const filteredSongs = useMemo(() => filterSongs(songs, filters), [filters, songs]);
@@ -39,6 +43,7 @@ function LibraryHome() {
   const filtersActive = hasActiveSongFilters(filters);
 
   const categories = useMemo(() => groupSongsByCategory(filteredSongs), [filteredSongs]);
+  const initialIndex = useMemo(() => groupSongsByFirstLine(filteredSongs), [filteredSongs]);
   useEffect(() => {
     const parameters = new URLSearchParams(window.location.search);
     const nextFilters = {
@@ -73,6 +78,14 @@ function LibraryHome() {
     updateFilters({ query });
     rememberSearch(query);
     setIsSearchFocused(false);
+  };
+  const toggleCategoryExpansion = (categoryId: string) => {
+    setExpandedCategoryIds((current) => {
+      const next = new Set(current);
+      if (next.has(categoryId)) next.delete(categoryId);
+      else next.add(categoryId);
+      return next;
+    });
   };
 
   return (
@@ -198,32 +211,80 @@ function LibraryHome() {
 
       {status === "ready" ? (
         <>
-          <section className="library-content" id="library" aria-labelledby="library-heading">
+          <Tabs value={libraryView} onValueChange={(value) => setLibraryView(value as "library" | "index")} className="library-content" id="library">
             <div className="section-heading">
               <div>
-                <span className="eyebrow">{copy.library.structureEyebrow}</span>
-                <h2 id="library-heading">{filtersActive ? copy.library.resultsHeading.replace("{count}", String(filteredSongs.length)) : copy.library.sectionsHeading}</h2>
+                <span className="eyebrow">{libraryView === "index" ? copy.library.indexEyebrow : copy.library.structureEyebrow}</span>
+                <h2 id="library-heading">{libraryView === "index" ? copy.library.indexHeading : filtersActive ? copy.library.resultsHeading.replace("{count}", String(filteredSongs.length)) : copy.library.sectionsHeading}</h2>
               </div>
-              <p>{filtersActive ? copy.library.filterResultsDetail : copy.library.sectionsDetail}</p>
+              <div className="library-view-controls">
+                <p>{libraryView === "index" ? copy.library.indexDetail : filtersActive ? copy.library.filterResultsDetail : copy.library.sectionsDetail}</p>
+                <TabsList className="library-view-tabs-list" aria-label={copy.library.viewLabel}>
+                  <TabsTrigger value="library" className="library-view-tabs-trigger"><LibraryBig size={15} aria-hidden="true" />{copy.library.libraryView}</TabsTrigger>
+                  <TabsTrigger value="index" className="library-view-tabs-trigger"><ArrowDownAZ size={15} aria-hidden="true" />{copy.library.indexView}</TabsTrigger>
+                </TabsList>
+              </div>
             </div>
             <span className="mantra-line section-mantra" aria-hidden="true" />
 
-            {categories.length ? (
-              <div className="category-list">
-                {categories.map((category, categoryIndex) => (
-                  <section className="category-block" key={category.id} style={{ "--entry-index": categoryIndex } as React.CSSProperties}>
-                    <header className="category-heading">
-                      <span className="category-index">{String(categoryIndex + 1).padStart(2, "0")}</span>
-                      <h3>{category.name}</h3>
-                      <span>{category.songs.length} {copy.library.songCount}</span>
-                    </header>
-                    <span className="mantra-line category-mantra" aria-hidden="true" />
-                    <div className="song-list">
-                      {category.songs.slice(0, filtersActive ? category.songs.length : 4).map((song) => <SongListItem song={song} query={filters.query} key={song.id} />)}
-                    </div>
-                  </section>
-                ))}
-              </div>
+            {filteredSongs.length ? (
+              <>
+                <TabsContent value="library" className="library-view-panel">
+                  <div className="category-list">
+                    {categories.map((category, categoryIndex) => (
+                      (() => {
+                        const canExpand = !filtersActive && category.songs.length > 4;
+                        const isExpanded = expandedCategoryIds.has(category.id);
+                        const visibleSongs = canExpand && !isExpanded ? category.songs.slice(0, 4) : category.songs;
+                        const songListId = `category-songs-${category.id}`;
+
+                        return (
+                          <section className="category-block" key={category.id} style={{ "--entry-index": categoryIndex } as React.CSSProperties}>
+                            <header className="category-heading">
+                              <span className="category-index">{String(categoryIndex + 1).padStart(2, "0")}</span>
+                              <h3>{category.name}</h3>
+                              {canExpand ? (
+                                <button
+                                  className="category-count-control"
+                                  type="button"
+                                  aria-controls={songListId}
+                                  aria-expanded={isExpanded}
+                                  aria-label={(isExpanded ? copy.library.collapseCategory : copy.library.expandCategory)
+                                    .replace("{category}", category.name)
+                                    .replace("{count}", String(category.songs.length))}
+                                  onClick={() => toggleCategoryExpansion(category.id)}
+                                >
+                                  <span>{category.songs.length} {copy.library.songCount}</span>
+                                  <span>{isExpanded ? copy.library.showFewerCategorySongs : copy.library.seeAllCategorySongs}</span>
+                                </button>
+                              ) : <span className="category-song-count">{category.songs.length} {copy.library.songCount}</span>}
+                            </header>
+                            <span className="mantra-line category-mantra" aria-hidden="true" />
+                            <div className="song-list" id={songListId}>
+                              {visibleSongs.map((song) => <SongListItem song={song} query={filters.query} key={song.id} />)}
+                            </div>
+                          </section>
+                        );
+                      })()
+                    ))}
+                  </div>
+                </TabsContent>
+                <TabsContent value="index" className="library-view-panel">
+                  <div className="alphabetical-index">
+                    {initialIndex.map((group, groupIndex) => (
+                      <section className="index-letter-group" key={group.letter} style={{ "--entry-index": groupIndex } as React.CSSProperties}>
+                        <header className="index-letter-heading">
+                          <span aria-hidden="true">{group.letter}</span>
+                          <p>{copy.library.indexGroupCount.replace("{count}", String(group.songs.length))}</p>
+                        </header>
+                        <div className="song-list index-song-list">
+                          {group.songs.map((song) => <SongListItem song={song} query={filters.query} variant="opening-line" key={song.id} />)}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
+                </TabsContent>
+              </>
             ) : (
               <section className="empty-search">
                 <span className="eyebrow">{copy.library.noMatchesEyebrow}</span>
@@ -231,7 +292,7 @@ function LibraryHome() {
                 <button type="button" className="text-action" onClick={clearFilters}>{copy.library.clearAllFilters} <ArrowUpRight size={16} /></button>
               </section>
             )}
-          </section>
+          </Tabs>
 
           <section className="library-metrics" aria-label={copy.library.libraryTrustLabel}>
             <div className="library-metrics-intro">

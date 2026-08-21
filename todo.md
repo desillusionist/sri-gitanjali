@@ -74,3 +74,11 @@
 - [x] Implement automatic scrolling with adjustable speed and safe cancellation on user interaction or page exit.
 - [x] Preserve the reading context and make controls usable on desktop and mobile.
 - [x] Verify start, pause, speed adjustment, manual interruption, TypeScript, production build, and responsive presentation before saving a checkpoint.
+
+## Home navigation and song index
+
+- [x] Keep Library and Search neutral on the home page until the visitor intentionally selects one of those section links.
+- [x] Make the song-count marker of each Library category open its complete category listing with a clear return path.
+- [x] Add a Library / Index A–Z view switch on the home page.
+- [x] Build a complete alphabetical index of songs ordered by each song’s first transliterated verse line, with readable letter groups.
+- [x] Verify navigation states, category expansion, the two library views, desktop/mobile layout, type checks, and production build before saving a checkpoint.

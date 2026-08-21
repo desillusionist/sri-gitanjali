@@ -15,7 +15,13 @@ function HighlightedText({ value, query }: { value: string; query: string }) {
   );
 }
 
-export function SongListItem({ song, query = "" }: { song: Song; query?: string }) {
+type SongListItemProps = {
+  song: Song;
+  query?: string;
+  variant?: "default" | "opening-line";
+};
+
+export function SongListItem({ song, query = "", variant = "default" }: SongListItemProps) {
   const { isFavorite, toggleFavorite } = useSongLibrary();
   const { copy } = useTranslation();
   const favorite = isFavorite(song.id);
@@ -28,8 +34,17 @@ export function SongListItem({ song, query = "" }: { song: Song; query?: string 
       <Link href={`/song/${song.id}${hasTextQuery ? `?q=${encodeURIComponent(query.trim())}` : ""}`} className="song-row-link">
         <span className="song-row-ornament" aria-hidden="true" />
         <span className="song-row-copy">
-          <strong><HighlightedText value={song.title} query={query} /></strong>
-          <small className="song-row-meta"><HighlightedText value={song.poet || copy.library.noAuthor} query={query} /> · <HighlightedText value={songFirstLine(song)} query={query} /></small>
+          {variant === "opening-line" ? (
+            <>
+              <strong><HighlightedText value={songFirstLine(song)} query={query} /></strong>
+              <small className="song-row-meta"><HighlightedText value={song.title} query={query} /> · <HighlightedText value={song.poet || copy.library.noAuthor} query={query} /></small>
+            </>
+          ) : (
+            <>
+              <strong><HighlightedText value={song.title} query={query} /></strong>
+              <small className="song-row-meta"><HighlightedText value={song.poet || copy.library.noAuthor} query={query} /> · <HighlightedText value={songFirstLine(song)} query={query} /></small>
+            </>
+          )}
           {excerpt && <span className="song-search-excerpt"><span aria-hidden="true">↳</span><HighlightedText value={excerpt.text} query={query} /></span>}
         </span>
         {matchCount > 0 && <span className="song-match-count" aria-label={copy.library.matchCountLabel.replace("{count}", String(matchCount))}>{copy.library.matchCountLabel.replace("{count}", String(matchCount))}</span>}

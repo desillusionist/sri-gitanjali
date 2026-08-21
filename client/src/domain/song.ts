@@ -33,6 +33,11 @@ export type SongCategory = {
   songs: Song[];
 };
 
+export type SongInitialIndexGroup = {
+  letter: string;
+  songs: Song[];
+};
+
 export type SongDataStatus = "idle" | "loading" | "ready" | "error";
 
 export const ALL_AUTHORS_FILTER = "__all_authors__";
@@ -283,6 +288,27 @@ export function groupSongsByCategory(songs: Song[]): SongCategory[] {
       name,
       songs: groupedSongs,
     }));
+}
+
+export function groupSongsByFirstLine(songs: Song[]): SongInitialIndexGroup[] {
+  const groups = new Map<string, Song[]>();
+  const sortedSongs = [...songs].sort((left, right) => songFirstLine(left).localeCompare(songFirstLine(right), undefined, { sensitivity: "base" }));
+
+  sortedSongs.forEach((song) => {
+    const normalizedFirstLine = songFirstLine(song)
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toUpperCase();
+    const letter = normalizedFirstLine.match(/[A-Z]/)?.[0] ?? "#";
+    const group = groups.get(letter) ?? [];
+    group.push(song);
+    groups.set(letter, group);
+  });
+
+  return Array.from(groups.entries())
+    .sort(([left], [right]) => left === "#" ? 1 : right === "#" ? -1 : left.localeCompare(right))
+    .map(([letter, groupedSongs]) => ({ letter, songs: groupedSongs }));
 }
 
 export function createSlug(value: string): string {
