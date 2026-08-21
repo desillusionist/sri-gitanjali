@@ -15,6 +15,7 @@ export function useTeleprompter(
   const frameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
   const speedRef = useRef(speed);
+  const targetScrollTopRef = useRef<number | null>(null);
 
   useEffect(() => {
     speedRef.current = speed;
@@ -26,6 +27,7 @@ export function useTeleprompter(
       frameRef.current = null;
     }
     lastFrameTimeRef.current = null;
+    targetScrollTopRef.current = null;
     setIsPlaying(false);
   }, []);
 
@@ -33,9 +35,14 @@ export function useTeleprompter(
     const scrollContainer = scrollContainerRef.current;
     if (!enabled || !scrollContainer) return;
 
-    const scrollEnd = Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
-    if (scrollContainer.scrollTop >= scrollEnd - 1) scrollContainer.scrollTop = 0;
-    setIsPlaying((current) => !current);
+    setIsPlaying((current) => {
+      if (current) return false;
+
+      const scrollEnd = Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
+      if (scrollContainer.scrollTop >= scrollEnd - 1) scrollContainer.scrollTop = 0;
+      targetScrollTopRef.current = scrollContainer.scrollTop;
+      return true;
+    });
   }, [enabled, scrollContainerRef]);
 
   useEffect(() => {
@@ -46,20 +53,28 @@ export function useTeleprompter(
     const scrollContainer = scrollContainerRef.current;
     if (!isPlaying || !enabled || !scrollContainer) return;
 
+    targetScrollTopRef.current ??= scrollContainer.scrollTop;
+
     const moveReader = (timestamp: number) => {
       const previousTime = lastFrameTimeRef.current ?? timestamp;
       const elapsed = Math.min(timestamp - previousTime, 100);
       lastFrameTimeRef.current = timestamp;
 
       const scrollEnd = Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
-      if (scrollContainer.scrollTop >= scrollEnd - 1) {
+      const currentTarget = targetScrollTopRef.current ?? scrollContainer.scrollTop;
+      if (currentTarget >= scrollEnd - 0.1) {
         frameRef.current = null;
         lastFrameTimeRef.current = null;
+        targetScrollTopRef.current = null;
         setIsPlaying(false);
         return;
       }
 
-      scrollContainer.scrollTop = Math.min(scrollEnd, scrollContainer.scrollTop + (speedRef.current * elapsed) / 1000);
+      // DOM scroll positions may be rounded to integers. Preserve the fractional
+      // target between frames so slower speeds still visibly advance the reader.
+      const nextTarget = Math.min(scrollEnd, currentTarget + (speedRef.current * elapsed) / 1000);
+      targetScrollTopRef.current = nextTarget;
+      scrollContainer.scrollTop = nextTarget;
       frameRef.current = window.requestAnimationFrame(moveReader);
     };
 
@@ -68,6 +83,7 @@ export function useTeleprompter(
       if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
       frameRef.current = null;
       lastFrameTimeRef.current = null;
+      targetScrollTopRef.current = null;
     };
   }, [enabled, isPlaying, scrollContainerRef]);
 

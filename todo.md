@@ -96,3 +96,10 @@
 - [x] Render teleprompter as a clean dedicated reading view containing only large transliterated shlokas.
 - [x] Exclude translations and ordinary song-page chrome from the teleprompter reading surface.
 - [x] Verify play, pause, speed control, end-of-song behavior, desktop/mobile presentation, types, and production build before saving a checkpoint.
+
+## Route-position and autoscroll regression fix
+
+- [x] Identify why a library-to-song transition restores the browser at the end of a song instead of the opening.
+- [x] Ensure a normal song transition resets both document and reading-container positions to the top, while preserving intentional in-song match navigation.
+- [x] Identify the actual scrollable teleprompter element and drive it reliably with animation frames.
+- [x] Verify first-open position, text movement after play, pause on interaction, speed adjustment, mobile behavior, types, and production build before saving a checkpoint.

@@ -11,7 +11,7 @@ import { getHighlightParts, getSongSearchMatches, normalizeSearchText, songFirst
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Music2, Pause, Play, ScrollText, Search, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
 
@@ -88,6 +88,21 @@ function SongPageContent() {
     setAreTranslationsShown(true);
     setTranslationOverrides({});
     setIsTeleprompterOpen(false);
+  }, [song?.id]);
+
+  useLayoutEffect(() => {
+    if (!song?.id) return;
+
+    const resetScrollPosition = () => {
+      window.scrollTo(0, 0);
+      teleprompterScrollRef.current?.scrollTo(0, 0);
+    };
+
+    // Reset both immediately and on the following frame so a browser-restored
+    // SPA position cannot place a newly opened song at its final verses.
+    resetScrollPosition();
+    const frame = window.requestAnimationFrame(resetScrollPosition);
+    return () => window.cancelAnimationFrame(frame);
   }, [song?.id]);
 
   useEffect(() => {
