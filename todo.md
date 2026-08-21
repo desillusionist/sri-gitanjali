@@ -82,3 +82,10 @@
 - [x] Add a Library / Index A–Z view switch on the home page.
 - [x] Build a complete alphabetical index of songs ordered by each song’s first transliterated verse line, with readable letter groups.
 - [x] Verify navigation states, category expansion, the two library views, desktop/mobile layout, type checks, and production build before saving a checkpoint.
+
+## Index navigation and library card readability
+
+- [x] Add a complete alphabet strip that jumps to each available letter group in Index A–Z.
+- [x] Move each alphabet letter and its song count above its song group to eliminate the mobile left gutter.
+- [x] Put the opening transliterated verse line on its own line in Library cards, distinct from title and author metadata.
+- [x] Verify alphabetical jumps, mobile text wrapping, desktop composition, types, and production build before saving a checkpoint.

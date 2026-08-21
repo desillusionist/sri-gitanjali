@@ -39,7 +39,7 @@ export function AppShell({ children }: AppShellProps) {
   };
 
   const rails = [
-    { href: "/#library", targetId: "library" as const, label: copy.navigation.library, icon: LibraryBig, match: (path: string) => path === "/" && activeHash === "#library" },
+    { href: "/#library", targetId: "library" as const, label: copy.navigation.library, icon: LibraryBig, match: (path: string) => path === "/" && (activeHash === "#library" || activeHash.startsWith("#index-letter-")) },
     { href: "/#search", targetId: "search" as const, label: copy.navigation.search, icon: Search, match: (path: string) => path === "/" && activeHash === "#search" },
     { href: "/favorites", label: copy.navigation.favorites, icon: Bookmark, match: (path: string) => path === "/favorites" },
   ];

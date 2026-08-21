@@ -44,6 +44,12 @@ function LibraryHome() {
 
   const categories = useMemo(() => groupSongsByCategory(filteredSongs), [filteredSongs]);
   const initialIndex = useMemo(() => groupSongsByFirstLine(filteredSongs), [filteredSongs]);
+  const indexJumpLetters = useMemo(() => {
+    const alphabet = Array.from({ length: 26 }, (_, index) => String.fromCharCode(65 + index));
+    const additionalLetters = initialIndex.map((group) => group.letter).filter((letter) => !alphabet.includes(letter));
+    return [...alphabet, ...additionalLetters];
+  }, [initialIndex]);
+  const indexedLetters = useMemo(() => new Set(initialIndex.map((group) => group.letter)), [initialIndex]);
   useEffect(() => {
     const parameters = new URLSearchParams(window.location.search);
     const nextFilters = {
@@ -59,10 +65,21 @@ function LibraryHome() {
     ));
 
     const targetId = window.location.hash.slice(1);
+    if (targetId.startsWith("index-letter-")) setLibraryView("index");
     if (targetId && (targetId === "search" || status === "ready")) {
       window.requestAnimationFrame(() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" }));
     }
   }, [status]);
+
+  useEffect(() => {
+    const syncIndexViewFromHash = () => {
+      if (window.location.hash.startsWith("#index-letter-")) setLibraryView("index");
+    };
+
+    syncIndexViewFromHash();
+    window.addEventListener("hashchange", syncIndexViewFromHash);
+    return () => window.removeEventListener("hashchange", syncIndexViewFromHash);
+  }, []);
 
   const updateFilters = (patch: Partial<typeof filters>) => setFilters((current) => ({ ...current, ...patch }));
   const clearFilters = () => setFilters(defaultSongSearchFilters);
@@ -271,8 +288,32 @@ function LibraryHome() {
                 </TabsContent>
                 <TabsContent value="index" className="library-view-panel">
                   <div className="alphabetical-index">
+                    <nav className="index-jump-nav" aria-label={copy.library.indexJumpLabel}>
+                      <span className="index-jump-label" aria-hidden="true">A–Z</span>
+                      <div className="index-jump-letters">
+                        {indexJumpLetters.map((letter) => {
+                          const isAvailable = indexedLetters.has(letter);
+                          const unavailableLabel = copy.library.indexLetterUnavailable.replace("{letter}", letter);
+
+                          return isAvailable ? (
+                            <a
+                              className="index-jump-link"
+                              href={`#index-letter-${letter}`}
+                              key={letter}
+                              aria-label={copy.library.indexJumpToLetter.replace("{letter}", letter)}
+                            >
+                              {letter}
+                            </a>
+                          ) : (
+                            <span className="index-jump-link is-unavailable" key={letter} aria-label={unavailableLabel} title={unavailableLabel}>
+                              {letter}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </nav>
                     {initialIndex.map((group, groupIndex) => (
-                      <section className="index-letter-group" key={group.letter} style={{ "--entry-index": groupIndex } as React.CSSProperties}>
+                      <section className="index-letter-group" id={`index-letter-${group.letter}`} key={group.letter} style={{ "--entry-index": groupIndex } as React.CSSProperties}>
                         <header className="index-letter-heading">
                           <span aria-hidden="true">{group.letter}</span>
                           <p>{copy.library.indexGroupCount.replace("{count}", String(group.songs.length))}</p>

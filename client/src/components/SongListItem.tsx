@@ -42,7 +42,8 @@ export function SongListItem({ song, query = "", variant = "default" }: SongList
           ) : (
             <>
               <strong><HighlightedText value={song.title} query={query} /></strong>
-              <small className="song-row-meta"><HighlightedText value={song.poet || copy.library.noAuthor} query={query} /> · <HighlightedText value={songFirstLine(song)} query={query} /></small>
+              <small className="song-row-meta"><HighlightedText value={song.poet || copy.library.noAuthor} query={query} /></small>
+              <span className="song-row-opening-line"><HighlightedText value={songFirstLine(song)} query={query} /></span>
             </>
           )}
           {excerpt && <span className="song-search-excerpt"><span aria-hidden="true">↳</span><HighlightedText value={excerpt.text} query={query} /></span>}
