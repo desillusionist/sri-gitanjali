@@ -7,7 +7,7 @@ import { AppShell } from "@/components/AppShell";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchMatches, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnaments, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Music2, Pause, Play, ScrollText, Search, X } from "lucide-react";
@@ -59,6 +59,7 @@ function SongPageContent() {
   const [activeMatchIndex, setActiveMatchIndex] = useState(0);
   const [areTranslationsShown, setAreTranslationsShown] = useState(true);
   const [translationOverrides, setTranslationOverrides] = useState<Record<string, boolean>>({});
+  const [areSecondaryOrnamentsHidden, setAreSecondaryOrnamentsHidden] = useState(false);
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
   const [teleprompterSpeed, setTeleprompterSpeed] = useState(30);
   const matchElements = useRef(new Map<string, HTMLElement>());
@@ -326,6 +327,23 @@ function SongPageContent() {
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
 
+        <section className="translation-controls ornament-controls" aria-label={copy.song.secondaryOrnamentsLabel}>
+          <div className="translation-controls-copy">
+            <span className="eyebrow">{copy.song.secondaryOrnamentsLabel}</span>
+            <p>{copy.song.secondaryOrnamentsDescription}</p>
+          </div>
+          <label className="translation-switch-label" htmlFor="secondary-ornaments-visibility">
+            <span>{areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}</span>
+            <Switch
+              id="secondary-ornaments-visibility"
+              className="translation-switch"
+              checked={areSecondaryOrnamentsHidden}
+              onCheckedChange={setAreSecondaryOrnamentsHidden}
+              aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}
+            />
+          </label>
+        </section>
+
         {hasTranslations && (
           <section className="translation-controls" aria-label={copy.song.translationsLabel}>
             <div className="translation-controls-copy">
@@ -369,11 +387,19 @@ function SongPageContent() {
                   </div>
                 )}
                 <div className="verse-copy">
-                  {verse.lines.map((line) => (
-                    <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
-                      <SongMatchText value={line.transliteration} query={query} fieldId={`line:${line.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
-                    </p>
-                  ))}
+                  {verse.lines.map((line) => {
+                    const displayLine = areSecondaryOrnamentsHidden
+                      ? hideSecondarySongOrnaments(line.transliteration)
+                      : line.transliteration;
+
+                    if (!displayLine) return null;
+
+                    return (
+                      <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
+                        <SongMatchText value={displayLine} query={query} fieldId={`line:${line.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
+                      </p>
+                    );
+                  })}
                   {verse.translation && (
                     <>
                       <div id={`translation-${verse.id}`} hidden={!translationVisible}>

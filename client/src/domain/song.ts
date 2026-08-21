@@ -97,6 +97,25 @@ export function songFirstLine(song: Song): string {
   return song.verses[0]?.lines[0]?.transliteration.trim() || song.title;
 }
 
+/**
+ * Removes display-only cues such as "(kiba)" while preserving the source text
+ * used by search, copying, indexing, and teleprompter reading.
+ */
+export function hideSecondarySongOrnaments(value: string): string {
+  let cleaned = value;
+  let previousValue = "";
+
+  while (cleaned !== previousValue) {
+    previousValue = cleaned;
+    cleaned = cleaned.replace(/\([^()]*\)/g, " ");
+  }
+
+  return cleaned
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([,.;:!?])/g, "$1")
+    .trim();
+}
+
 export function normalizeSearchText(value: string): string {
   return value
     .normalize("NFKD")

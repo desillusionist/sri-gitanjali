@@ -103,3 +103,10 @@
 - [x] Ensure a normal song transition resets both document and reading-container positions to the top, while preserving intentional in-song match navigation.
 - [x] Identify the actual scrollable teleprompter element and drive it reliably with animation frames.
 - [x] Verify first-open position, text movement after play, pause on interaction, speed adjustment, mobile behavior, types, and production build before saving a checkpoint.
+
+## Secondary song ornaments
+
+- [ ] Add a clear song-page reading preference to hide text enclosed in round brackets within transliterated shlokas.
+- [ ] Preserve the unmodified source text for translations, search, copy, and teleprompter mode.
+- [ ] Ensure parenthetical fragments are removed cleanly without leaving doubled whitespace or punctuation artefacts.
+- [ ] Verify the toggle on representative songs, desktop/mobile layout, types, and production build before saving a checkpoint.
