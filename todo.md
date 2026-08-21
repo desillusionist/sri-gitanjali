@@ -89,3 +89,10 @@
 - [x] Move each alphabet letter and its song count above its song group to eliminate the mobile left gutter.
 - [x] Put the opening transliterated verse line on its own line in Library cards, distinct from title and author metadata.
 - [x] Verify alphabetical jumps, mobile text wrapping, desktop composition, types, and production build before saving a checkpoint.
+
+## Teleprompter repair and distraction-free view
+
+- [x] Identify and fix the failed automatic-scroll start behavior.
+- [x] Render teleprompter as a clean dedicated reading view containing only large transliterated shlokas.
+- [x] Exclude translations and ordinary song-page chrome from the teleprompter reading surface.
+- [x] Verify play, pause, speed control, end-of-song behavior, desktop/mobile presentation, types, and production build before saving a checkpoint.

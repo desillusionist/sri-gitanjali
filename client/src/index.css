@@ -268,6 +268,20 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-play-button:active, .teleprompter-close-button:active { transform: scale(0.97); }
 .teleprompter-close-button { display: grid; flex: 0 0 auto; width: 2.35rem; height: 2.35rem; place-items: center; color: var(--ink-soft); border: 1px solid var(--hairline); background: transparent; transition: color 160ms var(--ease-out), background 160ms var(--ease-out), transform 160ms var(--ease-out); }
 .teleprompter-close-button:hover { color: var(--saffron-deep); background: #fff2df; }
+.teleprompter-overlay { position: fixed; inset: 0; z-index: 100; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; color: var(--ink); background: var(--paper); }
+.teleprompter-overlay::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.7; background: radial-gradient(circle at 95% 0%, rgba(217,109,50,0.1), transparent 30rem), linear-gradient(105deg, rgba(255,255,255,0.42), transparent 35%); }
+.teleprompter-overlay-controls { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(9rem, 0.65fr) minmax(15rem, 1fr) auto; gap: 1rem; align-items: center; padding: 0.8rem clamp(1rem, 3vw, 2.4rem); border-bottom: 1px solid var(--hairline); background: rgba(255,252,246,0.82); box-shadow: 0 6px 20px rgba(24,36,43,0.045); backdrop-filter: blur(14px); }
+.teleprompter-overlay .teleprompter-speed-control { min-width: 0; }
+.teleprompter-overlay .teleprompter-actions { justify-self: end; min-width: 13.5rem; }
+.teleprompter-reading-surface { position: relative; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: var(--saffron) transparent; scrollbar-width: thin; outline: none; }
+.teleprompter-reading-surface:focus-visible { box-shadow: inset 0 0 0 3px rgba(217,109,50,0.32); }
+.teleprompter-reading-content { width: min(100%, 66rem); margin: 0 auto; padding: clamp(4rem, 11vh, 8.5rem) clamp(1.25rem, 7vw, 7rem) 32vh; }
+.teleprompter-shloka { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.6rem); padding: clamp(2.5rem, 5vw, 4.2rem) 0; border-top: 1px solid var(--hairline); }
+.teleprompter-shloka:first-child { padding-top: 0; border-top: 0; }
+.teleprompter-verse-number { padding-top: 0.42em; color: var(--saffron-deep); font-family: "DM Sans", Arial, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; }
+.teleprompter-line { margin: 0; color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(2.15rem, 4.6vw, 4.7rem); font-weight: 600; letter-spacing: -0.042em; line-height: 1.03; text-wrap: balance; }
+.teleprompter-line + .teleprompter-line { margin-top: 0.22em; }
+.teleprompter-line.is-indented { margin-left: clamp(1rem, 6vw, 6rem); }
 .in-song-search { position: sticky; top: 0.65rem; z-index: 50; align-self: start; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 0.55rem; align-items: center; max-width: 47rem; margin: 0 0 1.15rem auto; padding: 0.45rem 0.5rem 0.45rem 0.8rem; color: var(--ink-soft); border: 1px solid var(--hairline); background: rgba(255,252,246,0.93); box-shadow: 5px 6px 0 rgba(24,36,43,0.06); backdrop-filter: blur(12px); }
 .in-song-search input { min-width: 0; color: var(--ink); background: transparent; font: inherit; font-size: 0.84rem; outline: none; }
 .in-song-search input::placeholder { color: #928a7d; }
@@ -422,6 +436,15 @@ a { color: inherit; text-decoration: none; }
   .translation-switch-label { width: 100%; justify-content: space-between; }
   .teleprompter-speed-control { grid-template-columns: auto minmax(0, 1fr); }
   .teleprompter-speed-control output { grid-column: 2; min-width: 0; text-align: left; }
+  .teleprompter-overlay-controls { grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; padding: 0.75rem 1rem; }
+  .teleprompter-overlay .teleprompter-status { grid-column: 1; grid-row: 1; }
+  .teleprompter-overlay .teleprompter-actions { grid-column: 2; grid-row: 1; min-width: 0; }
+  .teleprompter-overlay .teleprompter-speed-control { grid-column: 1 / -1; grid-row: 2; }
+  .teleprompter-overlay .teleprompter-play-button { min-width: 0; }
+  .teleprompter-reading-content { padding: 3.5rem 1.2rem 28vh; }
+  .teleprompter-shloka { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; padding: 2.8rem 0; }
+  .teleprompter-line { font-size: clamp(2.15rem, 10vw, 3.25rem); line-height: 1.06; }
+  .teleprompter-line.is-indented { margin-left: 1rem; }
   .song-verses { gap: 2.2rem; }
   .verse-block { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; }
   .song-sheet-footer { display: grid; }

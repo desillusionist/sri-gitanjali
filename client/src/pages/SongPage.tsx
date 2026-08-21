@@ -62,6 +62,7 @@ function SongPageContent() {
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
   const [teleprompterSpeed, setTeleprompterSpeed] = useState(30);
   const matchElements = useRef(new Map<string, HTMLElement>());
+  const teleprompterScrollRef = useRef<HTMLDivElement>(null);
   const song = songs.find((item) => item.id === params?.id);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
@@ -73,7 +74,7 @@ function SongPageContent() {
     return byField;
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
-  const { isPlaying: isTeleprompterPlaying, pause: pauseTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen, teleprompterSpeed);
+  const { isPlaying: isTeleprompterPlaying, pause: pauseTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen, teleprompterSpeed, teleprompterScrollRef);
 
   useEffect(() => {
     setQuery(routeQuery);
@@ -88,6 +89,19 @@ function SongPageContent() {
     setTranslationOverrides({});
     setIsTeleprompterOpen(false);
   }, [song?.id]);
+
+  useEffect(() => {
+    if (!isTeleprompterOpen) return;
+    const bodyOverflow = document.body.style.overflow;
+    const documentOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = bodyOverflow;
+      document.documentElement.style.overflow = documentOverflow;
+    };
+  }, [isTeleprompterOpen]);
 
   useEffect(() => {
     const translationVerseId = activeMatch?.kind === "translation" ? activeMatch.verseId : undefined;
@@ -210,13 +224,8 @@ function SongPageContent() {
       </div>
 
       {isTeleprompterOpen && (
-        <section className={`teleprompter-panel ${isTeleprompterPlaying ? "is-playing" : ""}`} id="teleprompter-controls" data-teleprompter-controls aria-label={copy.song.teleprompterTitle}>
-          <div className="teleprompter-panel-copy">
-            <span className="eyebrow">{copy.song.teleprompterEyebrow}</span>
-            <h2>{copy.song.teleprompterTitle}</h2>
-            <p>{copy.song.teleprompterDescription}</p>
-          </div>
-          <div className="teleprompter-panel-controls">
+        <section className="teleprompter-overlay" role="dialog" aria-modal="true" aria-label={copy.song.teleprompterTitle}>
+          <header className="teleprompter-overlay-controls" data-teleprompter-controls>
             <div className="teleprompter-status" aria-live="polite">
               <span aria-hidden="true" />
               {isTeleprompterPlaying ? copy.song.teleprompterPlaying : copy.song.teleprompterReady}
@@ -229,7 +238,7 @@ function SongPageContent() {
                 min={12}
                 max={72}
                 step={2}
-                onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed)}
+                onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed ?? 30)}
                 aria-label={copy.song.teleprompterSpeed}
               />
               <output htmlFor="teleprompter-speed">{copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))}</output>
@@ -242,6 +251,18 @@ function SongPageContent() {
               <button className="teleprompter-close-button" type="button" onClick={closeTeleprompter} aria-label={copy.song.teleprompterClose}>
                 <X size={17} aria-hidden="true" />
               </button>
+            </div>
+          </header>
+          <div className="teleprompter-reading-surface" ref={teleprompterScrollRef} tabIndex={0} aria-label={copy.song.teleprompterTitle}>
+            <div className="teleprompter-reading-content">
+              {song.verses.map((verse, verseIndex) => (
+                <section className="teleprompter-shloka" key={verse.id}>
+                  <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
+                  <div>
+                    {verse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}>{line.transliteration}</p>)}
+                  </div>
+                </section>
+              ))}
             </div>
           </div>
         </section>

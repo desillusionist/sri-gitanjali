@@ -1,16 +1,16 @@
 /**
- * Паломнический свиток: автопрокрутка поддерживает спокойное, непрерывное чтение
- * и мгновенно уступает управление читателю при ручном взаимодействии.
+ * Паломнический свиток: телесуфлёр прокручивает только собственную читательскую
+ * поверхность, чтобы никакие внешние контейнеры страницы не прерывали ритм чтения.
  */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 
 const navigationKeys = new Set([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"]);
 
-function isTeleprompterControl(target: EventTarget | null) {
-  return target instanceof Element && Boolean(target.closest("[data-teleprompter-controls]"));
-}
-
-export function useTeleprompter(enabled: boolean, speed: number) {
+export function useTeleprompter(
+  enabled: boolean,
+  speed: number,
+  scrollContainerRef: RefObject<HTMLElement | null>,
+) {
   const [isPlaying, setIsPlaying] = useState(false);
   const frameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
@@ -30,51 +30,52 @@ export function useTeleprompter(enabled: boolean, speed: number) {
   }, []);
 
   const toggle = useCallback(() => {
-    if (!enabled) return;
-    const pageEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    if (window.scrollY >= pageEnd - 1) return;
+    const scrollContainer = scrollContainerRef.current;
+    if (!enabled || !scrollContainer) return;
+
+    const scrollEnd = Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
+    if (scrollContainer.scrollTop >= scrollEnd - 1) scrollContainer.scrollTop = 0;
     setIsPlaying((current) => !current);
-  }, [enabled]);
+  }, [enabled, scrollContainerRef]);
 
   useEffect(() => {
     if (!enabled) pause();
   }, [enabled, pause]);
 
   useEffect(() => {
-    if (!isPlaying) return;
+    const scrollContainer = scrollContainerRef.current;
+    if (!isPlaying || !enabled || !scrollContainer) return;
 
-    const movePage = (timestamp: number) => {
+    const moveReader = (timestamp: number) => {
       const previousTime = lastFrameTimeRef.current ?? timestamp;
       const elapsed = Math.min(timestamp - previousTime, 100);
       lastFrameTimeRef.current = timestamp;
 
-      const pageEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-      if (window.scrollY >= pageEnd - 1) {
+      const scrollEnd = Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight);
+      if (scrollContainer.scrollTop >= scrollEnd - 1) {
         frameRef.current = null;
         lastFrameTimeRef.current = null;
         setIsPlaying(false);
         return;
       }
 
-      window.scrollBy(0, (speedRef.current * elapsed) / 1000);
-      frameRef.current = window.requestAnimationFrame(movePage);
+      scrollContainer.scrollTop = Math.min(scrollEnd, scrollContainer.scrollTop + (speedRef.current * elapsed) / 1000);
+      frameRef.current = window.requestAnimationFrame(moveReader);
     };
 
-    frameRef.current = window.requestAnimationFrame(movePage);
-
+    frameRef.current = window.requestAnimationFrame(moveReader);
     return () => {
       if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
       frameRef.current = null;
       lastFrameTimeRef.current = null;
     };
-  }, [isPlaying]);
+  }, [enabled, isPlaying, scrollContainerRef]);
 
   useEffect(() => {
-    if (!isPlaying) return;
+    const scrollContainer = scrollContainerRef.current;
+    if (!isPlaying || !scrollContainer) return;
 
-    const pauseForManualInput = (event: Event) => {
-      if (!isTeleprompterControl(event.target)) pause();
-    };
+    const pauseForManualInput = () => pause();
     const pauseForKeyboardNavigation = (event: KeyboardEvent) => {
       if (navigationKeys.has(event.key)) pause();
     };
@@ -82,20 +83,20 @@ export function useTeleprompter(enabled: boolean, speed: number) {
       if (document.hidden) pause();
     };
 
-    window.addEventListener("wheel", pauseForManualInput, { passive: true });
-    window.addEventListener("touchstart", pauseForManualInput, { passive: true });
-    window.addEventListener("pointerdown", pauseForManualInput, { passive: true });
+    scrollContainer.addEventListener("wheel", pauseForManualInput, { passive: true });
+    scrollContainer.addEventListener("touchstart", pauseForManualInput, { passive: true });
+    scrollContainer.addEventListener("pointerdown", pauseForManualInput, { passive: true });
     window.addEventListener("keydown", pauseForKeyboardNavigation);
     document.addEventListener("visibilitychange", pauseForHiddenDocument);
 
     return () => {
-      window.removeEventListener("wheel", pauseForManualInput);
-      window.removeEventListener("touchstart", pauseForManualInput);
-      window.removeEventListener("pointerdown", pauseForManualInput);
+      scrollContainer.removeEventListener("wheel", pauseForManualInput);
+      scrollContainer.removeEventListener("touchstart", pauseForManualInput);
+      scrollContainer.removeEventListener("pointerdown", pauseForManualInput);
       window.removeEventListener("keydown", pauseForKeyboardNavigation);
       document.removeEventListener("visibilitychange", pauseForHiddenDocument);
     };
-  }, [isPlaying, pause]);
+  }, [isPlaying, pause, scrollContainerRef]);
 
   return { isPlaying, pause, toggle };
 }
