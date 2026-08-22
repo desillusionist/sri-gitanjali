@@ -11,7 +11,7 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
@@ -32,6 +32,40 @@ function countVerseSyllables(lines: Array<{ transliteration: string }>) {
 function getSlideshowIntervalMs(verse: { lines: Array<{ transliteration: string }> } | undefined, speed: number) {
   const baselineSeconds = Math.max(1, countVerseSyllables(verse?.lines ?? []));
   return Math.round(baselineSeconds * 1_000 * (DEFAULT_TELEPROMPTER_SPEED / Math.max(MIN_TELEPROMPTER_SPEED, speed)));
+}
+
+function getSoundCloudSourceUrl(audioLink?: string) {
+  if (!audioLink) return null;
+
+  try {
+    const sourceUrl = new URL(audioLink);
+    if (!/(^|\.)soundcloud\.com$/i.test(sourceUrl.hostname)) return null;
+    return sourceUrl.toString();
+  } catch {
+    return null;
+  }
+}
+
+function getSoundCloudPlayerUrl(embedHtml: unknown) {
+  if (typeof embedHtml !== "string") return null;
+  const sourceMatch = embedHtml.match(/src="([^"]+)"/i);
+  if (!sourceMatch?.[1]) return null;
+
+  try {
+    const playerUrl = new URL(sourceMatch[1].replaceAll("&amp;", "&"));
+    if (playerUrl.origin !== "https://w.soundcloud.com" || playerUrl.pathname !== "/player/") return null;
+
+    playerUrl.searchParams.set("auto_play", "false");
+    playerUrl.searchParams.set("hide_related", "true");
+    playerUrl.searchParams.set("show_comments", "false");
+    playerUrl.searchParams.set("show_reposts", "false");
+    playerUrl.searchParams.set("show_teaser", "false");
+    playerUrl.searchParams.set("visual", "false");
+    playerUrl.searchParams.set("color", "#b85e32");
+    return playerUrl.toString();
+  } catch {
+    return null;
+  }
 }
 
 type ReadingPreferences = {
@@ -137,6 +171,9 @@ function SongPageContent() {
   const [slideshowCountdown, setSlideshowCountdown] = useState({ remainingMs: 0, totalMs: 0 });
   const [isTeleprompterControlsCollapsed, setIsTeleprompterControlsCollapsed] = useState(false);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
+  const [isSoundCloudPlayerOpen, setIsSoundCloudPlayerOpen] = useState(false);
+  const [soundCloudPlayerUrl, setSoundCloudPlayerUrl] = useState<string | null>(null);
+  const [soundCloudPlayerStatus, setSoundCloudPlayerStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [isPageScrolled, setIsPageScrolled] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
   const teleprompterScrollRef = useRef<HTMLDivElement>(null);
@@ -145,6 +182,7 @@ function SongPageContent() {
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
   const next = index >= 0 && index < songs.length - 1 ? songs[index + 1] : null;
+  const soundCloudSourceUrl = useMemo(() => getSoundCloudSourceUrl(song?.audioLink), [song?.audioLink]);
   const displayedVerses = useMemo(() => {
     if (!song) return [];
 
@@ -176,6 +214,9 @@ function SongPageContent() {
     setSlideshowVerseIndex(0);
     setIsSlideshowPlaying(false);
     setIsTeleprompterControlsCollapsed(false);
+    setIsSoundCloudPlayerOpen(false);
+    setSoundCloudPlayerUrl(null);
+    setSoundCloudPlayerStatus("idle");
   }, [song?.id]);
 
   useEffect(() => {
@@ -217,6 +258,24 @@ function SongPageContent() {
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [isReaderPanelOpen]);
+
+  const openSoundCloudPlayer = () => {
+    if (!soundCloudSourceUrl) return;
+    setIsSoundCloudPlayerOpen(true);
+    if (soundCloudPlayerUrl) return;
+
+    setSoundCloudPlayerStatus("loading");
+    void fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(soundCloudSourceUrl)}`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error("SoundCloud oEmbed request failed");
+        const payload = await response.json() as { html?: unknown };
+        const playerUrl = getSoundCloudPlayerUrl(payload.html);
+        if (!playerUrl) throw new Error("SoundCloud oEmbed response did not include a supported player");
+        setSoundCloudPlayerUrl(playerUrl);
+        setSoundCloudPlayerStatus("ready");
+      })
+      .catch(() => setSoundCloudPlayerStatus("error"));
+  };
 
   useEffect(() => {
     const syncScrollAffordance = () => setIsPageScrolled(window.scrollY > 260);
@@ -594,6 +653,8 @@ function SongPageContent() {
             <Tooltip><TooltipTrigger asChild><button className={`reader-panel-action-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>{favorite ? <BookmarkCheck size={16} aria-hidden="true" /> : <Bookmark size={16} aria-hidden="true" />}</button></TooltipTrigger><TooltipContent side="bottom">{favorite ? copy.song.removeFavorite : copy.song.addFavorite}</TooltipContent></Tooltip>
             <span className="reader-panel-space" aria-hidden="true" />
             <DropdownMenu><Tooltip><TooltipTrigger asChild><DropdownMenuTrigger asChild><button className="reader-panel-action-button" type="button" aria-label={copy.song.copyLabel}><Copy size={16} aria-hidden="true" /></button></DropdownMenuTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.copyLabel}</TooltipContent></Tooltip><DropdownMenuContent className="reader-menu" align="end" side="bottom" sideOffset={7}><DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("plain")}>{copy.song.copyPlainText}</DropdownMenuItem><DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("markdown")}>{copy.song.copyMarkdownText}</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+            <span className="reader-panel-space" aria-hidden="true" /><span className="reader-panel-divider" aria-hidden="true" /><span className="reader-panel-space" aria-hidden="true" />
+            <Tooltip><TooltipTrigger asChild><button id="reader-panel-close" className="reader-panel-action-button reader-panel-close-button" type="button" onClick={() => setIsReaderPanelOpen(false)} aria-label={copy.song.closeReaderPanel}><X size={16} aria-hidden="true" /></button></TooltipTrigger><TooltipContent side="bottom">{copy.song.closeReaderPanel}</TooltipContent></Tooltip>
             <output className="visually-hidden" aria-live="polite">{fontSizeState}, {lineHeightState}</output>
           </div>
           <section className="in-song-search" aria-label={copy.song.inSongSearchLabel}>
@@ -652,7 +713,7 @@ function SongPageContent() {
       )}
 
       <article className="song-sheet">
-        <div className="song-reading-tools-dock">
+        <div className={`song-reading-tools-dock ${isReaderPanelOpen ? "is-panel-open" : ""}`}>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
@@ -662,7 +723,7 @@ function SongPageContent() {
                 onClick={() => setIsReaderPanelOpen((current) => !current)}
                 aria-expanded={isReaderPanelOpen}
                 aria-controls="reader-panel"
-                aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel} style={{marginBottom: '10px', marginLeft: '10px', marginRight: '-10px', marginTop: '-10px'}}
+                aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "-10px", marginTop: "-10px" }}
               >
                 <SlidersHorizontal aria-hidden="true" size={17} strokeWidth={1.8} />
                 <span>{copy.song.readingTools}</span>
@@ -682,6 +743,39 @@ function SongPageContent() {
         </div>
 
         <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
+
+        {soundCloudSourceUrl && (
+          <section className="song-audio" aria-label={copy.song.audioPlayerLabel}>
+            <div className="song-audio-header">
+              <div>
+                <p className="song-audio-eyebrow">{copy.song.audioRecordingEyebrow}</p>
+                <p className="song-audio-detail">{copy.song.audioRecordingDetail}</p>
+              </div>
+              <button className="song-audio-toggle" type="button" onClick={() => {
+                if (isSoundCloudPlayerOpen) {
+                  setIsSoundCloudPlayerOpen(false);
+                  return;
+                }
+                openSoundCloudPlayer();
+              }} aria-expanded={isSoundCloudPlayerOpen} aria-controls={`soundcloud-player-${song.id}`}>
+                <Volume2 size={16} aria-hidden="true" />
+                <span>{isSoundCloudPlayerOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}</span>
+              </button>
+            </div>
+            {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "loading" && <p className="song-audio-status" role="status">{copy.song.audioPlayerLoading}</p>}
+            {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={soundCloudSourceUrl} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
+            {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "ready" && soundCloudPlayerUrl && (
+              <iframe
+                id={`soundcloud-player-${song.id}`}
+                className="soundcloud-player"
+                src={soundCloudPlayerUrl}
+                title={copy.song.soundCloudPlayerTitle.replace("{song}", song.title)}
+                allow="autoplay"
+                loading="lazy"
+              />
+            )}
+          </section>
+        )}
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
 

@@ -186,3 +186,9 @@
 ## Reading Tools offset review
 
 - [x] Verify the requested desktop and mobile offsets of the sticky Reading Tools trigger, its click target, and its relationship to the open panel; save a checkpoint.
+
+## Reading Tools panel and SoundCloud audio
+
+- [x] Ensure the Reading Tools trigger does not cover the opened reader panel while the panel remains easy to close.
+- [x] Audit the song data for SoundCloud references and add an accessible player only when a valid track link exists.
+- [x] Verify audio controls, desktop/mobile panel layout, TypeScript, production build, and save a checkpoint.
