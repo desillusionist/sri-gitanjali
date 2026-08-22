@@ -106,7 +106,14 @@
 
 ## Secondary song ornaments
 
-- [ ] Add a clear song-page reading preference to hide text enclosed in round brackets within transliterated shlokas.
-- [ ] Preserve the unmodified source text for translations, search, copy, and teleprompter mode.
-- [ ] Ensure parenthetical fragments are removed cleanly without leaving doubled whitespace or punctuation artefacts.
-- [ ] Verify the toggle on representative songs, desktop/mobile layout, types, and production build before saving a checkpoint.
+- [x] Add a clear song-page reading preference to hide text enclosed in round brackets within transliterated shlokas.
+- [x] Preserve the unmodified source text for translations, search, copy, and teleprompter mode.
+- [x] Ensure parenthetical fragments are removed cleanly without leaving doubled whitespace or punctuation artefacts.
+- [x] Verify the toggle on representative songs, desktop/mobile layout, types, and production build before saving a checkpoint.
+
+## Reading typography controls
+
+- [x] Define accessible size and line-height presets for transliterated shlokas.
+- [x] Add compact song-page controls that change the regular reading view without affecting translations or page chrome.
+- [x] Apply the selected typography to the dedicated teleprompter reading surface.
+- [x] Verify keyboard access, desktop/mobile presentation, TypeScript, and production build before saving a checkpoint.

@@ -78,7 +78,8 @@ a { color: inherit; text-decoration: none; }
   backdrop-filter: blur(16px);
 }
 
-.brand-lockup { display: inline-flex; align-items: center; gap: 0.7rem; padding: 0 0.45rem; width: max-content; }
+.brand-lockup { position: relative; display: inline-flex; align-items: center; gap: 0.7rem; width: max-content; padding: 0 0.45rem 0.85rem; }
+.brand-lockup::after { content: ""; position: absolute; bottom: 0.22rem; left: 0.45rem; width: 4.3rem; height: 1px; background: linear-gradient(90deg, var(--saffron), rgba(217,109,50,0.12)); }
 .brand-mark { width: 38px; height: 38px; object-fit: contain; }
 .brand-name { color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.48rem; font-weight: 700; line-height: 0.79; letter-spacing: -0.045em; }
 
@@ -279,7 +280,7 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-shloka { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.6rem); padding: clamp(2.5rem, 5vw, 4.2rem) 0; border-top: 1px solid var(--hairline); }
 .teleprompter-shloka:first-child { padding-top: 0; border-top: 0; }
 .teleprompter-verse-number { padding-top: 0.42em; color: var(--saffron-deep); font-family: "DM Sans", Arial, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; }
-.teleprompter-line { margin: 0; color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(2.15rem, 4.6vw, 4.7rem); font-weight: 600; letter-spacing: -0.042em; line-height: 1.03; text-wrap: balance; }
+.teleprompter-line { margin: 0; color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: calc(clamp(2.15rem, 4.6vw, 4.7rem) + var(--reading-font-size-adjustment, 0rem)); font-weight: 600; letter-spacing: -0.042em; line-height: var(--teleprompter-line-height, 1.03); text-wrap: balance; }
 .teleprompter-line + .teleprompter-line { margin-top: 0.22em; }
 .teleprompter-line.is-indented { margin-left: clamp(1rem, 6vw, 6rem); }
 .in-song-search { position: sticky; top: 0.65rem; z-index: 50; align-self: start; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 0.55rem; align-items: center; max-width: 47rem; margin: 0 0 1.15rem auto; padding: 0.45rem 0.5rem 0.45rem 0.8rem; color: var(--ink-soft); border: 1px solid var(--hairline); background: rgba(255,252,246,0.93); box-shadow: 5px 6px 0 rgba(24,36,43,0.06); backdrop-filter: blur(12px); }
@@ -318,6 +319,7 @@ a { color: inherit; text-decoration: none; }
 
 .song-sheet { position: relative; padding: clamp(1.8rem, 5vw, 4.2rem); overflow: hidden; background: var(--paper-bright); box-shadow: 16px 18px 0 rgba(24,36,43,0.08); }
 .song-sheet::before { content: ""; position: absolute; right: -9rem; bottom: -13rem; width: 29rem; height: 38rem; opacity: 0.14; background: url('/manus-storage/kirtan-guide-reading-detail_86487ef9.jpg') center / cover; transform: rotate(-9deg); }
+.song-sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.38; background: repeating-linear-gradient(0deg, transparent 0, transparent 2.72rem, rgba(142,118,84,0.055) 2.72rem, rgba(142,118,84,0.055) calc(2.72rem + 1px)); }
 .song-sheet > * { position: relative; z-index: 1; }
 .song-sheet-intro { display: flex; justify-content: space-between; gap: 2rem; align-items: flex-start; padding-bottom: 2rem; border-bottom: 1px solid var(--hairline); }
 .song-sheet-mantra { width: 8rem; margin: 1.25rem 0 -0.4rem; }
@@ -336,8 +338,31 @@ a { color: inherit; text-decoration: none; }
 .translation-switch[data-state="checked"] { background: var(--saffron-deep); }
 .translation-switch:focus-visible { border-color: var(--saffron-deep); box-shadow: 0 0 0 0.2rem rgba(217,109,50,0.22); }
 .translation-switch [data-slot="switch-thumb"] { width: 1rem; height: 1rem; background: #fffaf3; }
+.reading-typography-controls { margin-top: 1.45rem; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+.reading-typography-summary { display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: 0.78rem 0; cursor: pointer; list-style: none; }
+.reading-typography-summary::-webkit-details-marker { display: none; }
+.reading-typography-summary > span:last-child { display: inline-flex; gap: 0.4rem; align-items: center; color: var(--saffron-deep); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.025em; }
+.reading-typography-summary svg { transition: transform 160ms var(--ease-out); }
+.reading-typography-controls[open] .reading-typography-summary svg { transform: rotate(180deg); }
+.reading-typography-summary:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: -0.1rem; }
+.reading-typography-content { display: grid; grid-template-columns: minmax(14rem, 0.78fr) minmax(20rem, 1fr); gap: clamp(1.2rem, 4vw, 3.4rem); align-items: center; padding: 0.1rem 0 1rem; }
+.reading-typography-copy { display: grid; gap: 0.22rem; }
+.reading-typography-copy p { max-width: 38ch; margin: 0; color: var(--ink-soft); font-size: 0.76rem; line-height: 1.5; }
+.reading-typography-sliders { display: grid; gap: 0.82rem; min-width: 0; }
+.reading-adjustment-control { display: grid; grid-template-columns: auto auto minmax(7rem, 1fr) minmax(4.8rem, auto); gap: 0.62rem; align-items: center; }
+.reading-adjustment-control label { color: var(--ink-soft); font-size: 0.67rem; font-weight: 700; white-space: nowrap; }
+.reading-scale-cue { display: inline-flex; gap: 0.24rem; align-items: baseline; min-width: 2rem; color: var(--saffron-deep); font-family: "Cormorant Garamond", Georgia, serif; line-height: 1; }
+.reading-scale-cue small { font-size: 0.65rem; }
+.reading-scale-cue strong { font-size: 0.96rem; font-weight: 700; }
+.reading-adjustment-control [data-slot="slider"] { min-width: 0; }
+.reading-adjustment-control [data-slot="slider-track"] { height: 0.28rem; border-radius: 0; background: #ded6c9; }
+.reading-adjustment-control [data-slot="slider-range"] { background: var(--saffron); }
+.reading-adjustment-control [data-slot="slider-thumb"] { width: 0.88rem; height: 0.88rem; border-color: var(--saffron-deep); border-radius: 0; background: #fffaf3; }
+.reading-adjustment-control [data-slot="slider-thumb"]:focus-visible { box-shadow: 0 0 0 0.2rem rgba(217,109,50,0.22); }
+.reading-adjustment-control output { color: var(--saffron-deep); font-size: 0.65rem; font-weight: 700; text-align: right; }
 .song-verses { display: grid; gap: 2.7rem; margin-top: 3.3rem; }
-.verse-block { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 1.3rem; }
+.verse-block { position: relative; display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 1.3rem; }
+.verse-block::before { content: ""; position: absolute; top: 1rem; left: 2rem; width: 0.6rem; height: 1px; background: var(--saffron); }
 .verse-number { display: grid; width: 2rem; height: 2rem; place-items: center; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.58); background: transparent; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; }
 .verse-translation-marker { align-content: center; gap: 0.03rem; padding: 0; transition: color 160ms var(--ease-out), background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out); }
 .verse-translation-marker svg { transition: transform 160ms var(--ease-out); }
@@ -347,7 +372,7 @@ a { color: inherit; text-decoration: none; }
 .verse-translation-marker:active { transform: scale(0.94); }
 .verse-translation-marker:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.2rem; }
 .verse-copy { max-width: 48rem; }
-.transliteration { margin: 0.06rem 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(1.38rem, 2.1vw, 1.75rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.12; }
+.transliteration { margin: 0.06rem 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: calc(clamp(1.38rem, 2.1vw, 1.75rem) + var(--reading-font-size-adjustment, 0rem)); font-weight: 600; letter-spacing: -0.02em; line-height: var(--reading-line-height, 1.12); }
 .transliteration.is-indented { padding-left: clamp(0.8rem, 3vw, 2.2rem); color: var(--saffron-deep); }
 .translation { max-width: 55ch; margin: 1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.85rem; font-style: italic; white-space: pre-line; line-height: 1.65; }
 .song-sheet-footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1.1rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.69rem; }
@@ -432,6 +457,8 @@ a { color: inherit; text-decoration: none; }
   .song-sheet-intro { display: grid; gap: 1.2rem; }
   .song-sheet h1 { font-size: clamp(3rem, 15vw, 4.3rem); }
   .song-insight { width: max-content; }
+  .reading-typography-content { grid-template-columns: 1fr; gap: 0.85rem; }
+  .reading-adjustment-control { grid-template-columns: minmax(5.8rem, auto) auto minmax(0, 1fr) minmax(4.3rem, auto); gap: 0.5rem; }
   .translation-controls { align-items: flex-start; flex-direction: column; gap: 0.72rem; }
   .translation-switch-label { width: 100%; justify-content: space-between; }
   .teleprompter-speed-control { grid-template-columns: auto minmax(0, 1fr); }
@@ -443,7 +470,7 @@ a { color: inherit; text-decoration: none; }
   .teleprompter-overlay .teleprompter-play-button { min-width: 0; }
   .teleprompter-reading-content { padding: 3.5rem 1.2rem 28vh; }
   .teleprompter-shloka { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; padding: 2.8rem 0; }
-  .teleprompter-line { font-size: clamp(2.15rem, 10vw, 3.25rem); line-height: 1.06; }
+  .teleprompter-line { font-size: calc(clamp(2.15rem, 10vw, 3.25rem) + var(--reading-font-size-adjustment, 0rem)); line-height: var(--teleprompter-line-height, 1.03); }
   .teleprompter-line.is-indented { margin-left: 1rem; }
   .song-verses { gap: 2.2rem; }
   .verse-block { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; }
