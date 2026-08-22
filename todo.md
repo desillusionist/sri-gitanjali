@@ -182,3 +182,7 @@
 - [x] Remove the long-line-and-ring decorative span motif throughout the UI.
 - [x] Move Reading Tools to a sticky top-right position on the song article while retaining every existing control.
 - [x] Make the ā̐ compound glyph render consistently with the selected verse typeface on desktop and mobile, then verify build and responsive behavior.
+
+## Reading Tools offset review
+
+- [x] Verify the requested desktop and mobile offsets of the sticky Reading Tools trigger, its click target, and its relationship to the open panel; save a checkpoint.

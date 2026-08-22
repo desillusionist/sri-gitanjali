@@ -662,7 +662,7 @@ function SongPageContent() {
                 onClick={() => setIsReaderPanelOpen((current) => !current)}
                 aria-expanded={isReaderPanelOpen}
                 aria-controls="reader-panel"
-                aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}
+                aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel} style={{marginBottom: '10px', marginLeft: '10px', marginRight: '-10px', marginTop: '-10px'}}
               >
                 <SlidersHorizontal aria-hidden="true" size={17} strokeWidth={1.8} />
                 <span>{copy.song.readingTools}</span>
