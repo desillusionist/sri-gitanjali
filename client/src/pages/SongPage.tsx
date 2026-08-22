@@ -7,7 +7,7 @@ import { AppShell } from "@/components/AppShell";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnaments, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Music2, Pause, Play, ScrollText, Search, X } from "lucide-react";
@@ -17,7 +17,6 @@ import { toast } from "sonner";
 
 const READING_FONT_SIZE_ADJUSTMENTS = [-0.18, -0.09, 0, 0.12, 0.24] as const;
 const READING_LINE_HEIGHTS = [1.04, 1.08, 1.12, 1.18, 1.26] as const;
-const TELEPROMPTER_LINE_HEIGHTS = [0.97, 1, 1.03, 1.08, 1.15] as const;
 const DEFAULT_READING_STEP = 2;
 
 function SongMatchText({
@@ -75,6 +74,14 @@ function SongPageContent() {
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
   const next = index >= 0 && index < songs.length - 1 ? songs[index + 1] : null;
+  const displayedVerses = useMemo(() => {
+    if (!song) return [];
+
+    return song.verses.map((verse) => ({
+      ...verse,
+      lines: areSecondaryOrnamentsHidden ? hideSecondarySongOrnamentsInLines(verse.lines) : verse.lines,
+    }));
+  }, [areSecondaryOrnamentsHidden, song]);
   const matches = useMemo(() => song ? getSongSearchMatches(song, query) : [], [query, song]);
   const matchesByField = useMemo(() => {
     const byField = new Map<string, SongSearchMatch[]>();
@@ -215,6 +222,14 @@ function SongPageContent() {
     setTranslationOverrides((current) => ({ ...current, [verseId]: !(current[verseId] ?? areTranslationsShown) }));
   };
 
+  const adjustReadingFontSize = (direction: -1 | 1) => {
+    setReadingFontSizeStep((current) => Math.min(READING_FONT_SIZE_ADJUSTMENTS.length - 1, Math.max(0, current + direction)));
+  };
+
+  const adjustReadingLineHeight = (direction: -1 | 1) => {
+    setReadingLineHeightStep((current) => Math.min(READING_LINE_HEIGHTS.length - 1, Math.max(0, current + direction)));
+  };
+
   const closeTeleprompter = () => {
     pauseTeleprompter();
     setIsTeleprompterOpen(false);
@@ -230,7 +245,7 @@ function SongPageContent() {
   const readingTypographyStyle = {
     "--reading-font-size-adjustment": `${READING_FONT_SIZE_ADJUSTMENTS[readingFontSizeStep]}rem`,
     "--reading-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
-    "--teleprompter-line-height": String(TELEPROMPTER_LINE_HEIGHTS[readingLineHeightStep]),
+    "--teleprompter-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
   } as CSSProperties;
   const fontSizeState = readingFontSizeStep === DEFAULT_READING_STEP
     ? copy.song.readingDefault
@@ -289,7 +304,7 @@ function SongPageContent() {
           </header>
           <div className="teleprompter-reading-surface" ref={teleprompterScrollRef} tabIndex={0} aria-label={copy.song.teleprompterTitle}>
             <div className="teleprompter-reading-content">
-              {song.verses.map((verse, verseIndex) => (
+              {displayedVerses.map((verse, verseIndex) => (
                 <section className="teleprompter-shloka" key={verse.id}>
                   <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
                   <div>
@@ -345,49 +360,30 @@ function SongPageContent() {
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
 
-        <details className="reading-typography-controls" aria-label={copy.song.readingControlsLabel}>
-          <summary className="reading-typography-summary">
-            <span className="eyebrow">{copy.song.readingControlsEyebrow}</span>
-            <span>{copy.song.readingControlsSummary}<ChevronDown size={14} aria-hidden="true" /></span>
-          </summary>
-          <div className="reading-typography-content">
-            <div className="reading-typography-copy">
-              <p>{copy.song.readingControlsDescription}</p>
+        <section className="reading-typography-controls" aria-labelledby="reading-typography-label">
+          <div className="reading-typography-heading">
+            <span className="eyebrow" id="reading-typography-label">{copy.song.readingControlsEyebrow}</span>
+            <p className="visually-hidden">{copy.song.readingControlsDescription}</p>
+          </div>
+          <div className="reading-typography-actions">
+            <div className="reading-stepper-control">
+              <span className="reading-stepper-label">{copy.song.readingFontSize}</span>
+              <div className="reading-stepper" role="group" aria-label={copy.song.readingFontSize}>
+                <button type="button" className="reading-step-button reading-type-button is-small" onClick={() => adjustReadingFontSize(-1)} disabled={readingFontSizeStep === 0} aria-label={copy.song.decreaseFontSize}>A</button>
+                <button type="button" className="reading-step-button reading-type-button is-large" onClick={() => adjustReadingFontSize(1)} disabled={readingFontSizeStep === READING_FONT_SIZE_ADJUSTMENTS.length - 1} aria-label={copy.song.increaseFontSize}>A</button>
+              </div>
+              <output className="visually-hidden" aria-live="polite">{fontSizeState}</output>
             </div>
-            <div className="reading-typography-sliders">
-              <div className="reading-adjustment-control">
-                <label htmlFor="reading-font-size">{copy.song.readingFontSize}</label>
-                <span className="reading-scale-cue" aria-hidden="true"><small>A</small><strong>A</strong></span>
-                <Slider
-                  id="reading-font-size"
-                  value={[readingFontSizeStep]}
-                  min={0}
-                  max={READING_FONT_SIZE_ADJUSTMENTS.length - 1}
-                  step={1}
-                  onValueChange={([nextStep]) => setReadingFontSizeStep(nextStep ?? DEFAULT_READING_STEP)}
-                  aria-label={copy.song.readingFontSize}
-                  aria-valuetext={fontSizeState}
-                />
-                <output htmlFor="reading-font-size">{fontSizeState}</output>
+            <div className="reading-stepper-control">
+              <span className="reading-stepper-label">{copy.song.readingLineHeight}</span>
+              <div className="reading-stepper" role="group" aria-label={copy.song.readingLineHeight}>
+                <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(-1)} disabled={readingLineHeightStep === 0} aria-label={copy.song.decreaseLineSpacing}><span className="line-spacing-glyph is-tight" aria-hidden="true"><i /><i /><i /></span></button>
+                <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(1)} disabled={readingLineHeightStep === READING_LINE_HEIGHTS.length - 1} aria-label={copy.song.increaseLineSpacing}><span className="line-spacing-glyph is-loose" aria-hidden="true"><i /><i /><i /></span></button>
               </div>
-              <div className="reading-adjustment-control">
-                <label htmlFor="reading-line-height">{copy.song.readingLineHeight}</label>
-                <span className="reading-scale-cue" aria-hidden="true"><small>↕</small><strong>↕</strong></span>
-                <Slider
-                  id="reading-line-height"
-                  value={[readingLineHeightStep]}
-                  min={0}
-                  max={READING_LINE_HEIGHTS.length - 1}
-                  step={1}
-                  onValueChange={([nextStep]) => setReadingLineHeightStep(nextStep ?? DEFAULT_READING_STEP)}
-                  aria-label={copy.song.readingLineHeight}
-                  aria-valuetext={lineHeightState}
-                />
-                <output htmlFor="reading-line-height">{lineHeightState}</output>
-              </div>
+              <output className="visually-hidden" aria-live="polite">{lineHeightState}</output>
             </div>
           </div>
-        </details>
+        </section>
 
         <section className="translation-controls ornament-controls" aria-label={copy.song.secondaryOrnamentsLabel}>
           <div className="translation-controls-copy">
@@ -426,7 +422,7 @@ function SongPageContent() {
         )}
 
         <div className="song-verses">
-          {song.verses.map((verse, verseIndex) => {
+          {displayedVerses.map((verse, verseIndex) => {
             const translationVisible = isVerseTranslationVisible(verse.id);
 
             return (
@@ -449,19 +445,11 @@ function SongPageContent() {
                   </div>
                 )}
                 <div className="verse-copy">
-                  {verse.lines.map((line) => {
-                    const displayLine = areSecondaryOrnamentsHidden
-                      ? hideSecondarySongOrnaments(line.transliteration)
-                      : line.transliteration;
-
-                    if (!displayLine) return null;
-
-                    return (
-                      <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
-                        <SongMatchText value={displayLine} query={query} fieldId={`line:${line.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
-                      </p>
-                    );
-                  })}
+                  {verse.lines.map((line) => (
+                    <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
+                      <SongMatchText value={line.transliteration} query={query} fieldId={`line:${line.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
+                    </p>
+                  ))}
                   {verse.translation && (
                     <>
                       <div id={`translation-${verse.id}`} hidden={!translationVisible}>

@@ -116,6 +116,35 @@ export function hideSecondarySongOrnaments(value: string): string {
     .trim();
 }
 
+/**
+ * Hides parenthetical cues that can begin on one stored song line and end on
+ * the next. The original SongLine objects remain intact for search and copy.
+ */
+export function hideSecondarySongOrnamentsInLines(lines: SongLine[]): SongLine[] {
+  let parenthesisDepth = 0;
+
+  return lines.flatMap((line) => {
+    let visibleText = "";
+
+    for (const character of line.transliteration) {
+      if (character === "(") {
+        parenthesisDepth += 1;
+        continue;
+      }
+
+      if (character === ")" && parenthesisDepth > 0) {
+        parenthesisDepth -= 1;
+        continue;
+      }
+
+      if (parenthesisDepth === 0) visibleText += character;
+    }
+
+    const transliteration = hideSecondarySongOrnaments(visibleText);
+    return transliteration ? [{ ...line, transliteration }] : [];
+  });
+}
+
 export function normalizeSearchText(value: string): string {
   return value
     .normalize("NFKD")

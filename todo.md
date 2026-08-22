@@ -117,3 +117,10 @@
 - [x] Add compact song-page controls that change the regular reading view without affecting translations or page chrome.
 - [x] Apply the selected typography to the dedicated teleprompter reading surface.
 - [x] Verify keyboard access, desktop/mobile presentation, TypeScript, and production build before saving a checkpoint.
+
+## Reading-control refinement
+
+- [x] Remove the unintended repeated saffron rule from the song-page visual system while retaining purposeful navigation marks.
+- [x] Replace typography sliders with compact, labelled graphical increment/decrement controls for text size and line spacing.
+- [x] Carry the active text-size, line-spacing, and secondary-ornament preferences into teleprompter rendering.
+- [x] Verify ordinary reading and teleprompter behavior on desktop/mobile, keyboard access, types, and production build before saving a checkpoint.
