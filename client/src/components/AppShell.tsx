@@ -97,6 +97,7 @@ export function AppShell({ children }: AppShellProps) {
               <TooltipTrigger asChild>
                 <button id="global-reading-tools-trigger" className={`rail-nav-link rail-reader-tools-trigger ${isReaderPanelOpen ? "is-active" : ""}`} type="button" onClick={toggleReaderPanel} aria-expanded={isReaderPanelOpen} aria-controls="reader-panel" aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}>
                   <SlidersHorizontal aria-hidden="true" size={18} strokeWidth={1.7} />
+                  <span className="rail-reader-tools-label">{copy.song.readingTools}</span>
                 </button>
               </TooltipTrigger>
               <TooltipContent side="right">{isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}</TooltipContent>

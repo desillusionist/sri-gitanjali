@@ -149,3 +149,9 @@
 - [x] Arrange the reader-panel controls in the requested single-row sequence with spacers and visual dividers.
 - [x] Add a teleprompter slideshow view in addition to the existing automatic-scroll reading mode.
 - [x] Verify menus, overlays, tooltips, teleprompter modes, desktop/mobile behavior, TypeScript, and production build before saving a checkpoint.
+
+## Desktop trigger and timed slideshow
+
+- [x] Show the global Reading Tools trigger as a labelled desktop button while retaining the compact icon treatment on mobile.
+- [x] Preserve play/pause and a speed control in slideshow view; make speed determine the automatic interval between verses instead of scroll velocity.
+- [x] Verify desktop and mobile trigger presentation, timed scroll/slideshow playback, pausing, speed changes, TypeScript, and production build before saving a checkpoint.

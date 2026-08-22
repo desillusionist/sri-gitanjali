@@ -120,6 +120,7 @@ function SongPageContent() {
   const [teleprompterSpeed, setTeleprompterSpeed] = useState(initialReadingPreferences.teleprompterSpeed);
   const [teleprompterView, setTeleprompterView] = useState<TeleprompterView>("scroll");
   const [slideshowVerseIndex, setSlideshowVerseIndex] = useState(0);
+  const [isSlideshowPlaying, setIsSlideshowPlaying] = useState(false);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const [isPageScrolled, setIsPageScrolled] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
@@ -144,7 +145,7 @@ function SongPageContent() {
     return byField;
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
-  const { isPlaying: isTeleprompterPlaying, pause: pauseTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen, teleprompterSpeed, teleprompterScrollRef);
+  const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", teleprompterSpeed, teleprompterScrollRef);
 
   useEffect(() => {
     setQuery(routeQuery);
@@ -158,6 +159,7 @@ function SongPageContent() {
     setTranslationOverrides({});
     setIsTeleprompterOpen(false);
     setSlideshowVerseIndex(0);
+    setIsSlideshowPlaying(false);
   }, [song?.id]);
 
   useEffect(() => {
@@ -248,6 +250,23 @@ function SongPageContent() {
       document.documentElement.style.overflow = documentOverflow;
     };
   }, [isTeleprompterOpen]);
+
+  useEffect(() => {
+    if (!isTeleprompterOpen || teleprompterView !== "slideshow" || !isSlideshowPlaying || displayedVerses.length < 2) return;
+
+    const intervalMs = Math.round(10_000 - ((teleprompterSpeed - 12) / 60) * 7_000);
+    const timer = window.setTimeout(() => {
+      setSlideshowVerseIndex((current) => {
+        if (current >= displayedVerses.length - 1) {
+          setIsSlideshowPlaying(false);
+          return current;
+        }
+        return current + 1;
+      });
+    }, intervalMs);
+
+    return () => window.clearTimeout(timer);
+  }, [displayedVerses.length, isSlideshowPlaying, isTeleprompterOpen, teleprompterSpeed, teleprompterView]);
 
   useEffect(() => {
     const translationVerseId = activeMatch?.kind === "translation" ? activeMatch.verseId : undefined;
@@ -362,6 +381,7 @@ function SongPageContent() {
 
   const closeTeleprompter = () => {
     pauseTeleprompter();
+    setIsSlideshowPlaying(false);
     setIsTeleprompterOpen(false);
   };
 
@@ -372,10 +392,12 @@ function SongPageContent() {
 
   const setReaderView = (nextView: TeleprompterView) => {
     pauseTeleprompter();
+    setIsSlideshowPlaying(false);
     setTeleprompterView(nextView);
   };
 
   const moveSlideshowVerse = (direction: -1 | 1) => {
+    setIsSlideshowPlaying(false);
     setSlideshowVerseIndex((current) => Math.min(displayedVerses.length - 1, Math.max(0, current + direction)));
   };
 
@@ -400,6 +422,18 @@ function SongPageContent() {
     ? copy.song.readingDefault
     : readingLineHeightStep < DEFAULT_READING_STEP ? copy.song.readingTighter : copy.song.readingLooser;
   const slideshowVerse = displayedVerses[slideshowVerseIndex];
+  const slideshowIntervalMs = Math.round(10_000 - ((teleprompterSpeed - 12) / 60) * 7_000);
+  const slideshowIntervalSeconds = Math.max(1, Math.round(slideshowIntervalMs / 1_000));
+  const isTeleprompterPlaying = teleprompterView === "scroll" ? isAutoScrollPlaying : isSlideshowPlaying;
+  const toggleSlideshow = () => {
+    if (isSlideshowPlaying) {
+      setIsSlideshowPlaying(false);
+      return;
+    }
+    if (!displayedVerses.length) return;
+    if (slideshowVerseIndex >= displayedVerses.length - 1) setSlideshowVerseIndex(0);
+    setIsSlideshowPlaying(true);
+  };
 
   return (
     <div className={`song-page ${isTeleprompterOpen ? "is-teleprompter" : ""}`} style={readingTypographyStyle}>
@@ -408,7 +442,9 @@ function SongPageContent() {
           <header className="teleprompter-overlay-controls" data-teleprompter-controls>
             <div className="teleprompter-status" aria-live="polite">
               <span aria-hidden="true" />
-              {isTeleprompterPlaying ? copy.song.teleprompterPlaying : copy.song.teleprompterReady}
+              {isTeleprompterPlaying
+                ? (teleprompterView === "scroll" ? copy.song.teleprompterPlaying : copy.song.teleprompterPlayingSlideshow)
+                : (teleprompterView === "scroll" ? copy.song.teleprompterReady : copy.song.teleprompterReadySlideshow)}
             </div>
             <div className="teleprompter-view-switch" role="group" aria-label={copy.song.teleprompterViewLabel}>
               <button className={teleprompterView === "scroll" ? "is-active" : ""} type="button" onClick={() => setReaderView("scroll")} aria-pressed={teleprompterView === "scroll"}>
@@ -420,9 +456,9 @@ function SongPageContent() {
                 <span>{copy.song.teleprompterSlideshowView}</span>
               </button>
             </div>
-            {teleprompterView === "scroll" ? (
+            <div className="teleprompter-mode-controls">
               <div className="teleprompter-speed-control">
-                <label htmlFor="teleprompter-speed"><Gauge size={15} aria-hidden="true" /> {copy.song.teleprompterSpeed}</label>
+                <label htmlFor="teleprompter-speed"><Gauge size={15} aria-hidden="true" /> {teleprompterView === "scroll" ? copy.song.teleprompterSpeed : copy.song.teleprompterSlideSpeed}</label>
                 <Slider
                   id="teleprompter-speed"
                   value={[teleprompterSpeed]}
@@ -432,22 +468,25 @@ function SongPageContent() {
                   onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed ?? 30)}
                   aria-label={copy.song.teleprompterSpeed}
                 />
-                <output htmlFor="teleprompter-speed">{copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))}</output>
+                <output htmlFor="teleprompter-speed">{teleprompterView === "scroll"
+                  ? copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))
+                  : copy.song.teleprompterSlideSpeedValue.replace("{seconds}", String(slideshowIntervalSeconds))}</output>
               </div>
-            ) : (
+            {teleprompterView === "slideshow" && (
               <div className="teleprompter-slide-actions" role="group" aria-label={copy.song.teleprompterSlideshowView}>
                 <button type="button" onClick={() => moveSlideshowVerse(-1)} disabled={slideshowVerseIndex === 0} aria-label={copy.song.teleprompterPreviousSlide}><ChevronLeft size={16} aria-hidden="true" /></button>
                 <output aria-live="polite">{copy.song.teleprompterSlidePosition.replace("{current}", String(slideshowVerseIndex + 1)).replace("{total}", String(displayedVerses.length))}</output>
                 <button type="button" onClick={() => moveSlideshowVerse(1)} disabled={slideshowVerseIndex === displayedVerses.length - 1} aria-label={copy.song.teleprompterNextSlide}><ChevronRight size={16} aria-hidden="true" /></button>
               </div>
             )}
+            </div>
             <div className="teleprompter-actions">
-              {teleprompterView === "scroll" && (
-                <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={toggleTeleprompter}>
-                  {isTeleprompterPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-                  <span>{isTeleprompterPlaying ? copy.song.teleprompterPause : copy.song.teleprompterStart}</span>
-                </button>
-              )}
+              <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={teleprompterView === "scroll" ? toggleTeleprompter : toggleSlideshow}>
+                {isTeleprompterPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
+                <span>{isTeleprompterPlaying
+                  ? (teleprompterView === "scroll" ? copy.song.teleprompterPause : copy.song.teleprompterPauseSlideshow)
+                  : (teleprompterView === "scroll" ? copy.song.teleprompterStart : copy.song.teleprompterStartSlideshow)}</span>
+              </button>
               <button className="teleprompter-close-button" type="button" onClick={closeTeleprompter} aria-label={copy.song.teleprompterClose}>
                 <X size={17} aria-hidden="true" />
               </button>

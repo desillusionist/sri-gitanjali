@@ -96,7 +96,7 @@ a { color: inherit; text-decoration: none; }
 .rail-nav-link:hover { color: var(--ink); background: rgba(217, 109, 50, 0.06); transform: translateX(2px); }
 .rail-nav-link.is-active { color: var(--saffron-deep); border-left-color: var(--saffron); background: linear-gradient(90deg, rgba(217, 109, 50, 0.12), rgba(217, 109, 50, 0.025)); }
 .rail-nav-link.is-active::after { opacity: 1; }
-.rail-reader-tools-trigger { justify-content: center; width: 2.55rem; padding: 0; border: 1px solid var(--hairline); background: rgba(255,252,246,0.62); }
+.rail-reader-tools-trigger { justify-content: flex-start; width: max-content; min-width: 2.55rem; padding: 0.62rem 0.72rem; border: 1px solid var(--hairline); background: rgba(255,252,246,0.62); }
 .rail-reader-tools-trigger::after { display: none; }
 .rail-reader-tools-trigger:hover { transform: none; }
 .rail-reader-tools-trigger:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.22rem; }
@@ -277,6 +277,7 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-overlay::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.7; background: radial-gradient(circle at 95% 0%, rgba(217,109,50,0.1), transparent 30rem), linear-gradient(105deg, rgba(255,255,255,0.42), transparent 35%); }
 .teleprompter-overlay-controls { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(8rem, 0.52fr) minmax(11rem, 0.7fr) minmax(13rem, 1fr) auto; gap: 0.8rem; align-items: center; padding: 0.8rem clamp(1rem, 3vw, 2.4rem); border-bottom: 1px solid var(--hairline); background: rgba(255,252,246,0.82); box-shadow: 0 6px 20px rgba(24,36,43,0.045); backdrop-filter: blur(14px); }
 .teleprompter-overlay .teleprompter-speed-control { min-width: 0; }
+.teleprompter-mode-controls { display: grid; gap: 0.45rem; min-width: 0; }
 .teleprompter-overlay .teleprompter-actions { justify-self: end; min-width: 2.35rem; }
 .teleprompter-view-switch { display: inline-flex; overflow: hidden; border: 1px solid var(--hairline); }
 .teleprompter-view-switch button { display: inline-flex; min-height: 2.1rem; gap: 0.35rem; align-items: center; justify-content: center; padding: 0.35rem 0.55rem; color: var(--ink-soft); background: #fffaf3; font-size: 0.65rem; font-weight: 700; transition: color 160ms var(--ease-out), background 160ms var(--ease-out); }
@@ -424,7 +425,7 @@ a { color: inherit; text-decoration: none; }
   .rail-nav-link { padding: 0.55rem; border-left: 0; border-bottom: 2px solid transparent; }
   .rail-nav-link.is-active { border-left: 0; border-bottom-color: var(--saffron); }
   .rail-nav-link span { display: none; }
-  .rail-reader-tools-trigger { width: 2.35rem; height: 2.35rem; }
+  .rail-reader-tools-trigger { width: 2.35rem; height: 2.35rem; padding: 0; justify-content: center; }
   .rail-note { display: none; }
   .library-header { grid-template-columns: minmax(0, 1fr) minmax(290px, 0.8fr); gap: 2rem; }
   .song-list { grid-template-columns: 1fr; }
