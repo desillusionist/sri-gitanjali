@@ -124,3 +124,10 @@
 - [x] Replace typography sliders with compact, labelled graphical increment/decrement controls for text size and line spacing.
 - [x] Carry the active text-size, line-spacing, and secondary-ornament preferences into teleprompter rendering.
 - [x] Verify ordinary reading and teleprompter behavior on desktop/mobile, keyboard access, types, and production build before saving a checkpoint.
+
+## Brand mark, diacritics, and reading toggles
+
+- [x] Remove the saffron rule that overlaps the Kīrtan Guide logo mark.
+- [x] Adopt a visually compatible serif typeface that renders `ā̐` and related combining diacritics reliably in shlokas.
+- [x] Replace the two reading switches with compact, accessible icon controls and small on-demand explanations.
+- [x] Verify the logo, diacritic rendering, toggle state, hints, keyboard access, desktop/mobile layout, types, and production build before saving a checkpoint.

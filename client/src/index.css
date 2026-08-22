@@ -78,8 +78,7 @@ a { color: inherit; text-decoration: none; }
   backdrop-filter: blur(16px);
 }
 
-.brand-lockup { position: relative; display: inline-flex; align-items: center; gap: 0.7rem; width: max-content; padding: 0 0.45rem 0.85rem; }
-.brand-lockup::after { content: ""; position: absolute; bottom: 0.22rem; left: 0.45rem; width: 4.3rem; height: 1px; background: linear-gradient(90deg, var(--saffron), rgba(217,109,50,0.12)); }
+.brand-lockup { display: inline-flex; align-items: center; gap: 0.7rem; width: max-content; padding: 0 0.45rem; }
 .brand-mark { width: 38px; height: 38px; object-fit: contain; }
 .brand-name { color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.48rem; font-weight: 700; line-height: 0.79; letter-spacing: -0.045em; }
 
@@ -221,7 +220,7 @@ a { color: inherit; text-decoration: none; }
 .song-row-copy strong { overflow: hidden; color: inherit; font-size: 0.84rem; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; }
 .song-row-copy small { overflow: hidden; color: var(--ink-soft); font-size: 0.7rem; line-height: 1.4; white-space: nowrap; text-overflow: ellipsis; }
 .song-row-meta { display: block; }
-.song-row-opening-line { display: block; overflow: visible; color: var(--ink-soft); font-family: "Cormorant Garamond", Georgia, serif; font-size: 0.91rem; font-style: italic; line-height: 1.18; white-space: normal; }
+.song-row-opening-line { display: block; overflow: visible; color: var(--ink-soft); font-family: "Charis SIL", Georgia, serif; font-size: 0.91rem; font-style: italic; line-height: 1.18; white-space: normal; }
 .song-search-excerpt { display: -webkit-box; gap: 0.35rem; margin-top: 0.16rem; overflow: hidden; color: var(--ink-soft); font-size: 0.69rem; font-style: italic; line-height: 1.42; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .song-search-excerpt > span:first-child { display: inline-block; margin-right: 0.35rem; color: var(--saffron-deep); font-family: "DM Sans", Arial, sans-serif; font-style: normal; font-weight: 700; }
 .song-match-count { flex: 0 0 auto; padding: 0.26rem 0.42rem; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.32); background: #fff3e2; font-size: 0.61rem; font-weight: 700; letter-spacing: 0.035em; line-height: 1; white-space: nowrap; }
@@ -280,7 +279,7 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-shloka { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.6rem); padding: clamp(2.5rem, 5vw, 4.2rem) 0; border-top: 1px solid var(--hairline); }
 .teleprompter-shloka:first-child { padding-top: 0; border-top: 0; }
 .teleprompter-verse-number { padding-top: 0.42em; color: var(--saffron-deep); font-family: "DM Sans", Arial, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; }
-.teleprompter-line { margin: 0; color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: calc(clamp(2.15rem, 4.6vw, 4.7rem) + var(--reading-font-size-adjustment, 0rem)); font-weight: 600; letter-spacing: -0.042em; line-height: var(--teleprompter-line-height, 1.03); text-wrap: balance; }
+.teleprompter-line { margin: 0; color: var(--ink); font-family: "Charis SIL", Georgia, serif; font-size: calc(clamp(2.15rem, 4.6vw, 4.7rem) + var(--reading-font-size-adjustment, 0rem)); font-weight: 600; letter-spacing: -0.042em; line-height: var(--teleprompter-line-height, 1.03); text-wrap: balance; }
 .teleprompter-line + .teleprompter-line { margin-top: 0.22em; }
 .teleprompter-line.is-indented { margin-left: clamp(1rem, 6vw, 6rem); }
 .in-song-search { position: sticky; top: 0.65rem; z-index: 50; align-self: start; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 0.55rem; align-items: center; max-width: 47rem; margin: 0 0 1.15rem auto; padding: 0.45rem 0.5rem 0.45rem 0.8rem; color: var(--ink-soft); border: 1px solid var(--hairline); background: rgba(255,252,246,0.93); box-shadow: 5px 6px 0 rgba(24,36,43,0.06); backdrop-filter: blur(12px); }
@@ -330,14 +329,6 @@ a { color: inherit; text-decoration: none; }
 .song-category-link:focus-visible, .song-poet-link:focus-visible { outline: 2px solid rgba(217,109,50,0.55); outline-offset: 0.2rem; }
 .song-insight { display: grid; min-width: 98px; gap: 0.4rem; padding: 0.9rem; color: var(--saffron-deep); background: #fcf4e8; font-size: 0.68rem; font-weight: 700; line-height: 1.25; text-transform: uppercase; letter-spacing: 0.08em; }
 .song-comment { max-width: 55ch; margin: 2rem 0 0; color: var(--ink-soft); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.3rem; font-style: italic; line-height: 1.25; }
-.translation-controls { display: flex; justify-content: space-between; gap: 1.25rem; align-items: center; margin-top: 2.4rem; padding: 0.9rem 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
-.translation-controls-copy { display: grid; gap: 0.22rem; }
-.translation-controls-copy p { margin: 0; color: var(--ink-soft); font-size: 0.76rem; }
-.translation-switch-label { display: inline-flex; flex: 0 0 auto; gap: 0.6rem; align-items: center; color: var(--saffron-deep); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.025em; }
-.translation-switch { width: 2.45rem; height: 1.36rem; border-color: rgba(24,36,43,0.16); background: #d8d1c5; box-shadow: none; }
-.translation-switch[data-state="checked"] { background: var(--saffron-deep); }
-.translation-switch:focus-visible { border-color: var(--saffron-deep); box-shadow: 0 0 0 0.2rem rgba(217,109,50,0.22); }
-.translation-switch [data-slot="switch-thumb"] { width: 1rem; height: 1rem; background: #fffaf3; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .reading-typography-controls { display: flex; justify-content: flex-end; gap: 0.8rem; align-items: center; margin-top: 1.35rem; padding: 0.48rem 0 0.48rem 0.75rem; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
 .reading-typography-heading { flex: 0 0 auto; }
@@ -358,6 +349,12 @@ a { color: inherit; text-decoration: none; }
 .line-spacing-glyph i { display: block; width: 100%; height: 1px; background: currentColor; }
 .line-spacing-glyph.is-tight { gap: 0.12rem; }
 .line-spacing-glyph.is-loose { gap: 0.3rem; }
+.reading-visibility-controls { display: inline-flex; gap: 0.38rem; align-items: center; padding-left: 0.75rem; border-left: 1px solid var(--hairline); }
+.reading-visibility-toggle { display: grid; width: 1.86rem; height: 1.86rem; place-items: center; color: var(--ink-soft); border: 1px solid var(--hairline); background: rgba(255,252,246,0.66); font-size: 0.86rem; font-weight: 700; line-height: 1; transition: color 160ms var(--ease-out), background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.reading-visibility-toggle:hover { color: var(--saffron-deep); border-color: rgba(217,109,50,0.42); background: #fff2df; }
+.reading-visibility-toggle.is-active { color: #fffaf3; border-color: var(--saffron-deep); background: var(--saffron-deep); }
+.reading-visibility-toggle:active { transform: scale(0.95); }
+.reading-visibility-toggle:focus-visible { position: relative; z-index: 1; outline: 2px solid rgba(217,109,50,0.6); outline-offset: 2px; }
 .song-verses { display: grid; gap: 2.7rem; margin-top: 3.3rem; }
 .verse-block { position: relative; display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 1.3rem; }
 .verse-number { display: grid; width: 2rem; height: 2rem; place-items: center; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.58); background: transparent; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; }
@@ -369,7 +366,7 @@ a { color: inherit; text-decoration: none; }
 .verse-translation-marker:active { transform: scale(0.94); }
 .verse-translation-marker:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.2rem; }
 .verse-copy { max-width: 48rem; }
-.transliteration { margin: 0.06rem 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: calc(clamp(1.38rem, 2.1vw, 1.75rem) + var(--reading-font-size-adjustment, 0rem)); font-weight: 600; letter-spacing: -0.02em; line-height: var(--reading-line-height, 1.12); }
+.transliteration { margin: 0.06rem 0; font-family: "Charis SIL", Georgia, serif; font-size: calc(clamp(1.38rem, 2.1vw, 1.75rem) + var(--reading-font-size-adjustment, 0rem)); font-weight: 600; letter-spacing: -0.02em; line-height: var(--reading-line-height, 1.12); }
 .transliteration.is-indented { padding-left: clamp(0.8rem, 3vw, 2.2rem); color: var(--saffron-deep); }
 .translation { max-width: 55ch; margin: 1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.85rem; font-style: italic; white-space: pre-line; line-height: 1.65; }
 .song-sheet-footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1.1rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.69rem; }

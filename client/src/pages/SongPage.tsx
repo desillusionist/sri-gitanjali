@@ -5,12 +5,12 @@
 
 import { AppShell } from "@/components/AppShell";
 import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Music2, Pause, Play, ScrollText, Search, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Music2, Pause, Play, ScrollText, Search, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
@@ -383,43 +383,39 @@ function SongPageContent() {
               <output className="visually-hidden" aria-live="polite">{lineHeightState}</output>
             </div>
           </div>
-        </section>
-
-        <section className="translation-controls ornament-controls" aria-label={copy.song.secondaryOrnamentsLabel}>
-          <div className="translation-controls-copy">
-            <span className="eyebrow">{copy.song.secondaryOrnamentsLabel}</span>
-            <p>{copy.song.secondaryOrnamentsDescription}</p>
+          <div className="reading-visibility-controls" role="group" aria-label={copy.song.readingControlsEyebrow}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className={`reading-visibility-toggle reading-ornament-toggle ${areSecondaryOrnamentsHidden ? "is-active" : ""}`}
+                  type="button"
+                  onClick={() => setAreSecondaryOrnamentsHidden((current) => !current)}
+                  aria-pressed={areSecondaryOrnamentsHidden}
+                  aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}
+                >
+                  <span aria-hidden="true">()</span>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top">{copy.song.secondaryOrnamentsDescription}</TooltipContent>
+            </Tooltip>
+            {hasTranslations && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className={`reading-visibility-toggle ${areTranslationsShown ? "is-active" : ""}`}
+                    type="button"
+                    onClick={() => setAllTranslationsVisibility(!areTranslationsShown)}
+                    aria-pressed={areTranslationsShown}
+                    aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}
+                  >
+                    <Languages size={15} aria-hidden="true" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top">{copy.song.translationsDescription}</TooltipContent>
+              </Tooltip>
+            )}
           </div>
-          <label className="translation-switch-label" htmlFor="secondary-ornaments-visibility">
-            <span>{areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}</span>
-            <Switch
-              id="secondary-ornaments-visibility"
-              className="translation-switch"
-              checked={areSecondaryOrnamentsHidden}
-              onCheckedChange={setAreSecondaryOrnamentsHidden}
-              aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}
-            />
-          </label>
         </section>
-
-        {hasTranslations && (
-          <section className="translation-controls" aria-label={copy.song.translationsLabel}>
-            <div className="translation-controls-copy">
-              <span className="eyebrow">{copy.song.translationsLabel}</span>
-              <p>{copy.song.translationsDescription}</p>
-            </div>
-            <label className="translation-switch-label" htmlFor="translation-visibility">
-              <span>{areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}</span>
-              <Switch
-                id="translation-visibility"
-                className="translation-switch"
-                checked={areTranslationsShown}
-                onCheckedChange={setAllTranslationsVisibility}
-                aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}
-              />
-            </label>
-          </section>
-        )}
 
         <div className="song-verses">
           {displayedVerses.map((verse, verseIndex) => {
