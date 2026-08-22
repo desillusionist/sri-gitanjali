@@ -169,3 +169,9 @@
 - [x] Calculate the default Slideshow pacing from the active verse’s syllable count, using one second per syllable as the reference.
 - [x] Collapse the teleprompter control rail to a single accessible play/pause control while playback is active, with a way to restore the full rail.
 - [x] Verify both modes, pace changes, timed verse transitions, collapsed/expanded controls, desktop/mobile behavior, TypeScript, and production build before saving a checkpoint.
+
+## Slideshow countdown indicator
+
+- [x] Add a compact visual countdown to the next verse in active Slideshow playback, synchronized with the syllable-based interval.
+- [x] Ensure the indicator pauses, resets, and restarts correctly after play/pause, manual verse changes, and automatic verse advances.
+- [x] Verify the countdown on desktop/mobile, its reduced playback control state, TypeScript, and production build before saving a checkpoint.

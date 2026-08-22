@@ -134,6 +134,7 @@ function SongPageContent() {
   const [teleprompterView, setTeleprompterView] = useState<TeleprompterView>("scroll");
   const [slideshowVerseIndex, setSlideshowVerseIndex] = useState(0);
   const [isSlideshowPlaying, setIsSlideshowPlaying] = useState(false);
+  const [slideshowCountdown, setSlideshowCountdown] = useState({ remainingMs: 0, totalMs: 0 });
   const [isTeleprompterControlsCollapsed, setIsTeleprompterControlsCollapsed] = useState(false);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const [isPageScrolled, setIsPageScrolled] = useState(false);
@@ -267,10 +268,21 @@ function SongPageContent() {
   }, [isTeleprompterOpen]);
 
   useEffect(() => {
-    if (!isTeleprompterOpen || teleprompterView !== "slideshow" || !isSlideshowPlaying || displayedVerses.length < 2) return;
+    if (!isTeleprompterOpen || teleprompterView !== "slideshow" || !isSlideshowPlaying || displayedVerses.length < 2) {
+      setSlideshowCountdown((current) => current.remainingMs === 0 && current.totalMs === 0 ? current : { remainingMs: 0, totalMs: 0 });
+      return;
+    }
 
     const intervalMs = getSlideshowIntervalMs(displayedVerses[slideshowVerseIndex], teleprompterSpeed);
-    const timer = window.setTimeout(() => {
+    const startedAt = performance.now();
+    const updateCountdown = () => {
+      const remainingMs = Math.max(0, intervalMs - (performance.now() - startedAt));
+      setSlideshowCountdown({ remainingMs, totalMs: intervalMs });
+    };
+
+    updateCountdown();
+    const countdownTimer = window.setInterval(updateCountdown, 125);
+    const advanceTimer = window.setTimeout(() => {
       setSlideshowVerseIndex((current) => {
         if (current >= displayedVerses.length - 1) {
           setIsSlideshowPlaying(false);
@@ -280,7 +292,10 @@ function SongPageContent() {
       });
     }, intervalMs);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearInterval(countdownTimer);
+      window.clearTimeout(advanceTimer);
+    };
   }, [displayedVerses, isSlideshowPlaying, isTeleprompterOpen, slideshowVerseIndex, teleprompterSpeed, teleprompterView]);
 
   useEffect(() => {
@@ -448,6 +463,11 @@ function SongPageContent() {
   const slideshowSyllables = countVerseSyllables(slideshowVerse?.lines ?? []);
   const slideshowIntervalMs = getSlideshowIntervalMs(slideshowVerse, teleprompterSpeed);
   const slideshowIntervalSeconds = Math.max(1, Math.round(slideshowIntervalMs / 1_000));
+  const slideshowCountdownSeconds = Math.max(0, Math.ceil(slideshowCountdown.remainingMs / 1_000));
+  const slideshowCountdownProgress = slideshowCountdown.totalMs > 0
+    ? Math.min(1, Math.max(0, 1 - slideshowCountdown.remainingMs / slideshowCountdown.totalMs))
+    : 0;
+  const slideshowCountdownLabel = copy.song.teleprompterCountdown.replace("{seconds}", String(slideshowCountdownSeconds));
   const isTeleprompterPlaying = teleprompterView === "scroll" ? isAutoScrollPlaying : isSlideshowPlaying;
   const toggleSlideshow = () => {
     if (isSlideshowPlaying) {
@@ -471,7 +491,8 @@ function SongPageContent() {
         <section className="teleprompter-overlay" role="dialog" aria-modal="true" aria-label={copy.song.teleprompterTitle}>
           <header className={`teleprompter-overlay-controls ${isTeleprompterControlsCollapsed ? "is-collapsed" : ""}`} data-teleprompter-controls>
             {isTeleprompterControlsCollapsed ? (
-              <button className="teleprompter-collapsed-control" type="button" onClick={pauseAndRestoreTeleprompterControls} aria-label={copy.song.teleprompterPauseAndShowControls}>
+              <button className="teleprompter-collapsed-control" type="button" onClick={pauseAndRestoreTeleprompterControls} aria-label={teleprompterView === "slideshow" ? `${copy.song.teleprompterPauseAndShowControls}. ${slideshowCountdownLabel}` : copy.song.teleprompterPauseAndShowControls}>
+                {teleprompterView === "slideshow" && <span className="teleprompter-countdown-ring" style={{ background: `conic-gradient(var(--saffron) ${slideshowCountdownProgress * 360}deg, rgba(24,36,43,0.14) 0deg)` }} aria-hidden="true" />}
                 <Pause size={17} aria-hidden="true" />
               </button>
             ) : <>
@@ -513,6 +534,12 @@ function SongPageContent() {
                 <output aria-live="polite">{copy.song.teleprompterSlidePosition.replace("{current}", String(slideshowVerseIndex + 1)).replace("{total}", String(displayedVerses.length))}</output>
                 <button type="button" onClick={() => moveSlideshowVerse(1)} disabled={slideshowVerseIndex === displayedVerses.length - 1} aria-label={copy.song.teleprompterNextSlide}><ChevronRight size={16} aria-hidden="true" /></button>
               </div>
+            )}
+            {teleprompterView === "slideshow" && isTeleprompterPlaying && (
+              <output className="teleprompter-slideshow-countdown" aria-label={slideshowCountdownLabel}>
+                <span className="teleprompter-countdown-dot" style={{ background: `conic-gradient(var(--saffron) ${slideshowCountdownProgress * 360}deg, rgba(24,36,43,0.14) 0deg)` }} aria-hidden="true" />
+                {slideshowCountdownLabel}
+              </output>
             )}
             </div>
             <div className="teleprompter-actions">
@@ -646,6 +673,7 @@ function SongPageContent() {
             <div className="song-meta">
               <p className="song-poet">{author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
             </div>
+            <span className="song-header-mantra mantra-line" aria-hidden="true" />
           </div>
         </div>
 

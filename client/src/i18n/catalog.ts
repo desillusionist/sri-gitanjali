@@ -165,6 +165,7 @@ export const translations = {
       teleprompterPreviousSlide: "Previous verse",
       teleprompterNextSlide: "Next verse",
       teleprompterSlidePosition: "Verse {current} of {total}",
+      teleprompterCountdown: "Next in {seconds}s",
     },
     favorites: {
       eyebrow: "Your reading shelf",
