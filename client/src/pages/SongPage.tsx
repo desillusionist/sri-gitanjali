@@ -4,13 +4,14 @@
  */
 
 import { AppShell } from "@/components/AppShell";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Music2, Pause, Play, ScrollText, Search, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, Play, ScrollText, Search, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
@@ -116,10 +117,10 @@ function SongPageContent() {
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
   const [teleprompterSpeed, setTeleprompterSpeed] = useState(initialReadingPreferences.teleprompterSpeed);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
+  const [isPageScrolled, setIsPageScrolled] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
   const teleprompterScrollRef = useRef<HTMLDivElement>(null);
   const readerPanelRef = useRef<HTMLElement>(null);
-  const readerPanelTriggerRef = useRef<HTMLButtonElement>(null);
   const song = songs.find((item) => item.id === params?.id);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
@@ -174,14 +175,16 @@ function SongPageContent() {
     const closeWhenUnused = (event: PointerEvent) => {
       const target = event.target;
       if (!(target instanceof Node)) return;
-      if (!readerPanelRef.current?.contains(target) && !readerPanelTriggerRef.current?.contains(target)) {
+      if (target instanceof HTMLElement && target.closest('[data-slot="dropdown-menu-content"]')) return;
+      const globalReaderPanelTrigger = document.getElementById("global-reading-tools-trigger");
+      if (!readerPanelRef.current?.contains(target) && !globalReaderPanelTrigger?.contains(target)) {
         setIsReaderPanelOpen(false);
       }
     };
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setIsReaderPanelOpen(false);
-      readerPanelTriggerRef.current?.focus();
+      document.getElementById("global-reading-tools-trigger")?.focus();
     };
 
     document.addEventListener("pointerdown", closeWhenUnused);
@@ -191,6 +194,27 @@ function SongPageContent() {
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [isReaderPanelOpen]);
+
+  useEffect(() => {
+    const togglePanel = () => setIsReaderPanelOpen((current) => !current);
+    window.addEventListener("kirtan-guide:toggle-reader-panel", togglePanel);
+    return () => window.removeEventListener("kirtan-guide:toggle-reader-panel", togglePanel);
+  }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent<boolean>("kirtan-guide:reader-panel-state", { detail: isReaderPanelOpen }));
+  }, [isReaderPanelOpen]);
+
+  useEffect(() => () => {
+    window.dispatchEvent(new CustomEvent<boolean>("kirtan-guide:reader-panel-state", { detail: false }));
+  }, []);
+
+  useEffect(() => {
+    const syncScrollAffordance = () => setIsPageScrolled(window.scrollY > 260);
+    syncScrollAffordance();
+    window.addEventListener("scroll", syncScrollAffordance, { passive: true });
+    return () => window.removeEventListener("scroll", syncScrollAffordance);
+  }, []);
 
   useLayoutEffect(() => {
     if (!song?.id) return;
@@ -253,7 +277,7 @@ function SongPageContent() {
     );
   }
 
-  const copySong = async () => {
+  const copySong = async (format: "plain" | "markdown") => {
     const plainText = [
       song.title,
       song.poet ?? "",
@@ -268,9 +292,23 @@ function SongPageContent() {
       .filter(Boolean)
       .join("\n");
 
+    const markdownText = [
+      `# ${song.title}`,
+      song.poet ? `*${song.poet}*` : "",
+      "",
+      ...song.verses.flatMap((verse) => [
+        `## ${copy.song.verse} ${verse.originalVerseNumber}`,
+        ...verse.lines.map((line) => line.transliteration),
+        verse.translation ? `> ${verse.translation}` : "",
+        "",
+      ]),
+    ]
+      .filter(Boolean)
+      .join("\n");
+
     try {
-      await navigator.clipboard.writeText(plainText);
-      toast.success(copy.song.copied);
+      await navigator.clipboard.writeText(format === "plain" ? plainText : markdownText);
+      toast.success(format === "plain" ? copy.song.copiedPlainText : copy.song.copiedMarkdownText);
     } catch {
       toast.error(copy.song.copyFailed);
     }
@@ -322,6 +360,8 @@ function SongPageContent() {
     setIsTeleprompterOpen(false);
   };
 
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
   const registerMatch = (matchId: string) => (element: HTMLElement | null) => {
     if (element) matchElements.current.set(matchId, element);
     else matchElements.current.delete(matchId);
@@ -343,36 +383,6 @@ function SongPageContent() {
 
   return (
     <div className={`song-page ${isTeleprompterOpen ? "is-teleprompter" : ""}`} style={readingTypographyStyle}>
-      <div className="song-toolbar">
-        <Link href="/" className="back-link"><ArrowLeft size={17} /> {copy.song.backToLibrary}</Link>
-        <div className="song-toolbar-actions">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className={`teleprompter-toggle ${isTeleprompterOpen ? "is-active" : ""}`} type="button" onClick={() => setIsTeleprompterOpen((current) => !current)} aria-expanded={isTeleprompterOpen} aria-controls="teleprompter-controls" aria-label={copy.song.teleprompterOpen}>
-                <ScrollText size={16} aria-hidden="true" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">{copy.song.teleprompterOpen}</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="quiet-icon-button" type="button" onClick={copySong} aria-label={copy.song.copyLabel}>
-                <Copy size={17} aria-hidden="true" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">{copy.song.copyLabel}</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className={`quiet-icon-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>
-                {favorite ? <BookmarkCheck size={17} aria-hidden="true" /> : <Bookmark size={17} aria-hidden="true" />}
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">{favorite ? copy.song.removeFavorite : copy.song.addFavorite}</TooltipContent>
-          </Tooltip>
-        </div>
-      </div>
-
       {isTeleprompterOpen && (
         <section className="teleprompter-overlay" role="dialog" aria-modal="true" aria-label={copy.song.teleprompterTitle}>
           <header className="teleprompter-overlay-controls" data-teleprompter-controls>
@@ -419,22 +429,6 @@ function SongPageContent() {
       )}
 
       <div className={`reader-panel-dock ${isReaderPanelOpen ? "is-open" : ""}`}>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              ref={readerPanelTriggerRef}
-              className="reader-panel-trigger"
-              type="button"
-              onClick={() => setIsReaderPanelOpen((current) => !current)}
-              aria-expanded={isReaderPanelOpen}
-              aria-controls="reader-panel"
-              aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}
-            >
-              <Gauge size={17} aria-hidden="true" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="left">{isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}</TooltipContent>
-        </Tooltip>
         <section
           ref={readerPanelRef}
           id="reader-panel"
@@ -442,6 +436,40 @@ function SongPageContent() {
           aria-label={copy.song.readerPanelLabel}
           aria-hidden={!isReaderPanelOpen}
         >
+          <div className="reader-panel-actions" role="group" aria-label={copy.song.songActionsLabel}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className={`reader-panel-action-button ${isTeleprompterOpen ? "is-active" : ""}`} type="button" onClick={() => setIsTeleprompterOpen((current) => !current)} aria-pressed={isTeleprompterOpen} aria-label={copy.song.teleprompterOpen}>
+                  <ScrollText size={16} aria-hidden="true" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">{copy.song.teleprompterOpen}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className={`reader-panel-action-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>
+                  {favorite ? <BookmarkCheck size={16} aria-hidden="true" /> : <Bookmark size={16} aria-hidden="true" />}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">{favorite ? copy.song.removeFavorite : copy.song.addFavorite}</TooltipContent>
+            </Tooltip>
+            <DropdownMenu>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuTrigger asChild>
+                    <button className="reader-panel-action-button" type="button" aria-label={copy.song.copyLabel}>
+                      <Copy size={16} aria-hidden="true" />
+                    </button>
+                  </DropdownMenuTrigger>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{copy.song.copyLabel}</TooltipContent>
+              </Tooltip>
+              <DropdownMenuContent className="reader-menu" align="end" side="bottom" sideOffset={7}>
+                <DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("plain")}>{copy.song.copyPlainText}</DropdownMenuItem>
+                <DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("markdown")}>{copy.song.copyMarkdownText}</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           <div className="reading-typography-controls" role="group" aria-label={copy.song.readingControlsLabel}>
             <p className="visually-hidden">{copy.song.readingControlsDescription}</p>
             <div className="reading-typography-actions">
@@ -553,18 +581,27 @@ function SongPageContent() {
         </section>
       </div>
 
+      {isPageScrolled && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button className="song-back-to-top" type="button" onClick={scrollToTop} aria-label={copy.song.backToTop}>
+              <ChevronUp size={18} aria-hidden="true" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="left">{copy.song.backToTop}</TooltipContent>
+        </Tooltip>
+      )}
+
       <article className="song-sheet">
-          <div className="song-sheet-intro">
+        <div className="song-sheet-intro">
           <div>
             <Link className="eyebrow song-category-link" href={categoryFilterHref} aria-label={copy.song.filterByCategory.replace("{category}", song.category)}>{song.category}</Link>
             <h1><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
-            <p className="song-poet">{author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
+            <div className="song-meta">
+              <p className="song-poet">{author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
+              <span className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</span>
+            </div>
           </div>
-          <div className="song-insight">
-            <Music2 size={19} />
-            <span>{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</span>
-          </div>
-          <span className="mantra-line song-sheet-mantra" aria-hidden="true" />
         </div>
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
