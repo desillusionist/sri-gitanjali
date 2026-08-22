@@ -151,6 +151,12 @@ export const translations = {
       teleprompterPlaying: "Auto-scrolling",
       teleprompterSpeed: "Scroll speed",
       teleprompterSpeedValue: "{speed} px per second",
+      teleprompterViewLabel: "Teleprompter reading view",
+      teleprompterScrollView: "Auto-scroll",
+      teleprompterSlideshowView: "Slideshow",
+      teleprompterPreviousSlide: "Previous verse",
+      teleprompterNextSlide: "Next verse",
+      teleprompterSlidePosition: "Verse {current} of {total}",
     },
     favorites: {
       eyebrow: "Your reading shelf",

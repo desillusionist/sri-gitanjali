@@ -140,3 +140,12 @@
 - [x] Reduce the teleprompter trigger to an icon while preserving descriptive accessible text for every control in the panel.
 - [x] Persist typography, translation, ornament, and relevant reader-panel preferences in localStorage and restore them after reload.
 - [x] Verify desktop/mobile layouts, open/close behavior, keyboard access, persistence, TypeScript, and production build before saving a checkpoint.
+
+## Navigation consolidation, layering, and teleprompter slides
+
+- [x] Move global Favorites into the logo menu, leaving only the song-reading tools trigger in global navigation on song pages.
+- [x] Fix stacking contexts so dropdown menus and all tooltips appear above the sticky global navigation and remain readable and clickable.
+- [x] Place the verse-count metadata below the song-header divider rather than alongside author metadata.
+- [x] Arrange the reader-panel controls in the requested single-row sequence with spacers and visual dividers.
+- [x] Add a teleprompter slideshow view in addition to the existing automatic-scroll reading mode.
+- [x] Verify menus, overlays, tooltips, teleprompter modes, desktop/mobile behavior, TypeScript, and production build before saving a checkpoint.

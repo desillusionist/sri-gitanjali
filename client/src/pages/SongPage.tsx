@@ -11,7 +11,7 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, Play, ScrollText, Search, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
@@ -36,6 +36,8 @@ const DEFAULT_READING_PREFERENCES: ReadingPreferences = {
   readingLineHeightStep: DEFAULT_READING_STEP,
   teleprompterSpeed: 30,
 };
+
+type TeleprompterView = "scroll" | "slideshow";
 
 function readReadingPreferences(): ReadingPreferences {
   if (typeof window === "undefined") return DEFAULT_READING_PREFERENCES;
@@ -116,6 +118,8 @@ function SongPageContent() {
   const [readingLineHeightStep, setReadingLineHeightStep] = useState(initialReadingPreferences.readingLineHeightStep);
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
   const [teleprompterSpeed, setTeleprompterSpeed] = useState(initialReadingPreferences.teleprompterSpeed);
+  const [teleprompterView, setTeleprompterView] = useState<TeleprompterView>("scroll");
+  const [slideshowVerseIndex, setSlideshowVerseIndex] = useState(0);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const [isPageScrolled, setIsPageScrolled] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
@@ -153,6 +157,7 @@ function SongPageContent() {
   useEffect(() => {
     setTranslationOverrides({});
     setIsTeleprompterOpen(false);
+    setSlideshowVerseIndex(0);
   }, [song?.id]);
 
   useEffect(() => {
@@ -360,6 +365,20 @@ function SongPageContent() {
     setIsTeleprompterOpen(false);
   };
 
+  const openTeleprompter = () => {
+    setIsReaderPanelOpen(false);
+    setIsTeleprompterOpen(true);
+  };
+
+  const setReaderView = (nextView: TeleprompterView) => {
+    pauseTeleprompter();
+    setTeleprompterView(nextView);
+  };
+
+  const moveSlideshowVerse = (direction: -1 | 1) => {
+    setSlideshowVerseIndex((current) => Math.min(displayedVerses.length - 1, Math.max(0, current + direction)));
+  };
+
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const registerMatch = (matchId: string) => (element: HTMLElement | null) => {
@@ -380,6 +399,7 @@ function SongPageContent() {
   const lineHeightState = readingLineHeightStep === DEFAULT_READING_STEP
     ? copy.song.readingDefault
     : readingLineHeightStep < DEFAULT_READING_STEP ? copy.song.readingTighter : copy.song.readingLooser;
+  const slideshowVerse = displayedVerses[slideshowVerseIndex];
 
   return (
     <div className={`song-page ${isTeleprompterOpen ? "is-teleprompter" : ""}`} style={readingTypographyStyle}>
@@ -390,41 +410,75 @@ function SongPageContent() {
               <span aria-hidden="true" />
               {isTeleprompterPlaying ? copy.song.teleprompterPlaying : copy.song.teleprompterReady}
             </div>
-            <div className="teleprompter-speed-control">
-              <label htmlFor="teleprompter-speed"><Gauge size={15} aria-hidden="true" /> {copy.song.teleprompterSpeed}</label>
-              <Slider
-                id="teleprompter-speed"
-                value={[teleprompterSpeed]}
-                min={12}
-                max={72}
-                step={2}
-                onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed ?? 30)}
-                aria-label={copy.song.teleprompterSpeed}
-              />
-              <output htmlFor="teleprompter-speed">{copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))}</output>
-            </div>
-            <div className="teleprompter-actions">
-              <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={toggleTeleprompter}>
-                {isTeleprompterPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-                <span>{isTeleprompterPlaying ? copy.song.teleprompterPause : copy.song.teleprompterStart}</span>
+            <div className="teleprompter-view-switch" role="group" aria-label={copy.song.teleprompterViewLabel}>
+              <button className={teleprompterView === "scroll" ? "is-active" : ""} type="button" onClick={() => setReaderView("scroll")} aria-pressed={teleprompterView === "scroll"}>
+                <ScrollText size={14} aria-hidden="true" />
+                <span>{copy.song.teleprompterScrollView}</span>
               </button>
+              <button className={teleprompterView === "slideshow" ? "is-active" : ""} type="button" onClick={() => setReaderView("slideshow")} aria-pressed={teleprompterView === "slideshow"}>
+                <PanelsTopLeft size={14} aria-hidden="true" />
+                <span>{copy.song.teleprompterSlideshowView}</span>
+              </button>
+            </div>
+            {teleprompterView === "scroll" ? (
+              <div className="teleprompter-speed-control">
+                <label htmlFor="teleprompter-speed"><Gauge size={15} aria-hidden="true" /> {copy.song.teleprompterSpeed}</label>
+                <Slider
+                  id="teleprompter-speed"
+                  value={[teleprompterSpeed]}
+                  min={12}
+                  max={72}
+                  step={2}
+                  onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed ?? 30)}
+                  aria-label={copy.song.teleprompterSpeed}
+                />
+                <output htmlFor="teleprompter-speed">{copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))}</output>
+              </div>
+            ) : (
+              <div className="teleprompter-slide-actions" role="group" aria-label={copy.song.teleprompterSlideshowView}>
+                <button type="button" onClick={() => moveSlideshowVerse(-1)} disabled={slideshowVerseIndex === 0} aria-label={copy.song.teleprompterPreviousSlide}><ChevronLeft size={16} aria-hidden="true" /></button>
+                <output aria-live="polite">{copy.song.teleprompterSlidePosition.replace("{current}", String(slideshowVerseIndex + 1)).replace("{total}", String(displayedVerses.length))}</output>
+                <button type="button" onClick={() => moveSlideshowVerse(1)} disabled={slideshowVerseIndex === displayedVerses.length - 1} aria-label={copy.song.teleprompterNextSlide}><ChevronRight size={16} aria-hidden="true" /></button>
+              </div>
+            )}
+            <div className="teleprompter-actions">
+              {teleprompterView === "scroll" && (
+                <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={toggleTeleprompter}>
+                  {isTeleprompterPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
+                  <span>{isTeleprompterPlaying ? copy.song.teleprompterPause : copy.song.teleprompterStart}</span>
+                </button>
+              )}
               <button className="teleprompter-close-button" type="button" onClick={closeTeleprompter} aria-label={copy.song.teleprompterClose}>
                 <X size={17} aria-hidden="true" />
               </button>
             </div>
           </header>
-          <div className="teleprompter-reading-surface" ref={teleprompterScrollRef} tabIndex={0} aria-label={copy.song.teleprompterTitle}>
-            <div className="teleprompter-reading-content">
-              {displayedVerses.map((verse, verseIndex) => (
-                <section className="teleprompter-shloka" key={verse.id}>
-                  <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
-                  <div>
-                    {verse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}>{line.transliteration}</p>)}
-                  </div>
-                </section>
-              ))}
+          {teleprompterView === "scroll" ? (
+            <div className="teleprompter-reading-surface" ref={teleprompterScrollRef} tabIndex={0} aria-label={copy.song.teleprompterTitle}>
+              <div className="teleprompter-reading-content">
+                {displayedVerses.map((verse, verseIndex) => (
+                  <section className="teleprompter-shloka" key={verse.id}>
+                    <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
+                    <div>
+                      {verse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}>{line.transliteration}</p>)}
+                    </div>
+                  </section>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : slideshowVerse ? (
+            <div className="teleprompter-slideshow-surface" tabIndex={0} aria-label={copy.song.teleprompterSlideshowView} onKeyDown={(event) => {
+              if (event.key === "ArrowLeft") moveSlideshowVerse(-1);
+              if (event.key === "ArrowRight") moveSlideshowVerse(1);
+            }}>
+              <section className="teleprompter-slideshow-verse" aria-live="polite">
+                <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${slideshowVerse.originalVerseNumber}`}>{String(slideshowVerseIndex + 1).padStart(2, "0")}</span>
+                <div>
+                  {slideshowVerse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}>{line.transliteration}</p>)}
+                </div>
+              </section>
+            </div>
+          ) : null}
         </section>
       )}
 
@@ -436,106 +490,23 @@ function SongPageContent() {
           aria-label={copy.song.readerPanelLabel}
           aria-hidden={!isReaderPanelOpen}
         >
-          <div className="reader-panel-actions" role="group" aria-label={copy.song.songActionsLabel}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className={`reader-panel-action-button ${isTeleprompterOpen ? "is-active" : ""}`} type="button" onClick={() => setIsTeleprompterOpen((current) => !current)} aria-pressed={isTeleprompterOpen} aria-label={copy.song.teleprompterOpen}>
-                  <ScrollText size={16} aria-hidden="true" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">{copy.song.teleprompterOpen}</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className={`reader-panel-action-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>
-                  {favorite ? <BookmarkCheck size={16} aria-hidden="true" /> : <Bookmark size={16} aria-hidden="true" />}
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">{favorite ? copy.song.removeFavorite : copy.song.addFavorite}</TooltipContent>
-            </Tooltip>
-            <DropdownMenu>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DropdownMenuTrigger asChild>
-                    <button className="reader-panel-action-button" type="button" aria-label={copy.song.copyLabel}>
-                      <Copy size={16} aria-hidden="true" />
-                    </button>
-                  </DropdownMenuTrigger>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">{copy.song.copyLabel}</TooltipContent>
-              </Tooltip>
-              <DropdownMenuContent className="reader-menu" align="end" side="bottom" sideOffset={7}>
-                <DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("plain")}>{copy.song.copyPlainText}</DropdownMenuItem>
-                <DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("markdown")}>{copy.song.copyMarkdownText}</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="reading-typography-controls" role="group" aria-label={copy.song.readingControlsLabel}>
+          <div className="reader-panel-toolbar" role="group" aria-label={copy.song.readingControlsLabel}>
             <p className="visually-hidden">{copy.song.readingControlsDescription}</p>
-            <div className="reading-typography-actions">
-              <div className="reading-stepper" role="group" aria-label={copy.song.readingFontSize}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button type="button" className="reading-step-button reading-type-button is-small" onClick={() => adjustReadingFontSize(-1)} disabled={readingFontSizeStep === 0} aria-label={copy.song.decreaseFontSize}>A</button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">{copy.song.decreaseFontSize}</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button type="button" className="reading-step-button reading-type-button is-large" onClick={() => adjustReadingFontSize(1)} disabled={readingFontSizeStep === READING_FONT_SIZE_ADJUSTMENTS.length - 1} aria-label={copy.song.increaseFontSize}>A</button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">{copy.song.increaseFontSize}</TooltipContent>
-                </Tooltip>
-                <output className="visually-hidden" aria-live="polite">{fontSizeState}</output>
-              </div>
-              <div className="reading-stepper" role="group" aria-label={copy.song.readingLineHeight}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(-1)} disabled={readingLineHeightStep === 0} aria-label={copy.song.decreaseLineSpacing}><span className="line-spacing-glyph is-tight" aria-hidden="true"><i /><i /><i /></span></button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">{copy.song.decreaseLineSpacing}</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(1)} disabled={readingLineHeightStep === READING_LINE_HEIGHTS.length - 1} aria-label={copy.song.increaseLineSpacing}><span className="line-spacing-glyph is-loose" aria-hidden="true"><i /><i /><i /></span></button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">{copy.song.increaseLineSpacing}</TooltipContent>
-                </Tooltip>
-                <output className="visually-hidden" aria-live="polite">{lineHeightState}</output>
-              </div>
-            </div>
-            <div className="reading-visibility-controls" role="group" aria-label={copy.song.readerVisibilityLabel}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    className={`reading-visibility-toggle reading-ornament-toggle ${areSecondaryOrnamentsHidden ? "is-active" : ""}`}
-                    type="button"
-                    onClick={() => setAreSecondaryOrnamentsHidden((current) => !current)}
-                    aria-pressed={areSecondaryOrnamentsHidden}
-                    aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}
-                  >
-                    <span aria-hidden="true">()</span>
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">{areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.secondaryOrnamentsDescription}</TooltipContent>
-              </Tooltip>
-              {hasTranslations && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      className={`reading-visibility-toggle ${areTranslationsShown ? "is-active" : ""}`}
-                      type="button"
-                      onClick={() => setAllTranslationsVisibility(!areTranslationsShown)}
-                      aria-pressed={areTranslationsShown}
-                      aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}
-                    >
-                      <Languages size={15} aria-hidden="true" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">{areTranslationsShown ? copy.song.hideAllTranslations : copy.song.translationsDescription}</TooltipContent>
-                </Tooltip>
-              )}
-            </div>
+            <Tooltip><TooltipTrigger asChild><button type="button" className="reading-step-button reading-type-button is-small" onClick={() => adjustReadingFontSize(-1)} disabled={readingFontSizeStep === 0} aria-label={copy.song.decreaseFontSize}>A</button></TooltipTrigger><TooltipContent side="bottom">{copy.song.decreaseFontSize}</TooltipContent></Tooltip>
+            <Tooltip><TooltipTrigger asChild><button type="button" className="reading-step-button reading-type-button is-large" onClick={() => adjustReadingFontSize(1)} disabled={readingFontSizeStep === READING_FONT_SIZE_ADJUSTMENTS.length - 1} aria-label={copy.song.increaseFontSize}>A</button></TooltipTrigger><TooltipContent side="bottom">{copy.song.increaseFontSize}</TooltipContent></Tooltip>
+            <span className="reader-panel-space" aria-hidden="true" />
+            <Tooltip><TooltipTrigger asChild><button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(-1)} disabled={readingLineHeightStep === 0} aria-label={copy.song.decreaseLineSpacing}><span className="line-spacing-glyph is-tight" aria-hidden="true"><i /><i /><i /></span></button></TooltipTrigger><TooltipContent side="bottom">{copy.song.decreaseLineSpacing}</TooltipContent></Tooltip>
+            <Tooltip><TooltipTrigger asChild><button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(1)} disabled={readingLineHeightStep === READING_LINE_HEIGHTS.length - 1} aria-label={copy.song.increaseLineSpacing}><span className="line-spacing-glyph is-loose" aria-hidden="true"><i /><i /><i /></span></button></TooltipTrigger><TooltipContent side="bottom">{copy.song.increaseLineSpacing}</TooltipContent></Tooltip>
+            <span className="reader-panel-space" aria-hidden="true" /><span className="reader-panel-divider" aria-hidden="true" /><span className="reader-panel-space" aria-hidden="true" />
+            <Tooltip><TooltipTrigger asChild><button className={`reading-visibility-toggle ${areSecondaryOrnamentsHidden ? "is-active" : ""}`} type="button" onClick={() => setAreSecondaryOrnamentsHidden((current) => !current)} aria-pressed={areSecondaryOrnamentsHidden} aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}><span aria-hidden="true">()</span></button></TooltipTrigger><TooltipContent side="bottom">{areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.secondaryOrnamentsDescription}</TooltipContent></Tooltip>
+            {hasTranslations && <><span className="reader-panel-space" aria-hidden="true" /><Tooltip><TooltipTrigger asChild><button className={`reading-visibility-toggle ${areTranslationsShown ? "is-active" : ""}`} type="button" onClick={() => setAllTranslationsVisibility(!areTranslationsShown)} aria-pressed={areTranslationsShown} aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}><Languages size={15} aria-hidden="true" /></button></TooltipTrigger><TooltipContent side="bottom">{areTranslationsShown ? copy.song.hideAllTranslations : copy.song.translationsDescription}</TooltipContent></Tooltip></>}
+            <span className="reader-panel-space" aria-hidden="true" /><span className="reader-panel-divider" aria-hidden="true" /><span className="reader-panel-space" aria-hidden="true" />
+            <Tooltip><TooltipTrigger asChild><button className="reader-panel-action-button" type="button" onClick={openTeleprompter} aria-label={copy.song.teleprompterOpen}><ScrollText size={16} aria-hidden="true" /></button></TooltipTrigger><TooltipContent side="bottom">{copy.song.teleprompterOpen}</TooltipContent></Tooltip>
+            <span className="reader-panel-space" aria-hidden="true" />
+            <Tooltip><TooltipTrigger asChild><button className={`reader-panel-action-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>{favorite ? <BookmarkCheck size={16} aria-hidden="true" /> : <Bookmark size={16} aria-hidden="true" />}</button></TooltipTrigger><TooltipContent side="bottom">{favorite ? copy.song.removeFavorite : copy.song.addFavorite}</TooltipContent></Tooltip>
+            <span className="reader-panel-space" aria-hidden="true" />
+            <DropdownMenu><Tooltip><TooltipTrigger asChild><DropdownMenuTrigger asChild><button className="reader-panel-action-button" type="button" aria-label={copy.song.copyLabel}><Copy size={16} aria-hidden="true" /></button></DropdownMenuTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.copyLabel}</TooltipContent></Tooltip><DropdownMenuContent className="reader-menu" align="end" side="bottom" sideOffset={7}><DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("plain")}>{copy.song.copyPlainText}</DropdownMenuItem><DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("markdown")}>{copy.song.copyMarkdownText}</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+            <output className="visually-hidden" aria-live="polite">{fontSizeState}, {lineHeightState}</output>
           </div>
           <section className="in-song-search" aria-label={copy.song.inSongSearchLabel}>
             <Search size={16} aria-hidden="true" />
@@ -599,10 +570,11 @@ function SongPageContent() {
             <h1><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
             <div className="song-meta">
               <p className="song-poet">{author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
-              <span className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</span>
             </div>
           </div>
         </div>
+
+        <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
 

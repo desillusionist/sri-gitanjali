@@ -49,10 +49,6 @@ export function AppShell({ children }: AppShellProps) {
     document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const rails = [
-    { href: "/favorites", label: copy.navigation.favorites, icon: Bookmark, match: (path: string) => path === "/favorites" },
-  ];
-
   const toggleReaderPanel = () => {
     window.dispatchEvent(new Event("kirtan-guide:toggle-reader-panel"));
   };
@@ -86,6 +82,12 @@ export function AppShell({ children }: AppShellProps) {
                 <span>{copy.navigation.search}</span>
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild className="brand-menu-item">
+              <Link href="/favorites">
+                <Bookmark aria-hidden="true" size={17} strokeWidth={1.7} />
+                <span>{copy.navigation.favorites}</span>
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -100,20 +102,6 @@ export function AppShell({ children }: AppShellProps) {
               <TooltipContent side="right">{isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}</TooltipContent>
             </Tooltip>
           )}
-          {rails.map(({ href, label, icon: Icon, match }) => {
-            const isActive = match(location);
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={`rail-nav-link ${isActive ? "is-active" : ""}`}
-                aria-current={isActive ? "page" : undefined}
-              >
-                <Icon aria-hidden="true" size={18} strokeWidth={1.7} />
-                <span>{label}</span>
-              </Link>
-            );
-          })}
         </nav>
 
         <div className="rail-note">
