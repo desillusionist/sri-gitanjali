@@ -102,7 +102,7 @@ export const translations = {
       audioPlayerLabel: "SoundCloud recording",
       audioRecordingEyebrow: "Recorded kīrtan",
       audioRecordingDetail: "A linked SoundCloud recording stays close to these lines for practice.",
-      playAudioTrack: "Hear the recording",
+      playAudioTrack: "Listen",
       hideAudioPlayer: "Hide player",
       soundCloudPlayerTitle: "SoundCloud player: {song}",
       audioPlayerLoading: "Preparing the SoundCloud player…",

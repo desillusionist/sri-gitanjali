@@ -202,3 +202,9 @@
 ## Recording filter label
 
 - [x] Change the visible recording-filter option to “With recordings”, verify it in the catalog, and save a checkpoint.
+
+## Compact song audio control
+
+- [x] Move the audio action to the verse-count row, align it right, and use “Listen” as its visible label.
+- [x] Use the recording description only as an accessible label and remove the redundant header, subheader, and divider.
+- [x] Verify desktop/mobile layout, SoundCloud opening, accessibility, TypeScript, production build, and save a checkpoint.

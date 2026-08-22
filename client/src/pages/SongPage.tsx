@@ -730,26 +730,23 @@ function SongPageContent() {
           </div>
         </div>
 
-        <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
-
-        {soundCloudSourceUrl && (
-          <section className="song-audio" aria-label={copy.song.audioPlayerLabel}>
-            <div className="song-audio-header">
-              <div>
-                <p className="song-audio-eyebrow">{copy.song.audioRecordingEyebrow}</p>
-                <p className="song-audio-detail">{copy.song.audioRecordingDetail}</p>
-              </div>
-              <button className="song-audio-toggle" type="button" onClick={() => {
+        <div className="song-utility-row">
+          <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
+          {soundCloudSourceUrl && (
+            <button className="song-audio-toggle" type="button" onClick={() => {
                 if (isSoundCloudPlayerOpen) {
                   setIsSoundCloudPlayerOpen(false);
                   return;
                 }
                 openSoundCloudPlayer();
-              }} aria-expanded={isSoundCloudPlayerOpen} aria-controls={`soundcloud-player-${song.id}`}>
+              }} aria-expanded={isSoundCloudPlayerOpen} aria-controls={`soundcloud-player-${song.id}`} aria-label={copy.song.audioRecordingDetail}>
                 <Volume2 size={16} aria-hidden="true" />
                 <span>{isSoundCloudPlayerOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}</span>
-              </button>
-            </div>
+            </button>
+          )}
+        </div>
+        {soundCloudSourceUrl && (
+          <div className="song-audio" aria-label={copy.song.audioPlayerLabel}>
             {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "loading" && <p className="song-audio-status" role="status">{copy.song.audioPlayerLoading}</p>}
             {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={soundCloudSourceUrl} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
             {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "ready" && soundCloudPlayerUrl && (
@@ -762,7 +759,7 @@ function SongPageContent() {
                 loading="lazy"
               />
             )}
-          </section>
+          </div>
         )}
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
