@@ -162,3 +162,10 @@
 - [x] Consolidate mode selection, tempo, verse progress, direct navigation, and play/pause so each mode only shows its relevant controls.
 - [x] Preserve all existing teleprompter logic, keyboard accessibility, and Pilgrim Scroll visual language while reducing unused space.
 - [x] Verify desktop/mobile layouts, both modes, play/pause, speed changes, verse navigation, TypeScript, and production build before saving a checkpoint.
+
+## Teleprompter tempo and collapsed playback controls
+
+- [x] Allow Auto-scroll to start at 1 px/s while preserving clear, usable speed adjustments.
+- [x] Calculate the default Slideshow pacing from the active verse’s syllable count, using one second per syllable as the reference.
+- [x] Collapse the teleprompter control rail to a single accessible play/pause control while playback is active, with a way to restore the full rail.
+- [x] Verify both modes, pace changes, timed verse transitions, collapsed/expanded controls, desktop/mobile behavior, TypeScript, and production build before saving a checkpoint.
