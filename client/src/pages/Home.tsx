@@ -11,7 +11,9 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import {
   ALL_AUTHORS_FILTER,
   ALL_CATEGORIES_FILTER,
+  ALL_RECORDINGS_FILTER,
   UNLISTED_AUTHOR_FILTER,
+  WITH_RECORDINGS_FILTER,
   defaultSongSearchFilters,
   filterSongs,
   getSongAuthors,
@@ -21,7 +23,7 @@ import {
   hasActiveSongFilters,
 } from "@/domain/song";
 import { useRecentSearches } from "@/hooks/useRecentSearches";
-import { ArrowUpRight, ArrowDownAZ, BookOpen, Clock3, DatabaseZap, LibraryBig, Loader2, Search, Sparkles, Trash2, X } from "lucide-react";
+import { ArrowUpRight, ArrowDownAZ, BookOpen, Clock3, DatabaseZap, LibraryBig, Loader2, Search, Sparkles, Trash2, Volume2, X } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
 import { Link } from "wouter";
@@ -56,10 +58,11 @@ function LibraryHome() {
       query: parameters.get("q") ?? defaultSongSearchFilters.query,
       author: parameters.get("author") ?? defaultSongSearchFilters.author,
       category: parameters.get("category") ?? defaultSongSearchFilters.category,
+      recording: parameters.get("recording") === WITH_RECORDINGS_FILTER ? WITH_RECORDINGS_FILTER : defaultSongSearchFilters.recording,
     };
 
     setFilters((current) => (
-      current.query === nextFilters.query && current.author === nextFilters.author && current.category === nextFilters.category
+      current.query === nextFilters.query && current.author === nextFilters.author && current.category === nextFilters.category && current.recording === nextFilters.recording
         ? current
         : nextFilters
     ));
@@ -194,6 +197,18 @@ function LibraryHome() {
               <SelectContent className="filter-select-content">
                 <SelectItem value={ALL_CATEGORIES_FILTER}>{copy.library.allCategories}</SelectItem>
                 {availableCategories.map((category) => <SelectItem value={category} key={category}>{category}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </label>
+          <label className="filter-field">
+            <span>{copy.library.filterRecording}</span>
+            <Select value={filters.recording} onValueChange={(recording) => updateFilters({ recording: recording as typeof ALL_RECORDINGS_FILTER | typeof WITH_RECORDINGS_FILTER })}>
+              <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterRecording}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="filter-select-content">
+                <SelectItem value={ALL_RECORDINGS_FILTER}>{copy.library.allRecordings}</SelectItem>
+                <SelectItem value={WITH_RECORDINGS_FILTER}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.withRecordings}</span></SelectItem>
               </SelectContent>
             </Select>
           </label>

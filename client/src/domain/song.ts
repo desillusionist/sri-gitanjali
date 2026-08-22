@@ -43,11 +43,16 @@ export type SongDataStatus = "idle" | "loading" | "ready" | "error";
 export const ALL_AUTHORS_FILTER = "__all_authors__";
 export const ALL_CATEGORIES_FILTER = "__all_categories__";
 export const UNLISTED_AUTHOR_FILTER = "__unlisted_author__";
+export const ALL_RECORDINGS_FILTER = "__all_recordings__";
+export const WITH_RECORDINGS_FILTER = "__with_recordings__";
+
+export type RecordingFilter = typeof ALL_RECORDINGS_FILTER | typeof WITH_RECORDINGS_FILTER;
 
 export type SongSearchFilters = {
   query: string;
   author: string;
   category: string;
+  recording: RecordingFilter;
 };
 
 export type HighlightPart = {
@@ -75,6 +80,7 @@ export const defaultSongSearchFilters: SongSearchFilters = {
   query: "",
   author: ALL_AUTHORS_FILTER,
   category: ALL_CATEGORIES_FILTER,
+  recording: ALL_RECORDINGS_FILTER,
 };
 
 export const categoryOrder = [
@@ -95,6 +101,21 @@ export const categoryOrder = [
 
 export function songFirstLine(song: Song): string {
   return song.verses[0]?.lines[0]?.transliteration.trim() || song.title;
+}
+
+export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink">): string | null {
+  if (!song.audioLink) return null;
+
+  try {
+    const sourceUrl = new URL(song.audioLink);
+    return /(^|\.)soundcloud\.com$/i.test(sourceUrl.hostname) ? sourceUrl.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+export function hasSoundCloudRecording(song: Pick<Song, "audioLink">): boolean {
+  return Boolean(getSoundCloudRecordingUrl(song));
 }
 
 /**
@@ -307,13 +328,14 @@ export function filterSongs(songs: Song[], filters: SongSearchFilters): Song[] {
       filters.author === ALL_AUTHORS_FILTER ||
       (filters.author === UNLISTED_AUTHOR_FILTER ? !song.poet?.trim() : song.poet?.trim() === filters.author);
     const matchesCategory = filters.category === ALL_CATEGORIES_FILTER || song.category === filters.category;
+    const matchesRecording = filters.recording === ALL_RECORDINGS_FILTER || hasSoundCloudRecording(song);
 
-    return matchesQuery && matchesAuthor && matchesCategory;
+    return matchesQuery && matchesAuthor && matchesCategory && matchesRecording;
   });
 }
 
 export function hasActiveSongFilters(filters: SongSearchFilters): boolean {
-  return Boolean(normalizeSearchText(filters.query)) || filters.author !== ALL_AUTHORS_FILTER || filters.category !== ALL_CATEGORIES_FILTER;
+  return Boolean(normalizeSearchText(filters.query)) || filters.author !== ALL_AUTHORS_FILTER || filters.category !== ALL_CATEGORIES_FILTER || filters.recording !== ALL_RECORDINGS_FILTER;
 }
 
 export function groupSongsByCategory(songs: Song[]): SongCategory[] {

@@ -8,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrl, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
@@ -32,18 +32,6 @@ function countVerseSyllables(lines: Array<{ transliteration: string }>) {
 function getSlideshowIntervalMs(verse: { lines: Array<{ transliteration: string }> } | undefined, speed: number) {
   const baselineSeconds = Math.max(1, countVerseSyllables(verse?.lines ?? []));
   return Math.round(baselineSeconds * 1_000 * (DEFAULT_TELEPROMPTER_SPEED / Math.max(MIN_TELEPROMPTER_SPEED, speed)));
-}
-
-function getSoundCloudSourceUrl(audioLink?: string) {
-  if (!audioLink) return null;
-
-  try {
-    const sourceUrl = new URL(audioLink);
-    if (!/(^|\.)soundcloud\.com$/i.test(sourceUrl.hostname)) return null;
-    return sourceUrl.toString();
-  } catch {
-    return null;
-  }
 }
 
 function getSoundCloudPlayerUrl(embedHtml: unknown) {
@@ -182,7 +170,7 @@ function SongPageContent() {
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
   const next = index >= 0 && index < songs.length - 1 ? songs[index + 1] : null;
-  const soundCloudSourceUrl = useMemo(() => getSoundCloudSourceUrl(song?.audioLink), [song?.audioLink]);
+  const soundCloudSourceUrl = useMemo(() => (song ? getSoundCloudRecordingUrl(song) : null), [song]);
   const displayedVerses = useMemo(() => {
     if (!song) return [];
 

@@ -192,3 +192,9 @@
 - [x] Ensure the Reading Tools trigger does not cover the opened reader panel while the panel remains easy to close.
 - [x] Audit the song data for SoundCloud references and add an accessible player only when a valid track link exists.
 - [x] Verify audio controls, desktop/mobile panel layout, TypeScript, production build, and save a checkpoint.
+
+## Audio discovery in catalog
+
+- [x] Add an accessible audio marker to catalog cards for songs with a valid SoundCloud recording.
+- [x] Add a main-catalog filter for songs with recordings and retain its state alongside existing search filters.
+- [x] Verify filtering, markers, desktop/mobile layout, TypeScript, production build, and save a checkpoint.
