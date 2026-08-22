@@ -5,11 +5,11 @@
 
 import { brandAssets } from "@/data/sources";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { BookOpenText, Bookmark, ChevronDown, LibraryBig, Search, SlidersHorizontal } from "lucide-react";
+import { BookOpenText, Bookmark, ChevronDown, LibraryBig, Search } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link, useLocation } from "wouter";
-import { useEffect, useState, type MouseEvent, type ReactNode } from "react";
+import { useState, type MouseEvent, type ReactNode } from "react";
 
 type AppShellProps = {
   children: ReactNode;
@@ -18,26 +18,7 @@ type AppShellProps = {
 export function AppShell({ children }: AppShellProps) {
   const [location] = useLocation();
   const { copy } = useTranslation();
-  const [activeHash, setActiveHash] = useState(() => window.location.hash);
-  const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
-
-  useEffect(() => {
-    const syncHash = () => setActiveHash(window.location.hash);
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
-  }, []);
-
-  useEffect(() => {
-    setActiveHash(window.location.hash);
-  }, [location]);
-
-  useEffect(() => {
-    const syncReaderPanel = (event: Event) => setIsReaderPanelOpen(Boolean((event as CustomEvent<boolean>).detail));
-    window.addEventListener("kirtan-guide:reader-panel-state", syncReaderPanel);
-    return () => window.removeEventListener("kirtan-guide:reader-panel-state", syncReaderPanel);
-  }, []);
-
-  const isSongPage = location.startsWith("/song/");
+  const [isBrandMenuOpen, setIsBrandMenuOpen] = useState(false);
 
   const navigateToHomeSection = (event: MouseEvent<HTMLAnchorElement>, targetId: "search" | "library") => {
     if (location !== "/" || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -45,18 +26,13 @@ export function AppShell({ children }: AppShellProps) {
     event.preventDefault();
     const hash = `#${targetId}`;
     window.history.pushState(null, "", `/${hash}`);
-    setActiveHash(hash);
     document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const toggleReaderPanel = () => {
-    window.dispatchEvent(new Event("kirtan-guide:toggle-reader-panel"));
   };
 
   return (
     <div className="app-shell">
       <header className="reading-rail" aria-label={copy.navigation.mainLabel}>
-        <DropdownMenu>
+        <DropdownMenu open={isBrandMenuOpen} onOpenChange={setIsBrandMenuOpen}>
           <Tooltip>
             <TooltipTrigger asChild>
               <DropdownMenuTrigger asChild>
@@ -71,39 +47,25 @@ export function AppShell({ children }: AppShellProps) {
           </Tooltip>
           <DropdownMenuContent className="brand-menu" align="start" side="bottom" sideOffset={8}>
             <DropdownMenuItem asChild className="brand-menu-item">
-              <Link href="/#library" onClick={(event) => navigateToHomeSection(event, "library")}>
+              <Link href="/#library" onClick={(event) => { navigateToHomeSection(event, "library"); setIsBrandMenuOpen(false); }}>
                 <LibraryBig aria-hidden="true" size={17} strokeWidth={1.7} />
                 <span>{copy.navigation.library}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="brand-menu-item">
-              <Link href="/#search" onClick={(event) => navigateToHomeSection(event, "search")}>
+              <Link href="/#search" onClick={(event) => { navigateToHomeSection(event, "search"); setIsBrandMenuOpen(false); }}>
                 <Search aria-hidden="true" size={17} strokeWidth={1.7} />
                 <span>{copy.navigation.search}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="brand-menu-item">
-              <Link href="/favorites">
+              <Link href="/favorites" onClick={() => setIsBrandMenuOpen(false)}>
                 <Bookmark aria-hidden="true" size={17} strokeWidth={1.7} />
                 <span>{copy.navigation.favorites}</span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <nav className="rail-nav">
-          {isSongPage && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button id="global-reading-tools-trigger" className={`rail-nav-link rail-reader-tools-trigger ${isReaderPanelOpen ? "is-active" : ""}`} type="button" onClick={toggleReaderPanel} aria-expanded={isReaderPanelOpen} aria-controls="reader-panel" aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}>
-                  <SlidersHorizontal aria-hidden="true" size={18} strokeWidth={1.7} />
-                  <span className="rail-reader-tools-label">{copy.song.readingTools}</span>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right">{isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}</TooltipContent>
-            </Tooltip>
-          )}
-        </nav>
 
         <div className="rail-note">
           <BookOpenText aria-hidden="true" size={17} />

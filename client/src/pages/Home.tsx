@@ -241,8 +241,6 @@ function LibraryHome() {
                 </TabsList>
               </div>
             </div>
-            <span className="mantra-line section-mantra" aria-hidden="true" />
-
             {filteredSongs.length ? (
               <>
                 <TabsContent value="library" className="library-view-panel">
@@ -274,7 +272,6 @@ function LibraryHome() {
                                 </button>
                               ) : <span className="category-song-count">{category.songs.length} {copy.library.songCount}</span>}
                             </header>
-                            <span className="mantra-line category-mantra" aria-hidden="true" />
                             <div className="song-list" id={songListId}>
                               {visibleSongs.map((song) => <SongListItem song={song} query={filters.query} key={song.id} />)}
                             </div>

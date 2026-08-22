@@ -11,7 +11,7 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
@@ -199,15 +199,15 @@ function SongPageContent() {
       const target = event.target;
       if (!(target instanceof Node)) return;
       if (target instanceof HTMLElement && target.closest('[data-slot="dropdown-menu-content"]')) return;
-      const globalReaderPanelTrigger = document.getElementById("global-reading-tools-trigger");
-      if (!readerPanelRef.current?.contains(target) && !globalReaderPanelTrigger?.contains(target)) {
+      const songReaderPanelTrigger = document.getElementById("song-reading-tools-trigger");
+      if (!readerPanelRef.current?.contains(target) && !songReaderPanelTrigger?.contains(target)) {
         setIsReaderPanelOpen(false);
       }
     };
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setIsReaderPanelOpen(false);
-      document.getElementById("global-reading-tools-trigger")?.focus();
+      document.getElementById("song-reading-tools-trigger")?.focus();
     };
 
     document.addEventListener("pointerdown", closeWhenUnused);
@@ -217,20 +217,6 @@ function SongPageContent() {
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [isReaderPanelOpen]);
-
-  useEffect(() => {
-    const togglePanel = () => setIsReaderPanelOpen((current) => !current);
-    window.addEventListener("kirtan-guide:toggle-reader-panel", togglePanel);
-    return () => window.removeEventListener("kirtan-guide:toggle-reader-panel", togglePanel);
-  }, []);
-
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent<boolean>("kirtan-guide:reader-panel-state", { detail: isReaderPanelOpen }));
-  }, [isReaderPanelOpen]);
-
-  useEffect(() => () => {
-    window.dispatchEvent(new CustomEvent<boolean>("kirtan-guide:reader-panel-state", { detail: false }));
-  }, []);
 
   useEffect(() => {
     const syncScrollAffordance = () => setIsPageScrolled(window.scrollY > 260);
@@ -666,6 +652,25 @@ function SongPageContent() {
       )}
 
       <article className="song-sheet">
+        <div className="song-reading-tools-dock">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                id="song-reading-tools-trigger"
+                className={`song-reading-tools-trigger ${isReaderPanelOpen ? "is-active" : ""}`}
+                type="button"
+                onClick={() => setIsReaderPanelOpen((current) => !current)}
+                aria-expanded={isReaderPanelOpen}
+                aria-controls="reader-panel"
+                aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}
+              >
+                <SlidersHorizontal aria-hidden="true" size={17} strokeWidth={1.8} />
+                <span>{copy.song.readingTools}</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="left">{isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}</TooltipContent>
+          </Tooltip>
+        </div>
         <div className="song-sheet-intro">
           <div>
             <Link className="eyebrow song-category-link" href={categoryFilterHref} aria-label={copy.song.filterByCategory.replace("{category}", song.category)}>{song.category}</Link>
@@ -673,7 +678,6 @@ function SongPageContent() {
             <div className="song-meta">
               <p className="song-poet">{author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
             </div>
-            <span className="song-header-mantra mantra-line" aria-hidden="true" />
           </div>
         </div>
 

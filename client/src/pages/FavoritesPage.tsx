@@ -34,7 +34,6 @@ function FavoritesContent() {
         <span className="eyebrow">{copy.favorites.eyebrow}</span>
         <h1>{copy.favorites.title}<br /><em>{copy.favorites.titleEmphasis}</em></h1>
         <p>{copy.favorites.lede}</p>
-        <span className="mantra-line favorites-mantra" aria-hidden="true" />
         <div className="favorites-count">
           <BookmarkCheck size={18} />
           <strong>{favorites.length}</strong>
@@ -51,7 +50,6 @@ function FavoritesContent() {
             </div>
             <p>{copy.favorites.sectionDetail}</p>
           </div>
-          <span className="mantra-line section-mantra" aria-hidden="true" />
           <div className="favorites-song-list">
             {favorites.map((song) => <SongListItem song={song} key={song.id} />)}
           </div>

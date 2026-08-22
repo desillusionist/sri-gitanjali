@@ -176,3 +176,9 @@
 - [x] Ensure the indicator pauses, resets, and restarts correctly after play/pause, manual verse changes, and automatic verse advances.
 - [x] Verify the countdown on desktop/mobile, its reduced playback control state, TypeScript, and production build before saving a checkpoint.
 
+## Navigation, reading tools, and diacritics
+
+- [x] Close the global navigation menu after every destination choice, including in-page Search and Library anchors.
+- [x] Remove the long-line-and-ring decorative span motif throughout the UI.
+- [x] Move Reading Tools to a sticky top-right position on the song article while retaining every existing control.
+- [x] Make the ā̐ compound glyph render consistently with the selected verse typeface on desktop and mobile, then verify build and responsive behavior.
