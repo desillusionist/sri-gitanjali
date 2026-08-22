@@ -112,7 +112,6 @@ function LibraryHome() {
           <p className="eyebrow">{copy.library.eyebrow}</p>
           <h1>{copy.library.title}<br /><em>{copy.library.titleEmphasis}</em></h1>
           <p className="header-lede">{copy.library.lede}</p>
-          <span className="mantra-line header-mantra" aria-hidden="true" />
         </div>
         <div className="hero-art" role="img" aria-label={copy.library.heroAlt}>
           <img src={brandAssets.libraryHero} alt="" />
@@ -272,7 +271,6 @@ function LibraryHome() {
                                   onClick={() => toggleCategoryExpansion(category.id)}
                                 >
                                   <span>{category.songs.length} {copy.library.songCount}</span>
-                                  <span>{isExpanded ? copy.library.showFewerCategorySongs : copy.library.seeAllCategorySongs}</span>
                                 </button>
                               ) : <span className="category-song-count">{category.songs.length} {copy.library.songCount}</span>}
                             </header>

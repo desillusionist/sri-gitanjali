@@ -175,3 +175,4 @@
 - [x] Add a compact visual countdown to the next verse in active Slideshow playback, synchronized with the syllable-based interval.
 - [x] Ensure the indicator pauses, resets, and restarts correctly after play/pause, manual verse changes, and automatic verse advances.
 - [x] Verify the countdown on desktop/mobile, its reduced playback control state, TypeScript, and production build before saving a checkpoint.
+

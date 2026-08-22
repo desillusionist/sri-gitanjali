@@ -14,7 +14,7 @@ export const translations = {
     },
     railNote: "Songs stay close, even when the printed book is far away.",
     library: {
-      eyebrow: "Kīrtan Guide / local library",
+      eyebrow: "Śrī Chaitanya Sāraswat Maṭh Kīrtan Guide / Gupta Govardhan Edition",
       title: "Find the line,",
       titleEmphasis: "that begins the singing.",
       lede: "A companion for finding, reading, and returning to the songs that carry the gathering.",

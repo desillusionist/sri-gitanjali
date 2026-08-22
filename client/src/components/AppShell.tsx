@@ -106,7 +106,6 @@ export function AppShell({ children }: AppShellProps) {
         </nav>
 
         <div className="rail-note">
-          <span className="rail-note-rule" />
           <BookOpenText aria-hidden="true" size={17} />
           <p>{copy.railNote}</p>
         </div>
