@@ -18,6 +18,52 @@ import { toast } from "sonner";
 const READING_FONT_SIZE_ADJUSTMENTS = [-0.18, -0.09, 0, 0.12, 0.24] as const;
 const READING_LINE_HEIGHTS = [1.04, 1.08, 1.12, 1.18, 1.26] as const;
 const DEFAULT_READING_STEP = 2;
+const READING_PREFERENCES_STORAGE_KEY = "kirtan-guide.reading-preferences";
+
+type ReadingPreferences = {
+  areTranslationsShown: boolean;
+  areSecondaryOrnamentsHidden: boolean;
+  readingFontSizeStep: number;
+  readingLineHeightStep: number;
+  teleprompterSpeed: number;
+};
+
+const DEFAULT_READING_PREFERENCES: ReadingPreferences = {
+  areTranslationsShown: true,
+  areSecondaryOrnamentsHidden: false,
+  readingFontSizeStep: DEFAULT_READING_STEP,
+  readingLineHeightStep: DEFAULT_READING_STEP,
+  teleprompterSpeed: 30,
+};
+
+function readReadingPreferences(): ReadingPreferences {
+  if (typeof window === "undefined") return DEFAULT_READING_PREFERENCES;
+
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(READING_PREFERENCES_STORAGE_KEY) ?? "null") as Partial<ReadingPreferences> | null;
+    if (!parsed) return DEFAULT_READING_PREFERENCES;
+
+    const fontSizeStep = typeof parsed.readingFontSizeStep === "number"
+      ? Math.min(READING_FONT_SIZE_ADJUSTMENTS.length - 1, Math.max(0, parsed.readingFontSizeStep))
+      : DEFAULT_READING_STEP;
+    const lineHeightStep = typeof parsed.readingLineHeightStep === "number"
+      ? Math.min(READING_LINE_HEIGHTS.length - 1, Math.max(0, parsed.readingLineHeightStep))
+      : DEFAULT_READING_STEP;
+    const teleprompterSpeed = typeof parsed.teleprompterSpeed === "number"
+      ? Math.min(72, Math.max(12, parsed.teleprompterSpeed))
+      : 30;
+
+    return {
+      areTranslationsShown: typeof parsed.areTranslationsShown === "boolean" ? parsed.areTranslationsShown : true,
+      areSecondaryOrnamentsHidden: typeof parsed.areSecondaryOrnamentsHidden === "boolean" ? parsed.areSecondaryOrnamentsHidden : false,
+      readingFontSizeStep: fontSizeStep,
+      readingLineHeightStep: lineHeightStep,
+      teleprompterSpeed,
+    };
+  } catch {
+    return DEFAULT_READING_PREFERENCES;
+  }
+}
 
 function SongMatchText({
   value,
@@ -59,17 +105,21 @@ function SongPageContent() {
   const { songs, status, isFavorite, toggleFavorite } = useSongLibrary();
   const { copy } = useTranslation();
   const routeQuery = typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("q") ?? "";
+  const [initialReadingPreferences] = useState(readReadingPreferences);
   const [query, setQuery] = useState(routeQuery);
   const [activeMatchIndex, setActiveMatchIndex] = useState(0);
-  const [areTranslationsShown, setAreTranslationsShown] = useState(true);
+  const [areTranslationsShown, setAreTranslationsShown] = useState(initialReadingPreferences.areTranslationsShown);
   const [translationOverrides, setTranslationOverrides] = useState<Record<string, boolean>>({});
-  const [areSecondaryOrnamentsHidden, setAreSecondaryOrnamentsHidden] = useState(false);
-  const [readingFontSizeStep, setReadingFontSizeStep] = useState(DEFAULT_READING_STEP);
-  const [readingLineHeightStep, setReadingLineHeightStep] = useState(DEFAULT_READING_STEP);
+  const [areSecondaryOrnamentsHidden, setAreSecondaryOrnamentsHidden] = useState(initialReadingPreferences.areSecondaryOrnamentsHidden);
+  const [readingFontSizeStep, setReadingFontSizeStep] = useState(initialReadingPreferences.readingFontSizeStep);
+  const [readingLineHeightStep, setReadingLineHeightStep] = useState(initialReadingPreferences.readingLineHeightStep);
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
-  const [teleprompterSpeed, setTeleprompterSpeed] = useState(30);
+  const [teleprompterSpeed, setTeleprompterSpeed] = useState(initialReadingPreferences.teleprompterSpeed);
+  const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
   const teleprompterScrollRef = useRef<HTMLDivElement>(null);
+  const readerPanelRef = useRef<HTMLElement>(null);
+  const readerPanelTriggerRef = useRef<HTMLButtonElement>(null);
   const song = songs.find((item) => item.id === params?.id);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
@@ -100,10 +150,47 @@ function SongPageContent() {
   }, [query, song?.id]);
 
   useEffect(() => {
-    setAreTranslationsShown(true);
     setTranslationOverrides({});
     setIsTeleprompterOpen(false);
   }, [song?.id]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(READING_PREFERENCES_STORAGE_KEY, JSON.stringify({
+        areTranslationsShown,
+        areSecondaryOrnamentsHidden,
+        readingFontSizeStep,
+        readingLineHeightStep,
+        teleprompterSpeed,
+      } satisfies ReadingPreferences));
+    } catch {
+      // Reading remains fully functional when browser storage is unavailable.
+    }
+  }, [areSecondaryOrnamentsHidden, areTranslationsShown, readingFontSizeStep, readingLineHeightStep, teleprompterSpeed]);
+
+  useEffect(() => {
+    if (!isReaderPanelOpen) return;
+
+    const closeWhenUnused = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (!readerPanelRef.current?.contains(target) && !readerPanelTriggerRef.current?.contains(target)) {
+        setIsReaderPanelOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setIsReaderPanelOpen(false);
+      readerPanelTriggerRef.current?.focus();
+    };
+
+    document.addEventListener("pointerdown", closeWhenUnused);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeWhenUnused);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isReaderPanelOpen]);
 
   useLayoutEffect(() => {
     if (!song?.id) return;
@@ -259,16 +346,30 @@ function SongPageContent() {
       <div className="song-toolbar">
         <Link href="/" className="back-link"><ArrowLeft size={17} /> {copy.song.backToLibrary}</Link>
         <div className="song-toolbar-actions">
-          <button className={`teleprompter-toggle ${isTeleprompterOpen ? "is-active" : ""}`} type="button" onClick={() => setIsTeleprompterOpen((current) => !current)} aria-expanded={isTeleprompterOpen} aria-controls="teleprompter-controls" aria-label={copy.song.teleprompterOpen}>
-            <ScrollText size={16} aria-hidden="true" />
-            <span>{copy.song.teleprompterToggle}</span>
-          </button>
-          <button className="quiet-icon-button" type="button" onClick={copySong} aria-label={copy.song.copyLabel}>
-            <Copy size={17} />
-          </button>
-          <button className={`quiet-icon-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>
-            {favorite ? <BookmarkCheck size={17} /> : <Bookmark size={17} />}
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className={`teleprompter-toggle ${isTeleprompterOpen ? "is-active" : ""}`} type="button" onClick={() => setIsTeleprompterOpen((current) => !current)} aria-expanded={isTeleprompterOpen} aria-controls="teleprompter-controls" aria-label={copy.song.teleprompterOpen}>
+                <ScrollText size={16} aria-hidden="true" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{copy.song.teleprompterOpen}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="quiet-icon-button" type="button" onClick={copySong} aria-label={copy.song.copyLabel}>
+                <Copy size={17} aria-hidden="true" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{copy.song.copyLabel}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className={`quiet-icon-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>
+                {favorite ? <BookmarkCheck size={17} aria-hidden="true" /> : <Bookmark size={17} aria-hidden="true" />}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{favorite ? copy.song.removeFavorite : copy.song.addFavorite}</TooltipContent>
+          </Tooltip>
         </div>
       </div>
 
@@ -317,32 +418,140 @@ function SongPageContent() {
         </section>
       )}
 
-      <section className="in-song-search" aria-label={copy.song.inSongSearchLabel}>
-        <Search size={16} aria-hidden="true" />
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => updateQuery(event.target.value)}
-          placeholder={copy.song.inSongSearchPlaceholder}
-          aria-label={copy.song.inSongSearchLabel}
-        />
-        {query && (
-          <button className="in-song-search-clear" type="button" onClick={() => updateQuery("")} aria-label={copy.song.clearInSongSearch}>
-            <X size={15} />
-          </button>
-        )}
-        <span className="in-song-match-count" aria-live="polite">
-          {normalizeSearchText(query) ? (matches.length ? copy.song.matchPosition.replace("{current}", String(activeMatchIndex + 1)).replace("{total}", String(matches.length)) : copy.song.noInSongMatches) : ""}
-        </span>
-        <div className="in-song-search-controls">
-          <button type="button" onClick={() => moveToMatch(-1)} disabled={!matches.length} aria-label={copy.song.previousMatch}>
-            <ChevronUp size={16} />
-          </button>
-          <button type="button" onClick={() => moveToMatch(1)} disabled={!matches.length} aria-label={copy.song.nextMatch}>
-            <ChevronDown size={16} />
-          </button>
-        </div>
-      </section>
+      <div className={`reader-panel-dock ${isReaderPanelOpen ? "is-open" : ""}`}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              ref={readerPanelTriggerRef}
+              className="reader-panel-trigger"
+              type="button"
+              onClick={() => setIsReaderPanelOpen((current) => !current)}
+              aria-expanded={isReaderPanelOpen}
+              aria-controls="reader-panel"
+              aria-label={isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}
+            >
+              <Gauge size={17} aria-hidden="true" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="left">{isReaderPanelOpen ? copy.song.closeReaderPanel : copy.song.openReaderPanel}</TooltipContent>
+        </Tooltip>
+        <section
+          ref={readerPanelRef}
+          id="reader-panel"
+          className="reader-panel"
+          aria-label={copy.song.readerPanelLabel}
+          aria-hidden={!isReaderPanelOpen}
+        >
+          <div className="reading-typography-controls" role="group" aria-label={copy.song.readingControlsLabel}>
+            <p className="visually-hidden">{copy.song.readingControlsDescription}</p>
+            <div className="reading-typography-actions">
+              <div className="reading-stepper" role="group" aria-label={copy.song.readingFontSize}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button type="button" className="reading-step-button reading-type-button is-small" onClick={() => adjustReadingFontSize(-1)} disabled={readingFontSizeStep === 0} aria-label={copy.song.decreaseFontSize}>A</button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{copy.song.decreaseFontSize}</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button type="button" className="reading-step-button reading-type-button is-large" onClick={() => adjustReadingFontSize(1)} disabled={readingFontSizeStep === READING_FONT_SIZE_ADJUSTMENTS.length - 1} aria-label={copy.song.increaseFontSize}>A</button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{copy.song.increaseFontSize}</TooltipContent>
+                </Tooltip>
+                <output className="visually-hidden" aria-live="polite">{fontSizeState}</output>
+              </div>
+              <div className="reading-stepper" role="group" aria-label={copy.song.readingLineHeight}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(-1)} disabled={readingLineHeightStep === 0} aria-label={copy.song.decreaseLineSpacing}><span className="line-spacing-glyph is-tight" aria-hidden="true"><i /><i /><i /></span></button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{copy.song.decreaseLineSpacing}</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(1)} disabled={readingLineHeightStep === READING_LINE_HEIGHTS.length - 1} aria-label={copy.song.increaseLineSpacing}><span className="line-spacing-glyph is-loose" aria-hidden="true"><i /><i /><i /></span></button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{copy.song.increaseLineSpacing}</TooltipContent>
+                </Tooltip>
+                <output className="visually-hidden" aria-live="polite">{lineHeightState}</output>
+              </div>
+            </div>
+            <div className="reading-visibility-controls" role="group" aria-label={copy.song.readerVisibilityLabel}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className={`reading-visibility-toggle reading-ornament-toggle ${areSecondaryOrnamentsHidden ? "is-active" : ""}`}
+                    type="button"
+                    onClick={() => setAreSecondaryOrnamentsHidden((current) => !current)}
+                    aria-pressed={areSecondaryOrnamentsHidden}
+                    aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}
+                  >
+                    <span aria-hidden="true">()</span>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.secondaryOrnamentsDescription}</TooltipContent>
+              </Tooltip>
+              {hasTranslations && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      className={`reading-visibility-toggle ${areTranslationsShown ? "is-active" : ""}`}
+                      type="button"
+                      onClick={() => setAllTranslationsVisibility(!areTranslationsShown)}
+                      aria-pressed={areTranslationsShown}
+                      aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}
+                    >
+                      <Languages size={15} aria-hidden="true" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{areTranslationsShown ? copy.song.hideAllTranslations : copy.song.translationsDescription}</TooltipContent>
+                </Tooltip>
+              )}
+            </div>
+          </div>
+          <section className="in-song-search" aria-label={copy.song.inSongSearchLabel}>
+            <Search size={16} aria-hidden="true" />
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => updateQuery(event.target.value)}
+              placeholder={copy.song.inSongSearchPlaceholder}
+              aria-label={copy.song.inSongSearchLabel}
+            />
+            {query && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="in-song-search-clear" type="button" onClick={() => updateQuery("")} aria-label={copy.song.clearInSongSearch}>
+                    <X size={15} aria-hidden="true" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{copy.song.clearInSongSearch}</TooltipContent>
+              </Tooltip>
+            )}
+            <span className="in-song-match-count" aria-live="polite">
+              {normalizeSearchText(query) ? (matches.length ? copy.song.matchPosition.replace("{current}", String(activeMatchIndex + 1)).replace("{total}", String(matches.length)) : copy.song.noInSongMatches) : ""}
+            </span>
+            <div className="in-song-search-controls">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button type="button" onClick={() => moveToMatch(-1)} disabled={!matches.length} aria-label={copy.song.previousMatch}>
+                    <ChevronUp size={16} aria-hidden="true" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{copy.song.previousMatch}</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button type="button" onClick={() => moveToMatch(1)} disabled={!matches.length} aria-label={copy.song.nextMatch}>
+                    <ChevronDown size={16} aria-hidden="true" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{copy.song.nextMatch}</TooltipContent>
+              </Tooltip>
+            </div>
+          </section>
+        </section>
+      </div>
 
       <article className="song-sheet">
           <div className="song-sheet-intro">
@@ -359,63 +568,6 @@ function SongPageContent() {
         </div>
 
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
-
-        <section className="reading-typography-controls" aria-labelledby="reading-typography-label">
-          <div className="reading-typography-heading">
-            <span className="eyebrow" id="reading-typography-label">{copy.song.readingControlsEyebrow}</span>
-            <p className="visually-hidden">{copy.song.readingControlsDescription}</p>
-          </div>
-          <div className="reading-typography-actions">
-            <div className="reading-stepper-control">
-              <span className="reading-stepper-label">{copy.song.readingFontSize}</span>
-              <div className="reading-stepper" role="group" aria-label={copy.song.readingFontSize}>
-                <button type="button" className="reading-step-button reading-type-button is-small" onClick={() => adjustReadingFontSize(-1)} disabled={readingFontSizeStep === 0} aria-label={copy.song.decreaseFontSize}>A</button>
-                <button type="button" className="reading-step-button reading-type-button is-large" onClick={() => adjustReadingFontSize(1)} disabled={readingFontSizeStep === READING_FONT_SIZE_ADJUSTMENTS.length - 1} aria-label={copy.song.increaseFontSize}>A</button>
-              </div>
-              <output className="visually-hidden" aria-live="polite">{fontSizeState}</output>
-            </div>
-            <div className="reading-stepper-control">
-              <span className="reading-stepper-label">{copy.song.readingLineHeight}</span>
-              <div className="reading-stepper" role="group" aria-label={copy.song.readingLineHeight}>
-                <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(-1)} disabled={readingLineHeightStep === 0} aria-label={copy.song.decreaseLineSpacing}><span className="line-spacing-glyph is-tight" aria-hidden="true"><i /><i /><i /></span></button>
-                <button type="button" className="reading-step-button" onClick={() => adjustReadingLineHeight(1)} disabled={readingLineHeightStep === READING_LINE_HEIGHTS.length - 1} aria-label={copy.song.increaseLineSpacing}><span className="line-spacing-glyph is-loose" aria-hidden="true"><i /><i /><i /></span></button>
-              </div>
-              <output className="visually-hidden" aria-live="polite">{lineHeightState}</output>
-            </div>
-          </div>
-          <div className="reading-visibility-controls" role="group" aria-label={copy.song.readingControlsEyebrow}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className={`reading-visibility-toggle reading-ornament-toggle ${areSecondaryOrnamentsHidden ? "is-active" : ""}`}
-                  type="button"
-                  onClick={() => setAreSecondaryOrnamentsHidden((current) => !current)}
-                  aria-pressed={areSecondaryOrnamentsHidden}
-                  aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}
-                >
-                  <span aria-hidden="true">()</span>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="top">{copy.song.secondaryOrnamentsDescription}</TooltipContent>
-            </Tooltip>
-            {hasTranslations && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    className={`reading-visibility-toggle ${areTranslationsShown ? "is-active" : ""}`}
-                    type="button"
-                    onClick={() => setAllTranslationsVisibility(!areTranslationsShown)}
-                    aria-pressed={areTranslationsShown}
-                    aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}
-                  >
-                    <Languages size={15} aria-hidden="true" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top">{copy.song.translationsDescription}</TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-        </section>
 
         <div className="song-verses">
           {displayedVerses.map((verse, verseIndex) => {

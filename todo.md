@@ -131,3 +131,12 @@
 - [x] Adopt a visually compatible serif typeface that renders `ā̐` and related combining diacritics reliably in shlokas.
 - [x] Replace the two reading switches with compact, accessible icon controls and small on-demand explanations.
 - [x] Verify the logo, diacritic rendering, toggle state, hints, keyboard access, desktop/mobile layout, types, and production build before saving a checkpoint.
+
+## Collapsible reading panel and saved preferences
+
+- [x] Remove the visible “Reading comfort” label and provide an accessible text description for every reading and navigation control.
+- [x] Merge typography, visibility controls, and the in-song search input into one mobile-friendly reading panel.
+- [x] Make the combined panel remain reachable at the top while sliding in from the right on demand and closing on a repeat action or loss of focus.
+- [x] Reduce the teleprompter trigger to an icon while preserving descriptive accessible text for every control in the panel.
+- [x] Persist typography, translation, ornament, and relevant reader-panel preferences in localStorage and restore them after reload.
+- [x] Verify desktop/mobile layouts, open/close behavior, keyboard access, persistence, TypeScript, and production build before saving a checkpoint.
