@@ -198,3 +198,7 @@
 - [x] Add an accessible audio marker to catalog cards for songs with a valid SoundCloud recording.
 - [x] Add a main-catalog filter for songs with recordings and retain its state alongside existing search filters.
 - [x] Verify filtering, markers, desktop/mobile layout, TypeScript, production build, and save a checkpoint.
+
+## Recording filter label
+
+- [x] Change the visible recording-filter option to “With recordings”, verify it in the catalog, and save a checkpoint.

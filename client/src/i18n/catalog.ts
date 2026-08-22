@@ -36,7 +36,7 @@ export const translations = {
       allAuthors: "All authors",
       allCategories: "All categories",
       allRecordings: "All songs",
-      withRecordings: "Songs with recordings",
+      withRecordings: "With recordings",
       audioRecordingAvailable: "SoundCloud recording available",
       unlistedAuthor: "Author not listed",
       filtersLabel: "Refine the song library",
