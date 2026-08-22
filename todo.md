@@ -155,3 +155,10 @@
 - [x] Show the global Reading Tools trigger as a labelled desktop button while retaining the compact icon treatment on mobile.
 - [x] Preserve play/pause and a speed control in slideshow view; make speed determine the automatic interval between verses instead of scroll velocity.
 - [x] Verify desktop and mobile trigger presentation, timed scroll/slideshow playback, pausing, speed changes, TypeScript, and production build before saving a checkpoint.
+
+## Compact teleprompter control rail
+
+- [x] Recompose the Auto-scroll and Slideshow controls into a compact shared control rail with a clear visual hierarchy.
+- [x] Consolidate mode selection, tempo, verse progress, direct navigation, and play/pause so each mode only shows its relevant controls.
+- [x] Preserve all existing teleprompter logic, keyboard accessibility, and Pilgrim Scroll visual language while reducing unused space.
+- [x] Verify desktop/mobile layouts, both modes, play/pause, speed changes, verse navigation, TypeScript, and production build before saving a checkpoint.
