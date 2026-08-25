@@ -280,3 +280,9 @@
 - [x] Reproduce the malformed JSON response for Śrī Śrī Nitāi Chaitanya Ārati and identify the parser failure path.
 - [x] Safely handle incomplete or invalid structured LLM responses without surfacing a raw JSON parser error to the reader.
 - [x] Add regression coverage and verify the translation mutation, TypeScript, tests, production build, and checkpoint.
+
+## Home capitalization visual edit
+
+- [x] Identify the visual-editor target on Home and confirm the source of its uppercase styling.
+- [x] Replace the target label’s uppercase presentation with ordinary capitalization.
+- [x] Verify the home-page presentation, TypeScript, production build, and save a checkpoint.
