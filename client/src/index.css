@@ -316,11 +316,18 @@ a { color: inherit; text-decoration: none; }
 .reader-panel-divider { flex: 0 0 1px; align-self: stretch; min-height: 1.5rem; margin: 0 0.22rem; background: var(--hairline); }
 .reader-panel-action-button { display: grid; flex: 0 0 auto; width: clamp(1.45rem, 5vw, 1.86rem); height: clamp(1.45rem, 5vw, 1.86rem); place-items: center; color: var(--ink-soft); border: 1px solid var(--hairline); background: rgba(255,252,246,0.66); transition: color 160ms var(--ease-out), background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out); }
 .reader-panel-action-button:hover, .reader-panel-action-button.is-active, .reader-panel-action-button.is-favorite { color: var(--saffron-deep); border-color: rgba(217,109,50,0.42); background: #fff2df; }
+.reader-language-button { gap: 0.08rem; }
+.reader-language-button.is-active { color: #2e5f87; border-color: #89b2d1; background: #edf6fc; }
+.reader-language-code { max-width: 1.1rem; overflow: hidden; font-size: 0.48rem; font-weight: 800; letter-spacing: 0; }
 .reader-panel-action-button:active { transform: scale(0.95); }
 .reader-panel-action-button:focus-visible { position: relative; z-index: 1; outline: 2px solid rgba(217,109,50,0.6); outline-offset: 2px; }
 .reader-menu { min-width: 10.4rem; padding: 0.32rem !important; border-color: var(--hairline) !important; border-radius: 0 !important; background: #fffaf3 !important; box-shadow: 6px 7px 0 rgba(24,36,43,0.075) !important; }
 .reader-menu-item { min-height: 2.35rem; border-radius: 0 !important; color: var(--ink-soft) !important; font-size: 0.75rem !important; font-weight: 700; }
 .reader-menu-item:focus { color: var(--saffron-deep) !important; background: #fff0da !important; }
+.secondary-language-menu { min-width: 13rem; }
+.secondary-language-menu .reader-menu-item { justify-content: space-between; gap: 1rem; }
+.secondary-language-menu .reader-menu-item.is-selected { color: #2e5f87 !important; background: #edf6fc !important; }
+.secondary-language-menu small { color: var(--ink-soft); font-size: 0.64rem; }
 .reading-step-button { display: grid; flex: 0 0 auto; width: clamp(1.45rem, 5vw, 1.86rem); height: clamp(1.45rem, 5vw, 1.86rem); place-items: center; color: var(--ink-soft); border: 1px solid var(--hairline); background: rgba(255,252,246,0.66); transition: color 160ms var(--ease-out), background 160ms var(--ease-out), transform 160ms var(--ease-out); }
 .reading-step-button:hover:not(:disabled) { color: var(--saffron-deep); background: #fff2df; }
 .reading-step-button:active:not(:disabled) { transform: scale(0.95); }
@@ -416,6 +423,13 @@ a { color: inherit; text-decoration: none; }
 .transliteration { margin: 0.06rem 0; font-family: "Charis SIL", Georgia, serif; font-size: calc(clamp(1.38rem, 2.1vw, 1.75rem) + var(--reading-font-size-adjustment, 0rem)); font-weight: 400; font-synthesis: none; letter-spacing: -0.014em; line-height: var(--reading-line-height, 1.12); }
 .transliteration.is-indented { padding-left: clamp(0.8rem, 3vw, 2.2rem); color: var(--saffron-deep); }
 .translation { max-width: 51ch; margin: 1.05rem 0 0 0.18rem; padding: 0.05rem 0 0.08rem 0.92rem; border-left: 2px solid rgba(217,109,50,0.28); color: #716d65; font-size: 0.82rem; font-style: italic; white-space: pre-line; line-height: 1.68; }
+.secondary-translation { margin-top: 0.68rem; color: #375c79; border-left-color: #5d90b5; font-style: normal; }
+.secondary-translation[lang="zh-Hans"] { font-family: "Noto Sans SC", sans-serif; }
+.secondary-translation[lang="th"] { font-family: "Noto Sans Thai", sans-serif; }
+.secondary-translation[lang="hi"] { font-family: "Noto Sans Devanagari", sans-serif; }
+.secondary-translation[lang="bn"] { font-family: "Noto Sans Bengali", sans-serif; }
+.secondary-translation-status { max-width: 51ch; margin: 0.62rem 0 0 0.18rem; padding-left: 0.92rem; color: #496f8d; border-left: 2px solid #8cb4d0; font-size: 0.72rem; font-weight: 700; }
+.secondary-translation-status.is-error { color: var(--saffron-deep); border-left-color: var(--saffron); }
 .song-sheet-footer { position: relative; display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1.35rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.69rem; }
 .song-sheet-footer p { margin: 0; }
 .song-sheet-footer span { font-family: monospace; }

@@ -11,8 +11,8 @@ import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 import SongPage from "./pages/SongPage";
 import { Route, Switch } from "wouter";
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path="/" component={Home} />

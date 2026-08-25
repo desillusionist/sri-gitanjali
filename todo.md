@@ -254,3 +254,10 @@
 - [x] Persist independent manual pace values for Auto-scroll and Slideshow across view changes and page reloads.
 - [x] Add a concise active-pace status plus slow, steady, and fast landmarks to the manual speed slider.
 - [x] Verify desktop/mobile layouts, playback states, persistence, TypeScript, production build, and save a checkpoint.
+
+## Secondary verse translation language
+
+- [x] Audit English verse translations and choose a translation approach compatible with the static PWA.
+- [x] Add an accessible language chooser to the compact reader panel for Russian, Ukrainian, Spanish, Italian, Chinese, Thai, Portuguese, Hindi, and Bengali.
+- [x] Generate or retrieve second translations from English source text, persist the selection, and render it with a contrasting left rule.
+- [x] Verify language switching, translation visibility, desktop/mobile layout, TypeScript, production build, and save a checkpoint.

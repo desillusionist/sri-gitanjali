@@ -14,7 +14,9 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
+import { secondaryTranslationLanguages, isSecondaryTranslationLanguage, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
+import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
@@ -106,6 +108,7 @@ type ReadingPreferences = {
   teleprompterSlideshowSpeed: number;
   isManualTeleprompterScrollPace: boolean;
   isManualTeleprompterSlideshowPace: boolean;
+  secondaryTranslationLanguage: SecondaryTranslationLanguage | null;
   /** Legacy values are read once for backwards-compatible localStorage migration. */
   teleprompterSpeed?: number;
   isManualTeleprompterPace?: boolean;
@@ -120,6 +123,7 @@ const DEFAULT_READING_PREFERENCES: ReadingPreferences = {
   teleprompterSlideshowSpeed: DEFAULT_TELEPROMPTER_SPEED,
   isManualTeleprompterScrollPace: false,
   isManualTeleprompterSlideshowPace: false,
+  secondaryTranslationLanguage: null,
 };
 
 type TeleprompterView = "scroll" | "slideshow";
@@ -157,6 +161,7 @@ function readReadingPreferences(): ReadingPreferences {
       teleprompterSlideshowSpeed: slideshowSpeed,
       isManualTeleprompterScrollPace: typeof parsed.isManualTeleprompterScrollPace === "boolean" ? parsed.isManualTeleprompterScrollPace : legacyManualPace,
       isManualTeleprompterSlideshowPace: typeof parsed.isManualTeleprompterSlideshowPace === "boolean" ? parsed.isManualTeleprompterSlideshowPace : legacyManualPace,
+      secondaryTranslationLanguage: isSecondaryTranslationLanguage(parsed.secondaryTranslationLanguage) ? parsed.secondaryTranslationLanguage : null,
     };
   } catch {
     return DEFAULT_READING_PREFERENCES;
@@ -216,6 +221,7 @@ function SongPageContent() {
   const [teleprompterSlideshowSpeed, setTeleprompterSlideshowSpeed] = useState(initialReadingPreferences.teleprompterSlideshowSpeed);
   const [isManualTeleprompterScrollPace, setIsManualTeleprompterScrollPace] = useState(initialReadingPreferences.isManualTeleprompterScrollPace);
   const [isManualTeleprompterSlideshowPace, setIsManualTeleprompterSlideshowPace] = useState(initialReadingPreferences.isManualTeleprompterSlideshowPace);
+  const [secondaryTranslationLanguage, setSecondaryTranslationLanguage] = useState<SecondaryTranslationLanguage | null>(initialReadingPreferences.secondaryTranslationLanguage);
   const [teleprompterView, setTeleprompterView] = useState<TeleprompterView>("scroll");
   const [slideshowVerseIndex, setSlideshowVerseIndex] = useState(0);
   const [isSlideshowPlaying, setIsSlideshowPlaying] = useState(false);
@@ -255,6 +261,21 @@ function SongPageContent() {
     return byField;
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
+  const secondaryTranslationInput = useMemo(() => {
+    if (!secondaryTranslationLanguage || !song) return undefined;
+    const verses = song.verses
+      .filter((verse) => Boolean(verse.translation.trim()))
+      .map((verse) => ({ verseId: `${song.id}::${verse.id}`, englishText: verse.translation }));
+    return verses.length ? { language: secondaryTranslationLanguage, verses } : undefined;
+  }, [secondaryTranslationLanguage, song]);
+  const {
+    mutate: requestSecondaryTranslations,
+    reset: resetSecondaryTranslations,
+    data: secondaryTranslationData,
+    isPending: isSecondaryTranslationLoading,
+    isError: isSecondaryTranslationError,
+  } = trpc.secondaryTranslation.translateSong.useMutation();
+  const secondaryTranslationsByVerse = useMemo(() => new Map((secondaryTranslationData?.translations ?? []).map((item) => [item.verseId.split("::").at(-1) ?? item.verseId, item.translation])), [secondaryTranslationData]);
   const audioMatchedScrollSpeed = getAudioMatchedScrollSpeed(teleprompterScrollRange, soundCloudDurationMs);
   const effectiveTeleprompterSpeed = !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterScrollSpeed;
   const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, rewindBy: rewindTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", effectiveTeleprompterSpeed, teleprompterScrollRef);
@@ -266,6 +287,11 @@ function SongPageContent() {
   useEffect(() => {
     setActiveMatchIndex(0);
   }, [query, song?.id]);
+
+  useEffect(() => {
+    resetSecondaryTranslations();
+    if (secondaryTranslationInput) requestSecondaryTranslations(secondaryTranslationInput);
+  }, [requestSecondaryTranslations, resetSecondaryTranslations, secondaryTranslationInput]);
 
   useEffect(() => {
     setTranslationOverrides({});
@@ -297,11 +323,12 @@ function SongPageContent() {
         teleprompterSlideshowSpeed,
         isManualTeleprompterScrollPace,
         isManualTeleprompterSlideshowPace,
+        secondaryTranslationLanguage,
       } satisfies ReadingPreferences));
     } catch {
       // Reading remains fully functional when browser storage is unavailable.
     }
-  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterScrollPace, isManualTeleprompterSlideshowPace, readingFontSizeStep, readingLineHeightStep, teleprompterScrollSpeed, teleprompterSlideshowSpeed]);
+  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterScrollPace, isManualTeleprompterSlideshowPace, readingFontSizeStep, readingLineHeightStep, secondaryTranslationLanguage, teleprompterScrollSpeed, teleprompterSlideshowSpeed]);
 
   useEffect(() => {
     if (!isReaderPanelOpen) return;
@@ -668,6 +695,7 @@ function SongPageContent() {
 
   const songHref = (songId: string) => `/song/${songId}${normalizeSearchText(query) ? `?q=${encodeURIComponent(query.trim())}` : ""}`;
   const hasTranslations = song.verses.some((verse) => Boolean(verse.translation));
+  const selectedSecondaryLanguage = secondaryTranslationLanguages.find((language) => language.code === secondaryTranslationLanguage) ?? null;
   const readingTypographyStyle = {
     "--reading-font-size-adjustment": `${READING_FONT_SIZE_ADJUSTMENTS[readingFontSizeStep]}rem`,
     "--reading-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
@@ -827,6 +855,7 @@ function SongPageContent() {
             <span className="reader-panel-space" aria-hidden="true" /><span className="reader-panel-divider" aria-hidden="true" /><span className="reader-panel-space" aria-hidden="true" />
             <Tooltip><TooltipTrigger asChild><button className={`reading-visibility-toggle ${areSecondaryOrnamentsHidden ? "is-active" : ""}`} type="button" onClick={() => setAreSecondaryOrnamentsHidden((current) => !current)} aria-pressed={areSecondaryOrnamentsHidden} aria-label={areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.hideSecondaryOrnaments}><span aria-hidden="true">()</span></button></TooltipTrigger><TooltipContent side="bottom">{areSecondaryOrnamentsHidden ? copy.song.showSecondaryOrnaments : copy.song.secondaryOrnamentsDescription}</TooltipContent></Tooltip>
             {hasTranslations && <><span className="reader-panel-space" aria-hidden="true" /><Tooltip><TooltipTrigger asChild><button className={`reading-visibility-toggle ${areTranslationsShown ? "is-active" : ""}`} type="button" onClick={() => setAllTranslationsVisibility(!areTranslationsShown)} aria-pressed={areTranslationsShown} aria-label={areTranslationsShown ? copy.song.hideAllTranslations : copy.song.showAllTranslations}><Languages size={15} aria-hidden="true" /></button></TooltipTrigger><TooltipContent side="bottom">{areTranslationsShown ? copy.song.hideAllTranslations : copy.song.translationsDescription}</TooltipContent></Tooltip></>}
+            {hasTranslations && <><span className="reader-panel-space" aria-hidden="true" /><DropdownMenu><Tooltip><TooltipTrigger asChild><DropdownMenuTrigger asChild><button className={`reader-panel-action-button reader-language-button ${selectedSecondaryLanguage ? "is-active" : ""}`} type="button" aria-label={copy.song.secondaryTranslationsLabel}><Languages size={15} aria-hidden="true" /><span className="reader-language-code" aria-hidden="true">{selectedSecondaryLanguage?.code.toUpperCase() ?? "A"}</span></button></DropdownMenuTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.secondaryTranslationsDescription}</TooltipContent></Tooltip><DropdownMenuContent className="reader-menu secondary-language-menu" align="end" side="bottom" sideOffset={7}><DropdownMenuItem className={`reader-menu-item ${!secondaryTranslationLanguage ? "is-selected" : ""}`} onSelect={() => setSecondaryTranslationLanguage(null)}>{copy.song.secondaryTranslationsNone}</DropdownMenuItem>{secondaryTranslationLanguages.map((language) => <DropdownMenuItem className={`reader-menu-item ${language.code === secondaryTranslationLanguage ? "is-selected" : ""}`} key={language.code} onSelect={() => { setSecondaryTranslationLanguage(language.code); setAllTranslationsVisibility(true); }}><span lang={language.lang}>{language.name}</span><small>{language.label}</small></DropdownMenuItem>)}</DropdownMenuContent></DropdownMenu></>}
             <span className="reader-panel-space" aria-hidden="true" /><span className="reader-panel-divider" aria-hidden="true" /><span className="reader-panel-space" aria-hidden="true" />
             <Tooltip><TooltipTrigger asChild><button className="reader-panel-action-button" type="button" onClick={openTeleprompter} aria-label={copy.song.teleprompterOpen}><ScrollText size={16} aria-hidden="true" /></button></TooltipTrigger><TooltipContent side="bottom">{copy.song.teleprompterOpen}</TooltipContent></Tooltip>
             <span className="reader-panel-space" aria-hidden="true" />
@@ -969,6 +998,7 @@ function SongPageContent() {
         <div className="song-verses">
           {displayedVerses.map((verse, verseIndex) => {
             const translationVisible = isVerseTranslationVisible(verse.id);
+            const secondaryTranslation = secondaryTranslationsByVerse.get(verse.id);
 
             return (
               <section className="verse-block" id={verse.id} key={verse.id}>
@@ -999,6 +1029,9 @@ function SongPageContent() {
                     <>
                       <div id={`translation-${verse.id}`} hidden={!translationVisible}>
                         <p className="translation"><SongMatchText value={verse.translation} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
+                        {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
+                        {selectedSecondaryLanguage && !isSecondaryTranslationLoading && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
+                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang}>{secondaryTranslation}</p>}
                       </div>
                     </>
                   )}
