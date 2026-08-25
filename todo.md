@@ -208,3 +208,9 @@
 - [x] Move the audio action to the verse-count row, align it right, and use “Listen” as its visible label.
 - [x] Use the recording description only as an accessible label and remove the redundant header, subheader, and divider.
 - [x] Verify desktop/mobile layout, SoundCloud opening, accessibility, TypeScript, production build, and save a checkpoint.
+
+## SoundCloud smart matching
+
+- [x] Normalize the supplied SoundCloud slugs and score candidates against song titles and opening lines.
+- [x] Review ambiguous candidates, retain only high-confidence matches, and represent multiple versions per song.
+- [x] Add confirmed recordings, verify the catalog filter and multi-version audio control, then run checks and save a checkpoint.

@@ -374,6 +374,7 @@ a { color: inherit; text-decoration: none; }
 .song-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 0.72rem; align-items: baseline; }
 .song-utility-row { display: flex; max-width: 47rem; gap: 0.75rem; align-items: center; justify-content: space-between; padding-top: 0.62rem; }
 .song-verse-count { margin: 0; color: var(--saffron-deep); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+.song-audio-actions { display: inline-flex; gap: 0.42rem; align-items: center; }
 .song-audio { display: grid; gap: 0.7rem; max-width: 47rem; margin-top: 0.72rem; }
 .song-audio-status { margin: 0; padding: 0.6rem 0.72rem; color: var(--ink-soft); border-left: 2px solid rgba(217,109,50,0.36); background: rgba(255,247,234,0.64); font-size: 0.76rem; line-height: 1.45; }
 .song-audio-status.is-error { color: #7c3d25; }
@@ -382,6 +383,8 @@ a { color: inherit; text-decoration: none; }
 .song-audio-toggle:hover { color: var(--saffron-deep); border-color: rgba(217,109,50,0.42); background: #fff2df; }
 .song-audio-toggle:active { transform: scale(0.97); }
 .song-audio-toggle:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.2rem; }
+.song-audio-version { min-height: 2.1rem; max-width: 8.5rem; padding: 0.42rem 1.8rem 0.42rem 0.56rem; color: var(--ink-soft); border: 1px solid var(--hairline); border-radius: 0; background: rgba(255,252,246,0.76); font-family: "DM Sans", Arial, sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
+.song-audio-version:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.2rem; }
 .soundcloud-player { display: block; width: 100%; height: 112px; border: 0; background: #fffaf3; }
 .song-category-link, .song-poet-link { color: inherit; text-decoration: none; transition: color 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
 .song-category-link:hover, .song-poet-link:hover { color: var(--saffron-deep); text-decoration: underline; text-decoration-color: rgba(217,109,50,0.5); text-underline-offset: 0.24rem; }
@@ -477,6 +480,8 @@ a { color: inherit; text-decoration: none; }
   .song-reading-tools-trigger { width: 2.3rem; justify-content: center; padding: 0; }
   .song-reading-tools-trigger span { display: none; }
   .song-utility-row { gap: 0.55rem; }
+  .song-audio-actions { gap: 0.3rem; }
+  .song-audio-version { max-width: 7.2rem; min-height: 2rem; padding-left: 0.42rem; font-size: 0.58rem; }
   .song-audio-toggle { min-height: 2rem; padding: 0.4rem 0.54rem; }
   .in-song-search { grid-template-columns: auto minmax(0, 1fr) auto; max-width: none; }
   .in-song-search input { grid-column: 2; grid-row: 1; padding-right: 1.85rem; }

@@ -25,6 +25,7 @@ export type Song = {
   category: string;
   comment?: string;
   audioLink?: string;
+  audioLinks?: string[];
 };
 
 export type SongCategory = {
@@ -103,19 +104,26 @@ export function songFirstLine(song: Song): string {
   return song.verses[0]?.lines[0]?.transliteration.trim() || song.title;
 }
 
-export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink">): string | null {
-  if (!song.audioLink) return null;
+export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audioLinks">): string[] {
+  const candidates = [...(song.audioLinks ?? []), ...(song.audioLink ? [song.audioLink] : [])];
+  const validUrls = candidates.flatMap((candidate) => {
+    try {
+      const sourceUrl = new URL(candidate);
+      return /(^|\.)soundcloud\.com$/i.test(sourceUrl.hostname) ? [sourceUrl.toString()] : [];
+    } catch {
+      return [];
+    }
+  });
 
-  try {
-    const sourceUrl = new URL(song.audioLink);
-    return /(^|\.)soundcloud\.com$/i.test(sourceUrl.hostname) ? sourceUrl.toString() : null;
-  } catch {
-    return null;
-  }
+  return Array.from(new Set(validUrls));
 }
 
-export function hasSoundCloudRecording(song: Pick<Song, "audioLink">): boolean {
-  return Boolean(getSoundCloudRecordingUrl(song));
+export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioLinks">): string | null {
+  return getSoundCloudRecordingUrls(song)[0] ?? null;
+}
+
+export function hasSoundCloudRecording(song: Pick<Song, "audioLink" | "audioLinks">): boolean {
+  return getSoundCloudRecordingUrls(song).length > 0;
 }
 
 /**

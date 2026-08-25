@@ -8,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrl, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
@@ -160,6 +160,7 @@ function SongPageContent() {
   const [isTeleprompterControlsCollapsed, setIsTeleprompterControlsCollapsed] = useState(false);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const [isSoundCloudPlayerOpen, setIsSoundCloudPlayerOpen] = useState(false);
+  const [soundCloudRecordingIndex, setSoundCloudRecordingIndex] = useState(0);
   const [soundCloudPlayerUrl, setSoundCloudPlayerUrl] = useState<string | null>(null);
   const [soundCloudPlayerStatus, setSoundCloudPlayerStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [isPageScrolled, setIsPageScrolled] = useState(false);
@@ -170,7 +171,8 @@ function SongPageContent() {
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
   const next = index >= 0 && index < songs.length - 1 ? songs[index + 1] : null;
-  const soundCloudSourceUrl = useMemo(() => (song ? getSoundCloudRecordingUrl(song) : null), [song]);
+  const soundCloudSourceUrls = useMemo(() => (song ? getSoundCloudRecordingUrls(song) : []), [song]);
+  const soundCloudSourceUrl = soundCloudSourceUrls[soundCloudRecordingIndex] ?? soundCloudSourceUrls[0] ?? null;
   const displayedVerses = useMemo(() => {
     if (!song) return [];
 
@@ -203,9 +205,16 @@ function SongPageContent() {
     setIsSlideshowPlaying(false);
     setIsTeleprompterControlsCollapsed(false);
     setIsSoundCloudPlayerOpen(false);
+    setSoundCloudRecordingIndex(0);
     setSoundCloudPlayerUrl(null);
     setSoundCloudPlayerStatus("idle");
   }, [song?.id]);
+
+  useEffect(() => {
+    setIsSoundCloudPlayerOpen(false);
+    setSoundCloudPlayerUrl(null);
+    setSoundCloudPlayerStatus("idle");
+  }, [soundCloudSourceUrl]);
 
   useEffect(() => {
     try {
@@ -733,16 +742,23 @@ function SongPageContent() {
         <div className="song-utility-row">
           <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
           {soundCloudSourceUrl && (
-            <button className="song-audio-toggle" type="button" onClick={() => {
-                if (isSoundCloudPlayerOpen) {
-                  setIsSoundCloudPlayerOpen(false);
-                  return;
-                }
-                openSoundCloudPlayer();
-              }} aria-expanded={isSoundCloudPlayerOpen} aria-controls={`soundcloud-player-${song.id}`} aria-label={copy.song.audioRecordingDetail}>
-                <Volume2 size={16} aria-hidden="true" />
-                <span>{isSoundCloudPlayerOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}</span>
-            </button>
+            <div className="song-audio-actions">
+              {soundCloudSourceUrls.length > 1 && (
+                <select className="song-audio-version" value={soundCloudRecordingIndex} onChange={(event) => setSoundCloudRecordingIndex(Number(event.target.value))} aria-label={copy.song.audioVersionLabel}>
+                  {soundCloudSourceUrls.map((_url, recordingIndex) => <option key={recordingIndex} value={recordingIndex}>{copy.song.audioVersion.replace("{number}", String(recordingIndex + 1))}</option>)}
+                </select>
+              )}
+              <button className="song-audio-toggle" type="button" onClick={() => {
+                  if (isSoundCloudPlayerOpen) {
+                    setIsSoundCloudPlayerOpen(false);
+                    return;
+                  }
+                  openSoundCloudPlayer();
+                }} aria-expanded={isSoundCloudPlayerOpen} aria-controls={`soundcloud-player-${song.id}`} aria-label={copy.song.audioRecordingDetail}>
+                  <Volume2 size={16} aria-hidden="true" />
+                  <span>{isSoundCloudPlayerOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}</span>
+              </button>
+            </div>
           )}
         </div>
         {soundCloudSourceUrl && (
