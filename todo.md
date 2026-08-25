@@ -225,3 +225,10 @@
 
 - [x] Update the home-page eyebrow through the localization catalog and validate its requested compact width on desktop and mobile.
 - [x] Verify the home-page presentation, TypeScript, production build, and save a checkpoint.
+
+## Audio-aware teleprompter and recording counts
+
+- [x] Retrieve or cache SoundCloud recording durations and define a safe fallback when a duration is unavailable.
+- [x] Use the selected recording’s duration to pace Auto-scroll and Slideshow without disrupting manual tempo controls.
+- [x] Show the number of available recordings on Library and Index A–Z song cards.
+- [x] Verify timing, recording selection, card counts, desktop/mobile layouts, TypeScript, production build, and save a checkpoint.

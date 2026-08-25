@@ -1,10 +1,11 @@
 /**
  * Паломнический свиток: строка песни сохраняет ритм каталога и даёт тихий,
- * всегда доступный жест для сохранения на личную полку.
+ * всегда доступный жест для сохранения на личную полку и заметный счётчик
+ * доступных аудиоверсий без нарушения спокойного ритма листа.
  */
 
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchExcerpt, getSongSearchMatches, hasSoundCloudRecording, normalizeSearchText, songFirstLine, type Song } from "@/domain/song";
+import { getHighlightParts, getSongSearchExcerpt, getSongSearchMatches, getSoundCloudRecordingCount, normalizeSearchText, songFirstLine, type Song } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { Bookmark, BookmarkCheck, ChevronRight, Volume2 } from "lucide-react";
 import { Link } from "wouter";
@@ -28,7 +29,8 @@ export function SongListItem({ song, query = "", variant = "default" }: SongList
   const hasTextQuery = Boolean(normalizeSearchText(query));
   const excerpt = hasTextQuery ? getSongSearchExcerpt(song, query) : null;
   const matchCount = hasTextQuery ? getSongSearchMatches(song, query).length : 0;
-  const hasRecording = hasSoundCloudRecording(song);
+  const recordingCount = getSoundCloudRecordingCount(song);
+  const recordingCountLabel = (recordingCount === 1 ? copy.library.audioRecordingCountOne : copy.library.audioRecordingCountMany).replace("{count}", String(recordingCount));
 
   return (
     <div className={`song-row ${favorite ? "is-favorite" : ""} ${excerpt ? "has-search-excerpt" : ""}`}>
@@ -49,7 +51,7 @@ export function SongListItem({ song, query = "", variant = "default" }: SongList
           )}
           {excerpt && <span className="song-search-excerpt"><span aria-hidden="true">↳</span><HighlightedText value={excerpt.text} query={query} /></span>}
         </span>
-        {hasRecording && <span className="song-audio-badge" role="img" aria-label={copy.library.audioRecordingAvailable}><Volume2 size={14} aria-hidden="true" /></span>}
+        {recordingCount > 0 && <span className="song-audio-badge" aria-label={recordingCountLabel}><Volume2 size={14} aria-hidden="true" /><span>{recordingCount}</span></span>}
         {matchCount > 0 && <span className="song-match-count" aria-label={copy.library.matchCountLabel.replace("{count}", String(matchCount))}>{copy.library.matchCountLabel.replace("{count}", String(matchCount))}</span>}
         <ChevronRight size={18} aria-hidden="true" />
       </Link>

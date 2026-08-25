@@ -1,6 +1,7 @@
 /**
  * Паломнический свиток: страница песни строится как развёрнутый лист,
- * где текст и ритм куплетов остаются главным визуальным объектом.
+ * где текст и ритм куплетов остаются главным визуальным объектом; при
+ * доступной записи SoundCloud tempo бережно подстраивается под её длительность.
  */
 
 import { AppShell } from "@/components/AppShell";
@@ -11,6 +12,7 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
+import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
@@ -29,9 +31,32 @@ function countVerseSyllables(lines: Array<{ transliteration: string }>) {
   return text.match(/[aeiouāīūṛṝḷēō]+/gi)?.length ?? 1;
 }
 
-function getSlideshowIntervalMs(verse: { lines: Array<{ transliteration: string }> } | undefined, speed: number) {
+function getSlideshowIntervalMs(
+  verse: { lines: Array<{ transliteration: string }> } | undefined,
+  verses: Array<{ lines: Array<{ transliteration: string }> }>,
+  speed: number,
+  soundCloudDurationMs: number | null,
+) {
+  const verseSyllables = Math.max(1, countVerseSyllables(verse?.lines ?? []));
+  const totalSyllables = verses.reduce((total, candidate) => total + Math.max(1, countVerseSyllables(candidate.lines)), 0);
+  if (soundCloudDurationMs && totalSyllables > 0) {
+    return Math.max(1_000, Math.round(soundCloudDurationMs * (verseSyllables / totalSyllables)));
+  }
+
   const baselineSeconds = Math.max(1, countVerseSyllables(verse?.lines ?? []));
   return Math.round(baselineSeconds * 1_000 * (DEFAULT_TELEPROMPTER_SPEED / Math.max(MIN_TELEPROMPTER_SPEED, speed)));
+}
+
+function getAudioMatchedScrollSpeed(scrollRange: number, soundCloudDurationMs: number | null) {
+  if (!soundCloudDurationMs || scrollRange <= 0) return null;
+  return Math.max(MIN_TELEPROMPTER_SPEED, scrollRange / (soundCloudDurationMs / 1_000));
+}
+
+function formatDuration(durationMs: number) {
+  const totalSeconds = Math.max(0, Math.round(durationMs / 1_000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
 function getSoundCloudPlayerUrl(embedHtml: unknown) {
@@ -163,10 +188,13 @@ function SongPageContent() {
   const [soundCloudRecordingIndex, setSoundCloudRecordingIndex] = useState(0);
   const [soundCloudPlayerUrl, setSoundCloudPlayerUrl] = useState<string | null>(null);
   const [soundCloudPlayerStatus, setSoundCloudPlayerStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [soundCloudDurationMs, setSoundCloudDurationMs] = useState<number | null>(null);
+  const [teleprompterScrollRange, setTeleprompterScrollRange] = useState(0);
   const [isPageScrolled, setIsPageScrolled] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
   const teleprompterScrollRef = useRef<HTMLDivElement>(null);
   const readerPanelRef = useRef<HTMLElement>(null);
+  const soundCloudPlayerRef = useRef<HTMLIFrameElement>(null);
   const song = songs.find((item) => item.id === params?.id);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
@@ -188,7 +216,9 @@ function SongPageContent() {
     return byField;
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
-  const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", teleprompterSpeed, teleprompterScrollRef);
+  const audioMatchedScrollSpeed = getAudioMatchedScrollSpeed(teleprompterScrollRange, soundCloudDurationMs);
+  const effectiveTeleprompterSpeed = audioMatchedScrollSpeed ?? teleprompterSpeed;
+  const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", effectiveTeleprompterSpeed, teleprompterScrollRef);
 
   useEffect(() => {
     setQuery(routeQuery);
@@ -214,6 +244,7 @@ function SongPageContent() {
     setIsSoundCloudPlayerOpen(false);
     setSoundCloudPlayerUrl(null);
     setSoundCloudPlayerStatus("idle");
+    setSoundCloudDurationMs(null);
   }, [soundCloudSourceUrl]);
 
   useEffect(() => {
@@ -256,23 +287,56 @@ function SongPageContent() {
     };
   }, [isReaderPanelOpen]);
 
-  const openSoundCloudPlayer = () => {
-    if (!soundCloudSourceUrl) return;
-    setIsSoundCloudPlayerOpen(true);
-    if (soundCloudPlayerUrl) return;
+  const openSoundCloudPlayer = () => setIsSoundCloudPlayerOpen(true);
 
+  useEffect(() => {
+    if (!soundCloudSourceUrl || (!isSoundCloudPlayerOpen && !isTeleprompterOpen)) return;
+    let isActive = true;
     setSoundCloudPlayerStatus("loading");
+
     void fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(soundCloudSourceUrl)}`)
       .then(async (response) => {
         if (!response.ok) throw new Error("SoundCloud oEmbed request failed");
         const payload = await response.json() as { html?: unknown };
         const playerUrl = getSoundCloudPlayerUrl(payload.html);
         if (!playerUrl) throw new Error("SoundCloud oEmbed response did not include a supported player");
+        if (!isActive) return;
         setSoundCloudPlayerUrl(playerUrl);
         setSoundCloudPlayerStatus("ready");
       })
-      .catch(() => setSoundCloudPlayerStatus("error"));
-  };
+      .catch(() => {
+        if (isActive) setSoundCloudPlayerStatus("error");
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [isSoundCloudPlayerOpen, isTeleprompterOpen, soundCloudSourceUrl]);
+
+  useEffect(() => {
+    const iframe = soundCloudPlayerRef.current;
+    if (!iframe || !soundCloudPlayerUrl || !soundCloudSourceUrl) return;
+    let isActive = true;
+
+    void loadSoundCloudWidgetApi()
+      .then((soundCloud) => {
+        const widget = soundCloud.Widget(iframe);
+        const readDuration = () => widget.getDuration((durationMs) => {
+          if (!isActive || !Number.isFinite(durationMs) || durationMs <= 0) return;
+          setSoundCloudDurationMs(durationMs);
+        });
+
+        widget.bind(soundCloud.Widget.Events.READY, readDuration);
+        readDuration();
+      })
+      .catch(() => {
+        // The reader retains its manual tempo when the official widget API is unavailable.
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [soundCloudPlayerUrl, soundCloudSourceUrl]);
 
   useEffect(() => {
     const syncScrollAffordance = () => setIsPageScrolled(window.scrollY > 260);
@@ -296,6 +360,26 @@ function SongPageContent() {
     return () => window.cancelAnimationFrame(frame);
   }, [song?.id]);
 
+  useLayoutEffect(() => {
+    const scrollContainer = teleprompterScrollRef.current;
+    if (!isTeleprompterOpen || teleprompterView !== "scroll" || !scrollContainer) {
+      setTeleprompterScrollRange(0);
+      return;
+    }
+
+    const measureScrollRange = () => setTeleprompterScrollRange(Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight));
+    const frame = window.requestAnimationFrame(measureScrollRange);
+    const resizeObserver = new ResizeObserver(measureScrollRange);
+    resizeObserver.observe(scrollContainer);
+    window.addEventListener("resize", measureScrollRange);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", measureScrollRange);
+    };
+  }, [displayedVerses, isTeleprompterOpen, readingFontSizeStep, readingLineHeightStep, teleprompterView]);
+
   useEffect(() => {
     if (!isTeleprompterOpen) return;
     const bodyOverflow = document.body.style.overflow;
@@ -315,7 +399,7 @@ function SongPageContent() {
       return;
     }
 
-    const intervalMs = getSlideshowIntervalMs(displayedVerses[slideshowVerseIndex], teleprompterSpeed);
+    const intervalMs = getSlideshowIntervalMs(displayedVerses[slideshowVerseIndex], displayedVerses, teleprompterSpeed, soundCloudDurationMs);
     const startedAt = performance.now();
     const updateCountdown = () => {
       const remainingMs = Math.max(0, intervalMs - (performance.now() - startedAt));
@@ -338,7 +422,7 @@ function SongPageContent() {
       window.clearInterval(countdownTimer);
       window.clearTimeout(advanceTimer);
     };
-  }, [displayedVerses, isSlideshowPlaying, isTeleprompterOpen, slideshowVerseIndex, teleprompterSpeed, teleprompterView]);
+  }, [displayedVerses, isSlideshowPlaying, isTeleprompterOpen, slideshowVerseIndex, soundCloudDurationMs, teleprompterSpeed, teleprompterView]);
 
   useEffect(() => {
     const translationVerseId = activeMatch?.kind === "translation" ? activeMatch.verseId : undefined;
@@ -503,7 +587,7 @@ function SongPageContent() {
     : readingLineHeightStep < DEFAULT_READING_STEP ? copy.song.readingTighter : copy.song.readingLooser;
   const slideshowVerse = displayedVerses[slideshowVerseIndex];
   const slideshowSyllables = countVerseSyllables(slideshowVerse?.lines ?? []);
-  const slideshowIntervalMs = getSlideshowIntervalMs(slideshowVerse, teleprompterSpeed);
+  const slideshowIntervalMs = getSlideshowIntervalMs(slideshowVerse, displayedVerses, teleprompterSpeed, soundCloudDurationMs);
   const slideshowIntervalSeconds = Math.max(1, Math.round(slideshowIntervalMs / 1_000));
   const slideshowCountdownSeconds = Math.max(0, Math.ceil(slideshowCountdown.remainingMs / 1_000));
   const slideshowCountdownProgress = slideshowCountdown.totalMs > 0
@@ -511,6 +595,12 @@ function SongPageContent() {
     : 0;
   const slideshowCountdownLabel = copy.song.teleprompterCountdown.replace("{seconds}", String(slideshowCountdownSeconds));
   const isTeleprompterPlaying = teleprompterView === "scroll" ? isAutoScrollPlaying : isSlideshowPlaying;
+  const isAudioPaced = teleprompterView === "scroll" ? audioMatchedScrollSpeed !== null : soundCloudDurationMs !== null;
+  const audioPaceValue = soundCloudDurationMs
+    ? copy.song.teleprompterAudioPaceValue
+      .replace("{recording}", copy.song.audioVersion.replace("{number}", String(soundCloudRecordingIndex + 1)))
+      .replace("{duration}", formatDuration(soundCloudDurationMs))
+    : "";
   const toggleSlideshow = () => {
     if (isSlideshowPlaying) {
       setIsSlideshowPlaying(false);
@@ -556,19 +646,24 @@ function SongPageContent() {
             </div>
             <div className="teleprompter-mode-controls">
               <div className="teleprompter-speed-control">
-                <label htmlFor="teleprompter-speed"><Gauge size={15} aria-hidden="true" /> {teleprompterView === "scroll" ? copy.song.teleprompterSpeed : copy.song.teleprompterSlideSpeed}</label>
-                <Slider
-                  id="teleprompter-speed"
-                  value={[teleprompterSpeed]}
-                  min={MIN_TELEPROMPTER_SPEED}
-                  max={MAX_TELEPROMPTER_SPEED}
-                  step={1}
-                  onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed ?? DEFAULT_TELEPROMPTER_SPEED)}
-                  aria-label={teleprompterView === "scroll" ? copy.song.teleprompterSpeed : copy.song.teleprompterSlideSpeed}
-                />
-                <output htmlFor="teleprompter-speed">{teleprompterView === "scroll"
-                  ? copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))
-                  : copy.song.teleprompterSlideSpeedValue.replace("{seconds}", String(slideshowIntervalSeconds)).replace("{syllables}", String(slideshowSyllables))}</output>
+                {isAudioPaced ? <>
+                  <label><Volume2 size={15} aria-hidden="true" /> {copy.song.teleprompterAudioPace}</label>
+                  <output className="teleprompter-audio-pace-output">{audioPaceValue}</output>
+                </> : <>
+                  <label htmlFor="teleprompter-speed"><Gauge size={15} aria-hidden="true" /> {teleprompterView === "scroll" ? copy.song.teleprompterSpeed : copy.song.teleprompterSlideSpeed}</label>
+                  <Slider
+                    id="teleprompter-speed"
+                    value={[teleprompterSpeed]}
+                    min={MIN_TELEPROMPTER_SPEED}
+                    max={MAX_TELEPROMPTER_SPEED}
+                    step={1}
+                    onValueChange={([nextSpeed]) => setTeleprompterSpeed(nextSpeed ?? DEFAULT_TELEPROMPTER_SPEED)}
+                    aria-label={teleprompterView === "scroll" ? copy.song.teleprompterSpeed : copy.song.teleprompterSlideSpeed}
+                  />
+                  <output htmlFor="teleprompter-speed">{teleprompterView === "scroll"
+                    ? copy.song.teleprompterSpeedValue.replace("{speed}", String(teleprompterSpeed))
+                    : copy.song.teleprompterSlideSpeedValue.replace("{seconds}", String(slideshowIntervalSeconds)).replace("{syllables}", String(slideshowSyllables))}</output>
+                </>}
               </div>
             {teleprompterView === "slideshow" && (
               <div className="teleprompter-slide-actions" role="group" aria-label={copy.song.teleprompterSlideshowView}>
@@ -765,14 +860,17 @@ function SongPageContent() {
           <div className="song-audio" aria-label={copy.song.audioPlayerLabel}>
             {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "loading" && <p className="song-audio-status" role="status">{copy.song.audioPlayerLoading}</p>}
             {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={soundCloudSourceUrl} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
-            {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "ready" && soundCloudPlayerUrl && (
+            {soundCloudPlayerUrl && (
               <iframe
                 id={`soundcloud-player-${song.id}`}
-                className="soundcloud-player"
+                ref={soundCloudPlayerRef}
+                className={`soundcloud-player ${isSoundCloudPlayerOpen ? "is-visible" : "is-duration-probe"}`}
                 src={soundCloudPlayerUrl}
                 title={copy.song.soundCloudPlayerTitle.replace("{song}", song.title)}
                 allow="autoplay"
-                loading="lazy"
+                loading="eager"
+                aria-hidden={!isSoundCloudPlayerOpen}
+                tabIndex={isSoundCloudPlayerOpen ? 0 : -1}
               />
             )}
           </div>

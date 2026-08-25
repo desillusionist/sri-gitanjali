@@ -122,8 +122,12 @@ export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioL
   return getSoundCloudRecordingUrls(song)[0] ?? null;
 }
 
+export function getSoundCloudRecordingCount(song: Pick<Song, "audioLink" | "audioLinks">): number {
+  return getSoundCloudRecordingUrls(song).length;
+}
+
 export function hasSoundCloudRecording(song: Pick<Song, "audioLink" | "audioLinks">): boolean {
-  return getSoundCloudRecordingUrls(song).length > 0;
+  return getSoundCloudRecordingCount(song) > 0;
 }
 
 /**
