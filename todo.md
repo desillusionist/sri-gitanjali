@@ -240,3 +240,9 @@
 - [x] Add swipe-based autoscroll rewinding that preserves playback, while retaining accessible touch scrolling.
 - [x] Move manual scroll/slide pace adjustment into a compact speed popover, including songs with SoundCloud audio, and remove verbose pace-value labels.
 - [x] Verify desktop/mobile controls, playback continuity, keyboard and touch behavior, TypeScript, production build, and save a checkpoint.
+
+## Pace control placement and SoundCloud reset
+
+- [x] Remove the pace-control trigger from the song-page audio row and place it immediately before the teleprompter Start/Pause action.
+- [x] When “Match SoundCloud duration” is selected, restore the slider to the calculated audio-matched pace.
+- [x] Verify desktop/mobile placement, manual and audio-matched pace states, TypeScript, production build, and save a checkpoint.

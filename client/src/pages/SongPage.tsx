@@ -54,6 +54,19 @@ function getAudioMatchedScrollSpeed(scrollRange: number, soundCloudDurationMs: n
   return Math.max(MIN_TELEPROMPTER_SPEED, scrollRange / (soundCloudDurationMs / 1_000));
 }
 
+function getAudioMatchedSlideshowSpeed(
+  verse: { lines: Array<{ transliteration: string }> } | undefined,
+  verses: Array<{ lines: Array<{ transliteration: string }> }>,
+  soundCloudDurationMs: number | null,
+) {
+  if (!soundCloudDurationMs) return null;
+  const manualBaselineMs = getSlideshowIntervalMs(verse, verses, DEFAULT_TELEPROMPTER_SPEED, null);
+  const audioMatchedMs = getSlideshowIntervalMs(verse, verses, DEFAULT_TELEPROMPTER_SPEED, soundCloudDurationMs);
+  if (audioMatchedMs <= 0) return null;
+
+  return Math.min(MAX_TELEPROMPTER_SPEED, Math.max(MIN_TELEPROMPTER_SPEED, Math.round(DEFAULT_TELEPROMPTER_SPEED * (manualBaselineMs / audioMatchedMs))));
+}
+
 function getSoundCloudPlayerUrl(embedHtml: unknown) {
   if (typeof embedHtml !== "string") return null;
   const sourceMatch = embedHtml.match(/src="([^"]+)"/i);
@@ -183,7 +196,6 @@ function SongPageContent() {
   const [slideshowCountdown, setSlideshowCountdown] = useState({ remainingMs: 0, totalMs: 0 });
   const [isTeleprompterControlsCollapsed, setIsTeleprompterControlsCollapsed] = useState(false);
   const [isTeleprompterPacePanelOpen, setIsTeleprompterPacePanelOpen] = useState(false);
-  const [isSongPacePanelOpen, setIsSongPacePanelOpen] = useState(false);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const [isSoundCloudPlayerOpen, setIsSoundCloudPlayerOpen] = useState(false);
   const [soundCloudRecordingIndex, setSoundCloudRecordingIndex] = useState(0);
@@ -597,7 +609,14 @@ function SongPageContent() {
     setTeleprompterSpeed(nextSpeed ?? DEFAULT_TELEPROMPTER_SPEED);
   };
 
-  const useAudioMatchedPace = () => setIsManualTeleprompterPace(false);
+  const useAudioMatchedPace = () => {
+    const matchedSpeed = teleprompterView === "scroll"
+      ? audioMatchedScrollSpeed
+      : getAudioMatchedSlideshowSpeed(displayedVerses[slideshowVerseIndex], displayedVerses, soundCloudDurationMs);
+
+    if (matchedSpeed !== null) setTeleprompterSpeed(matchedSpeed);
+    setIsManualTeleprompterPace(false);
+  };
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -671,14 +690,6 @@ function SongPageContent() {
               </button>
             </div>
             <div className="teleprompter-mode-controls">
-              <Popover open={isTeleprompterPacePanelOpen} onOpenChange={setIsTeleprompterPacePanelOpen}>
-                <Tooltip><TooltipTrigger asChild><PopoverTrigger asChild><button className={`teleprompter-speed-trigger ${isManualTeleprompterPace ? "is-manual" : ""}`} type="button" aria-label={copy.song.teleprompterPaceSettings}><Gauge size={16} aria-hidden="true" /></button></PopoverTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.teleprompterPaceSettings}</TooltipContent></Tooltip>
-                <PopoverContent className="teleprompter-speed-popover" align="end" side="bottom" sideOffset={8}>
-                  <div className="teleprompter-speed-popover-heading"><Gauge size={15} aria-hidden="true" /><span>{copy.song.teleprompterManualPace}</span></div>
-                  <Slider id="teleprompter-speed" value={[teleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
-                  {isAudioPaceAvailable && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
-                </PopoverContent>
-              </Popover>
             {teleprompterView === "slideshow" && isTeleprompterPlaying && (
               <output className="teleprompter-slideshow-countdown" aria-label={slideshowCountdownLabel}>
                 <span className="teleprompter-countdown-dot" style={{ background: `conic-gradient(var(--saffron) ${slideshowCountdownProgress * 360}deg, rgba(24,36,43,0.14) 0deg)` }} aria-hidden="true" />
@@ -687,6 +698,14 @@ function SongPageContent() {
             )}
             </div>
             <div className="teleprompter-actions">
+              <Popover open={isTeleprompterPacePanelOpen} onOpenChange={setIsTeleprompterPacePanelOpen}>
+                <Tooltip><TooltipTrigger asChild><PopoverTrigger asChild><button className={`teleprompter-speed-trigger ${isManualTeleprompterPace ? "is-manual" : ""}`} type="button" aria-label={copy.song.teleprompterPaceSettings}><Gauge size={16} aria-hidden="true" /></button></PopoverTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.teleprompterPaceSettings}</TooltipContent></Tooltip>
+                <PopoverContent className="teleprompter-speed-popover" align="end" side="bottom" sideOffset={8}>
+                  <div className="teleprompter-speed-popover-heading"><Gauge size={15} aria-hidden="true" /><span>{copy.song.teleprompterManualPace}</span></div>
+                  <Slider id="teleprompter-speed" value={[teleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
+                  {isAudioPaceAvailable && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
+                </PopoverContent>
+              </Popover>
               <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={teleprompterView === "scroll" ? toggleTeleprompter : toggleSlideshow}>
                 {isTeleprompterPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
                 <span>{isTeleprompterPlaying
@@ -860,14 +879,6 @@ function SongPageContent() {
                   <Volume2 size={16} aria-hidden="true" />
                   <span>{isSoundCloudPlayerOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}</span>
               </button>
-              <Popover open={isSongPacePanelOpen} onOpenChange={setIsSongPacePanelOpen}>
-                <Tooltip><TooltipTrigger asChild><PopoverTrigger asChild><button className={`song-audio-speed-trigger ${isManualTeleprompterPace ? "is-manual" : ""}`} type="button" aria-label={copy.song.teleprompterPaceSettings}><Gauge size={16} aria-hidden="true" /></button></PopoverTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.teleprompterPaceSettings}</TooltipContent></Tooltip>
-                <PopoverContent className="teleprompter-speed-popover" align="end" side="bottom" sideOffset={8}>
-                  <div className="teleprompter-speed-popover-heading"><Gauge size={15} aria-hidden="true" /><span>{copy.song.teleprompterManualPace}</span></div>
-                  <Slider id="song-teleprompter-speed" value={[teleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
-                  {soundCloudDurationMs && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
-                </PopoverContent>
-              </Popover>
             </div>
           )}
         </div>
