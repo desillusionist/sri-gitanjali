@@ -261,3 +261,9 @@
 - [x] Add an accessible language chooser to the compact reader panel for Russian, Ukrainian, Spanish, Italian, Chinese, Thai, Portuguese, Hindi, and Bengali.
 - [x] Generate or retrieve second translations from English source text, persist the selection, and render it with a contrasting left rule.
 - [x] Verify language switching, translation visibility, desktop/mobile layout, TypeScript, production build, and save a checkpoint.
+
+## Compact reader panel width
+
+- [x] Audit panel width constraints and button overflow on song-page desktop and mobile layouts.
+- [x] Increase usable panel width and adapt internal spacing so every reading control stays contained.
+- [x] Verify desktop/mobile panel bounds, TypeScript, production build, and save a checkpoint.
