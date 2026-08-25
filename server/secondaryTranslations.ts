@@ -19,9 +19,10 @@ const languageNames: Record<SecondaryTranslationLanguage, string> = {
 
 export type VerseTranslationRequest = { verseId: string; englishText: string };
 export type VerseTranslationResult = { verseId: string; translation: string };
+const TRANSLATION_PROMPT_VERSION = "secondary-translation-iso15919-v2";
 
 export function sourceHash(text: string) {
-  return createHash("sha256").update(text).digest("hex");
+  return createHash("sha256").update(`${TRANSLATION_PROMPT_VERSION}\n${text}`).digest("hex");
 }
 
 export function normalizeGeneratedTranslations(
@@ -63,7 +64,7 @@ async function translateBatch(language: SecondaryTranslationLanguage, verses: Ve
     messages: [
       {
         role: "system",
-        content: "You are a precise literary translator for a devotional songbook. Translate only each English explanation into the requested language. Preserve Sanskrit, Bengali, and proper names exactly, including diacritics. Do not add headings, commentary, transliteration, or markdown.",
+        content: "You are a precise literary translator for a devotional songbook. Translate only each English explanation into the requested language. Sanskrit and Bengali devotional names, titles, and technical terms in the source are written in IAST/ISO 15919-style Latin transliteration. Treat their phonemic IAST values as canonical. For Russian, Ukrainian, Simplified Chinese, Thai, Hindi, and Bengali output, write every such Indic term and proper name in the target language's native script by phonetic transliteration from those IAST values; never leave these terms in extended Latin characters, and do not semantically translate them. For Spanish, Italian, and Portuguese output, retain the canonical IAST spelling and its diacritics for those terms because the target script is Latin. Preserve the distinction of ā, ī, ū, ṛ, ṝ, ḷ, ṅ, ñ, ṭ, ḍ, ṇ, ś, ṣ, ṃ, and ḥ when deriving the target-script form. Do not add headings, commentary, alternate spellings, parenthetical source forms, transliteration notes, or markdown.",
       },
       {
         role: "user",

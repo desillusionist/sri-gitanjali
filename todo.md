@@ -267,3 +267,10 @@
 - [x] Audit panel width constraints and button overflow on song-page desktop and mobile layouts.
 - [x] Increase usable panel width and adapt internal spacing so every reading control stays contained.
 - [x] Verify desktop/mobile panel bounds, TypeScript, production build, and save a checkpoint.
+
+## Transliteration and PalakaNew verse font
+
+- [x] Audit the existing secondary-translation prompt and the PalakaNew OTF font’s web and diacritic coverage.
+- [x] Update the translation instructions to transliterate Indic names and terms into each selected target script according to an international standard.
+- [x] Convert and host PalakaNew as a web font, then apply it to shlokas and the teleprompter.
+- [x] Verify transliteration guidance, diacritic rendering, desktop/mobile typography, TypeScript, production build, and save a checkpoint.

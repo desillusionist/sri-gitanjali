@@ -67,6 +67,9 @@ describe("secondary translation helpers", () => {
 
     expect(result.translations).toEqual([{ verseId: "sample-song-001::verse-1", translation: "Сердце помнит святое имя." }]);
     expect(mocks.invokeLLM).toHaveBeenCalledTimes(1);
+    const llmRequest = mocks.invokeLLM.mock.calls[0]?.[0];
+    expect(llmRequest?.messages[0]?.content).toContain("IAST/ISO 15919");
+    expect(llmRequest?.messages[0]?.content).toContain("target language's native script");
     expect(mocks.cacheSecondaryTranslation).toHaveBeenCalledWith(expect.objectContaining({
       verseKey: "sample-song-001::verse-1",
       language: "ru",
