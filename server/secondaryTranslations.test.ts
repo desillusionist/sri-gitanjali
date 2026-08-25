@@ -76,4 +76,28 @@ describe("secondary translation helpers", () => {
       translatedText: "Сердце помнит святое имя.",
     }));
   });
+
+  it("retries an incomplete JSON payload instead of exposing a JSON parser error", async () => {
+    mocks.getCachedSecondaryTranslations.mockResolvedValue([]);
+    mocks.cacheSecondaryTranslation.mockResolvedValue(undefined);
+    mocks.invokeLLM
+      .mockResolvedValueOnce({ choices: [{ message: { content: '{"translations":[{"verseId":"sample-song-001::verse-1","translation":"Обр' } }] })
+      .mockResolvedValueOnce({
+        choices: [{
+          message: {
+            content: JSON.stringify({
+              translations: [{ verseId: "sample-song-001::verse-1", translation: "Завершённый перевод." }],
+            }),
+          },
+        }],
+      });
+    const { appRouter } = await import("./routers");
+    const caller = appRouter.createCaller({ user: null, req: { ip: "retry-test", headers: {} }, res: {} } as never);
+
+    await expect(caller.secondaryTranslation.translateSong({
+      language: "ru",
+      verses: [{ verseId: "sample-song-001::verse-1", englishText: "A complete English explanation." }],
+    })).resolves.toEqual({ translations: [{ verseId: "sample-song-001::verse-1", translation: "Завершённый перевод." }] });
+    expect(mocks.invokeLLM).toHaveBeenCalledTimes(2);
+  });
 });

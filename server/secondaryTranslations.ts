@@ -21,6 +21,13 @@ export type VerseTranslationRequest = { verseId: string; englishText: string };
 export type VerseTranslationResult = { verseId: string; translation: string };
 const TRANSLATION_PROMPT_VERSION = "secondary-translation-iso15919-v2";
 
+class TranslationPayloadError extends Error {
+  constructor() {
+    super("The translation service returned an incomplete response.");
+    this.name = "TranslationPayloadError";
+  }
+}
+
 export function sourceHash(text: string) {
   return createHash("sha256").update(`${TRANSLATION_PROMPT_VERSION}\n${text}`).digest("hex");
 }
@@ -39,7 +46,7 @@ export function normalizeGeneratedTranslations(
   return requested.map((item) => ({ verseId: item.verseId, translation: normalized.get(item.verseId) ?? "" }));
 }
 
-function splitIntoBatches(items: VerseTranslationRequest[], maximumCharacters = 10_000) {
+function splitIntoBatches(items: VerseTranslationRequest[], maximumCharacters = 2_800) {
   const batches: VerseTranslationRequest[][] = [];
   let batch: VerseTranslationRequest[] = [];
   let characterCount = 0;
@@ -57,7 +64,7 @@ function splitIntoBatches(items: VerseTranslationRequest[], maximumCharacters = 
   return batches;
 }
 
-async function translateBatch(language: SecondaryTranslationLanguage, verses: VerseTranslationRequest[]) {
+async function translateBatchAttempt(language: SecondaryTranslationLanguage, verses: VerseTranslationRequest[]) {
   const response = await invokeLLM({
     model: "gpt-5-mini",
     maxTokens: 8_000,
@@ -98,8 +105,29 @@ async function translateBatch(language: SecondaryTranslationLanguage, verses: Ve
 
   const content = response.choices[0]?.message?.content;
   if (!content || typeof content !== "string") throw new Error("The translation service returned no content.");
-  const parsed = JSON.parse(content) as { translations?: Array<{ verseId: string; translation: string }> };
-  return normalizeGeneratedTranslations(verses, parsed.translations ?? []);
+  try {
+    const parsed = JSON.parse(content) as { translations?: Array<{ verseId: string; translation: string }> };
+    return normalizeGeneratedTranslations(verses, parsed.translations ?? []);
+  } catch (error) {
+    if (error instanceof SyntaxError || error instanceof Error) throw new TranslationPayloadError();
+    throw error;
+  }
+}
+
+async function translateBatch(language: SecondaryTranslationLanguage, verses: VerseTranslationRequest[]) {
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      return await translateBatchAttempt(language, verses);
+    } catch (error) {
+      if (!(error instanceof TranslationPayloadError) || attempt === 1) {
+        if (error instanceof TranslationPayloadError) {
+          throw new Error("The translation service could not form a complete response. Please try again.");
+        }
+        throw error;
+      }
+    }
+  }
+  throw new Error("The translation service could not form a complete response. Please try again.");
 }
 
 export async function translateAndCacheVerses(language: SecondaryTranslationLanguage, verses: VerseTranslationRequest[]) {

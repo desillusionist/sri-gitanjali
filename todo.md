@@ -274,3 +274,9 @@
 - [x] Update the translation instructions to transliterate Indic names and terms into each selected target script according to an international standard.
 - [x] Convert and host PalakaNew as a web font, then apply it to shlokas and the teleprompter.
 - [x] Verify transliteration guidance, diacritic rendering, desktop/mobile typography, TypeScript, production build, and save a checkpoint.
+
+## Secondary translation JSON parsing regression
+
+- [x] Reproduce the malformed JSON response for Śrī Śrī Nitāi Chaitanya Ārati and identify the parser failure path.
+- [x] Safely handle incomplete or invalid structured LLM responses without surfacing a raw JSON parser error to the reader.
+- [x] Add regression coverage and verify the translation mutation, TypeScript, tests, production build, and checkpoint.
