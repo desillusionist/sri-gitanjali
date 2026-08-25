@@ -232,3 +232,11 @@
 - [x] Use the selected recording’s duration to pace Auto-scroll and Slideshow without disrupting manual tempo controls.
 - [x] Show the number of available recordings on Library and Index A–Z song cards.
 - [x] Verify timing, recording selection, card counts, desktop/mobile layouts, TypeScript, production build, and save a checkpoint.
+
+## Teleprompter navigation and manual pace controls
+
+- [x] Add previous/next controls directly beside the slideshow shloka and preserve auto-slideshow playback during manual navigation.
+- [x] Allow ArrowLeft/ArrowRight slideshow navigation without pausing, and ArrowUp/ArrowDown autoscroll rewinding without pausing playback.
+- [x] Add swipe-based autoscroll rewinding that preserves playback, while retaining accessible touch scrolling.
+- [x] Move manual scroll/slide pace adjustment into a compact speed popover, including songs with SoundCloud audio, and remove verbose pace-value labels.
+- [x] Verify desktop/mobile controls, playback continuity, keyboard and touch behavior, TypeScript, production build, and save a checkpoint.

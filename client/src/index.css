@@ -243,14 +243,18 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-status > span { width: 0.48rem; height: 0.48rem; border: 1px solid var(--saffron-deep); border-radius: 50%; }
 .teleprompter-panel.is-playing .teleprompter-status { color: var(--sage); }
 .teleprompter-panel.is-playing .teleprompter-status > span { border-color: var(--sage); background: var(--sage); box-shadow: 0 0 0 0.18rem rgba(109,133,121,0.14); }
-.teleprompter-speed-control { display: grid; grid-template-columns: auto minmax(7rem, 1fr) auto; gap: 0.7rem; align-items: center; }
-.teleprompter-speed-control label { display: inline-flex; gap: 0.32rem; align-items: center; color: var(--ink-soft); font-size: 0.67rem; font-weight: 700; white-space: nowrap; }
-.teleprompter-speed-control [data-slot="slider"] { min-width: 0; }
-.teleprompter-speed-control [data-slot="slider-track"] { height: 0.28rem; border-radius: 0; background: #ded6c9; }
-.teleprompter-speed-control [data-slot="slider-range"] { background: var(--saffron); }
-.teleprompter-speed-control [data-slot="slider-thumb"] { width: 0.88rem; height: 0.88rem; border-color: var(--saffron-deep); border-radius: 0; background: #fffaf3; }
-.teleprompter-speed-control output { min-width: 6.6rem; color: var(--saffron-deep); font-size: 0.65rem; font-weight: 700; text-align: right; }
-.teleprompter-speed-control .teleprompter-audio-pace-output { grid-column: 2 / -1; min-width: 0; padding: 0.42rem 0.56rem; color: var(--saffron-deep); border-left: 2px solid var(--saffron); background: #fff5e8; text-align: left; }
+.teleprompter-speed-trigger, .song-audio-speed-trigger { display: grid; flex: 0 0 auto; width: 2.15rem; height: 2.15rem; place-items: center; color: var(--ink-soft); border: 1px solid var(--hairline); background: #fffaf3; transition: color 160ms var(--ease-out), background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.teleprompter-speed-trigger:hover, .song-audio-speed-trigger:hover, .teleprompter-speed-trigger.is-manual, .song-audio-speed-trigger.is-manual { color: var(--saffron-deep); border-color: rgba(217,109,50,0.42); background: #fff0da; }
+.teleprompter-speed-trigger:active, .song-audio-speed-trigger:active { transform: scale(0.95); }
+.teleprompter-speed-trigger:focus-visible, .song-audio-speed-trigger:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.18rem; }
+.teleprompter-speed-popover { z-index: 150 !important; display: grid; width: min(17rem, calc(100vw - 1.5rem)) !important; gap: 0.72rem; padding: 0.8rem !important; border-color: var(--hairline) !important; border-radius: 0 !important; background: #fffaf3 !important; box-shadow: 7px 8px 0 rgba(24,36,43,0.09) !important; }
+.teleprompter-speed-popover-heading { display: inline-flex; gap: 0.4rem; align-items: center; color: var(--ink-soft); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.teleprompter-speed-popover [data-slot="slider-track"] { height: 0.28rem; border-radius: 0; background: #ded6c9; }
+.teleprompter-speed-popover [data-slot="slider-range"] { background: var(--saffron); }
+.teleprompter-speed-popover [data-slot="slider-thumb"] { width: 0.88rem; height: 0.88rem; border-color: var(--saffron-deep); border-radius: 0; background: #fffaf3; }
+.teleprompter-audio-pace-reset { display: inline-flex; justify-content: center; gap: 0.38rem; align-items: center; min-height: 2rem; padding: 0.4rem 0.55rem; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.32); background: #fff4e5; font-size: 0.66rem; font-weight: 700; transition: color 160ms var(--ease-out), background 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.teleprompter-audio-pace-reset:hover { color: #fffaf3; background: var(--saffron-deep); }
+.teleprompter-audio-pace-reset:active { transform: scale(0.97); }
 .teleprompter-actions { display: flex; gap: 0.45rem; align-items: center; }
 .teleprompter-play-button { display: inline-flex; flex: 0 0 auto; justify-content: center; gap: 0.42rem; align-items: center; min-height: 2.15rem; padding: 0.48rem 0.72rem; color: #fffaf3; background: var(--saffron-deep); font-size: 0.69rem; font-weight: 700; white-space: nowrap; transition: background 160ms var(--ease-out), transform 160ms var(--ease-out); }
 .teleprompter-play-button:hover { background: var(--ink); }
@@ -266,19 +270,13 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-collapsed-control:hover { background: rgba(24,36,43,0.14); }
 .teleprompter-collapsed-control:active { transform: scale(0.96); }
 .teleprompter-overlay .teleprompter-status { flex: 0 0 auto; min-width: max-content; padding: 0.35rem 0.48rem; border-left: 2px solid var(--saffron); background: rgba(255,248,236,0.7); }
-.teleprompter-overlay .teleprompter-speed-control { flex: 1 1 14rem; min-width: 11rem; }
-.teleprompter-mode-controls { display: flex; flex: 1 1 18rem; gap: 0.55rem; align-items: center; min-width: 0; }
+.teleprompter-mode-controls { display: flex; flex: 1 1 auto; gap: 0.55rem; align-items: center; min-width: 0; }
 .teleprompter-overlay .teleprompter-actions { flex: 0 0 auto; justify-self: auto; min-width: 0; }
 .teleprompter-view-switch { display: inline-flex; flex: 0 0 auto; overflow: hidden; border: 1px solid var(--hairline); }
 .teleprompter-view-switch button { display: inline-flex; min-height: 2.15rem; gap: 0.35rem; align-items: center; justify-content: center; padding: 0.35rem 0.62rem; color: var(--ink-soft); background: #fffaf3; font-size: 0.65rem; font-weight: 700; white-space: nowrap; transition: color 160ms var(--ease-out), background 160ms var(--ease-out); }
 .teleprompter-view-switch button + button { border-left: 1px solid var(--hairline); }
 .teleprompter-view-switch button:hover, .teleprompter-view-switch button.is-active { color: var(--saffron-deep); background: #fff0da; }
 .teleprompter-view-switch button.is-active { box-shadow: inset 0 -2px 0 var(--saffron); }
-.teleprompter-slide-actions { display: inline-flex; flex: 0 0 auto; order: -1; justify-content: center; align-items: center; min-height: 2.15rem; overflow: hidden; border: 1px solid var(--hairline); background: #fffaf3; }
-.teleprompter-slide-actions button { display: grid; width: 2rem; height: 2rem; place-items: center; color: var(--ink-soft); background: transparent; transition: color 160ms var(--ease-out), background 160ms var(--ease-out); }
-.teleprompter-slide-actions button:hover:not(:disabled) { color: var(--saffron-deep); background: #fff0da; }
-.teleprompter-slide-actions button:disabled { opacity: 0.34; cursor: not-allowed; }
-.teleprompter-slide-actions output { min-width: 5.9rem; color: var(--saffron-deep); font-size: 0.66rem; font-weight: 700; text-align: center; white-space: nowrap; }
 .teleprompter-slideshow-countdown { display: inline-flex; flex: 0 0 auto; gap: 0.38rem; align-items: center; min-height: 2.15rem; padding: 0.35rem 0.52rem; color: var(--ink-soft); border-left: 1px solid var(--hairline); background: rgba(255,250,243,0.72); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.025em; white-space: nowrap; }
 .teleprompter-countdown-dot, .teleprompter-countdown-ring { position: relative; display: inline-grid; place-items: center; border-radius: 999px; }
 .teleprompter-countdown-dot { width: 1rem; height: 1rem; }
@@ -287,11 +285,17 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-countdown-ring { position: absolute; inset: 0.18rem; z-index: -1; }
 .teleprompter-countdown-ring::after { position: absolute; inset: 0.16rem; background: rgba(255,252,246,0.96); border-radius: inherit; content: ""; }
 .teleprompter-collapsed-control svg { position: relative; z-index: 1; }
-.teleprompter-reading-surface { position: relative; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: var(--saffron) transparent; scrollbar-width: thin; outline: none; }
+.teleprompter-reading-surface { position: relative; min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scrollbar-color: var(--saffron) transparent; scrollbar-width: thin; outline: none; }
 .teleprompter-reading-surface:focus-visible { box-shadow: inset 0 0 0 3px rgba(217,109,50,0.32); }
-.teleprompter-slideshow-surface { position: relative; display: grid; min-height: 0; place-items: center; padding: clamp(1.25rem, 5vw, 4rem); outline: none; }
+.teleprompter-slideshow-surface { position: relative; display: grid; grid-template-columns: clamp(2.5rem, 6vw, 3.5rem) minmax(0, 66rem) clamp(2.5rem, 6vw, 3.5rem); gap: clamp(0.5rem, 2vw, 1.3rem); min-height: 0; align-items: center; justify-content: center; padding: clamp(1.25rem, 5vw, 4rem); outline: none; }
 .teleprompter-slideshow-surface:focus-visible { box-shadow: inset 0 0 0 3px rgba(217,109,50,0.32); }
-.teleprompter-slideshow-verse { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.6rem); width: min(100%, 66rem); padding: clamp(2rem, 5vw, 5rem); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); background: rgba(255,252,246,0.42); box-shadow: 10px 12px 0 rgba(24,36,43,0.045); }
+.teleprompter-slideshow-verse { position: relative; display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.6rem); width: 100%; padding: clamp(2rem, 5vw, 5rem); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); background: rgba(255,252,246,0.42); box-shadow: 10px 12px 0 rgba(24,36,43,0.045); }
+.teleprompter-slide-nav { display: grid; width: 100%; aspect-ratio: 1; place-items: center; color: var(--saffron-deep); border: 1px solid rgba(217,109,50,0.36); background: rgba(255,252,246,0.8); box-shadow: 4px 5px 0 rgba(24,36,43,0.06); transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out), background 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.teleprompter-slide-nav:hover:not(:disabled) { color: #fffaf3; border-color: var(--saffron-deep); background: var(--saffron-deep); }
+.teleprompter-slide-nav:active:not(:disabled) { transform: scale(0.95); }
+.teleprompter-slide-nav:focus-visible { outline: 2px solid rgba(217,109,50,0.65); outline-offset: 0.2rem; }
+.teleprompter-slide-nav:disabled { color: #b8aea0; border-color: var(--hairline); background: rgba(255,252,246,0.42); box-shadow: none; cursor: not-allowed; }
+.teleprompter-slide-position { position: absolute; right: clamp(1rem, 3vw, 2.3rem); bottom: clamp(1rem, 3vw, 2.3rem); color: var(--saffron-deep); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em; }
 .teleprompter-reading-content { width: min(100%, 66rem); margin: 0 auto; padding: clamp(4rem, 11vh, 8.5rem) clamp(1.25rem, 7vw, 7rem) 32vh; }
 .teleprompter-shloka { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.6rem); padding: clamp(2.5rem, 5vw, 4.2rem) 0; border-top: 1px solid var(--hairline); }
 .teleprompter-shloka:first-child { padding-top: 0; border-top: 0; }
@@ -384,6 +388,7 @@ a { color: inherit; text-decoration: none; }
 .song-audio-toggle:hover { color: var(--saffron-deep); border-color: rgba(217,109,50,0.42); background: #fff2df; }
 .song-audio-toggle:active { transform: scale(0.97); }
 .song-audio-toggle:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.2rem; }
+.song-audio-speed-trigger { width: 2.1rem; height: 2.1rem; background: rgba(255,252,246,0.76); }
 .song-audio-version { min-height: 2.1rem; max-width: 8.5rem; padding: 0.42rem 1.8rem 0.42rem 0.56rem; color: var(--ink-soft); border: 1px solid var(--hairline); border-radius: 0; background: rgba(255,252,246,0.76); font-family: "DM Sans", Arial, sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
 .song-audio-version:focus-visible { outline: 2px solid rgba(217,109,50,0.6); outline-offset: 0.2rem; }
 .soundcloud-player { display: block; width: 100%; height: 112px; border: 0; background: #fffaf3; }
@@ -499,20 +504,18 @@ a { color: inherit; text-decoration: none; }
   .reading-stepper-label { display: none; }
   .translation-controls { align-items: flex-start; flex-direction: column; gap: 0.72rem; }
   .translation-switch-label { width: 100%; justify-content: space-between; }
-  .teleprompter-speed-control { grid-template-columns: auto minmax(0, 1fr); }
-  .teleprompter-speed-control output { grid-column: 2; min-width: 0; text-align: left; }
   .teleprompter-overlay-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.6rem; padding: 0.68rem 0.8rem; }
   .teleprompter-overlay .teleprompter-status { grid-column: 1; grid-row: 1; justify-self: start; }
   .teleprompter-overlay .teleprompter-actions { grid-column: 2; grid-row: 1; min-width: 0; }
   .teleprompter-overlay .teleprompter-view-switch { grid-column: 1 / -1; grid-row: 2; width: 100%; }
   .teleprompter-view-switch button { flex: 1; }
   .teleprompter-overlay .teleprompter-mode-controls { display: grid; grid-column: 1 / -1; grid-row: 3; grid-template-columns: 1fr; gap: 0.48rem; }
-  .teleprompter-overlay .teleprompter-speed-control { width: 100%; min-width: 0; }
-  .teleprompter-overlay .teleprompter-slide-actions { width: 100%; order: initial; }
   .teleprompter-overlay .teleprompter-play-button { min-width: 0; }
   .teleprompter-reading-content { padding: 3.5rem 1.2rem 28vh; }
   .teleprompter-shloka { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; padding: 2.8rem 0; }
+  .teleprompter-slideshow-surface { grid-template-columns: 2.3rem minmax(0, 1fr) 2.3rem; gap: 0.38rem; padding: 0.8rem; }
   .teleprompter-slideshow-verse { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; padding: 1.5rem; }
+  .teleprompter-slide-position { right: 1rem; bottom: 0.8rem; }
   .teleprompter-line { font-size: calc(clamp(2.15rem, 10vw, 3.25rem) + var(--reading-font-size-adjustment, 0rem)); line-height: var(--teleprompter-line-height, 1.03); }
   .teleprompter-line.is-indented { margin-left: 1rem; }
   .song-verses { gap: 2.2rem; padding-top: 1.55rem; }
