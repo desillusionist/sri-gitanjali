@@ -286,3 +286,9 @@
 - [x] Identify the visual-editor target on Home and confirm the source of its uppercase styling.
 - [x] Replace the target label’s uppercase presentation with ordinary capitalization.
 - [x] Verify the home-page presentation, TypeScript, production build, and save a checkpoint.
+
+## Home eyebrow edition line
+
+- [x] Verify the visual editor’s 13px eyebrow style and identify its i18n text source.
+- [x] Synchronize the eyebrow with “Śrī Chaitanya Sāraswat Maṭh Kīrtan Guide • Śrī Gītāñjali • Gupta Govardhan Edition”.
+- [x] Verify desktop/mobile wrapping, TypeScript, production build, and save a checkpoint.

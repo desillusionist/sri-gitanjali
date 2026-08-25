@@ -112,7 +112,7 @@ function LibraryHome() {
     <div className="library-page">
       <header className="library-header">
         <div className="header-copy">
-          <p className="eyebrow" style={{ width: "min(340px, 100%)" }}>{copy.library.eyebrow}</p>
+          <p className="eyebrow" style={{ width: "min(340px, 100%)", fontSize: '13px' }}>{copy.library.eyebrow}</p>
           <h1>{copy.library.title}<br /><em>{copy.library.titleEmphasis}</em></h1>
           <p className="header-lede">{copy.library.lede}</p>
         </div>
