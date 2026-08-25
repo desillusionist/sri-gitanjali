@@ -246,3 +246,11 @@
 - [x] Remove the pace-control trigger from the song-page audio row and place it immediately before the teleprompter Start/Pause action.
 - [x] When “Match SoundCloud duration” is selected, restore the slider to the calculated audio-matched pace.
 - [x] Verify desktop/mobile placement, manual and audio-matched pace states, TypeScript, production build, and save a checkpoint.
+
+## Teleprompter pace controls refinement
+
+- [x] Reduce Start Auto-scroll and Start Auto-slideshow to accessible icon-only play controls.
+- [x] Keep pace control available alongside the Pause control during playback.
+- [x] Persist independent manual pace values for Auto-scroll and Slideshow across view changes and page reloads.
+- [x] Add a concise active-pace status plus slow, steady, and fast landmarks to the manual speed slider.
+- [x] Verify desktop/mobile layouts, playback states, persistence, TypeScript, production build, and save a checkpoint.

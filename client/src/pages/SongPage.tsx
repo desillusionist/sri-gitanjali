@@ -28,6 +28,14 @@ const DEFAULT_TELEPROMPTER_SPEED = 30;
 const MIN_TELEPROMPTER_SPEED = 1;
 const MAX_TELEPROMPTER_SPEED = 72;
 
+type PaceLandmark = "slow" | "steady" | "fast";
+
+function getPaceLandmark(speed: number): PaceLandmark {
+  if (speed <= 24) return "slow";
+  if (speed >= 48) return "fast";
+  return "steady";
+}
+
 function countVerseSyllables(lines: Array<{ transliteration: string }>) {
   const text = lines.map((line) => line.transliteration).join(" ").toLocaleLowerCase();
   return text.match(/[aeiouāīūṛṝḷēō]+/gi)?.length ?? 1;
@@ -94,8 +102,13 @@ type ReadingPreferences = {
   areSecondaryOrnamentsHidden: boolean;
   readingFontSizeStep: number;
   readingLineHeightStep: number;
-  teleprompterSpeed: number;
-  isManualTeleprompterPace: boolean;
+  teleprompterScrollSpeed: number;
+  teleprompterSlideshowSpeed: number;
+  isManualTeleprompterScrollPace: boolean;
+  isManualTeleprompterSlideshowPace: boolean;
+  /** Legacy values are read once for backwards-compatible localStorage migration. */
+  teleprompterSpeed?: number;
+  isManualTeleprompterPace?: boolean;
 };
 
 const DEFAULT_READING_PREFERENCES: ReadingPreferences = {
@@ -103,8 +116,10 @@ const DEFAULT_READING_PREFERENCES: ReadingPreferences = {
   areSecondaryOrnamentsHidden: false,
   readingFontSizeStep: DEFAULT_READING_STEP,
   readingLineHeightStep: DEFAULT_READING_STEP,
-  teleprompterSpeed: DEFAULT_TELEPROMPTER_SPEED,
-  isManualTeleprompterPace: false,
+  teleprompterScrollSpeed: DEFAULT_TELEPROMPTER_SPEED,
+  teleprompterSlideshowSpeed: DEFAULT_TELEPROMPTER_SPEED,
+  isManualTeleprompterScrollPace: false,
+  isManualTeleprompterSlideshowPace: false,
 };
 
 type TeleprompterView = "scroll" | "slideshow";
@@ -122,17 +137,26 @@ function readReadingPreferences(): ReadingPreferences {
     const lineHeightStep = typeof parsed.readingLineHeightStep === "number"
       ? Math.min(READING_LINE_HEIGHTS.length - 1, Math.max(0, parsed.readingLineHeightStep))
       : DEFAULT_READING_STEP;
-    const teleprompterSpeed = typeof parsed.teleprompterSpeed === "number"
+    const legacyTeleprompterSpeed = typeof parsed.teleprompterSpeed === "number"
       ? Math.min(MAX_TELEPROMPTER_SPEED, Math.max(MIN_TELEPROMPTER_SPEED, parsed.teleprompterSpeed))
       : DEFAULT_TELEPROMPTER_SPEED;
+    const scrollSpeed = typeof parsed.teleprompterScrollSpeed === "number"
+      ? Math.min(MAX_TELEPROMPTER_SPEED, Math.max(MIN_TELEPROMPTER_SPEED, parsed.teleprompterScrollSpeed))
+      : legacyTeleprompterSpeed;
+    const slideshowSpeed = typeof parsed.teleprompterSlideshowSpeed === "number"
+      ? Math.min(MAX_TELEPROMPTER_SPEED, Math.max(MIN_TELEPROMPTER_SPEED, parsed.teleprompterSlideshowSpeed))
+      : legacyTeleprompterSpeed;
+    const legacyManualPace = typeof parsed.isManualTeleprompterPace === "boolean" ? parsed.isManualTeleprompterPace : false;
 
     return {
       areTranslationsShown: typeof parsed.areTranslationsShown === "boolean" ? parsed.areTranslationsShown : true,
       areSecondaryOrnamentsHidden: typeof parsed.areSecondaryOrnamentsHidden === "boolean" ? parsed.areSecondaryOrnamentsHidden : false,
       readingFontSizeStep: fontSizeStep,
       readingLineHeightStep: lineHeightStep,
-      teleprompterSpeed,
-      isManualTeleprompterPace: typeof parsed.isManualTeleprompterPace === "boolean" ? parsed.isManualTeleprompterPace : false,
+      teleprompterScrollSpeed: scrollSpeed,
+      teleprompterSlideshowSpeed: slideshowSpeed,
+      isManualTeleprompterScrollPace: typeof parsed.isManualTeleprompterScrollPace === "boolean" ? parsed.isManualTeleprompterScrollPace : legacyManualPace,
+      isManualTeleprompterSlideshowPace: typeof parsed.isManualTeleprompterSlideshowPace === "boolean" ? parsed.isManualTeleprompterSlideshowPace : legacyManualPace,
     };
   } catch {
     return DEFAULT_READING_PREFERENCES;
@@ -188,8 +212,10 @@ function SongPageContent() {
   const [readingFontSizeStep, setReadingFontSizeStep] = useState(initialReadingPreferences.readingFontSizeStep);
   const [readingLineHeightStep, setReadingLineHeightStep] = useState(initialReadingPreferences.readingLineHeightStep);
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
-  const [teleprompterSpeed, setTeleprompterSpeed] = useState(initialReadingPreferences.teleprompterSpeed);
-  const [isManualTeleprompterPace, setIsManualTeleprompterPace] = useState(initialReadingPreferences.isManualTeleprompterPace);
+  const [teleprompterScrollSpeed, setTeleprompterScrollSpeed] = useState(initialReadingPreferences.teleprompterScrollSpeed);
+  const [teleprompterSlideshowSpeed, setTeleprompterSlideshowSpeed] = useState(initialReadingPreferences.teleprompterSlideshowSpeed);
+  const [isManualTeleprompterScrollPace, setIsManualTeleprompterScrollPace] = useState(initialReadingPreferences.isManualTeleprompterScrollPace);
+  const [isManualTeleprompterSlideshowPace, setIsManualTeleprompterSlideshowPace] = useState(initialReadingPreferences.isManualTeleprompterSlideshowPace);
   const [teleprompterView, setTeleprompterView] = useState<TeleprompterView>("scroll");
   const [slideshowVerseIndex, setSlideshowVerseIndex] = useState(0);
   const [isSlideshowPlaying, setIsSlideshowPlaying] = useState(false);
@@ -230,7 +256,7 @@ function SongPageContent() {
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
   const audioMatchedScrollSpeed = getAudioMatchedScrollSpeed(teleprompterScrollRange, soundCloudDurationMs);
-  const effectiveTeleprompterSpeed = !isManualTeleprompterPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterSpeed;
+  const effectiveTeleprompterSpeed = !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterScrollSpeed;
   const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, rewindBy: rewindTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", effectiveTeleprompterSpeed, teleprompterScrollRef);
 
   useEffect(() => {
@@ -267,13 +293,15 @@ function SongPageContent() {
         areSecondaryOrnamentsHidden,
         readingFontSizeStep,
         readingLineHeightStep,
-        teleprompterSpeed,
-        isManualTeleprompterPace,
+        teleprompterScrollSpeed,
+        teleprompterSlideshowSpeed,
+        isManualTeleprompterScrollPace,
+        isManualTeleprompterSlideshowPace,
       } satisfies ReadingPreferences));
     } catch {
       // Reading remains fully functional when browser storage is unavailable.
     }
-  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterPace, readingFontSizeStep, readingLineHeightStep, teleprompterSpeed]);
+  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterScrollPace, isManualTeleprompterSlideshowPace, readingFontSizeStep, readingLineHeightStep, teleprompterScrollSpeed, teleprompterSlideshowSpeed]);
 
   useEffect(() => {
     if (!isReaderPanelOpen) return;
@@ -413,7 +441,7 @@ function SongPageContent() {
       return;
     }
 
-    const intervalMs = getSlideshowIntervalMs(displayedVerses[slideshowVerseIndex], displayedVerses, teleprompterSpeed, isManualTeleprompterPace ? null : soundCloudDurationMs);
+    const intervalMs = getSlideshowIntervalMs(displayedVerses[slideshowVerseIndex], displayedVerses, teleprompterSlideshowSpeed, isManualTeleprompterSlideshowPace ? null : soundCloudDurationMs);
     const startedAt = performance.now();
     const updateCountdown = () => {
       const remainingMs = Math.max(0, intervalMs - (performance.now() - startedAt));
@@ -436,7 +464,7 @@ function SongPageContent() {
       window.clearInterval(countdownTimer);
       window.clearTimeout(advanceTimer);
     };
-  }, [displayedVerses, isManualTeleprompterPace, isSlideshowPlaying, isTeleprompterOpen, slideshowVerseIndex, soundCloudDurationMs, teleprompterSpeed, teleprompterView]);
+  }, [displayedVerses, isManualTeleprompterSlideshowPace, isSlideshowPlaying, isTeleprompterOpen, slideshowVerseIndex, soundCloudDurationMs, teleprompterSlideshowSpeed, teleprompterView]);
 
   useEffect(() => {
     const translationVerseId = activeMatch?.kind === "translation" ? activeMatch.verseId : undefined;
@@ -605,8 +633,15 @@ function SongPageContent() {
   };
 
   const updateManualTeleprompterSpeed = (nextSpeed: number | undefined) => {
-    setIsManualTeleprompterPace(true);
-    setTeleprompterSpeed(nextSpeed ?? DEFAULT_TELEPROMPTER_SPEED);
+    const speed = nextSpeed ?? DEFAULT_TELEPROMPTER_SPEED;
+    if (teleprompterView === "scroll") {
+      setIsManualTeleprompterScrollPace(true);
+      setTeleprompterScrollSpeed(speed);
+      return;
+    }
+
+    setIsManualTeleprompterSlideshowPace(true);
+    setTeleprompterSlideshowSpeed(speed);
   };
 
   const useAudioMatchedPace = () => {
@@ -614,8 +649,14 @@ function SongPageContent() {
       ? audioMatchedScrollSpeed
       : getAudioMatchedSlideshowSpeed(displayedVerses[slideshowVerseIndex], displayedVerses, soundCloudDurationMs);
 
-    if (matchedSpeed !== null) setTeleprompterSpeed(matchedSpeed);
-    setIsManualTeleprompterPace(false);
+    if (teleprompterView === "scroll") {
+      if (matchedSpeed !== null) setTeleprompterScrollSpeed(matchedSpeed);
+      setIsManualTeleprompterScrollPace(false);
+      return;
+    }
+
+    if (matchedSpeed !== null) setTeleprompterSlideshowSpeed(matchedSpeed);
+    setIsManualTeleprompterSlideshowPace(false);
   };
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -646,6 +687,13 @@ function SongPageContent() {
   const slideshowCountdownLabel = copy.song.teleprompterCountdown.replace("{seconds}", String(slideshowCountdownSeconds));
   const isTeleprompterPlaying = teleprompterView === "scroll" ? isAutoScrollPlaying : isSlideshowPlaying;
   const isAudioPaceAvailable = teleprompterView === "scroll" ? audioMatchedScrollSpeed !== null : soundCloudDurationMs !== null;
+  const activeTeleprompterSpeed = teleprompterView === "scroll" ? teleprompterScrollSpeed : teleprompterSlideshowSpeed;
+  const isManualTeleprompterPace = teleprompterView === "scroll" ? isManualTeleprompterScrollPace : isManualTeleprompterSlideshowPace;
+  const paceLandmark = getPaceLandmark(activeTeleprompterSpeed);
+  const paceLandmarkLabel = paceLandmark === "slow" ? copy.song.teleprompterPaceSlow : paceLandmark === "fast" ? copy.song.teleprompterPaceFast : copy.song.teleprompterPaceSteady;
+  const paceStatus = isManualTeleprompterPace
+    ? copy.song.teleprompterPaceStatusManual.replace("{pace}", paceLandmarkLabel)
+    : isAudioPaceAvailable ? copy.song.teleprompterPaceStatusAudio : copy.song.teleprompterPaceStatusSteady;
   const toggleSlideshow = () => {
     if (isSlideshowPlaying) {
       setIsSlideshowPlaying(false);
@@ -668,10 +716,22 @@ function SongPageContent() {
         <section className="teleprompter-overlay" role="dialog" aria-modal="true" aria-label={copy.song.teleprompterTitle}>
           <header className={`teleprompter-overlay-controls ${isTeleprompterControlsCollapsed ? "is-collapsed" : ""}`} data-teleprompter-controls>
             {isTeleprompterControlsCollapsed ? (
-              <button className="teleprompter-collapsed-control" type="button" onClick={pauseAndRestoreTeleprompterControls} aria-label={teleprompterView === "slideshow" ? `${copy.song.teleprompterPauseAndShowControls}. ${slideshowCountdownLabel}` : copy.song.teleprompterPauseAndShowControls}>
-                {teleprompterView === "slideshow" && <span className="teleprompter-countdown-ring" style={{ background: `conic-gradient(var(--saffron) ${slideshowCountdownProgress * 360}deg, rgba(24,36,43,0.14) 0deg)` }} aria-hidden="true" />}
-                <Pause size={17} aria-hidden="true" />
-              </button>
+              <div className="teleprompter-collapsed-actions">
+                <Popover open={isTeleprompterPacePanelOpen} onOpenChange={setIsTeleprompterPacePanelOpen}>
+                  <Tooltip><TooltipTrigger asChild><PopoverTrigger asChild><button className={`teleprompter-speed-trigger ${isManualTeleprompterPace ? "is-manual" : ""}`} type="button" aria-label={copy.song.teleprompterPaceSettings}><Gauge size={16} aria-hidden="true" /></button></PopoverTrigger></TooltipTrigger><TooltipContent side="left">{copy.song.teleprompterPaceSettings}</TooltipContent></Tooltip>
+                  <PopoverContent className="teleprompter-speed-popover" align="end" side="bottom" sideOffset={8}>
+                    <div className="teleprompter-speed-popover-heading"><Gauge size={15} aria-hidden="true" /><span>{copy.song.teleprompterManualPace}</span></div>
+                    <Slider id="teleprompter-speed-collapsed" value={[activeTeleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
+                    <p className="teleprompter-pace-status" aria-live="polite">{paceStatus}</p>
+                    <div className="teleprompter-speed-landmarks" aria-hidden="true"><span>{copy.song.teleprompterPaceSlow}</span><span>{copy.song.teleprompterPaceSteady}</span><span>{copy.song.teleprompterPaceFast}</span></div>
+                    {isAudioPaceAvailable && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
+                  </PopoverContent>
+                </Popover>
+                <button className="teleprompter-collapsed-control" type="button" onClick={pauseAndRestoreTeleprompterControls} aria-label={teleprompterView === "slideshow" ? `${copy.song.teleprompterPauseAndShowControls}. ${slideshowCountdownLabel}` : copy.song.teleprompterPauseAndShowControls}>
+                  {teleprompterView === "slideshow" && <span className="teleprompter-countdown-ring" style={{ background: `conic-gradient(var(--saffron) ${slideshowCountdownProgress * 360}deg, rgba(24,36,43,0.14) 0deg)` }} aria-hidden="true" />}
+                  <Pause size={17} aria-hidden="true" />
+                </button>
+              </div>
             ) : <>
               <div className="teleprompter-status" aria-live="polite">
               <span aria-hidden="true" />
@@ -702,13 +762,15 @@ function SongPageContent() {
                 <Tooltip><TooltipTrigger asChild><PopoverTrigger asChild><button className={`teleprompter-speed-trigger ${isManualTeleprompterPace ? "is-manual" : ""}`} type="button" aria-label={copy.song.teleprompterPaceSettings}><Gauge size={16} aria-hidden="true" /></button></PopoverTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.teleprompterPaceSettings}</TooltipContent></Tooltip>
                 <PopoverContent className="teleprompter-speed-popover" align="end" side="bottom" sideOffset={8}>
                   <div className="teleprompter-speed-popover-heading"><Gauge size={15} aria-hidden="true" /><span>{copy.song.teleprompterManualPace}</span></div>
-                  <Slider id="teleprompter-speed" value={[teleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
+                  <Slider id="teleprompter-speed" value={[activeTeleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
+                  <p className="teleprompter-pace-status" aria-live="polite">{paceStatus}</p>
+                  <div className="teleprompter-speed-landmarks" aria-hidden="true"><span>{copy.song.teleprompterPaceSlow}</span><span>{copy.song.teleprompterPaceSteady}</span><span>{copy.song.teleprompterPaceFast}</span></div>
                   {isAudioPaceAvailable && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
                 </PopoverContent>
               </Popover>
               <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={teleprompterView === "scroll" ? toggleTeleprompter : toggleSlideshow}>
                 {isTeleprompterPlaying ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-                <span>{isTeleprompterPlaying
+                <span className="visually-hidden">{isTeleprompterPlaying
                   ? (teleprompterView === "scroll" ? copy.song.teleprompterPause : copy.song.teleprompterPauseSlideshow)
                   : (teleprompterView === "scroll" ? copy.song.teleprompterStart : copy.song.teleprompterStartSlideshow)}</span>
               </button>
