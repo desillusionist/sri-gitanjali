@@ -220,3 +220,8 @@
 - [x] Replace the prior audio map with the revised user-supplied SoundCloud list and remove superseded links.
 - [x] Re-run title/opening-line matching and validate multi-version assignments against the corrected slugs.
 - [x] Verify catalogue results, audio selection, TypeScript, production build, and save a checkpoint.
+
+## Śrī Gītāñjali eyebrow
+
+- [x] Update the home-page eyebrow through the localization catalog and validate its requested compact width on desktop and mobile.
+- [x] Verify the home-page presentation, TypeScript, production build, and save a checkpoint.
