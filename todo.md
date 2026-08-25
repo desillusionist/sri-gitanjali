@@ -214,3 +214,9 @@
 - [x] Normalize the supplied SoundCloud slugs and score candidates against song titles and opening lines.
 - [x] Review ambiguous candidates, retain only high-confidence matches, and represent multiple versions per song.
 - [x] Add confirmed recordings, verify the catalog filter and multi-version audio control, then run checks and save a checkpoint.
+
+## Updated SoundCloud source list
+
+- [x] Replace the prior audio map with the revised user-supplied SoundCloud list and remove superseded links.
+- [x] Re-run title/opening-line matching and validate multi-version assignments against the corrected slugs.
+- [x] Verify catalogue results, audio selection, TypeScript, production build, and save a checkpoint.
