@@ -514,7 +514,7 @@ a { color: inherit; text-decoration: none; }
   .song-reading-tools-trigger { width: 2.3rem; justify-content: center; padding: 0; }
   .song-reading-tools-trigger span { display: none; }
   .reader-panel { width: min(28rem, calc(100vw - 1.5rem)); max-width: calc(100vw - 1.5rem); padding: 0.62rem 0.68rem; }
-  .reader-panel-toolbar { justify-content: flex-start; row-gap: 0.38rem; }
+  .reader-panel-toolbar { justify-content: flex-end; row-gap: 0.38rem; }
   .reader-panel-space { flex-basis: 0.15rem; }
   .reader-panel-divider { margin: 0 0.15rem; }
   .song-utility-row { gap: 0.55rem; }

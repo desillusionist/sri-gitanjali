@@ -338,3 +338,4 @@
 ## Manual visual-edit follow-up
 
 - [x] Locate the requested page-song block near the stale visual-editor target and align it to the right edge without disturbing responsive layout; `.reader-panel-toolbar` already uses `justify-content: flex-end`.
+- [x] Override the mobile toolbar layout so Reading Tools buttons remain grouped against the right edge, matching the desktop alignment.
