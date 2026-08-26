@@ -14,7 +14,7 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
-import { secondaryTranslationLanguages, isSecondaryTranslationLanguage, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
+import { loadRussianSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
@@ -263,7 +263,7 @@ function SongPageContent() {
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
   const secondaryTranslationInput = useMemo(() => {
-    if (!secondaryTranslationLanguage || !song) return undefined;
+    if (!secondaryTranslationLanguage || usesStaticSecondaryTranslation(secondaryTranslationLanguage) || !song) return undefined;
     const verses = song.verses
       .filter((verse) => Boolean(verse.translation.trim()))
       .map((verse) => ({ verseId: `${song.id}::${verse.id}`, englishText: verse.translation }));
@@ -290,6 +290,35 @@ function SongPageContent() {
     setSecondaryTranslationsByVerse(new Map());
     setPendingSecondaryTranslationVerseIds(new Set());
     setFailedSecondaryTranslationVerseIds(new Set());
+
+    if (secondaryTranslationLanguage === "ru" && song) {
+      const translatableVerses = song.verses.filter((verse) => Boolean(verse.translation.trim()));
+      const verseIds = new Set(translatableVerses.map((verse) => verse.id));
+      setPendingSecondaryTranslationVerseIds(verseIds);
+
+      void loadRussianSecondaryTranslations()
+        .then((packageTranslations) => {
+          if (isCancelled) return;
+          const missingVerseIds = new Set<string>();
+          const nextTranslations = new Map<string, string>();
+          translatableVerses.forEach((verse) => {
+            const translation = packageTranslations.get(`${song.id}::${verse.id}`);
+            if (translation) nextTranslations.set(verse.id, translation);
+            else missingVerseIds.add(verse.id);
+          });
+          setSecondaryTranslationsByVerse(nextTranslations);
+          setFailedSecondaryTranslationVerseIds(missingVerseIds);
+        })
+        .catch(() => {
+          if (!isCancelled) setFailedSecondaryTranslationVerseIds(verseIds);
+        })
+        .finally(() => {
+          if (!isCancelled) setPendingSecondaryTranslationVerseIds(new Set());
+        });
+
+      return () => { isCancelled = true; };
+    }
+
     if (!secondaryTranslationInput) return () => { isCancelled = true; };
 
     const queue = [...secondaryTranslationInput.verses];
@@ -324,7 +353,7 @@ function SongPageContent() {
 
     void Promise.all(Array.from({ length: Math.min(SECONDARY_TRANSLATION_CONCURRENCY, queue.length) }, () => translateNextVerse()));
     return () => { isCancelled = true; };
-  }, [requestSecondaryTranslationVerse, secondaryTranslationInput]);
+  }, [requestSecondaryTranslationVerse, secondaryTranslationInput, secondaryTranslationLanguage, song]);
 
   useEffect(() => {
     setTranslationOverrides({});

@@ -309,3 +309,28 @@
 - [x] Queue independent verse translations so early results render immediately, with bounded concurrency and cache reuse.
 - [x] Preserve a clear browser-native page translation fallback outside the app, without integrating an external provider.
 - [x] Verify LLM success, cached reuse, error states, TypeScript, tests, production build, and checkpoint.
+
+## Preloaded secondary translation evaluation
+
+- [x] Audit CSV fields, verse identity, current song-loader behavior, and the size of a preloaded language dataset.
+- [x] Compare extra CSV columns with independently loadable per-language translation files.
+- [x] Recommend a migration path that removes reader-facing translation latency without making the catalog difficult to maintain.
+
+## Lazy Russian translation package
+
+- [x] Audit verse IDs, the existing language selection flow, and the second-translation rendering contract.
+- [x] Generate a complete Russian translation package from English translations with agreed IAST/ISO 15919 terminology rules.
+- [x] Upload the Russian package as a static asset and lazy-load it only after the reader selects Russian.
+- [x] Preserve the English translation and render the preloaded Russian translation directly below it with the established contrasting rule.
+- [x] Verify first load, cached reuse, unavailable/malformed-package states, desktop/mobile display, TypeScript, tests, production build, and checkpoint.
+
+## Alternative Russian package source
+
+- [x] Compare viable local, browser-based, and third-party preparation paths for completing the Russian static package while retaining the IAST/ISO 15919 transliteration rules.
+- [x] Verify the connected Mac can run a local translation model, then generate and validate every remaining Russian verse translation into the resumable package.
+- [x] Detect the local LM Studio OpenAI-compatible endpoint and Hermes model, then validate a representative IAST-to-Cyrillic translation before running the remaining batches.
+- [x] Avoid cloud-sync write loss by preserving resumable progress and completing the remaining local work in storage-safe stages when a file move was blocked by disk capacity.
+- [x] Run the remaining local LM Studio translation batches in storage-safe stages, verifying free disk space before each resumed stage.
+- [x] Attempt re-translation of entries with IAST Latin characters or combining diacritics; use deterministic normalization when the local model could not reliably return valid JSON.
+- [x] Apply and audit a deterministic Cyrillic normalisation for remaining mixed-script or combining-diacritic artifacts that the local model cannot reliably re-generate as valid JSON.
+- [x] Detect and transliterate any remaining Bengali or Devanagari characters so every Russian translation uses Cyrillic text only.
