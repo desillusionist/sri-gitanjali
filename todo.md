@@ -334,3 +334,7 @@
 - [x] Attempt re-translation of entries with IAST Latin characters or combining diacritics; use deterministic normalization when the local model could not reliably return valid JSON.
 - [x] Apply and audit a deterministic Cyrillic normalisation for remaining mixed-script or combining-diacritic artifacts that the local model cannot reliably re-generate as valid JSON.
 - [x] Detect and transliterate any remaining Bengali or Devanagari characters so every Russian translation uses Cyrillic text only.
+
+## Manual visual-edit follow-up
+
+- [x] Locate the requested page-song block near the stale visual-editor target and align it to the right edge without disturbing responsive layout; `.reader-panel-toolbar` already uses `justify-content: flex-end`.
