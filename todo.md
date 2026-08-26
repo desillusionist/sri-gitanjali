@@ -292,3 +292,20 @@
 - [x] Verify the visual editor’s 13px eyebrow style and identify its i18n text source.
 - [x] Synchronize the eyebrow with “Śrī Chaitanya Sāraswat Maṭh Kīrtan Guide • Śrī Gītāñjali • Gupta Govardhan Edition”.
 - [x] Verify desktop/mobile wrapping, TypeScript, production build, and save a checkpoint.
+
+## User guide
+
+- [x] Prepare a concise Russian usage guide for library discovery, reading controls, translations, SoundCloud, and teleprompter features.
+- [x] Review the guide for accuracy and deliver it as a Markdown attachment.
+
+## Faster secondary translation research
+
+- [x] Compare browser translation, Google Cloud Translation, and an optimized LLM flow for speed, terminology, and integration requirements.
+- [x] Recommend a practical approach for faster verse-by-verse translation without unacceptable quality loss.
+
+## Progressive translation and Microsoft fallback
+
+- [x] Audit current translation mutations, cache keys, and client loading states for a progressive LLM-only flow.
+- [x] Queue independent verse translations so early results render immediately, with bounded concurrency and cache reuse.
+- [x] Preserve a clear browser-native page translation fallback outside the app, without integrating an external provider.
+- [x] Verify LLM success, cached reuse, error states, TypeScript, tests, production build, and checkpoint.

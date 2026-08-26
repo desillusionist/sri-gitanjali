@@ -152,3 +152,14 @@ export async function translateAndCacheVerses(language: SecondaryTranslationLang
     translation: byCacheKey.get(`${verse.verseId}:${sourceHash(verse.englishText)}`) ?? "",
   }));
 }
+
+/**
+ * The progressive reader requests one verse at a time. Keeping this wrapper
+ * beside the batch implementation preserves cache and prompt semantics while
+ * allowing the client to render each completed result immediately.
+ */
+export async function translateAndCacheVerse(language: SecondaryTranslationLanguage, verse: VerseTranslationRequest) {
+  const [translation] = await translateAndCacheVerses(language, [verse]);
+  if (!translation) throw new Error("The translation service returned no verse result.");
+  return translation;
+}

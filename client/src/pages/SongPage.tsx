@@ -29,6 +29,7 @@ const READING_PREFERENCES_STORAGE_KEY = "kirtan-guide.reading-preferences";
 const DEFAULT_TELEPROMPTER_SPEED = 30;
 const MIN_TELEPROMPTER_SPEED = 1;
 const MAX_TELEPROMPTER_SPEED = 72;
+const SECONDARY_TRANSLATION_CONCURRENCY = 2;
 
 type PaceLandmark = "slow" | "steady" | "fast";
 
@@ -268,14 +269,10 @@ function SongPageContent() {
       .map((verse) => ({ verseId: `${song.id}::${verse.id}`, englishText: verse.translation }));
     return verses.length ? { language: secondaryTranslationLanguage, verses } : undefined;
   }, [secondaryTranslationLanguage, song]);
-  const {
-    mutate: requestSecondaryTranslations,
-    reset: resetSecondaryTranslations,
-    data: secondaryTranslationData,
-    isPending: isSecondaryTranslationLoading,
-    isError: isSecondaryTranslationError,
-  } = trpc.secondaryTranslation.translateSong.useMutation();
-  const secondaryTranslationsByVerse = useMemo(() => new Map((secondaryTranslationData?.translations ?? []).map((item) => [item.verseId.split("::").at(-1) ?? item.verseId, item.translation])), [secondaryTranslationData]);
+  const [secondaryTranslationsByVerse, setSecondaryTranslationsByVerse] = useState<Map<string, string>>(() => new Map());
+  const [pendingSecondaryTranslationVerseIds, setPendingSecondaryTranslationVerseIds] = useState<Set<string>>(() => new Set());
+  const [failedSecondaryTranslationVerseIds, setFailedSecondaryTranslationVerseIds] = useState<Set<string>>(() => new Set());
+  const { mutateAsync: requestSecondaryTranslationVerse } = trpc.secondaryTranslation.translateVerse.useMutation();
   const audioMatchedScrollSpeed = getAudioMatchedScrollSpeed(teleprompterScrollRange, soundCloudDurationMs);
   const effectiveTeleprompterSpeed = !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterScrollSpeed;
   const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, rewindBy: rewindTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", effectiveTeleprompterSpeed, teleprompterScrollRef);
@@ -289,9 +286,45 @@ function SongPageContent() {
   }, [query, song?.id]);
 
   useEffect(() => {
-    resetSecondaryTranslations();
-    if (secondaryTranslationInput) requestSecondaryTranslations(secondaryTranslationInput);
-  }, [requestSecondaryTranslations, resetSecondaryTranslations, secondaryTranslationInput]);
+    let isCancelled = false;
+    setSecondaryTranslationsByVerse(new Map());
+    setPendingSecondaryTranslationVerseIds(new Set());
+    setFailedSecondaryTranslationVerseIds(new Set());
+    if (!secondaryTranslationInput) return () => { isCancelled = true; };
+
+    const queue = [...secondaryTranslationInput.verses];
+    const translateNextVerse = async () => {
+      while (!isCancelled) {
+        const verse = queue.shift();
+        if (!verse) return;
+        const localVerseId = verse.verseId.split("::").at(-1) ?? verse.verseId;
+        setPendingSecondaryTranslationVerseIds((current) => new Set(current).add(localVerseId));
+        try {
+          const result = await requestSecondaryTranslationVerse({ language: secondaryTranslationInput.language, verse });
+          if (!isCancelled) {
+            setSecondaryTranslationsByVerse((current) => {
+              const next = new Map(current);
+              next.set(localVerseId, result.translation.translation);
+              return next;
+            });
+          }
+        } catch {
+          if (!isCancelled) setFailedSecondaryTranslationVerseIds((current) => new Set(current).add(localVerseId));
+        } finally {
+          if (!isCancelled) {
+            setPendingSecondaryTranslationVerseIds((current) => {
+              const next = new Set(current);
+              next.delete(localVerseId);
+              return next;
+            });
+          }
+        }
+      }
+    };
+
+    void Promise.all(Array.from({ length: Math.min(SECONDARY_TRANSLATION_CONCURRENCY, queue.length) }, () => translateNextVerse()));
+    return () => { isCancelled = true; };
+  }, [requestSecondaryTranslationVerse, secondaryTranslationInput]);
 
   useEffect(() => {
     setTranslationOverrides({});
@@ -999,6 +1032,8 @@ function SongPageContent() {
           {displayedVerses.map((verse, verseIndex) => {
             const translationVisible = isVerseTranslationVisible(verse.id);
             const secondaryTranslation = secondaryTranslationsByVerse.get(verse.id);
+            const isSecondaryTranslationLoading = pendingSecondaryTranslationVerseIds.has(verse.id);
+            const isSecondaryTranslationError = failedSecondaryTranslationVerseIds.has(verse.id);
 
             return (
               <section className="verse-block" id={verse.id} key={verse.id}>
@@ -1030,7 +1065,7 @@ function SongPageContent() {
                       <div id={`translation-${verse.id}`} hidden={!translationVisible}>
                         <p className="translation"><SongMatchText value={verse.translation} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
                         {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
-                        {selectedSecondaryLanguage && !isSecondaryTranslationLoading && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
+                        {selectedSecondaryLanguage && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
                         {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang}>{secondaryTranslation}</p>}
                       </div>
                     </>

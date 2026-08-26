@@ -77,6 +77,28 @@ describe("secondary translation helpers", () => {
     }));
   });
 
+  it("returns one completed verse through the progressive procedure without waiting for a song batch", async () => {
+    mocks.getCachedSecondaryTranslations.mockResolvedValue([]);
+    mocks.cacheSecondaryTranslation.mockResolvedValue(undefined);
+    mocks.invokeLLM.mockResolvedValue({
+      choices: [{
+        message: {
+          content: JSON.stringify({
+            translations: [{ verseId: "progressive-song-001::verse-1", translation: "Первый готовый перевод." }],
+          }),
+        },
+      }],
+    });
+    const { appRouter } = await import("./routers");
+    const caller = appRouter.createCaller({ user: null, req: { ip: "progressive-translation-test", headers: {} }, res: {} } as never);
+
+    await expect(caller.secondaryTranslation.translateVerse({
+      language: "ru",
+      verse: { verseId: "progressive-song-001::verse-1", englishText: "The first explanation is ready." },
+    })).resolves.toEqual({ translation: { verseId: "progressive-song-001::verse-1", translation: "Первый готовый перевод." } });
+    expect(mocks.invokeLLM).toHaveBeenCalledTimes(1);
+  });
+
   it("retries an incomplete JSON payload instead of exposing a JSON parser error", async () => {
     mocks.getCachedSecondaryTranslations.mockResolvedValue([]);
     mocks.cacheSecondaryTranslation.mockResolvedValue(undefined);

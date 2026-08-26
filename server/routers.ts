@@ -3,14 +3,17 @@ import { z } from "zod";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { secondaryTranslationLanguageCodes, translateAndCacheVerses } from "./secondaryTranslations";
+import { secondaryTranslationLanguageCodes, translateAndCacheVerse, translateAndCacheVerses } from "./secondaryTranslations";
 
 const translationRequestsByAddress = new Map<string, number[]>();
 
 function permitTranslationRequest(address: string) {
   const threshold = Date.now() - 60 * 60 * 1_000;
   const recent = (translationRequestsByAddress.get(address) ?? []).filter((timestamp) => timestamp > threshold);
-  if (recent.length >= 24) return false;
+  // Progressive translation uses one request per verse. The higher ceiling
+  // preserves the former per-song reader experience while retaining a bound
+  // on public LLM usage from a single address.
+  if (recent.length >= 120) return false;
   recent.push(Date.now());
   translationRequestsByAddress.set(address, recent);
   return true;
@@ -30,6 +33,19 @@ export const appRouter = router({
     }),
   }),
   secondaryTranslation: router({
+    translateVerse: publicProcedure
+      .input(z.object({
+        language: z.enum(secondaryTranslationLanguageCodes),
+        verse: z.object({
+          verseId: z.string().regex(/^[a-z0-9-]{1,160}::verse-\d+$/).max(192),
+          englishText: z.string().min(1).max(3_200),
+        }),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const address = ctx.req.ip || ctx.req.headers["x-forwarded-for"]?.toString().split(",")[0]?.trim() || "anonymous";
+        if (!permitTranslationRequest(address)) throw new Error("Please wait before requesting more translations.");
+        return { translation: await translateAndCacheVerse(input.language, input.verse) };
+      }),
     translateSong: publicProcedure
       .input(z.object({
         language: z.enum(secondaryTranslationLanguageCodes),
