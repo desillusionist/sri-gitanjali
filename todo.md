@@ -345,3 +345,4 @@
 - [x] Optimise the supplied Nabadwīp temple image for web delivery and upload it to managed static storage.
 - [x] Replace the current home-page hero artwork with the supplied temple composition, preserving the text-safe area on the left and adapting it for mobile.
 - [x] Verify the desktop and mobile hero, regression tests, TypeScript, production build, and save a checkpoint.
+- [x] Replace the initial temple asset with the subsequently provided vertical PNG version, optimised for the same hero composition.

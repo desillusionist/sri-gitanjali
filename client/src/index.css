@@ -114,7 +114,7 @@ a { color: inherit; text-decoration: none; }
 .header-lede { max-width: 38rem; margin: 0; color: var(--ink-soft); font-size: clamp(0.95rem, 1.2vw, 1.07rem); line-height: 1.65; }
 .hero-art { position: relative; min-height: 345px; overflow: hidden; background: transparent; }
 .hero-art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, var(--paper) 0%, rgba(246,240,229,0.24) 45%, rgba(246,240,229,0.02) 74%); }
-.hero-art img { width: 100%; height: 100%; min-height: 345px; object-fit: cover; object-position: right center; display: block; filter: saturate(0.82) contrast(0.97); }
+.hero-art img { width: 100%; height: 100%; min-height: 345px; object-fit: contain; object-position: right center; display: block; filter: saturate(0.82) contrast(0.97); }
 
 .search-deck { position: relative; display: grid; grid-template-columns: minmax(220px, 0.62fr) minmax(280px, 1fr); column-gap: 3rem; row-gap: 0.9rem; align-items: center; padding: clamp(1.4rem, 3vw, 2.5rem); border: 1px solid rgba(246,240,229,0.64); background: linear-gradient(120deg, #18242b, #26373a); color: #f9f4eb; box-shadow: 10px 12px 0 rgba(217, 109, 50, 0.88); }
 .search-deck::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.35; background-image: linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 22px 22px; }
