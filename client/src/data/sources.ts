@@ -5,7 +5,7 @@ export const RUSSIAN_SECONDARY_TRANSLATIONS_URL = "/manus-storage/ru_e1c59844.js
 
 export const brandAssets = {
   mark: "/manus-storage/kirtan-guide-peacock-plume_09e0a26b.png",
-  libraryHero: "/manus-storage/kirtan-guide-marked-songbook-hero_67a46f66.jpg",
+  libraryHero: "/manus-storage/nabadwip-temple-hero_3191e82c.webp",
   readingDetail: "/manus-storage/kirtan-guide-reading-detail_86487ef9.jpg",
   teleprompterScene: "/manus-storage/kirtan-guide-teleprompter-scene_02c3e681.jpg",
 } as const;

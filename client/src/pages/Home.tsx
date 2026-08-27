@@ -118,7 +118,6 @@ function LibraryHome() {
         </div>
         <div className="hero-art" role="img" aria-label={copy.library.heroAlt}>
           <img src={brandAssets.libraryHero} alt="" />
-          <div className="hero-art-caption"><span />{copy.library.heroCaption}</div>
         </div>
       </header>
 

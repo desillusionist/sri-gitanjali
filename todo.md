@@ -339,3 +339,9 @@
 
 - [x] Locate the requested page-song block near the stale visual-editor target and align it to the right edge without disturbing responsive layout; `.reader-panel-toolbar` already uses `justify-content: flex-end`.
 - [x] Override the mobile toolbar layout so Reading Tools buttons remain grouped against the right edge, matching the desktop alignment.
+
+## Nabadwīp temple hero artwork
+
+- [x] Optimise the supplied Nabadwīp temple image for web delivery and upload it to managed static storage.
+- [x] Replace the current home-page hero artwork with the supplied temple composition, preserving the text-safe area on the left and adapting it for mobile.
+- [x] Verify the desktop and mobile hero, regression tests, TypeScript, production build, and save a checkpoint.
