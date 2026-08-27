@@ -347,3 +347,4 @@
 - [x] Verify the desktop and mobile hero, regression tests, TypeScript, production build, and save a checkpoint.
 - [x] Replace the initial temple asset with the subsequently provided vertical PNG version, optimised for the same hero composition.
 - [x] Replace the current home hero asset with the newly supplied JPEG temple illustration, optimised without cropping and verified responsively.
+- [x] Match the application-wide page background to the background tone of the latest Nabadwīp temple hero artwork, preserving accessible text contrast.

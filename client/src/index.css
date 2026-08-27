@@ -27,7 +27,7 @@
 }
 
 :root {
-  --paper: #f6f0e5;
+  --paper: #f5f0e4;
   --paper-bright: #fffcf6;
   --paper-shadow: #e8dfd0;
   --ink: #18242b;
@@ -54,10 +54,7 @@ body {
   margin: 0;
   min-width: 320px;
   color: var(--ink);
-  background:
-    radial-gradient(circle at 92% 1%, rgba(217, 109, 50, 0.08), transparent 25rem),
-    linear-gradient(115deg, rgba(255,255,255,0.45), transparent 35%),
-    var(--paper);
+  background: var(--paper);
   font-family: "DM Sans", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
