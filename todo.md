@@ -346,7 +346,3 @@
 - [x] Replace the current home-page hero artwork with the supplied temple composition, preserving the text-safe area on the left and adapting it for mobile.
 - [x] Verify the desktop and mobile hero, regression tests, TypeScript, production build, and save a checkpoint.
 - [x] Replace the initial temple asset with the subsequently provided vertical PNG version, optimised for the same hero composition.
-
-## Hero image blend mode
-
-- [x] Apply `mix-blend-mode: multiply` to the home hero image and verify its desktop/mobile appearance before publishing.
