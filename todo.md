@@ -356,3 +356,9 @@
 - [x] Recalibrate the page background to the dominant background tone of the updated hero image.
 - [x] Align the desktop introductory text block to the top with extra breathing room before the main title, while preserving mobile behavior.
 - [x] Verify desktop/mobile presentation, regression tests, TypeScript, production build, diff cleanliness, and save a checkpoint.
+
+## Home visual-editor spacing adjustments
+
+- [x] Apply the visual-editor header adjustments safely: remove header bottom padding, add the requested right offset, and preserve valid JSX style syntax.
+- [x] Add the requested 18px bottom spacing below the Home eyebrow text.
+- [x] Verify desktop/mobile rendering, regression tests, TypeScript, production build, diff cleanliness, and save a checkpoint.
