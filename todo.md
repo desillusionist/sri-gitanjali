@@ -349,3 +349,10 @@
 - [x] Replace the current home hero asset with the newly supplied JPEG temple illustration, optimised without cropping and verified responsively.
 - [x] Match the application-wide page background to the background tone of the latest Nabadwīp temple hero artwork, preserving accessible text contrast.
 - [x] Verify the visual-editor request for the Home hero image and background, confirm that the latest requested asset and matched page tone are already applied, and save a checkpoint.
+
+## Updated Nabadwīp hero and desktop intro alignment
+
+- [x] Replace the Home hero with the supplied NabadwīpTemple02 image, optimise it for web delivery without cropping, and register the managed storage asset.
+- [x] Recalibrate the page background to the dominant background tone of the updated hero image.
+- [x] Align the desktop introductory text block to the top with extra breathing room before the main title, while preserving mobile behavior.
+- [x] Verify desktop/mobile presentation, regression tests, TypeScript, production build, diff cleanliness, and save a checkpoint.
