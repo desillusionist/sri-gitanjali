@@ -348,3 +348,4 @@
 - [x] Replace the initial temple asset with the subsequently provided vertical PNG version, optimised for the same hero composition.
 - [x] Replace the current home hero asset with the newly supplied JPEG temple illustration, optimised without cropping and verified responsively.
 - [x] Match the application-wide page background to the background tone of the latest Nabadwīp temple hero artwork, preserving accessible text contrast.
+- [x] Verify the visual-editor request for the Home hero image and background, confirm that the latest requested asset and matched page tone are already applied, and save a checkpoint.
