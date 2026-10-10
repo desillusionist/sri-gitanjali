@@ -182,6 +182,9 @@ export function normalizeSearchText(value: string): string {
   return value
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
+    // Treat spaces and common dash variants as the same phrase separator so
+    // "gaura ārati", "gaura-ārati", and "gaura–ārati" search identically.
+    .replace(/[\s\u002D\u2010-\u2015\u2212]/g, "")
     .trim()
     .toLowerCase();
 }
@@ -195,6 +198,7 @@ function normalizedTextWithIndexMap(value: string): { normalized: string; indexe
     const normalizedCharacter = character
       .normalize("NFKD")
       .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[\s\u002D\u2010-\u2015\u2212]/g, "")
       .toLowerCase();
 
     for (const normalizedPart of normalizedCharacter) {
