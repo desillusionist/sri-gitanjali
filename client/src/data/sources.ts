@@ -1,7 +1,7 @@
 /** PWA content sources; JSON is preferred for faster first render, CSV remains a verified fallback. */
 export const SONGS_JSON_URL = "/manus-storage/songs_577f33d4.json";
 export const SONGS_CSV_URL = "/manus-storage/songs_flattened_8aa8d357.csv";
-export const RUSSIAN_SECONDARY_TRANSLATIONS_URL = "/manus-storage/ru_e1c59844.json";
+export const RUSSIAN_SECONDARY_TRANSLATIONS_URL = "/manus-storage/ru_candidate_05cc82e8.json";
 
 export const brandAssets = {
   mark: "/manus-storage/kirtan-guide-peacock-plume_09e0a26b.png",
