@@ -527,7 +527,7 @@ a { color: inherit; text-decoration: none; }
   .in-song-match-count { grid-column: 1 / -1; grid-row: 2; min-width: 0; padding: 0.05rem 0.15rem 0; text-align: left; }
   .in-song-search-controls { grid-column: 3; grid-row: 1; }
   .song-sheet-intro { display: grid; gap: 1.2rem; }
-  .song-sheet h1 { font-size: clamp(3rem, 15vw, 4.3rem); }
+  .song-sheet h1 { font-size: clamp(2.55rem, 12vw, 3.85rem); line-height: 0.94; }
   .song-meta { gap: 0.38rem 0.58rem; }
   .song-verse-count { font-size: 0.6rem; }
   .reading-typography-controls { justify-content: space-between; gap: 0.65rem; padding-left: 0; }
