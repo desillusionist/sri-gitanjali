@@ -36,7 +36,34 @@ Object.keys(glossary.termIndex).forEach((term) => {
     if (allowSandhiEnd) sandhiEndAliases.add(normalizedTerm);
   });
 });
-const terms = Array.from(sourceTermsByNormalizedTerm.keys()).sort((left, right) => right.length - left.length);
+const grammaticalSurfaceAliases: Record<string, string[]> = {
+  "mādyan": ["mādyat"], "manaso": ["manasaḥ"], "kampā": ["kampa"],
+  "śrī-vigrahā": ["śrī-vigraha"], "rādhana": ["ārādhana"], "tan": ["tat"],
+  "bhaktāṁś": ["bhaktān"], "niyuñjato": ["niyuñjataḥ"], "chatur": ["chatuḥ"],
+  "svādv": ["svādu"], "svādana": ["āsvādana"], "kṛtva": ["kṛtvā"], "kṛtvaiva": ["kṛtvā", "eva"], "sadaiva": ["sada", "eva"], "mādhavayor": ["mādhavayoḥ"],
+  "apara": ["apāra"], "prati-kṣaṇā": ["prati-kṣaṇa"], "nikuñja-yūno": ["nikuñja-yūnaḥ"],
+  "siddhyair": ["siddhyai"], "ālibhir": ["ālibhiḥ"], "yuktir": ["yuktiḥ"], "tatrāti-dākṣyād": ["tatra", "ati-dākṣyāt"],
+  "ati-dākṣyād": ["ati-dākṣyāt"], "sākṣād": ["sākṣāt"], "dharitvena": ["hari-tvena"], "śāstrair": ["śāstraiḥ"],
+  "uktas": ["uktaḥ"], "bhāvyata": ["bhāvyate"], "prabhor": ["prabhoḥ"],
+  "priya": ["priyaḥ"], "prasādād": ["prasādāt"], "prasādo": ["prasādaḥ"],
+  "kuto ’pi": ["kutaḥ api"], "dhyayaṁ": ["dhyāyan"], "stuvaṁs": ["stuvan"],
+  "yaśas": ["yaśaḥ"], "tri-sandhyaṁ": ["tri-sandhyam"],
+};
+
+Object.entries(grammaticalSurfaceAliases).forEach(([surface, sourceTerms]) => {
+  const normalizedSurface = normalizeTerm(surface);
+  if (!normalizedSurface) return;
+  sourceTerms.forEach((sourceTerm) => {
+    if (!glossary.termIndex[sourceTerm]) return;
+    sourceTermsByNormalizedTerm.set(normalizedSurface, [
+      ...(sourceTermsByNormalizedTerm.get(normalizedSurface) ?? []), sourceTerm,
+    ]);
+  });
+  sandhiStartAliases.add(normalizedSurface);
+  sandhiEndAliases.add(normalizedSurface);
+});
+
+const termsWithAliases = Array.from(sourceTermsByNormalizedTerm.keys()).sort((left, right) => right.length - left.length);
 
 function normalizeLookup(value: string): string {
   return value.normalize("NFKC").replace(/[\u00a0\u2019\u2018]/g, (character) => character === "\u00a0" ? " " : "'").toLocaleLowerCase();
@@ -149,7 +176,7 @@ export function getWordForWordSegments(value: string, options: { songTitle?: str
     let matchedTerm: string | null = null;
     let matchedEntries: WordForWordEntry[] = [];
 
-    for (const term of terms) {
+    for (const term of termsWithAliases) {
       if (!normalizedValue.startsWith(term, index)) continue;
       const originalStart = indexes[index];
       const originalEnd = getOriginalEnd(value, indexes, index, term.length);

@@ -28,10 +28,30 @@ describe("word-for-word glossary", () => {
 
   it("uses the supplied Gurv-aṣṭaka synonyms for the correct verse context", () => {
     const songTitle = "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura";
-    const verseTwo = getWordForWordSegments("aśru-taraìga", { songTitle, verseNumber: 2 });
+    const verseTwo = getWordForWordSegments("aśru-taraṅga", { songTitle, verseNumber: 2 });
     const verseEight = getWordForWordSegments("tri-sandhyam", { songTitle, verseNumber: 8 });
     expect(verseTwo[0].entries[0]?.meaning).toBe("torrents of tears");
     expect(verseEight[0].entries[0]?.meaning).toContain("three times a day");
+  });
+
+  it("matches inflected and sandhi surface forms from Gurv-aṣṭaka", () => {
+    const cases: Array<[string, string]> = [
+      ["mādyan-manaso", "gladdened"], ["kampāśru-taraṅga-bhājo", "quivering"],
+      ["śrī-vigrahārādhana-", "worship"], ["śṛṅgāra-tan-", "of the Lord"],
+      ["bhaktāṁś", "his disciples"], ["niyuñjato", "who engages"], ["chatur-", "four"],
+      ["svādv-", "palatable"], ["bhakta-saṅghān", "devotees"], ["kṛtvaiva", "having made"],
+      ["sadaiva", "always"], ["mādhavayor apara", "unlimited"], ["prati-kṣaṇāsvādana-", "relishing"],
+      ["nikuñja-yūno", "Rādhā and Kṛṣṇa"], ["-siddhyair", "perfection"], ["yā yālibhir yuktir", "arrangements"],
+      ["tatrāti-dākṣyād", "very expert"], ["sākṣād-dharitvena", "quality of Hari"], ["-śāstrair", "scriptures"],
+      ["uktas", "acknowledged"], ["bhāvyata", "considered"], ["prabhor", "Lord"], ["priya", "dear"],
+      ["prasādād", "grace"], ["-prasādo", "mercy"], ["kuto ’pi", "anywhere"], ["dhyayaṁ stuvaṁs", "praising"],
+      ["yaśas tri-sandhyaṁ", "glory"],
+    ];
+    for (const [surface, expected] of cases) {
+      const matched = getWordForWordSegments(surface).filter((segment) => segment.entries.length);
+      expect(matched.length, surface).toBeGreaterThan(0);
+      expect(matched.some((segment) => segment.entries.some((entry) => entry.meaning?.toLowerCase().includes(expected.toLowerCase()))), surface).toBe(true);
+    }
   });
 
   it("prefers the current song context for repeated terms", () => {
