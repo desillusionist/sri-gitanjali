@@ -48,6 +48,8 @@ const grammaticalSurfaceAliases: Record<string, string[]> = {
   "priya": ["priyaḥ"], "prasādād": ["prasādāt"], "prasādo": ["prasādaḥ"],
   "kuto ’pi": ["kutaḥ api"], "dhyayaṁ": ["dhyāyan"], "stuvaṁs": ["stuvan"],
   "yaśas": ["yaśaḥ"], "tri-sandhyaṁ": ["tri-sandhyam"],
+  "gaurāchā̐da bole": ["gaurachānda bole"], "kota nidrā jāo": ["kota nidrā yāo"],
+  "māyā-piśāchīra": ["māyā-pīśāchīra"], "prabhura-charaṇe": ["prabhu-charaṇe"],
 };
 
 Object.entries(grammaticalSurfaceAliases).forEach(([surface, sourceTerms]) => {

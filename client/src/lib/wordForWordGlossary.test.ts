@@ -54,6 +54,22 @@ describe("word-for-word glossary", () => {
     }
   });
 
+  it("matches Aruṇodaya-kīrtan II transliteration and sandhi variants", () => {
+    const songTitle = "Aruṇodaya-kīrtana II Jīv Jāgo (from Gītāvalī)";
+    const cases: Array<[string, number, string]> = [
+      ["gaurāchā̐da bole", 1, "Lord Gaurāṅga calls"],
+      ["kota nidrā jāo", 1, "how long are you sleeping"],
+      ["māyā-piśāchīra", 1, "witch Māyā"],
+      ["ke āchhe", 3, "who is"],
+      ["prabhura-charaṇe", 5, "lotus feet"],
+    ];
+    for (const [surface, verseNumber, expected] of cases) {
+      const matched = getWordForWordSegments(surface, { songTitle, verseNumber }).filter((segment) => segment.entries.length);
+      expect(matched.length, surface).toBeGreaterThan(0);
+      expect(matched.some((segment) => segment.entries.some((entry) => entry.meaning?.toLowerCase().includes(expected.toLowerCase()))), surface).toBe(true);
+    }
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
