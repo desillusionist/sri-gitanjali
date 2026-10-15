@@ -9,6 +9,14 @@ describe("word-for-word glossary", () => {
     expect(segments[0].entries[0]?.meaning).toContain("ointment");
   });
 
+  it("matches verse compounds when glossary hyphens split different word boundaries", () => {
+    const segments = getWordForWordSegments("saṁsāra-dāvānala-līḍha-loka-");
+    const matchedTerms = segments.filter((segment) => segment.entries.length).map((segment) => segment.text);
+    expect(matchedTerms).toEqual(["saṁsāra", "dāvānala", "līḍha", "loka"]);
+    expect(segments.map((segment) => segment.text).join("")).toBe("saṁsāra-dāvānala-līḍha-loka-");
+    expect(segments.find((segment) => segment.text === "dāvānala")?.entries[0]?.meaning).toContain("forest fire");
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
