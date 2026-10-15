@@ -17,6 +17,15 @@ describe("word-for-word glossary", () => {
     expect(segments.find((segment) => segment.text === "dāvānala")?.entries[0]?.meaning).toContain("forest fire");
   });
 
+  it("matches sandhi-fused words against separate glossary entries", () => {
+    const segments = getWordForWordSegments("guṇārṇavasya charaṇāravindam");
+    const matchedTerms = segments.filter((segment) => segment.entries.length).map((segment) => segment.text);
+    expect(matchedTerms).toEqual(["guṇā", "rṇavasya", "charaṇāravindam"]);
+    expect(segments.find((segment) => segment.text === "guṇā")?.entries[0]?.meaning).toContain("qualities");
+    expect(segments.find((segment) => segment.text === "rṇavasya")?.entries[0]?.meaning).toContain("ocean");
+    expect(segments.find((segment) => segment.text === "charaṇāravindam")?.entries[0]?.meaning).toContain("lotus feet");
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });

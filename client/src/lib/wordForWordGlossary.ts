@@ -26,10 +26,14 @@ export type WordForWordSegment = {
 const glossary = glossaryData as GlossaryData;
 const entriesById = new Map(glossary.entries.map((entry) => [entry.id, entry]));
 const sourceTermsByNormalizedTerm = new Map<string, string[]>();
+const sandhiStartAliases = new Set<string>();
+const sandhiEndAliases = new Set<string>();
 Object.keys(glossary.termIndex).forEach((term) => {
-  normalizeTermVariants(term).forEach((normalizedTerm) => {
+  normalizeTermVariants(term).forEach(({ normalizedTerm, allowSandhiStart, allowSandhiEnd }) => {
     if (!normalizedTerm) return;
     sourceTermsByNormalizedTerm.set(normalizedTerm, [...(sourceTermsByNormalizedTerm.get(normalizedTerm) ?? []), term]);
+    if (allowSandhiStart) sandhiStartAliases.add(normalizedTerm);
+    if (allowSandhiEnd) sandhiEndAliases.add(normalizedTerm);
   });
 });
 const terms = Array.from(sourceTermsByNormalizedTerm.keys()).sort((left, right) => right.length - left.length);
@@ -42,17 +46,21 @@ function normalizeTerm(value: string): string {
   return normalizeLookup(value).replace(/[\u002D\u2010-\u2015\u2212]/g, "");
 }
 
-function normalizeTermVariants(value: string): string[] {
+function normalizeTermVariants(value: string): Array<{ normalizedTerm: string; allowSandhiStart?: boolean; allowSandhiEnd?: boolean }> {
   const compact = normalizeTerm(value);
-  // Some Sanskrit compounds use a sandhi join: dāvā-anala is printed as
-  // dāvānala in the verse. Keep the exact compact form and add only the
-  // conservative duplicate-vowel boundary variant for hyphenated terms.
-  const sandhiVariant = compact
-    .replace(/([aeiouāīūṛṝḷēō])\1/g, "$1")
-    .replace(/(?:aā|āa)/g, "ā")
-    .replace(/(?:iī|īi)/g, "ī")
-    .replace(/(?:uū|ūu)/g, "ū");
-  return Array.from(new Set([compact, sandhiVariant]));
+  // Sanskrit compounds may fuse two vowels: guṇa-arṇavasya becomes
+  // guṇārṇavasya, while dāvā-anala becomes dāvānala. Keep aliases narrow
+  // and mark only the side of the term whose boundary was fused.
+  const variants: Array<{ normalizedTerm: string; allowSandhiStart?: boolean; allowSandhiEnd?: boolean }> = [
+    { normalizedTerm: compact },
+    { normalizedTerm: compact.replace(/([aeiouāīūṛṝḷēō])\1/g, "$1") },
+    { normalizedTerm: compact.replace(/(?:aa|aā|āa)/g, "ā") },
+    { normalizedTerm: compact.replace(/(?:ii|iī|īi)/g, "ī") },
+    { normalizedTerm: compact.replace(/(?:uu|uū|ūu)/g, "ū") },
+  ];
+  if (compact.endsWith("a")) variants.push({ normalizedTerm: `${compact.slice(0, -1)}ā`, allowSandhiEnd: true });
+  if (compact.startsWith("a")) variants.push({ normalizedTerm: compact.slice(1), allowSandhiStart: true });
+  return Array.from(new Map(variants.filter((variant) => variant.normalizedTerm).map((variant) => [variant.normalizedTerm, variant])).values());
 }
 
 function normalizeContext(value: string): string {
@@ -145,7 +153,8 @@ export function getWordForWordSegments(value: string, options: { songTitle?: str
       if (!normalizedValue.startsWith(term, index)) continue;
       const originalStart = indexes[index];
       const originalEnd = getOriginalEnd(value, indexes, index, term.length);
-      if (isWordCharacter(value[originalStart - 1]) || isWordCharacter(value[originalEnd])) continue;
+      if (!sandhiStartAliases.has(term) && isWordCharacter(value[originalStart - 1])) continue;
+      if (!sandhiEndAliases.has(term) && isWordCharacter(value[originalEnd])) continue;
       const sourceTerms = sourceTermsByNormalizedTerm.get(term) ?? [];
       const entries = resolveEntries(sourceTerms, options.songTitle, options.verseNumber);
       if (entries.length) {
