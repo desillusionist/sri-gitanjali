@@ -6,6 +6,7 @@
  */
 
 import { AppShell } from "@/components/AppShell";
+import { WordForWordText } from "@/components/WordForWordText";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
@@ -176,6 +177,7 @@ function SongMatchText({
   matchesByField,
   activeMatchId,
   registerMatch,
+  matchIndexOffset = 0,
 }: {
   value: string;
   query: string;
@@ -183,12 +185,13 @@ function SongMatchText({
   matchesByField: Map<string, SongSearchMatch[]>;
   activeMatchId: string | null;
   registerMatch: (matchId: string) => (element: HTMLElement | null) => void;
+  matchIndexOffset?: number;
 }) {
   const fieldMatches = matchesByField.get(fieldId) ?? [];
 
   return getHighlightParts(value, query).map((part, index) => {
     if (!part.isMatch) return <span key={`${fieldId}:text:${index}`}>{part.text}</span>;
-    const match = fieldMatches[part.matchIndex ?? 0];
+    const match = fieldMatches[(part.matchIndex ?? 0) + matchIndexOffset];
     if (!match) return <span key={`${fieldId}:fallback:${index}`}>{part.text}</span>;
 
     return (
@@ -877,7 +880,7 @@ function SongPageContent() {
                   <section className="teleprompter-shloka" key={verse.id}>
                     <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
                     <div>
-                      {verse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}>{line.transliteration}</p>)}
+                      {verse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={verse.originalVerseNumber} /></p>)}
                     </div>
                   </section>
                 ))}
@@ -889,7 +892,7 @@ function SongPageContent() {
               <section className="teleprompter-slideshow-verse" aria-live="polite">
                 <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${slideshowVerse.originalVerseNumber}`}>{String(slideshowVerseIndex + 1).padStart(2, "0")}</span>
                 <div>
-                  {slideshowVerse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}>{line.transliteration}</p>)}
+                  {slideshowVerse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={slideshowVerse.originalVerseNumber} /></p>)}
                 </div>
                 <output className="teleprompter-slide-position" aria-live="polite">{copy.song.teleprompterSlidePosition.replace("{current}", String(slideshowVerseIndex + 1)).replace("{total}", String(displayedVerses.length))}</output>
               </section>
@@ -1086,7 +1089,22 @@ function SongPageContent() {
                 <div className="verse-copy">
                   {verse.lines.map((line) => (
                     <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
-                      <SongMatchText value={line.transliteration} query={query} fieldId={`line:${line.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
+                      <WordForWordText
+                        value={line.transliteration}
+                        songTitle={song.title}
+                        verseNumber={verse.originalVerseNumber}
+                        renderText={(text, offset) => (
+                          <SongMatchText
+                            value={text}
+                            query={query}
+                            fieldId={`line:${line.id}`}
+                            matchesByField={matchesByField}
+                            activeMatchId={activeMatch?.id ?? null}
+                            registerMatch={registerMatch}
+                            matchIndexOffset={getHighlightParts(line.transliteration.slice(0, offset), query).filter((part) => part.isMatch).length}
+                          />
+                        )}
+                      />
                     </p>
                   ))}
                   {verse.translation && (
