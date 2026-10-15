@@ -70,6 +70,22 @@ describe("word-for-word glossary", () => {
     }
   });
 
+  it("matches the current Aruṇodoya-kīrtan 1 text against the reference glossary", () => {
+    const cases: Array<[string, string]> = [
+      ["tāthai tāthai", "making the sound"], ["mukunda mādhava jādava hari", "Yādava"],
+      ["sonāra aṅga", "golden form"], ["bolore", "oh sing"],
+      ["śorīra sāje", "decorating your bodies"], ["durllabha", "rare"],
+      ["ki kara", "what are you doing"], ["nāmāśroya kori'", "taking shelter"],
+      ["kichu nāhiko āro", "nothing else"], ["chaudda-bhuvana-mājhe", "fourteen worlds"],
+      ["jagate āsi'", "material universe"], ["avidyā-timira-tapana-rūpe", "like the sun"],
+    ];
+    for (const [surface, expected] of cases) {
+      const matched = getWordForWordSegments(surface).filter((segment) => segment.entries.length);
+      expect(matched.length, surface).toBeGreaterThan(0);
+      expect(matched.some((segment) => segment.entries.some((entry) => entry.meaning?.toLowerCase().includes(expected.toLowerCase()))), surface).toBe(true);
+    }
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
