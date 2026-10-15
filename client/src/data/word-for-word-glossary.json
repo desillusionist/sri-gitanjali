@@ -3,9 +3,9 @@
   "dataset": "Kīrtan Guide word-for-word glossary",
   "description": "Phrase/word-to-English-gloss entries extracted from the SYNONYMS blocks in SongBook-wordForWord-Vedabase-updated.html.",
   "sourceFile": "SongBook-wordForWord-Vedabase-updated.html",
-  "recordCount": 2820,
+  "recordCount": 2824,
   "sectionCount": 296,
-  "uniqueTermCount": 2325,
+  "uniqueTermCount": 2330,
   "fieldGuide": {
     "sourceTerm": "Transliterated word or phrase from the left side of a glossary entry; null when source punctuation is too malformed to segment confidently.",
     "meaning": "English gloss paired with sourceTerm; null when not parsed confidently.",
@@ -2756,7 +2756,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "mahāprabhoḥ",
       "meaning": "of Lord Chaitanya Mahāprabhu",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "mahāprabhoḥ—of Lord Chaitanya Mahāprabhu"
     },
     {
@@ -2768,7 +2768,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "kīrtana",
       "meaning": "(by) chanting",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "kīrtana—(by) chanting"
     },
     {
@@ -2780,7 +2780,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "nṛtya",
       "meaning": "dancing",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "nṛtya—dancing"
     },
     {
@@ -2792,7 +2792,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "gīta",
       "meaning": "singing",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "gīta—singing"
     },
     {
@@ -2804,7 +2804,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "vāditra",
       "meaning": "playing musical instruments",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "vāditra—playing musical instruments"
     },
     {
@@ -2816,7 +2816,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "mādyat",
       "meaning": "gladdened",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "mādyat—gladdened"
     },
     {
@@ -2828,7 +2828,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "manasaḥ",
       "meaning": "whose mind",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "manasaḥ—whose mind"
     },
     {
@@ -2840,7 +2840,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "rasena",
       "meaning": "due to the mellows of pure devotion",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "rasena—due to the mellows of pure devotion"
     },
     {
@@ -2852,7 +2852,7 @@
       "verseLabel": "Text Two",
       "sourceTerm": "roma-añcha",
       "meaning": "standing of the hair",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "roma-añcha—standing of the hair"
     },
     {
@@ -2863,9 +2863,9 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Two",
       "sourceTerm": "kampa",
-      "meaning": "quivering of the body, aśru-taraìga—torrents of tears",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "kampa—quivering of the body, aśru-taraìga—torrents of tears"
+      "meaning": "quivering of the body",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "kampa—quivering of the body"
     },
     {
       "id": "syn-0021-011",
@@ -2874,10 +2874,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Two",
-      "sourceTerm": "bhājaḥ",
-      "meaning": "who feels",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "bhājaḥ—who feels"
+      "sourceTerm": "aśru-taraìga",
+      "meaning": "torrents of tears",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "aśru-taraìga—torrents of tears"
     },
     {
       "id": "syn-0021-012",
@@ -2886,10 +2886,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Two",
-      "sourceTerm": "vande",
-      "meaning": "I offer obeisances",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "vande—I offer obeisances"
+      "sourceTerm": "bhājaḥ",
+      "meaning": "who feels",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "bhājaḥ—who feels"
     },
     {
       "id": "syn-0021-013",
@@ -2898,10 +2898,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Two",
-      "sourceTerm": "guroḥ",
-      "meaning": "of my spiritual master",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "guroḥ—of my spiritual master"
+      "sourceTerm": "vande",
+      "meaning": "I offer obeisances",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "vande—I offer obeisances"
     },
     {
       "id": "syn-0021-014",
@@ -2910,10 +2910,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Two",
-      "sourceTerm": "śrī",
-      "meaning": "auspicious",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śrī—auspicious"
+      "sourceTerm": "guroḥ",
+      "meaning": "of my spiritual master",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "guroḥ—of my spiritual master"
     },
     {
       "id": "syn-0021-015",
@@ -2922,10 +2922,22 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Two",
+      "sourceTerm": "śrī",
+      "meaning": "auspicious",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śrī—auspicious"
+    },
+    {
+      "id": "syn-0021-016",
+      "sectionId": "syn-0021",
+      "entryOrder": 16,
+      "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
+      "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
+      "verseLabel": "Text Two",
       "sourceTerm": "charaṇa-aravindam",
       "meaning": "unto the lotus feet",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "charaṇa-aravindam—unto the lotus feet."
+      "parseStatus": "parsed_manual",
+      "rawSegment": "charaṇa-aravindam—unto the lotus feet"
     },
     {
       "id": "syn-0022-001",
@@ -2935,9 +2947,9 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
       "sourceTerm": "śrī-vigraha",
-      "meaning": "(of) the archā-vigraha (Deities), ārādhana—the worship",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śrī-vigraha—(of) the archā-vigraha (Deities), ārādhana—the worship"
+      "meaning": "(of) the archā-vigraha (Deities)",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śrī-vigraha—(of) the archā-vigraha (Deities)"
     },
     {
       "id": "syn-0022-002",
@@ -2946,10 +2958,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "nitya",
-      "meaning": "daily",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "nitya—daily"
+      "sourceTerm": "ārādhana",
+      "meaning": "the worship",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "ārādhana—the worship"
     },
     {
       "id": "syn-0022-003",
@@ -2958,10 +2970,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "nānā",
-      "meaning": "(with) various",
-      "parseStatus": "parsed_hyphen_gloss",
-      "rawSegment": "nānā-(with) various"
+      "sourceTerm": "nitya",
+      "meaning": "daily",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "nitya—daily"
     },
     {
       "id": "syn-0022-004",
@@ -2970,10 +2982,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "śṛìgāra",
-      "meaning": "clothing and ornaments",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śṛìgāra—clothing and ornaments"
+      "sourceTerm": "nānā",
+      "meaning": "(with) various",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "nānā—(with) various"
     },
     {
       "id": "syn-0022-005",
@@ -2982,10 +2994,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "tat",
-      "meaning": "of the Lord",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "tat—of the Lord"
+      "sourceTerm": "śṛìgāra",
+      "meaning": "clothing and ornaments",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śṛìgāra—clothing and ornaments"
     },
     {
       "id": "syn-0022-006",
@@ -2994,10 +3006,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "mandira",
-      "meaning": "(of) the temple",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "mandira—(of) the temple"
+      "sourceTerm": "tat",
+      "meaning": "of the Lord",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "tat—of the Lord"
     },
     {
       "id": "syn-0022-007",
@@ -3006,10 +3018,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "mārjana-ādau",
-      "meaning": "in the cleaning, etc",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "mārjana-ādau—in the cleaning, etc."
+      "sourceTerm": "mandira",
+      "meaning": "of the temple",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "mandira—of the temple"
     },
     {
       "id": "syn-0022-008",
@@ -3018,10 +3030,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "yuktasya",
-      "meaning": "who is engaged",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "yuktasya—who is engaged"
+      "sourceTerm": "mārjana-ādau",
+      "meaning": "in the cleaning, etc.",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "mārjana-ādau—in the cleaning, etc."
     },
     {
       "id": "syn-0022-009",
@@ -3030,10 +3042,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "bhaktān",
-      "meaning": "his disciples",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "bhaktān—his disciples"
+      "sourceTerm": "yuktasya",
+      "meaning": "who is engaged",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "yuktasya—who is engaged"
     },
     {
       "id": "syn-0022-010",
@@ -3042,10 +3054,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "cha",
-      "meaning": "and",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "cha—and"
+      "sourceTerm": "bhaktān",
+      "meaning": "his disciples",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "bhaktān—his disciples"
     },
     {
       "id": "syn-0022-011",
@@ -3054,10 +3066,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "niyuñjataḥ",
-      "meaning": "who engages",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "niyuñjataḥ—who engages"
+      "sourceTerm": "cha",
+      "meaning": "and",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "cha—and"
     },
     {
       "id": "syn-0022-012",
@@ -3066,10 +3078,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "api",
-      "meaning": "also",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "api—also"
+      "sourceTerm": "niyuñjataḥ",
+      "meaning": "who engages",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "niyuñjataḥ—who engages"
     },
     {
       "id": "syn-0022-013",
@@ -3078,10 +3090,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "vande",
-      "meaning": "I offer obeisances",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "vande—I offer obeisances"
+      "sourceTerm": "api",
+      "meaning": "also",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "api—also"
     },
     {
       "id": "syn-0022-014",
@@ -3090,10 +3102,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "guroḥ",
-      "meaning": "of my spiritual master",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "guroḥ—of my spiritual master"
+      "sourceTerm": "vande",
+      "meaning": "I offer obeisances",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "vande—I offer obeisances"
     },
     {
       "id": "syn-0022-015",
@@ -3102,10 +3114,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "sourceTerm": "śrī",
-      "meaning": "auspicious",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śrī—auspicious"
+      "sourceTerm": "guroḥ",
+      "meaning": "of my spiritual master",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "guroḥ—of my spiritual master"
     },
     {
       "id": "syn-0022-016",
@@ -3114,10 +3126,22 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
+      "sourceTerm": "śrī",
+      "meaning": "auspicious",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śrī—auspicious"
+    },
+    {
+      "id": "syn-0022-017",
+      "sectionId": "syn-0022",
+      "entryOrder": 17,
+      "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
+      "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
+      "verseLabel": "Text Three",
       "sourceTerm": "charaṇa-aravindam",
       "meaning": "unto the lotus feet",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "charaṇa-aravindam—unto the lotus feet."
+      "parseStatus": "parsed_manual",
+      "rawSegment": "charaṇa-aravindam—unto the lotus feet"
     },
     {
       "id": "syn-0023-001",
@@ -3128,7 +3152,7 @@
       "verseLabel": "Text Four",
       "sourceTerm": "chatuḥ",
       "meaning": "four",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "chatuḥ—four"
     },
     {
@@ -3140,7 +3164,7 @@
       "verseLabel": "Text Four",
       "sourceTerm": "vidha",
       "meaning": "kinds",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "vidha—kinds"
     },
     {
@@ -3151,9 +3175,9 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
       "sourceTerm": "śrī",
-      "meaning": "holy, bhagavat-prasāda—which have been offered to Kṛṣṇa",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śrī—holy, bhagavat-prasāda—which have been offered to Kṛṣṇa"
+      "meaning": "holy",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śrī—holy"
     },
     {
       "id": "syn-0023-004",
@@ -3162,10 +3186,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "svādu",
-      "meaning": "palatable",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "svādu—palatable"
+      "sourceTerm": "bhagavat-prasāda",
+      "meaning": "which have been offered to Kṛṣṇa",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "bhagavat-prasāda—which have been offered to Kṛṣṇa"
     },
     {
       "id": "syn-0023-005",
@@ -3174,10 +3198,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "anna",
-      "meaning": "(by) foods",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "anna—(by) foods"
+      "sourceTerm": "svādu",
+      "meaning": "palatable",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "svādu—palatable"
     },
     {
       "id": "syn-0023-006",
@@ -3186,10 +3210,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "tṛptān",
-      "meaning": "spiritually satisfied",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "tṛptān—spiritually satisfied"
+      "sourceTerm": "anna",
+      "meaning": "(by) foods",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "anna—(by) foods"
     },
     {
       "id": "syn-0023-007",
@@ -3198,10 +3222,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "hari",
-      "meaning": "(of) Kṛṣṇa",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "hari—(of) Kṛṣṇa"
+      "sourceTerm": "tṛptān",
+      "meaning": "spiritually satisfied",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "tṛptān—spiritually satisfied"
     },
     {
       "id": "syn-0023-008",
@@ -3210,10 +3234,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "bhakta-saìghān",
-      "meaning": "the devotees",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "bhakta-saìghān—the devotees"
+      "sourceTerm": "hari",
+      "meaning": "of Kṛṣṇa",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "hari—of Kṛṣṇa"
     },
     {
       "id": "syn-0023-009",
@@ -3222,10 +3246,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "kṛtvā",
-      "meaning": "having made",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "kṛtvā—having made"
+      "sourceTerm": "bhakta-saìghān",
+      "meaning": "the devotees",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "bhakta-saìghān—the devotees"
     },
     {
       "id": "syn-0023-010",
@@ -3234,10 +3258,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "eva",
-      "meaning": "thus",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "eva—thus"
+      "sourceTerm": "kṛtvā",
+      "meaning": "having made",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "kṛtvā—having made"
     },
     {
       "id": "syn-0023-011",
@@ -3246,10 +3270,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "tṛptim",
-      "meaning": "satisfaction",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "tṛptim—satisfaction"
+      "sourceTerm": "eva",
+      "meaning": "thus",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "eva—thus"
     },
     {
       "id": "syn-0023-012",
@@ -3258,10 +3282,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "bhajataḥ",
-      "meaning": "who feels",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "bhajataḥ—who feels"
+      "sourceTerm": "tṛptim",
+      "meaning": "satisfaction",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "tṛptim—satisfaction"
     },
     {
       "id": "syn-0023-013",
@@ -3270,10 +3294,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "sada",
-      "meaning": "always",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "sada—always"
+      "sourceTerm": "bhajataḥ",
+      "meaning": "who feels",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "bhajataḥ—who feels"
     },
     {
       "id": "syn-0023-014",
@@ -3282,10 +3306,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "eva",
-      "meaning": "certainly",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "eva—certainly"
+      "sourceTerm": "sada",
+      "meaning": "always",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "sada—always"
     },
     {
       "id": "syn-0023-015",
@@ -3294,10 +3318,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "vande",
-      "meaning": "I offer obeisances",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "vande—I offer obeisances"
+      "sourceTerm": "eva",
+      "meaning": "certainly",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "eva—certainly"
     },
     {
       "id": "syn-0023-016",
@@ -3306,10 +3330,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "guroḥ",
-      "meaning": "of my spiritual master",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "guroḥ—of my spiritual master"
+      "sourceTerm": "vande",
+      "meaning": "I offer obeisances",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "vande—I offer obeisances"
     },
     {
       "id": "syn-0023-017",
@@ -3318,10 +3342,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "sourceTerm": "śrī",
-      "meaning": "auspicious",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śrī—auspicious"
+      "sourceTerm": "guroḥ",
+      "meaning": "of my spiritual master",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "guroḥ—of my spiritual master"
     },
     {
       "id": "syn-0023-018",
@@ -3330,10 +3354,22 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
+      "sourceTerm": "śrī",
+      "meaning": "auspicious",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śrī—auspicious"
+    },
+    {
+      "id": "syn-0023-019",
+      "sectionId": "syn-0023",
+      "entryOrder": 19,
+      "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
+      "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
+      "verseLabel": "Text Four",
       "sourceTerm": "charaṇa-aravindam",
       "meaning": "unto the lotus feet",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "charaṇa-aravindam—unto the lotus feet."
+      "parseStatus": "parsed_manual",
+      "rawSegment": "charaṇa-aravindam—unto the lotus feet"
     },
     {
       "id": "syn-0024-001",
@@ -3343,9 +3379,9 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Five",
       "sourceTerm": "śrī-rādhikā",
-      "meaning": "(of) Śrīmatī Rādhārāṇī",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śrī-rādhikā—(of) Śrīmatī Rādhārāṇī"
+      "meaning": "of Śrīmatī Rādhārāṇī",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śrī-rādhikā—of Śrīmatī Rādhārāṇī"
     },
     {
       "id": "syn-0024-002",
@@ -3356,7 +3392,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "mādhavayoḥ",
       "meaning": "of Lord Mādhava (Kṛṣṇa)",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "mādhavayoḥ—of Lord Mādhava (Kṛṣṇa)"
     },
     {
@@ -3368,7 +3404,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "apāra",
       "meaning": "unlimited",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "apāra—unlimited"
     },
     {
@@ -3380,7 +3416,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "mādhurya",
       "meaning": "conjugal",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "mādhurya—conjugal"
     },
     {
@@ -3392,7 +3428,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "līlā",
       "meaning": "pastimes",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "līlā—pastimes"
     },
     {
@@ -3404,7 +3440,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "guṇa",
       "meaning": "qualities",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "guṇa—qualities"
     },
     {
@@ -3416,7 +3452,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "rūpa",
       "meaning": "forms",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "rūpa—forms"
     },
     {
@@ -3428,7 +3464,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "nāmnām",
       "meaning": "of the holy names",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "nāmnām—of the holy names"
     },
     {
@@ -3440,7 +3476,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "prati-kṣaṇa",
       "meaning": "at every moment",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "prati-kṣaṇa—at every moment"
     },
     {
@@ -3452,7 +3488,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "āsvādana",
       "meaning": "relishing",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "āsvādana—relishing"
     },
     {
@@ -3464,7 +3500,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "lolupasya",
       "meaning": "who aspires after",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "lolupasya—who aspires after"
     },
     {
@@ -3476,7 +3512,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "vande",
       "meaning": "I offer obeisances",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "vande—I offer obeisances"
     },
     {
@@ -3488,7 +3524,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "guroḥ",
       "meaning": "of my spiritual master",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "guroḥ—of my spiritual master"
     },
     {
@@ -3500,7 +3536,7 @@
       "verseLabel": "Text Five",
       "sourceTerm": "śrī",
       "meaning": "auspicious",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "śrī—auspicious"
     },
     {
@@ -3512,8 +3548,8 @@
       "verseLabel": "Text Five",
       "sourceTerm": "charaṇa-aravindam",
       "meaning": "unto the lotus feet",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "charaṇa-aravindam—unto the lotus feet."
+      "parseStatus": "parsed_manual",
+      "rawSegment": "charaṇa-aravindam—unto the lotus feet"
     },
     {
       "id": "syn-0025-001",
@@ -3524,8 +3560,8 @@
       "verseLabel": "Text Six",
       "sourceTerm": "nikuñja-yūnaḥ",
       "meaning": "of Rādhā and Kṛṣṇa",
-      "parseStatus": "parsed_hyphen_gloss",
-      "rawSegment": "nikuñja-yūnaḥ-of Rādhā and Kṛṣṇa"
+      "parseStatus": "parsed_manual",
+      "rawSegment": "nikuñja-yūnaḥ—of Rādhā and Kṛṣṇa"
     },
     {
       "id": "syn-0025-002",
@@ -3535,9 +3571,9 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Six",
       "sourceTerm": "rati",
-      "meaning": "(of) conjugal love",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "rati—(of) conjugal love"
+      "meaning": "of conjugal love",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "rati—of conjugal love"
     },
     {
       "id": "syn-0025-003",
@@ -3547,9 +3583,9 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Six",
       "sourceTerm": "keli",
-      "meaning": "(of) pastimes",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "keli—(of) pastimes"
+      "meaning": "of pastimes",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "keli—of pastimes"
     },
     {
       "id": "syn-0025-004",
@@ -3560,7 +3596,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "siddhyai",
       "meaning": "for the perfection",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "siddhyai—for the perfection"
     },
     {
@@ -3572,8 +3608,8 @@
       "verseLabel": "Text Six",
       "sourceTerm": "yā yā",
       "meaning": "whatever",
-      "parseStatus": "parsed_hyphen_gloss",
-      "rawSegment": "yā yā- whatever"
+      "parseStatus": "parsed_manual",
+      "rawSegment": "yā yā—whatever"
     },
     {
       "id": "syn-0025-006",
@@ -3584,7 +3620,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "ālibhiḥ",
       "meaning": "by the gopīs",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "ālibhiḥ—by the gopīs"
     },
     {
@@ -3596,7 +3632,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "yuktiḥ",
       "meaning": "arrangements",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "yuktiḥ—arrangements"
     },
     {
@@ -3608,7 +3644,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "apekṣaṇīyā",
       "meaning": "desirable",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "apekṣaṇīyā—desirable"
     },
     {
@@ -3620,7 +3656,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "tatra",
       "meaning": "in that connection",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "tatra—in that connection"
     },
     {
@@ -3632,7 +3668,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "ati-dākṣyāt",
       "meaning": "because of being very expert",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "ati-dākṣyāt—because of being very expert"
     },
     {
@@ -3644,7 +3680,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "ati-vallabhasya",
       "meaning": "who is very dear",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "ati-vallabhasya—who is very dear"
     },
     {
@@ -3656,7 +3692,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "vande",
       "meaning": "I offer obeisances",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "vande—I offer obeisances"
     },
     {
@@ -3668,7 +3704,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "guroḥ",
       "meaning": "of my spiritual master",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "guroḥ—of my spiritual master"
     },
     {
@@ -3680,7 +3716,7 @@
       "verseLabel": "Text Six",
       "sourceTerm": "śrī",
       "meaning": "auspicious",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "śrī—auspicious"
     },
     {
@@ -3692,8 +3728,8 @@
       "verseLabel": "Text Six",
       "sourceTerm": "charaṇa-aravindam",
       "meaning": "unto the lotus feet",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "charaṇa-aravindam—unto the lotus feet."
+      "parseStatus": "parsed_manual",
+      "rawSegment": "charaṇa-aravindam—unto the lotus feet"
     },
     {
       "id": "syn-0026-001",
@@ -3704,7 +3740,7 @@
       "verseLabel": "Text Seven",
       "sourceTerm": "sākṣāt",
       "meaning": "directly",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "sākṣāt—directly"
     },
     {
@@ -3716,7 +3752,7 @@
       "verseLabel": "Text Seven",
       "sourceTerm": "hari-tvena",
       "meaning": "with the quality of Hari",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "hari-tvena—with the quality of Hari"
     },
     {
@@ -3728,8 +3764,8 @@
       "verseLabel": "Text Seven",
       "sourceTerm": "samasta",
       "meaning": "all",
-      "parseStatus": "parsed_hyphen_gloss",
-      "rawSegment": "samasta- all"
+      "parseStatus": "parsed_manual",
+      "rawSegment": "samasta—all"
     },
     {
       "id": "syn-0026-004",
@@ -3740,7 +3776,7 @@
       "verseLabel": "Text Seven",
       "sourceTerm": "śāstraiḥ",
       "meaning": "by scriptures",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "śāstraiḥ—by scriptures"
     },
     {
@@ -3752,7 +3788,7 @@
       "verseLabel": "Text Seven",
       "sourceTerm": "uktaḥ",
       "meaning": "acknowledged",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "uktaḥ—acknowledged"
     },
     {
@@ -3762,10 +3798,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "tathā-thus bhāvyate",
-      "meaning": "is considered",
-      "parseStatus": "compound_joined",
-      "rawSegment": "tathā—thus bhāvyate—is considered"
+      "sourceTerm": "tathā",
+      "meaning": "thus",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "tathā—thus"
     },
     {
       "id": "syn-0026-007",
@@ -3774,10 +3810,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "eva",
-      "meaning": "also",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "eva—also"
+      "sourceTerm": "bhāvyate",
+      "meaning": "is considered",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "bhāvyate—is considered"
     },
     {
       "id": "syn-0026-008",
@@ -3786,10 +3822,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "sadbhiḥ",
-      "meaning": "by great saintly persons",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "sadbhiḥ—by great saintly persons"
+      "sourceTerm": "eva",
+      "meaning": "also",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "eva—also"
     },
     {
       "id": "syn-0026-009",
@@ -3798,10 +3834,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "kintu",
-      "meaning": "however",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "kintu—however"
+      "sourceTerm": "sadbhiḥ",
+      "meaning": "by great saintly persons",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "sadbhiḥ—by great saintly persons"
     },
     {
       "id": "syn-0026-010",
@@ -3810,10 +3846,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "prabhoḥ",
-      "meaning": "to the Lord",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "prabhoḥ—to the Lord"
+      "sourceTerm": "kintu",
+      "meaning": "however",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "kintu—however"
     },
     {
       "id": "syn-0026-011",
@@ -3822,10 +3858,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "yaḥ",
-      "meaning": "who",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "yaḥ—who"
+      "sourceTerm": "prabhoḥ",
+      "meaning": "to the Lord",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "prabhoḥ—to the Lord"
     },
     {
       "id": "syn-0026-012",
@@ -3834,10 +3870,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "priyaḥ",
-      "meaning": "dear",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "priyaḥ—dear"
+      "sourceTerm": "yaḥ",
+      "meaning": "who",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "yaḥ—who"
     },
     {
       "id": "syn-0026-013",
@@ -3846,10 +3882,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "eva",
-      "meaning": "certainly",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "eva—certainly"
+      "sourceTerm": "priyaḥ",
+      "meaning": "dear",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "priyaḥ—dear"
     },
     {
       "id": "syn-0026-014",
@@ -3858,10 +3894,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "tasya",
-      "meaning": "of him (the guru)",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "tasya—of him (the guru)"
+      "sourceTerm": "eva",
+      "meaning": "certainly",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "eva—certainly"
     },
     {
       "id": "syn-0026-015",
@@ -3870,10 +3906,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "vande",
-      "meaning": "I offer obeisances",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "vande—I offer obeisances"
+      "sourceTerm": "tasya",
+      "meaning": "of him (the guru)",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "tasya—of him (the guru)"
     },
     {
       "id": "syn-0026-016",
@@ -3882,10 +3918,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "guroḥ",
-      "meaning": "of my spiritual master",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "guroḥ—of my spiritual master"
+      "sourceTerm": "vande",
+      "meaning": "I offer obeisances",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "vande—I offer obeisances"
     },
     {
       "id": "syn-0026-017",
@@ -3894,10 +3930,10 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "sourceTerm": "śrī",
-      "meaning": "auspicious",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "śrī—auspicious"
+      "sourceTerm": "guroḥ",
+      "meaning": "of my spiritual master",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "guroḥ—of my spiritual master"
     },
     {
       "id": "syn-0026-018",
@@ -3906,10 +3942,22 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
+      "sourceTerm": "śrī",
+      "meaning": "auspicious",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "śrī—auspicious"
+    },
+    {
+      "id": "syn-0026-019",
+      "sectionId": "syn-0026",
+      "entryOrder": 19,
+      "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
+      "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
+      "verseLabel": "Text Seven",
       "sourceTerm": "charaṇa-aravindam",
       "meaning": "unto the lotus feet",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "charaṇa-aravindam—unto the lotus feet."
+      "parseStatus": "parsed_manual",
+      "rawSegment": "charaṇa-aravindam—unto the lotus feet"
     },
     {
       "id": "syn-0027-001",
@@ -3920,7 +3968,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "yasya",
       "meaning": "of whom (the spiritual master)",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "yasya—of whom (the spiritual master)"
     },
     {
@@ -3932,7 +3980,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "prasādāt",
       "meaning": "by the grace",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "prasādāt—by the grace"
     },
     {
@@ -3943,9 +3991,9 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Eight",
       "sourceTerm": "bhagavat",
-      "meaning": "(of) Kṛṣṇa",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "bhagavat—(of) Kṛṣṇa"
+      "meaning": "of Kṛṣṇa",
+      "parseStatus": "parsed_manual",
+      "rawSegment": "bhagavat—of Kṛṣṇa"
     },
     {
       "id": "syn-0027-004",
@@ -3956,7 +4004,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "prasādaḥ",
       "meaning": "the mercy",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "prasādaḥ—the mercy"
     },
     {
@@ -3968,7 +4016,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "yasya",
       "meaning": "of whom",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "yasya—of whom"
     },
     {
@@ -3980,7 +4028,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "aprasādāt",
       "meaning": "without the grace",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "aprasādāt—without the grace"
     },
     {
@@ -3992,7 +4040,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "na",
       "meaning": "not",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "na—not"
     },
     {
@@ -4004,7 +4052,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "gatiḥ",
       "meaning": "means of advancement",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "gatiḥ—means of advancement"
     },
     {
@@ -4016,7 +4064,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "kutaḥ api",
       "meaning": "from anywhere",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "kutaḥ api—from anywhere"
     },
     {
@@ -4028,7 +4076,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "dhyāyan",
       "meaning": "meditating upon",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "dhyāyan—meditating upon"
     },
     {
@@ -4040,7 +4088,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "stuvan",
       "meaning": "praising",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "stuvan—praising"
     },
     {
@@ -4052,7 +4100,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "tasya",
       "meaning": "of him (the spiritual master)",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "tasya—of him (the spiritual master)"
     },
     {
@@ -4064,7 +4112,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "yaśaḥ",
       "meaning": "the glory",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "yaśaḥ—the glory"
     },
     {
@@ -4076,7 +4124,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "tri-sandhyam",
       "meaning": "three times a day (sunrise, noon, and sunset)",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "tri-sandhyam—three times a day (sunrise, noon, and sunset)"
     },
     {
@@ -4088,7 +4136,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "vande",
       "meaning": "I offer obeisances",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "vande—I offer obeisances"
     },
     {
@@ -4100,7 +4148,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "guroḥ",
       "meaning": "of my spiritual master",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "guroḥ—of my spiritual master"
     },
     {
@@ -4112,7 +4160,7 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "śrī",
       "meaning": "auspicious",
-      "parseStatus": "parsed_dash",
+      "parseStatus": "parsed_manual",
       "rawSegment": "śrī—auspicious"
     },
     {
@@ -4124,8 +4172,8 @@
       "verseLabel": "Text Eight",
       "sourceTerm": "charaṇa-aravindam",
       "meaning": "unto the lotus feet",
-      "parseStatus": "parsed_dash",
-      "rawSegment": "charaṇa-aravindam—unto the lotus feet."
+      "parseStatus": "parsed_manual",
+      "rawSegment": "charaṇa-aravindam—unto the lotus feet"
     },
     {
       "id": "syn-0028-001",
@@ -33970,12 +34018,12 @@
     "vande": [
       "syn-0003-001",
       "syn-0020-012",
-      "syn-0021-012",
-      "syn-0022-013",
-      "syn-0023-015",
+      "syn-0021-013",
+      "syn-0022-014",
+      "syn-0023-016",
       "syn-0024-012",
       "syn-0025-012",
-      "syn-0026-015",
+      "syn-0026-016",
       "syn-0027-015",
       "syn-0028-019",
       "syn-0260-013"
@@ -34000,7 +34048,7 @@
       "syn-0003-020",
       "syn-0012-002",
       "syn-0012-006",
-      "syn-0022-010",
+      "syn-0022-011",
       "syn-0033-008",
       "syn-0033-010",
       "syn-0034-005",
@@ -34248,7 +34296,7 @@
     ],
     "priyaḥ": [
       "syn-0011-007",
-      "syn-0026-012"
+      "syn-0026-013"
     ],
     "vaiṣṇava": [
       "syn-0011-008",
@@ -34272,10 +34320,10 @@
     ],
     "eva": [
       "syn-0012-005",
-      "syn-0023-010",
-      "syn-0023-014",
-      "syn-0026-007",
-      "syn-0026-013"
+      "syn-0023-011",
+      "syn-0023-015",
+      "syn-0026-008",
+      "syn-0026-014"
     ],
     "patitānām": [
       "syn-0012-007"
@@ -34539,33 +34587,33 @@
     ],
     "guroḥ": [
       "syn-0020-013",
-      "syn-0021-013",
-      "syn-0022-014",
-      "syn-0023-016",
+      "syn-0021-014",
+      "syn-0022-015",
+      "syn-0023-017",
       "syn-0024-013",
       "syn-0025-013",
-      "syn-0026-016",
+      "syn-0026-017",
       "syn-0027-016"
     ],
     "śrī": [
       "syn-0020-014",
-      "syn-0021-014",
-      "syn-0022-015",
+      "syn-0021-015",
+      "syn-0022-016",
       "syn-0023-003",
-      "syn-0023-017",
+      "syn-0023-018",
       "syn-0024-014",
       "syn-0025-014",
-      "syn-0026-017",
+      "syn-0026-018",
       "syn-0027-017"
     ],
     "charaṇa-aravindam": [
       "syn-0020-015",
-      "syn-0021-015",
-      "syn-0022-016",
-      "syn-0023-018",
+      "syn-0021-016",
+      "syn-0022-017",
+      "syn-0023-019",
       "syn-0024-015",
       "syn-0025-015",
-      "syn-0026-018",
+      "syn-0026-019",
       "syn-0027-018"
     ],
     "mahāprabhoḥ": [
@@ -34601,43 +34649,49 @@
       "syn-0021-010",
       "syn-0259-009"
     ],
-    "bhājaḥ": [
+    "aśru-taraìga": [
       "syn-0021-011"
+    ],
+    "bhājaḥ": [
+      "syn-0021-012"
     ],
     "śrī-vigraha": [
       "syn-0022-001"
     ],
+    "ārādhana": [
+      "syn-0022-002"
+    ],
     "nitya": [
-      "syn-0022-002",
+      "syn-0022-003",
       "syn-0215-004"
     ],
     "nānā": [
-      "syn-0022-003"
-    ],
-    "śṛìgāra": [
       "syn-0022-004"
     ],
-    "tat": [
+    "śṛìgāra": [
       "syn-0022-005"
     ],
+    "tat": [
+      "syn-0022-006"
+    ],
     "mandira": [
-      "syn-0022-006",
+      "syn-0022-007",
       "syn-0211-006"
     ],
     "mārjana-ādau": [
-      "syn-0022-007"
-    ],
-    "yuktasya": [
       "syn-0022-008"
     ],
-    "bhaktān": [
+    "yuktasya": [
       "syn-0022-009"
     ],
+    "bhaktān": [
+      "syn-0022-010"
+    ],
     "niyuñjataḥ": [
-      "syn-0022-011"
+      "syn-0022-012"
     ],
     "api": [
-      "syn-0022-012",
+      "syn-0022-013",
       "syn-0037-015",
       "syn-0261-011"
     ],
@@ -34647,34 +34701,37 @@
     "vidha": [
       "syn-0023-002"
     ],
-    "svādu": [
+    "bhagavat-prasāda": [
       "syn-0023-004"
     ],
-    "anna": [
+    "svādu": [
       "syn-0023-005"
     ],
-    "tṛptān": [
+    "anna": [
       "syn-0023-006"
     ],
+    "tṛptān": [
+      "syn-0023-007"
+    ],
     "hari": [
-      "syn-0023-007",
+      "syn-0023-008",
       "syn-0178-003",
       "syn-0184-003"
     ],
     "bhakta-saìghān": [
-      "syn-0023-008"
-    ],
-    "kṛtvā": [
       "syn-0023-009"
     ],
-    "tṛptim": [
-      "syn-0023-011"
+    "kṛtvā": [
+      "syn-0023-010"
     ],
-    "bhajataḥ": [
+    "tṛptim": [
       "syn-0023-012"
     ],
-    "sada": [
+    "bhajataḥ": [
       "syn-0023-013"
+    ],
+    "sada": [
+      "syn-0023-014"
     ],
     "śrī-rādhikā": [
       "syn-0024-001"
@@ -34759,23 +34816,27 @@
     "uktaḥ": [
       "syn-0026-005"
     ],
-    "tathā-thus bhāvyate": [
-      "syn-0026-006"
+    "tathā": [
+      "syn-0026-006",
+      "syn-0264-009"
+    ],
+    "bhāvyate": [
+      "syn-0026-007"
     ],
     "sadbhiḥ": [
-      "syn-0026-008"
-    ],
-    "kintu": [
       "syn-0026-009"
     ],
-    "prabhoḥ": [
+    "kintu": [
       "syn-0026-010"
     ],
-    "yaḥ": [
+    "prabhoḥ": [
       "syn-0026-011"
     ],
+    "yaḥ": [
+      "syn-0026-012"
+    ],
     "tasya": [
-      "syn-0026-014",
+      "syn-0026-015",
       "syn-0027-012"
     ],
     "yasya": [
@@ -36015,7 +36076,9 @@
       "syn-0060-008"
     ],
     "gopīnāth": [
-      "syn-0061-001"
+      "syn-0061-001",
+      "syn-0062-001",
+      "syn-0063-001"
     ],
     "mama nivedana": [
       "syn-0061-002"
@@ -36093,6 +36156,29 @@
     ],
     "soṁsāra-ghore": [
       "syn-0063-010"
+    ],
+    "gopināth": [
+      "syn-0064-001",
+      "syn-0065-001",
+      "syn-0066-001",
+      "syn-0067-001",
+      "syn-0068-001",
+      "syn-0069-001",
+      "syn-0070-001",
+      "syn-0071-001",
+      "syn-0072-001",
+      "syn-0073-001",
+      "syn-0074-001",
+      "syn-0075-001",
+      "syn-0076-001",
+      "syn-0077-001",
+      "syn-0078-001",
+      "syn-0079-001",
+      "syn-0080-001",
+      "syn-0081-001",
+      "syn-0082-001",
+      "syn-0083-001",
+      "syn-0084-001"
     ],
     "sakali": [
       "syn-0064-002"
@@ -39721,6 +39807,18 @@
     "dhṛta-kūrma-śarīra": [
       "syn-0229-010"
     ],
+    "jaya jagadīśa hare": [
+      "syn-0229-011",
+      "syn-0230-012",
+      "syn-0231-010",
+      "syn-0232-010",
+      "syn-0233-010",
+      "syn-0234-011",
+      "syn-0235-011",
+      "syn-0236-010",
+      "syn-0237-010",
+      "syn-0238-012"
+    ],
     "vasati": [
       "syn-0230-001"
     ],
@@ -40691,9 +40789,6 @@
     ],
     "kṛtau": [
       "syn-0264-007"
-    ],
-    "tathā": [
-      "syn-0264-009"
     ],
     "prema-bhaktim": [
       "syn-0264-010"
@@ -41757,8 +41852,8 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Two",
-      "entryCount": 15,
-      "rawText": "mahāprabhoḥ—of Lord Chaitanya Mahāprabhu; kīrtana—(by) chanting; nṛtya—dancing; gīta—singing; vāditra—playing musical instruments; mādyat—gladdened; manasaḥ—whose mind; rasena—due to the mellows of pure devotion; roma-añcha—standing of the hair; kampa—quivering of the body, aśru-taraìga—torrents of tears; bhājaḥ—who feels; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
+      "entryCount": 16,
+      "rawText": "mahāprabhoḥ—of Lord Chaitanya Mahāprabhu; kīrtana—(by) chanting; nṛtya—dancing; gīta—singing; vāditra—playing musical instruments; mādyat—gladdened; manasaḥ—whose mind; rasena—due to the mellows of pure devotion; roma-añcha—standing of the hair; kampa—quivering of the body; aśru-taraìga—torrents of tears; bhājaḥ—who feels; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
       "entryIds": [
         "syn-0021-001",
         "syn-0021-002",
@@ -41774,7 +41869,8 @@
         "syn-0021-012",
         "syn-0021-013",
         "syn-0021-014",
-        "syn-0021-015"
+        "syn-0021-015",
+        "syn-0021-016"
       ]
     },
     {
@@ -41783,8 +41879,8 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Three",
-      "entryCount": 16,
-      "rawText": "śrī-vigraha—(of) the archā-vigraha (Deities), ārādhana—the worship; nitya—daily; nānā-(with) various; śṛìgāra—clothing and ornaments; tat—of the Lord; mandira—(of) the temple; mārjana-ādau—in the cleaning, etc.; yuktasya—who is engaged; bhaktān—his disciples; cha—and; niyuñjataḥ—who engages; api—also; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
+      "entryCount": 17,
+      "rawText": "śrī-vigraha—(of) the archā-vigraha (Deities); ārādhana—the worship; nitya—daily; nānā—(with) various; śṛìgāra—clothing and ornaments; tat—of the Lord; mandira—of the temple; mārjana-ādau—in the cleaning, etc.; yuktasya—who is engaged; bhaktān—his disciples; cha—and; niyuñjataḥ—who engages; api—also; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
       "entryIds": [
         "syn-0022-001",
         "syn-0022-002",
@@ -41801,7 +41897,8 @@
         "syn-0022-013",
         "syn-0022-014",
         "syn-0022-015",
-        "syn-0022-016"
+        "syn-0022-016",
+        "syn-0022-017"
       ]
     },
     {
@@ -41810,8 +41907,8 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Four",
-      "entryCount": 18,
-      "rawText": "chatuḥ—four; vidha—kinds; śrī—holy, bhagavat-prasāda—which have been offered to Kṛṣṇa; svādu—palatable; anna—(by) foods; tṛptān—spiritually satisfied; hari—(of) Kṛṣṇa; bhakta-saìghān—the devotees; kṛtvā—having made; eva—thus; tṛptim—satisfaction; bhajataḥ—who feels; sada—always; eva—certainly; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
+      "entryCount": 19,
+      "rawText": "chatuḥ—four; vidha—kinds; śrī—holy; bhagavat-prasāda—which have been offered to Kṛṣṇa; svādu—palatable; anna—(by) foods; tṛptān—spiritually satisfied; hari—of Kṛṣṇa; bhakta-saìghān—the devotees; kṛtvā—having made; eva—thus; tṛptim—satisfaction; bhajataḥ—who feels; sada—always; eva—certainly; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
       "entryIds": [
         "syn-0023-001",
         "syn-0023-002",
@@ -41830,7 +41927,8 @@
         "syn-0023-015",
         "syn-0023-016",
         "syn-0023-017",
-        "syn-0023-018"
+        "syn-0023-018",
+        "syn-0023-019"
       ]
     },
     {
@@ -41840,7 +41938,7 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Five",
       "entryCount": 15,
-      "rawText": "śrī-rādhikā—(of) Śrīmatī Rādhārāṇī; mādhavayoḥ—of Lord Mādhava (Kṛṣṇa); apāra—unlimited; mādhurya—conjugal; līlā—pastimes; guṇa—qualities; rūpa—forms; nāmnām—of the holy names; prati-kṣaṇa—at every moment; āsvādana—relishing; lolupasya—who aspires after; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
+      "rawText": "śrī-rādhikā—of Śrīmatī Rādhārāṇī; mādhavayoḥ—of Lord Mādhava (Kṛṣṇa); apāra—unlimited; mādhurya—conjugal; līlā—pastimes; guṇa—qualities; rūpa—forms; nāmnām—of the holy names; prati-kṣaṇa—at every moment; āsvādana—relishing; lolupasya—who aspires after; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
       "entryIds": [
         "syn-0024-001",
         "syn-0024-002",
@@ -41866,7 +41964,7 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Six",
       "entryCount": 15,
-      "rawText": "nikuñja-yūnaḥ-of Rādhā and Kṛṣṇa; rati—(of) conjugal love; keli—(of) pastimes; siddhyai—for the perfection; yā yā- whatever; ālibhiḥ—by the gopīs; yuktiḥ—arrangements; apekṣaṇīyā—desirable; tatra—in that connection; ati-dākṣyāt—because of being very expert; ati-vallabhasya—who is very dear; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
+      "rawText": "nikuñja-yūnaḥ—of Rādhā and Kṛṣṇa; rati—of conjugal love; keli—of pastimes; siddhyai—for the perfection; yā yā—whatever; ālibhiḥ—by the gopīs; yuktiḥ—arrangements; apekṣaṇīyā—desirable; tatra—in that connection; ati-dākṣyāt—because of being very expert; ati-vallabhasya—who is very dear; vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
       "entryIds": [
         "syn-0025-001",
         "syn-0025-002",
@@ -41891,8 +41989,8 @@
       "collection": "SVA 1: Śrī Śrī Gurv-aṣṭaka (saṁsāra-dāvānala-līḍha-loka)",
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Seven",
-      "entryCount": 18,
-      "rawText": "sākṣāt—directly; hari-tvena—with the quality of Hari; samasta- all; śāstraiḥ—by scriptures; uktaḥ—acknowledged; tathā—thus bhāvyate—is considered; eva—also; sadbhiḥ—by great saintly persons; kintu—however; prabhoḥ—to the Lord; yaḥ—who; priyaḥ—dear; eva—certainly; tasya—of him (the guru); vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
+      "entryCount": 19,
+      "rawText": "sākṣāt—directly; hari-tvena—with the quality of Hari; samasta—all; śāstraiḥ—by scriptures; uktaḥ—acknowledged; tathā—thus; bhāvyate—is considered; eva—also; sadbhiḥ—by great saintly persons; kintu—however; prabhoḥ—to the Lord; yaḥ—who; priyaḥ—dear; eva—certainly; tasya—of him (the guru); vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
       "entryIds": [
         "syn-0026-001",
         "syn-0026-002",
@@ -41911,7 +42009,8 @@
         "syn-0026-015",
         "syn-0026-016",
         "syn-0026-017",
-        "syn-0026-018"
+        "syn-0026-018",
+        "syn-0026-019"
       ]
     },
     {
@@ -41921,7 +42020,7 @@
       "songOrPrayer": "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura",
       "verseLabel": "Text Eight",
       "entryCount": 18,
-      "rawText": "yasya—of whom (the spiritual master); prasādāt—by the grace; bhagavat—(of) Kṛṣṇa; prasādaḥ—the mercy; yasya—of whom; aprasādāt—without the grace; na—not; gatiḥ—means of advancement; kutaḥ api—from anywhere; dhyāyan—meditating upon; stuvan—praising; tasya—of him (the spiritual master); yaśaḥ—the glory; tri-sandhyam—three times a day (sunrise, noon, and sunset); vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
+      "rawText": "yasya—of whom (the spiritual master); prasādāt—by the grace; bhagavat—of Kṛṣṇa; prasādaḥ—the mercy; yasya—of whom; aprasādāt—without the grace; na—not; gatiḥ—means of advancement; kutaḥ api—from anywhere; dhyāyan—meditating upon; stuvan—praising; tasya—of him (the spiritual master); yaśaḥ—the glory; tri-sandhyam—three times a day (sunrise, noon, and sunset); vande—I offer obeisances; guroḥ—of my spiritual master; śrī—auspicious; charaṇa-aravindam—unto the lotus feet.",
       "entryIds": [
         "syn-0027-001",
         "syn-0027-002",

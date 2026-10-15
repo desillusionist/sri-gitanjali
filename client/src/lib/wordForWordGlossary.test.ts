@@ -26,6 +26,14 @@ describe("word-for-word glossary", () => {
     expect(segments.find((segment) => segment.text === "charaṇāravindam")?.entries[0]?.meaning).toContain("lotus feet");
   });
 
+  it("uses the supplied Gurv-aṣṭaka synonyms for the correct verse context", () => {
+    const songTitle = "Śrī Śrī Gurv-aṣṭaka Eight Prayers to the Guru by Śrīla Viśvanātha Chakravartī Ṭhākura";
+    const verseTwo = getWordForWordSegments("aśru-taraìga", { songTitle, verseNumber: 2 });
+    const verseEight = getWordForWordSegments("tri-sandhyam", { songTitle, verseNumber: 8 });
+    expect(verseTwo[0].entries[0]?.meaning).toBe("torrents of tears");
+    expect(verseEight[0].entries[0]?.meaning).toContain("three times a day");
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
@@ -44,6 +52,6 @@ describe("word-for-word glossary", () => {
   });
 
   it("loads the complete static dataset once", () => {
-    expect(getGlossaryStats()).toEqual({ entries: 2820, terms: 2325 });
+    expect(getGlossaryStats()).toEqual({ entries: 2824, terms: 2330 });
   });
 });
