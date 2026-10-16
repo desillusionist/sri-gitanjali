@@ -86,6 +86,18 @@ describe("word-for-word glossary", () => {
     }
   });
 
+  it("matches derived surface forms without changing the displayed song text", () => {
+    const cases: Array<[string, string]> = [
+      ["chai", "do I beg"], ["jayatāṁ", "all glory to"], ["ḍiyā", "giving"],
+      ["varam", "boons"], ["adbhuta-śṛṅgaṁ", "wonderfully sharp tips"], ["mahārāṇī", "queen"],
+    ];
+    for (const [surface, expected] of cases) {
+      const segments = getWordForWordSegments(surface);
+      expect(segments.map((segment) => segment.text).join(""), surface).toBe(surface);
+      expect(segments.some((segment) => segment.entries.some((entry) => entry.meaning?.toLowerCase().includes(expected.toLowerCase()))), surface).toBe(true);
+    }
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });

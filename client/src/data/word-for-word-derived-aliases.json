@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 1,
+  "description": "Surface-form aliases derived from current song text and existing word-for-word glossary terms. These aliases do not add songs or meanings.",
+  "entries": [
+    {
+      "surface": "chai",
+      "sourceTerms": [
+        "chāi"
+      ],
+      "occurrences": 19,
+      "songCount": 18,
+      "verseCount": 19
+    },
+    {
+      "surface": "ḍiyā",
+      "sourceTerms": [
+        "diyā"
+      ],
+      "occurrences": 5,
+      "songCount": 5,
+      "verseCount": 5
+    },
+    {
+      "surface": "dhūli",
+      "sourceTerms": [
+        "dhūlī"
+      ],
+      "occurrences": 2,
+      "songCount": 2,
+      "verseCount": 2
+    },
+    {
+      "surface": "mahārāṇī",
+      "sourceTerms": [
+        "mahārāṇi"
+      ],
+      "occurrences": 2,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "varaṁ",
+      "sourceTerms": [
+        "varam"
+      ],
+      "occurrences": 2,
+      "songCount": 2,
+      "verseCount": 2
+    },
+    {
+      "surface": "āśa",
+      "sourceTerms": [
+        "āśā"
+      ],
+      "occurrences": 2,
+      "songCount": 2,
+      "verseCount": 2
+    },
+    {
+      "surface": "ḍibo",
+      "sourceTerms": [
+        "dibo"
+      ],
+      "occurrences": 2,
+      "songCount": 2,
+      "verseCount": 2
+    },
+    {
+      "surface": "adbhuta-śṛṅgaṁ",
+      "sourceTerms": [
+        "adbhuta-śṛṅgam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "alaṁ",
+      "sourceTerms": [
+        "alam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "ami",
+      "sourceTerms": [
+        "āmi"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "amṛta–kelī",
+      "sourceTerms": [
+        "amṛta-keli"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "bhagavata",
+      "sourceTerms": [
+        "bhāgavata"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "bhaji",
+      "sourceTerms": [
+        "bhāji"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "bhuñjāye",
+      "sourceTerms": [
+        "bhuñjaye"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "chandrikā-vitaraṇaṁ",
+      "sourceTerms": [
+        "chandrikā-vitaraṇam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "charaṇera dhuli",
+      "sourceTerms": [
+        "charaṇera dhūli"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "dehi",
+      "sourceTerms": [
+        "dehī"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "dījiye",
+      "sourceTerms": [
+        "dijiye"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "dūrlabha mānava janama",
+      "sourceTerms": [
+        "durlabha mānava-janama"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "ekākī",
+      "sourceTerms": [
+        "ekakī"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "giri-vara-dhāri",
+      "sourceTerms": [
+        "giri-vara-dhārī"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "hara",
+      "sourceTerms": [
+        "hāra"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "jayatāṁ",
+      "sourceTerms": [
+        "jayatām"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "jhorbe āṅkhi",
+      "sourceTerms": [
+        "jhorbe ānkhi"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "jāi bolihāri",
+      "sourceTerms": [
+        "jāi bolihari"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "jāno bhālo mate",
+      "sourceTerms": [
+        "jano bhālo mate"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "kamanīyaṁ",
+      "sourceTerms": [
+        "kamanīyam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "karavālaṁ",
+      "sourceTerms": [
+        "karavālam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "kiṅkaraṁ",
+      "sourceTerms": [
+        "kiṅkaram"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "mauli-baliṁ",
+      "sourceTerms": [
+        "mauli-balim"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "mokṣaṁ",
+      "sourceTerms": [
+        "mokṣam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "māna",
+      "sourceTerms": [
+        "mana"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "mānyau",
+      "sourceTerms": [
+        "manyau"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "natibhiḥ",
+      "sourceTerms": [
+        "naṭibhiḥ"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "navanīta-taṣkara",
+      "sourceTerms": [
+        "navanīta-taskara"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "nirvāpaṇaṁ",
+      "sourceTerms": [
+        "nirvāpaṇam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "niti",
+      "sourceTerms": [
+        "nīti"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "prabhāve",
+      "sourceTerms": [
+        "prabhave"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "pure",
+      "sourceTerms": [
+        "pūre"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "purāṇa",
+      "sourceTerms": [
+        "pūraṇa"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "pāda-ratāṁ",
+      "sourceTerms": [
+        "pāda-ratām"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "pākhī",
+      "sourceTerms": [
+        "pakhī"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "rāhu",
+      "sourceTerms": [
+        "rahu"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "rāse",
+      "sourceTerms": [
+        "rase"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "rāṅgā pāy",
+      "sourceTerms": [
+        "raṅga pāy"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "rāṅgā-pāy",
+      "sourceTerms": [
+        "raṅga pāy"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "svayaṁ",
+      "sourceTerms": [
+        "svayam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "taṁ",
+      "sourceTerms": [
+        "tam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "tubhyaṁ",
+      "sourceTerms": [
+        "tubhyam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "tāmbūla-maśālā",
+      "sourceTerms": [
+        "tāmbūla-masālā"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "tārite",
+      "sourceTerms": [
+        "tarite"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "tā̐ha hoite",
+      "sourceTerms": [
+        "tāhā hoite"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "tā̐’ha",
+      "sourceTerms": [
+        "tāhā"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "tṛptiṁ",
+      "sourceTerms": [
+        "tṛptim"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "udāraṁ",
+      "sourceTerms": [
+        "udāram"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "vedaṁ",
+      "sourceTerms": [
+        "vedam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "vraja-devīke",
+      "sourceTerms": [
+        "vraja-devike"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "yugāyitaṁ",
+      "sourceTerms": [
+        "yugāyitam"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "yāya",
+      "sourceTerms": [
+        "yā yā"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "śri",
+      "sourceTerms": [
+        "śrī"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "śrṅgāra",
+      "sourceTerms": [
+        "śṛṅgāra"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    },
+    {
+      "surface": "ṭṛṇādhika hīna",
+      "sourceTerms": [
+        "tṛṇādhika hīna"
+      ],
+      "occurrences": 1,
+      "songCount": 1,
+      "verseCount": 1
+    }
+  ]
+}

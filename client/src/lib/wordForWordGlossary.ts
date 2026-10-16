@@ -1,4 +1,5 @@
 import glossaryData from "@/data/word-for-word-glossary.json";
+import derivedAliasesData from "@/data/word-for-word-derived-aliases.json";
 
 export type WordForWordEntry = {
   id: string;
@@ -24,6 +25,8 @@ export type WordForWordSegment = {
 };
 
 const glossary = glossaryData as GlossaryData;
+type DerivedAliasData = { entries: Array<{ surface: string; sourceTerms: string[] }> };
+const derivedAliases = derivedAliasesData as DerivedAliasData;
 const entriesById = new Map(glossary.entries.map((entry) => [entry.id, entry]));
 const sourceTermsByNormalizedTerm = new Map<string, string[]>();
 const sandhiStartAliases = new Set<string>();
@@ -66,6 +69,18 @@ Object.entries(grammaticalSurfaceAliases).forEach(([surface, sourceTerms]) => {
       ...(sourceTermsByNormalizedTerm.get(normalizedSurface) ?? []), sourceTerm,
     ]);
   });
+  sandhiStartAliases.add(normalizedSurface);
+  sandhiEndAliases.add(normalizedSurface);
+});
+
+derivedAliases.entries.forEach(({ surface, sourceTerms }) => {
+  const normalizedSurface = normalizeTerm(surface);
+  if (!normalizedSurface) return;
+  const availableSourceTerms = sourceTerms.filter((sourceTerm) => Boolean(glossary.termIndex[sourceTerm]));
+  if (!availableSourceTerms.length) return;
+  sourceTermsByNormalizedTerm.set(normalizedSurface, [
+    ...(sourceTermsByNormalizedTerm.get(normalizedSurface) ?? []), ...availableSourceTerms,
+  ]);
   sandhiStartAliases.add(normalizedSurface);
   sandhiEndAliases.add(normalizedSurface);
 });
