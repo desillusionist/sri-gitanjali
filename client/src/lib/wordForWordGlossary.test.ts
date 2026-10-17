@@ -144,6 +144,24 @@ describe("word-for-word glossary", () => {
     expect(secondLineSegments.map((segment) => segment.text).join("")).toBe(secondLine);
   });
 
+  it("uses only existing glossary meanings for the Bhaktisiddhānta prayer fallback", () => {
+    const songTitle = "Bhagavān Śrīla Bhakti Siddhānta Saraswatī Ṭhākur";
+    const cases: Array<[string, string]> = [
+      ["śrī-siddhānta-sarasvatīti", "Śrī Bhaktisiddhānta Sarasvatī"],
+      ["gaura-saṅkīrtanaiḥ", "chanting"],
+      ["bhānuriva", "like"],
+      ["jīvanimān", "soul"],
+      ["sukhaṁ", "happiness"],
+      ["prabhuṁ", "Lord"],
+    ];
+    for (const [surface, expected] of cases) {
+      const matched = getWordForWordSegments(surface, { songTitle, verseNumber: 1 })
+        .flatMap((segment) => segment.entries);
+      expect(matched.length, surface).toBeGreaterThan(0);
+      expect(matched.some((entry) => entry.meaning?.toLowerCase().includes(expected.toLowerCase())), surface).toBe(true);
+    }
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
