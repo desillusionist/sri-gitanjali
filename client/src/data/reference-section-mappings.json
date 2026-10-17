@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "description": "Conservative static mapping from current song titles to reference glossary sections, inferred from multiple normalized lyric trigrams.",
+  "mappings": [
+    {
+      "songId": "vandana-001",
+      "songTitle": "Vandanā",
+      "sectionId": "syn-0003",
+      "referenceTitle": "Maṅgalācharaṇa",
+      "score": 0.948,
+      "matchedTrigrams": 35,
+      "containment": 1.0,
+      "margin": 0.948
+    },
+    {
+      "songId": "prayers-to-the-guru-002",
+      "songTitle": "Prayers to the Guru",
+      "sectionId": "syn-0001",
+      "referenceTitle": "Śrī Guru Praṇāma",
+      "score": 0.934,
+      "matchedTrigrams": 9,
+      "containment": 1.0,
+      "margin": 0.934
+    },
+    {
+      "songId": "vancha-kalpatarubhyas-cha-013",
+      "songTitle": "Vāñchā-kalpatarubhyas’ cha",
+      "sectionId": "syn-0012",
+      "referenceTitle": "Śrī Vaiṣṇava Praṇāma",
+      "score": 0.85,
+      "matchedTrigrams": 9,
+      "containment": 0.9,
+      "margin": 0.85
+    },
+    {
+      "songId": "pancha-tattvatmakam-krsnam-014",
+      "songTitle": "Pañcha-tattvātmakaṁ kṛṣṇaṁ",
+      "sectionId": "syn-0014",
+      "referenceTitle": "Śrī Pañcha-tattva Praṇāma",
+      "score": 0.971,
+      "matchedTrigrams": 9,
+      "containment": 1.0,
+      "margin": 0.971
+    },
+    {
+      "songId": "namo-maha-vadanyaya-015",
+      "songTitle": "Namo mahā-vadānyāya",
+      "sectionId": "syn-0013",
+      "referenceTitle": "Śrī Gaurāṅga Praṇāma",
+      "score": 0.941,
+      "matchedTrigrams": 11,
+      "containment": 1.0,
+      "margin": 0.941
+    },
+    {
+      "songId": "the-deities-in-kolkata-016",
+      "songTitle": "The Deities in Kolkata",
+      "sectionId": "syn-0016",
+      "referenceTitle": "Sambandhādhideva Praṇāma",
+      "score": 0.935,
+      "matchedTrigrams": 11,
+      "containment": 1.0,
+      "margin": 0.935
+    },
+    {
+      "songId": "the-deities-in-nabadwip-017",
+      "songTitle": "The Deities in Nabadwīp",
+      "sectionId": "syn-0017",
+      "referenceTitle": "Abhidheyādhideva Praṇāma",
+      "score": 0.681,
+      "matchedTrigrams": 10,
+      "containment": 0.714,
+      "margin": 0.681
+    },
+    {
+      "songId": "the-deities-in-hapaniya-018",
+      "songTitle": "The Deities in Hāpāniyā",
+      "sectionId": "syn-0018",
+      "referenceTitle": "Prayojanādhideva Praṇāma",
+      "score": 0.934,
+      "matchedTrigrams": 13,
+      "containment": 1.0,
+      "margin": 0.934
+    },
+    {
+      "songId": "tulasi-vandana-019",
+      "songTitle": "Tulasī-vandanā",
+      "sectionId": "syn-0292",
+      "referenceTitle": "Śrī Tulasī Praṇāma",
+      "score": 0.712,
+      "matchedTrigrams": 8,
+      "containment": 0.727,
+      "margin": 0.712
+    },
+    {
+      "songId": "jaya-radha-madhava-127",
+      "songTitle": "Jaya Rādhā-Mādhava",
+      "sectionId": "syn-0106",
+      "referenceTitle": "Jaya Rādhā-Mādhava (from Gītāvalī)",
+      "score": 0.632,
+      "matchedTrigrams": 15,
+      "containment": 0.625,
+      "margin": 0.632
+    }
+  ]
+}

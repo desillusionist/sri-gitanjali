@@ -98,6 +98,20 @@ describe("word-for-word glossary", () => {
     }
   });
 
+  it("uses the matched Maṅgalācharaṇa section for Vandanā despite the title difference", () => {
+    const segments = getWordForWordSegments(
+      "vande ’haṁ śrī-guroḥ śrī-yuta-pada-kamalaṁ śrī-gurūn vaiṣṇavāṁś cha śrī-rūpaṁ sāgrajātaṁ saha-gaṇa-raghunāthānvitaṁ taṁ sa-jīvam sādvaitaṁ sāvadhūtaṁ parijana-sahitaṁ kṛṣṇa-chaitanya-devaṁ śrī-rādhā-kṛṣṇa-pādān saha-gaṇa-lalitā-śrī-viśākhānvitāṁś cha",
+      { songTitle: "Vandanā", verseNumber: 1 },
+    );
+    const matched = segments.flatMap((segment) => segment.entries);
+    const sourceTerms = new Set(matched.map((entry) => entry.sourceTerm));
+    expect(matched.every((entry) => entry.sectionId === "syn-0003")).toBe(true);
+    expect(["aham", "śrī-yuta-pada-kamalam", "sa-agra-jātam", "kṛṣṇa-chaitanya-devam", "lalitā-śrī-viśākhā-anvitān"]
+      .every((term) => sourceTerms.has(term))).toBe(true);
+    expect(segments.map((segment) => segment.text).join(""))
+      .toBe("vande ’haṁ śrī-guroḥ śrī-yuta-pada-kamalaṁ śrī-gurūn vaiṣṇavāṁś cha śrī-rūpaṁ sāgrajātaṁ saha-gaṇa-raghunāthānvitaṁ taṁ sa-jīvam sādvaitaṁ sāvadhūtaṁ parijana-sahitaṁ kṛṣṇa-chaitanya-devaṁ śrī-rādhā-kṛṣṇa-pādān saha-gaṇa-lalitā-śrī-viśākhānvitāṁś cha");
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });

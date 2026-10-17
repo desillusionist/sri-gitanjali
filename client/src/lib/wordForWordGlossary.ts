@@ -1,5 +1,7 @@
 import glossaryData from "@/data/word-for-word-glossary.json";
 import derivedAliasesData from "@/data/word-for-word-derived-aliases.json";
+import referenceSectionMappingsData from "@/data/reference-section-mappings.json";
+import referenceSurfaceAliasesData from "@/data/reference-surface-aliases.json";
 
 export type WordForWordEntry = {
   id: string;
@@ -27,6 +29,13 @@ export type WordForWordSegment = {
 const glossary = glossaryData as GlossaryData;
 type DerivedAliasData = { entries: Array<{ surface: string; sourceTerms: string[] }> };
 const derivedAliases = derivedAliasesData as DerivedAliasData;
+type ReferenceSectionMappingsData = { mappings: Array<{ songTitle: string; sectionId: string }> };
+const referenceSectionMappings = referenceSectionMappingsData as ReferenceSectionMappingsData;
+type ReferenceSurfaceAliasesData = { entries: Array<{ sectionId: string; surface: string; sourceTerms: string[] }> };
+const referenceSurfaceAliases = referenceSurfaceAliasesData as ReferenceSurfaceAliasesData;
+const referenceSectionBySongTitle = new Map(
+  referenceSectionMappings.mappings.map((mapping) => [normalizeContext(mapping.songTitle), mapping.sectionId]),
+);
 const entriesById = new Map(glossary.entries.map((entry) => [entry.id, entry]));
 const sourceTermsByNormalizedTerm = new Map<string, string[]>();
 const sandhiStartAliases = new Set<string>();
@@ -85,10 +94,21 @@ derivedAliases.entries.forEach(({ surface, sourceTerms }) => {
   sandhiEndAliases.add(normalizedSurface);
 });
 
+referenceSurfaceAliases.entries.forEach(({ surface, sourceTerms }) => {
+  const normalizedSurface = normalizeTerm(surface);
+  const availableSourceTerms = sourceTerms.filter((sourceTerm) => Boolean(glossary.termIndex[sourceTerm]));
+  if (!normalizedSurface || !availableSourceTerms.length) return;
+  sourceTermsByNormalizedTerm.set(normalizedSurface, [
+    ...(sourceTermsByNormalizedTerm.get(normalizedSurface) ?? []), ...availableSourceTerms,
+  ]);
+  sandhiStartAliases.add(normalizedSurface);
+  sandhiEndAliases.add(normalizedSurface);
+});
+
 const termsWithAliases = Array.from(sourceTermsByNormalizedTerm.keys()).sort((left, right) => right.length - left.length);
 
 function normalizeLookup(value: string): string {
-  return value.normalize("NFKC").replace(/[\u00a0\u2019\u2018]/g, (character) => character === "\u00a0" ? " " : "'").toLocaleLowerCase();
+  return value.normalize("NFKC").replace(/[\u00a0\u2019\u2018]/g, (character) => character === "\u00a0" ? " " : "'").replace(/\s+/g, " ").toLocaleLowerCase();
 }
 
 function normalizeTerm(value: string): string {
@@ -168,8 +188,10 @@ function resolveEntries(sourceTerms: string[], songTitle?: string, verseNumber?:
     .filter((entry): entry is WordForWordEntry => Boolean(entry?.meaning?.trim()));
   if (!candidates.length) return [];
 
+  const mappedSectionId = songTitle ? referenceSectionBySongTitle.get(normalizeContext(songTitle)) : undefined;
+  const sectionMatches = mappedSectionId ? candidates.filter((entry) => entry.sectionId === mappedSectionId) : [];
   const songMatches = songTitle ? candidates.filter((entry) => isContextualMatch(entry, songTitle)) : [];
-  const contextual = songMatches.length ? songMatches : candidates;
+  const contextual = sectionMatches.length ? sectionMatches : (songMatches.length ? songMatches : candidates);
   if (verseNumber === undefined) return dedupeMeanings(contextual);
 
   const verseMatches = contextual.filter((entry) => verseNumberFromLabel(entry.verseLabel) === verseNumber);
