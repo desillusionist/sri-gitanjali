@@ -112,6 +112,24 @@ describe("word-for-word glossary", () => {
       .toBe("vande ’haṁ śrī-guroḥ śrī-yuta-pada-kamalaṁ śrī-gurūn vaiṣṇavāṁś cha śrī-rūpaṁ sāgrajātaṁ saha-gaṇa-raghunāthānvitaṁ taṁ sa-jīvam sādvaitaṁ sāvadhūtaṁ parijana-sahitaṁ kṛṣṇa-chaitanya-devaṁ śrī-rādhā-kṛṣṇa-pādān saha-gaṇa-lalitā-śrī-viśākhānvitāṁś cha");
   });
 
+  it("ignores line breaks around hyphens in Vandanā compounds", () => {
+    const variants = [
+      "saha-gaṇa-\nraghunāthānvitaṁ",
+      "saha-gaṇa-lalitā-\nśrī-viśākhānvitāṁś cha",
+      "saha-gaṇa-lalitā-\nśrī-viśākhā-nvitāṁś cha",
+    ];
+    for (const surface of variants) {
+      const matched = getWordForWordSegments(surface, { songTitle: "Vandanā" })
+        .filter((segment) => segment.entries.length);
+      expect(matched.length, surface).toBeGreaterThan(0);
+      expect(matched.flatMap((segment) => segment.entries).every((entry) => entry.sectionId === "syn-0003")).toBe(true);
+    }
+    expect(getWordForWordSegments(variants[0], { songTitle: "Vandanā" })
+      .some((segment) => segment.entries.some((entry) => entry.sourceTerm === "sahagaṇa-raghunātha-anvitam"))).toBe(true);
+    expect(getWordForWordSegments(variants[1], { songTitle: "Vandanā" })
+      .some((segment) => segment.entries.some((entry) => entry.sourceTerm === "lalitā-śrī-viśākhā-anvitān"))).toBe(true);
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });

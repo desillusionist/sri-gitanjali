@@ -112,7 +112,7 @@ function normalizeLookup(value: string): string {
 }
 
 function normalizeTerm(value: string): string {
-  return normalizeLookup(value).replace(/[\u002D\u2010-\u2015\u2212]/g, "");
+  return normalizeLookup(value).replace(/\s*[\u002D\u2010-\u2015\u2212]\s*/g, "");
 }
 
 function normalizeTermVariants(value: string): Array<{ normalizedTerm: string; allowSandhiStart?: boolean; allowSandhiEnd?: boolean }> {
@@ -147,7 +147,15 @@ function getNormalizedTextWithIndexes(value: string): { normalized: string; inde
   for (let originalOffset = 0; originalOffset < value.length;) {
     const character = value[originalOffset];
     const originalLength = character === "\uD800" || character === "\uDBFF" ? 2 : 1;
-    if (!/[\u002D\u2010-\u2015\u2212]/.test(character)) {
+    const isHyphen = /[\u002D\u2010-\u2015\u2212]/.test(character);
+    const isWhitespaceAroundHyphen = /\s/.test(character) && (() => {
+      let previous = originalOffset - 1;
+      while (previous >= 0 && /\s/.test(value[previous])) previous -= 1;
+      let next = originalOffset + originalLength;
+      while (next < value.length && /\s/.test(value[next])) next += 1;
+      return /[\u002D\u2010-\u2015\u2212]/.test(value[previous]) || /[\u002D\u2010-\u2015\u2212]/.test(value[next]);
+    })();
+    if (!isHyphen && !isWhitespaceAroundHyphen) {
       const normalizedPart = normalizeLookup(value.slice(originalOffset, originalOffset + originalLength));
       for (const normalizedCharacter of normalizedPart) {
         normalized += normalizedCharacter;
