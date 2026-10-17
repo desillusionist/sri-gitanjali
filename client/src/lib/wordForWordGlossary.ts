@@ -24,6 +24,7 @@ type GlossaryData = {
 export type WordForWordSegment = {
   text: string;
   entries: WordForWordEntry[];
+  tooltipText?: string;
 };
 
 const glossary = glossaryData as GlossaryData;
@@ -216,7 +217,9 @@ function dedupeMeanings(entries: WordForWordEntry[]): WordForWordEntry[] {
   });
 }
 
-export function getWordForWordSegments(value: string, options: { songTitle?: string; verseNumber?: number } = {}): WordForWordSegment[] {
+type WordForWordOptions = { songTitle?: string; verseNumber?: number; contextValue?: string; contextOffset?: number };
+
+function getSegmentsForValue(value: string, options: { songTitle?: string; verseNumber?: number } = {}): WordForWordSegment[] {
   if (!value.trim()) return [{ text: value, entries: [] }];
 
   const { normalized: normalizedValue, indexes } = getNormalizedTextWithIndexes(value);
@@ -258,6 +261,34 @@ export function getWordForWordSegments(value: string, options: { songTitle?: str
 
   if (plainStart < value.length) segments.push({ text: value.slice(plainStart), entries: [] });
   return segments.length ? segments : [{ text: value, entries: [] }];
+}
+
+export function getWordForWordSegments(value: string, options: WordForWordOptions = {}): WordForWordSegment[] {
+  if (!options.contextValue) return getSegmentsForValue(value, options);
+
+  const contextOffset = options.contextOffset ?? 0;
+  const contextSegments = getSegmentsForValue(options.contextValue, options);
+  const rangeStart = contextOffset;
+  const rangeEnd = contextOffset + value.length;
+  let segmentOffset = 0;
+  const visibleSegments: WordForWordSegment[] = [];
+
+  for (const segment of contextSegments) {
+    const segmentStart = segmentOffset;
+    const segmentEnd = segmentOffset + segment.text.length;
+    const overlapStart = Math.max(segmentStart, rangeStart);
+    const overlapEnd = Math.min(segmentEnd, rangeEnd);
+    if (overlapStart < overlapEnd) {
+      visibleSegments.push({
+        text: options.contextValue.slice(overlapStart, overlapEnd),
+        entries: segment.entries,
+        tooltipText: segment.entries.length ? segment.text : undefined,
+      });
+    }
+    segmentOffset = segmentEnd;
+  }
+
+  return visibleSegments.length ? visibleSegments : [{ text: value, entries: [] }];
 }
 
 export function getGlossaryStats() {

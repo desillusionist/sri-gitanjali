@@ -1087,12 +1087,14 @@ function SongPageContent() {
                   </div>
                 )}
                 <div className="verse-copy">
-                  {verse.lines.map((line) => (
+                  {verse.lines.map((line, lineIndex) => (
                     <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
                       <WordForWordText
                         value={line.transliteration}
                         songTitle={song.title}
                         verseNumber={verse.originalVerseNumber}
+                        contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")}
+                        contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)}
                         renderText={(text, offset) => (
                           <SongMatchText
                             value={text}

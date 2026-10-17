@@ -5,11 +5,12 @@ import { getWordForWordSegments, type WordForWordEntry } from "@/lib/wordForWord
 
 type WordForWordTriggerProps = {
   text: string;
+  tooltipText?: string;
   entries: WordForWordEntry[];
   children: ReactNode;
 };
 
-function WordForWordTrigger({ text, entries, children }: WordForWordTriggerProps) {
+function WordForWordTrigger({ text, tooltipText = text, entries, children }: WordForWordTriggerProps) {
   const triggerRef = useRef<HTMLSpanElement>(null);
   const closeTimerRef = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -105,12 +106,12 @@ function WordForWordTrigger({ text, entries, children }: WordForWordTriggerProps
           id={popupId}
           className="word-for-word-popup"
           role="dialog"
-          aria-label={`Word-for-word meaning of ${text}`}
+          aria-label={`Word-for-word meaning of ${tooltipText}`}
           style={popupStyle}
           onMouseEnter={clearCloseTimer}
           onMouseLeave={closeSoon}
         >
-          <span className="word-for-word-popup-term">{text}</span>
+          <span className="word-for-word-popup-term">{tooltipText}</span>
           <span className="word-for-word-popup-meanings">
             {entries.map((entry) => <span key={entry.id}>{entry.meaning}</span>)}
           </span>
@@ -125,11 +126,13 @@ type WordForWordTextProps = {
   value: string;
   songTitle?: string;
   verseNumber?: number;
+  contextValue?: string;
+  contextOffset?: number;
   renderText?: (value: string, sourceOffset: number) => ReactNode;
 };
 
-export function WordForWordText({ value, songTitle, verseNumber, renderText = (text) => text }: WordForWordTextProps) {
-  const segments = getWordForWordSegments(value, { songTitle, verseNumber });
+export function WordForWordText({ value, songTitle, verseNumber, contextValue, contextOffset, renderText = (text) => text }: WordForWordTextProps) {
+  const segments = getWordForWordSegments(value, { songTitle, verseNumber, contextValue, contextOffset });
   let sourceOffset = 0;
   return (
     <>
@@ -137,7 +140,7 @@ export function WordForWordText({ value, songTitle, verseNumber, renderText = (t
         const offset = sourceOffset;
         sourceOffset += segment.text.length;
         return segment.entries.length ? (
-          <WordForWordTrigger key={`${segment.text}-${index}`} text={segment.text} entries={segment.entries}>
+          <WordForWordTrigger key={`${segment.text}-${index}`} text={segment.text} tooltipText={segment.tooltipText} entries={segment.entries}>
             {renderText(segment.text, offset)}
           </WordForWordTrigger>
         ) : <span key={`${segment.text}-${index}`}>{renderText(segment.text, offset)}</span>;

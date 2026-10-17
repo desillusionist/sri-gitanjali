@@ -130,6 +130,20 @@ describe("word-for-word glossary", () => {
       .some((segment) => segment.entries.some((entry) => entry.sourceTerm === "lalitā-śrī-viśākhā-anvitān"))).toBe(true);
   });
 
+  it("keeps one compound meaning when a verse line break splits the trigger", () => {
+    const firstLine = "śrī-rādhā-kṛṣṇa-pādān saha-gaṇa-lalitā-";
+    const secondLine = "śrī-viśākhānvitāṁś cha";
+    const contextValue = `${firstLine}\n${secondLine}`;
+    const secondLineSegments = getWordForWordSegments(secondLine, {
+      songTitle: "Vandanā",
+      contextValue,
+      contextOffset: firstLine.length + 1,
+    });
+    expect(secondLineSegments.some((segment) => segment.entries.some((entry) => entry.sourceTerm === "lalitā-śrī-viśākhā-anvitān"))).toBe(true);
+    expect(secondLineSegments.find((segment) => segment.entries.length)?.tooltipText).toBe(`${firstLine}\n${secondLine}`.slice(firstLine.indexOf("lalitā"), -4));
+    expect(secondLineSegments.map((segment) => segment.text).join("")).toBe(secondLine);
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
