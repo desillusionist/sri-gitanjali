@@ -2,6 +2,11 @@
   "schemaVersion": 1,
   "description": "Surface forms found in the current Vandanā text, mapped only to source terms from its matched Maṅgalācharaṇa reference section.",
   "entries": [
+    {"sectionId":"syn-0012","surface":"vāñchā-kalpatarubhyas’","sourceTerms":["vāñchhā-kalpa-tarubhyaḥ"]},
+    {"sectionId":"syn-0012","surface":"kṛpā-sindhubhya","sourceTerms":["kṛpā","sindhubhyaḥ"]},
+    {"sectionId":"syn-0012","surface":"patitānāṁ","sourceTerms":["patitānām"]},
+    {"sectionId":"syn-0012","surface":"pāvanebhyo","sourceTerms":["pāvanebhyaḥ"]},
+    {"sectionId":"syn-0012","surface":"vaiṣṇavebhyo","sourceTerms":["vaiṣṇavebhyaḥ"]},
     {"sectionId":"syn-0003","surface":"’haṁ","sourceTerms":["aham"]},
     {"sectionId":"syn-0003","surface":"śrī-yuta-pada-kamalaṁ","sourceTerms":["śrī-yuta-pada-kamalam"]},
     {"sectionId":"syn-0003","surface":"vaiṣṇavāṁś","sourceTerms":["vaiṣṇavān"]},

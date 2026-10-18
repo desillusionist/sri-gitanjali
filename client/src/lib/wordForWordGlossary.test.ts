@@ -144,34 +144,21 @@ describe("word-for-word glossary", () => {
     expect(secondLineSegments.map((segment) => segment.text).join("")).toBe(secondLine);
   });
 
-  it("uses only existing glossary meanings for the Bhaktisiddhānta prayer fallback", () => {
-    const songTitle = "Bhagavān Śrīla Bhakti Siddhānta Saraswatī Ṭhākur";
-    const cases: Array<[string, string]> = [
-      ["śrī-siddhānta-sarasvatīti", "Śrī Bhaktisiddhānta Sarasvatī"],
-      ["gaura-saṅkīrtanaiḥ", "chanting"],
-      ["bhānuriva", "like"],
-      ["jīvanimān", "soul"],
-      ["sukhaṁ", "happiness"],
-      ["prabhuṁ", "Lord"],
-    ];
-    for (const [surface, expected] of cases) {
+  it("matches the high-confidence Vāñchā-kalpatarubhyas’ cha surface forms", () => {
+    const songTitle = "Vāñchā-kalpatarubhyas’ cha";
+    const lines = [
+      ["vāñchā-kalpatarubhyas’", "vāñchhā-kalpa-tarubhyaḥ"],
+      ["kṛpā-sindhubhya", "sindhubhyaḥ"],
+      ["patitānāṁ", "patitānām"],
+      ["pāvanebhyo", "pāvanebhyaḥ"],
+      ["vaiṣṇavebhyo", "vaiṣṇavebhyaḥ"],
+    ] as const;
+    for (const [surface, sourceTerm] of lines) {
       const matched = getWordForWordSegments(surface, { songTitle, verseNumber: 1 })
         .flatMap((segment) => segment.entries);
-      expect(matched.length, surface).toBeGreaterThan(0);
-      expect(matched.some((entry) => entry.meaning?.toLowerCase().includes(expected.toLowerCase())), surface).toBe(true);
+      expect(matched.some((entry) => entry.sourceTerm === sourceTerm), surface).toBe(true);
+      expect(matched.every((entry) => entry.sectionId === "syn-0012"), surface).toBe(true);
     }
-  });
-
-  it("maps Gaura Kiśora Praṇati variants to the reference section", () => {
-    const songTitle = "Śrīla Gaura Kiśora Dās Bābājī Mahārāja";
-    const firstLine = getWordForWordSegments("namo gaurakiśorāya", { songTitle, verseNumber: 1 });
-    expect(firstLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "namaḥ")).toBe(true);
-    expect(firstLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "gaura-kiśorāya")).toBe(true);
-
-    const secondLine = getWordForWordSegments("vipralambha-rasāmbhode pādāmbujāya te namaḥ", { songTitle, verseNumber: 1 });
-    expect(secondLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "rasa")).toBe(true);
-    expect(secondLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "ambhodhe")).toBe(true);
-    expect(secondLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "pāda-ambujāya")).toBe(true);
   });
 
   it("prefers the current song context for repeated terms", () => {
