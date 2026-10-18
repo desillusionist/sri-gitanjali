@@ -65,6 +65,8 @@ const grammaticalSurfaceAliases: Record<string, string[]> = {
   "māyā-piśāchīra": ["māyā-pīśāchīra"], "prabhura-charaṇe": ["prabhu-charaṇe"],
   "śrī-siddhānta-sarasvatīti": ["śrī-bhaktisiddhānta sarasvatī"], "gaura-saṅkīrtanaiḥ": ["kīrtana"],
   "bhānuriva": ["iva"], "jīvanimān": ["jīva"], "sukhaṁ": ["sukha"], "prabhuṁ": ["prabhu"],
+  "namo": ["namaḥ"], "gaurakiśorāya": ["gaura-kiśorāya"], "rasāmbhode": ["rasa", "ambhodhe"],
+  "bhṛṅgāya": ["bhṛṅgam"],
   "tāthai tāthai": ["‘tāthaī tāthaī'"], "mukunda mādhava jādava hari": ["mukunda mādhava yādava hari"], "sonāra aṅga": ["soṇāra aṅga"],
   "bolore": ["bolo re"], "śorīra sāje": ["śarīra-sāje"], "durllabha": ["durlabha"],
   "emona": ["emana"], "ki kara": ["ki koro"], "tobe keno": ["tabe keno"],

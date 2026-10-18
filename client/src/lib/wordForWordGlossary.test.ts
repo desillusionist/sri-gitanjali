@@ -162,6 +162,18 @@ describe("word-for-word glossary", () => {
     }
   });
 
+  it("maps Gaura Kiśora Praṇati variants to the reference section", () => {
+    const songTitle = "Śrīla Gaura Kiśora Dās Bābājī Mahārāja";
+    const firstLine = getWordForWordSegments("namo gaurakiśorāya", { songTitle, verseNumber: 1 });
+    expect(firstLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "namaḥ")).toBe(true);
+    expect(firstLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "gaura-kiśorāya")).toBe(true);
+
+    const secondLine = getWordForWordSegments("vipralambha-rasāmbhode pādāmbujāya te namaḥ", { songTitle, verseNumber: 1 });
+    expect(secondLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "rasa")).toBe(true);
+    expect(secondLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "ambhodhe")).toBe(true);
+    expect(secondLine.flatMap((segment) => segment.entries).some((entry) => entry.sourceTerm === "pāda-ambujāya")).toBe(true);
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
