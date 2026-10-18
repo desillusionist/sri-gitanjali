@@ -161,6 +161,23 @@ describe("word-for-word glossary", () => {
     }
   });
 
+  it("matches high-confidence reference surface forms for invocations 014, 015, 016, and 018", () => {
+    const cases = [
+      ["Pañcha-tattvātmakaṁ kṛṣṇaṁ", "pañcha-tattvātmakaṁ", "pañcha-tattva-ātmakam", "syn-0014"],
+      ["Pañcha-tattvātmakaṁ kṛṣṇaṁ", "bhaktāvatāraṁ", "bhakta-avatāram", "syn-0014"],
+      ["Namo mahā-vadānyāya", "namo", "namaḥ", "syn-0013"],
+      ["The Deities in Kolkata", "paṅgor", "paṅgoḥ", "syn-0016"],
+      ["The Deities in Hāpāniyā", "rāsa-rasārambhī", "ārambhī", "syn-0018"],
+      ["The Deities in Hāpāniyā", "’stu", "astu", "syn-0018"],
+    ] as const;
+    for (const [songTitle, surface, sourceTerm, sectionId] of cases) {
+      const matched = getWordForWordSegments(surface, { songTitle, verseNumber: 1 })
+        .flatMap((segment) => segment.entries);
+      expect(matched.some((entry) => entry.sourceTerm === sourceTerm), surface).toBe(true);
+      expect(matched.every((entry) => entry.sectionId === sectionId), surface).toBe(true);
+    }
+  });
+
   it("prefers the current song context for repeated terms", () => {
     const guru = getWordForWordSegments("yena", { songTitle: "Śrī Guru Praṇāma" });
     const rupa = getWordForWordSegments("yena", { songTitle: "Śrī Rūpa Praṇāma" });
