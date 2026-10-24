@@ -1,7 +1,12 @@
 import type { Express } from "express";
+import express from "express";
+import path from "path";
 import { ENV } from "./env";
 
 export function registerStorageProxy(app: Express) {
+  // Serve local copies from <project>/local-storage first; fall back to Manus storage
+  app.use("/manus-storage", express.static(path.resolve(process.cwd(), "local-storage")));
+
   app.get("/manus-storage/*", async (req, res) => {
     const key = (req.params as Record<string, string>)[0];
     if (!key) {
