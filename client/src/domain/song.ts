@@ -119,7 +119,7 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
 }
 
 // Singers whose SoundCloud accounts are named in the recording picker.
-const SOUNDCLOUD_SINGERS: Readonly<Record<string, string>> = { "bhakti-lalita-devi": "Bhakti Lalita Devi" };
+const SOUNDCLOUD_SINGERS: Readonly<Record<string, string>> = { "bhakti-lalita-devi": "Bhakti Lalita Devi", huron: "Manasa Krishna" };
 
 export function soundCloudSingerName(url: string): string | null {
   try {
