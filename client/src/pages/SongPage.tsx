@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { loadRussianSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
@@ -1022,7 +1022,7 @@ function SongPageContent() {
             <div className="song-audio-actions">
               {soundCloudSourceUrls.length > 1 && (
                 <select className="song-audio-version" value={soundCloudRecordingIndex} onChange={(event) => setSoundCloudRecordingIndex(Number(event.target.value))} aria-label={copy.song.audioVersionLabel}>
-                  {soundCloudSourceUrls.map((_url, recordingIndex) => <option key={recordingIndex} value={recordingIndex}>{copy.song.audioVersion.replace("{number}", String(recordingIndex + 1))}</option>)}
+                  {soundCloudSourceUrls.map((url, recordingIndex) => <option key={recordingIndex} value={recordingIndex}>{copy.song.audioVersion.replace("{number}", String(recordingIndex + 1))}{soundCloudSingerName(url) ? ` · ${soundCloudSingerName(url)}` : ""}</option>)}
                 </select>
               )}
               <button className="song-audio-toggle" type="button" onClick={() => {

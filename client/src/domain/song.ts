@@ -118,6 +118,17 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
   return Array.from(new Set(validUrls));
 }
 
+// Singers whose SoundCloud accounts are named in the recording picker.
+const SOUNDCLOUD_SINGERS: Readonly<Record<string, string>> = { "bhakti-lalita-devi": "Bhakti Lalita Devi" };
+
+export function soundCloudSingerName(url: string): string | null {
+  try {
+    return SOUNDCLOUD_SINGERS[new URL(url).pathname.split("/")[1] ?? ""] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioLinks">): string | null {
   return getSoundCloudRecordingUrls(song)[0] ?? null;
 }
