@@ -66,3 +66,7 @@ bhay = fear
 tarāiyā = delivering
 nija = your own
 pāśa = side
+
+# verse-3
+// Context correction for a word the lexicon glosses differently elsewhere.
+kāma = lust

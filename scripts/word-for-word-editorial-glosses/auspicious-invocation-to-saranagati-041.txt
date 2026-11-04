@@ -59,3 +59,7 @@ adhama = fallen
 śaraṇāgati = surrender
 karahe = make
 uttama = the best
+
+# verse-6
+// Context correction for a word the lexicon glosses differently elsewhere.
+rūpa = Rūpa (Gosvāmī)

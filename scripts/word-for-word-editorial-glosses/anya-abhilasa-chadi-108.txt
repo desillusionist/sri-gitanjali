@@ -249,3 +249,19 @@ kohinū = I have told
 hanumān = Hanumān
 tāhāte = in that
 pramāṇa = the example
+
+# verse-13
+// Context correction for a word the lexicon glosses differently elsewhere.
+kori-gaṇa = elephants
+
+# verse-9
+// Context correction for a word the lexicon glosses differently elsewhere.
+kāma = lust
+
+# verse-10
+// Context correction for a word the lexicon glosses differently elsewhere.
+kāma = lust
+
+# verse-11
+// Context correction for a word the lexicon glosses differently elsewhere.
+kāma = lust

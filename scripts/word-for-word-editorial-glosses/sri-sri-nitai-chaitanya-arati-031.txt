@@ -85,3 +85,7 @@ nityānanda-chaitanya-prakāśa = the manifestation of Nityānanda and Chaitanya
 guru-prasāde = by the grace of the guru
 adhama = fallen
 dāsa = servant
+
+# verse-9
+// Context correction for a word the lexicon glosses differently elsewhere.
+rūpa = Rūpa

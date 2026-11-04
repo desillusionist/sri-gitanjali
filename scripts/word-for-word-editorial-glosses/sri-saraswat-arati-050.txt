@@ -114,3 +114,7 @@ bhakta-jana = the devotees
 guru-gaura-rādhā-govinda-sundara = to Guru, Gaura and beautiful Rādhā-Govinda
 bhakta = O devotees
 vṛnda = all
+
+# verse-12
+// Context correction for a word the lexicon glosses differently elsewhere.
+rūpa = Rūpa

@@ -22,10 +22,14 @@ type GlossaryData = {
   termIndex: Record<string, string[]>;
 };
 
+/** Where a meaning comes from: this verse's reference synonyms, an editorial gloss, or the general glossary. */
+export type WordForWordSource = "reference" | "editorial" | "glossary";
+
 export type WordForWordSegment = {
   text: string;
   entries: WordForWordEntry[];
   tooltipText?: string;
+  source?: WordForWordSource;
 };
 
 const glossary = glossaryData as GlossaryData;
@@ -291,7 +295,7 @@ function getVerseSegments(context: string, options: WordForWordOptions): WordFor
     .map((span) => ({ ...span, entries: dedupeMeanings(span.entryIds.map((id) => entriesById.get(id)).filter((entry): entry is WordForWordEntry => Boolean(entry?.meaning?.trim()))) }))
     .filter((span) => span.entries.length);
   const fallback = getSegmentsForValue(context, options);
-  if (!placed.length) return fallback;
+  if (!placed.length) return fallback.map((segment) => (segment.entries.length ? { ...segment, source: "glossary" as const } : segment));
 
   const segments: WordForWordSegment[] = [];
   let offset = 0;
@@ -302,15 +306,17 @@ function getVerseSegments(context: string, options: WordForWordOptions): WordFor
       const start = fallbackOffset;
       fallbackOffset += segment.text.length;
       if (fallbackOffset <= offset || start >= end) continue;
-      const inside = start >= offset && fallbackOffset <= end;
-      segments.push(inside && segment.entries.length ? segment : { text: context.slice(Math.max(start, offset), Math.min(fallbackOffset, end)), entries: [] });
+      // …and only for whole words, never a fragment of a longer word.
+      const wholeWord = !isWordCharacter(context[start - 1]) && !isWordCharacter(context[fallbackOffset]);
+      const inside = start >= offset && fallbackOffset <= end && wholeWord;
+      segments.push(inside && segment.entries.length ? { ...segment, source: "glossary" } : { text: context.slice(Math.max(start, offset), Math.min(fallbackOffset, end)), entries: [] });
     }
     offset = end;
   };
   for (const span of placed) {
     if (span.start < offset) continue;
     pushGap(span.start);
-    segments.push({ text: span.surface, entries: span.entries });
+    segments.push({ text: span.surface, entries: span.entries, source: span.entries.every((entry) => entry.parseStatus === "editorial") ? "editorial" : "reference" });
     offset = span.end;
   }
   pushGap(context.length);
@@ -337,6 +343,7 @@ export function getWordForWordSegments(value: string, options: WordForWordOption
         text: options.contextValue.slice(overlapStart, overlapEnd),
         entries: segment.entries,
         tooltipText: segment.entries.length ? segment.text : undefined,
+        source: segment.source,
       });
     }
     segmentOffset = segmentEnd;

@@ -530,3 +530,7 @@ ihā-sabāra = of all of them
 vandi = worshipping
 nija-dhon = as my own wealth
 gāilo = sang
+
+# verse-96
+// Context correction for a word the lexicon glosses differently elsewhere.
+deva = the gods

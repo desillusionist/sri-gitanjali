@@ -6,7 +6,7 @@
 // Usage: node scripts/build-verse-word-for-word.mjs <reference.html> [report.md]
 import { readdir, readFile, writeFile } from "node:fs/promises";
 
-const [htmlPath, reportPath = "word-for-word-verse-alignment-report.md"] = process.argv.slice(2);
+const [htmlPath, reportPath = "docs/word-for-word-verse-alignment-report.md"] = process.argv.slice(2);
 if (!htmlPath) throw new Error("Pass the path to SongBook-wordForWord-Vedabase-updated.html");
 
 const SONGS_FILE = "local-storage/songs_577f33d4.json";
@@ -14,6 +14,7 @@ const GLOSSARY_FILE = "client/src/data/word-for-word-glossary.json";
 const OUTPUT_FILE = "client/src/data/word-for-word-verses.json";
 const OVERRIDES_FILE = "scripts/word-for-word-verse-overrides.json";
 const EDITORIAL_GLOSSES_DIR = "scripts/word-for-word-editorial-glosses";
+const LEXICON_FILE = "scripts/word-for-word-editorial-lexicon.txt";
 
 // A reference block is assigned to an app verse when this share of its letter
 // trigrams occurs in that verse (after spelling folding).
@@ -568,25 +569,27 @@ for (const song of songs) {
 function parseGlossFile(text, file) {
   let songId = null;
   let verseId = null;
-  const verses = {};
+  const blocks = [];
   for (const [index, raw] of text.split("\n").entries()) {
     const line = raw.trim();
     if (!line || line.startsWith("//")) continue;
     if (line.startsWith("@")) { songId = line.slice(1).trim(); continue; }
-    if (line.startsWith("#")) { verseId = line.slice(1).trim(); verses[verseId] ??= []; continue; }
+    // Each heading starts a block with its own reading order, so a later block
+    // for the same verse (e.g. corrections) searches from the verse start again.
+    if (line.startsWith("#")) { verseId = line.slice(1).trim(); blocks.push([verseId, []]); continue; }
     const separator = line.indexOf(" = ");
     if (separator < 0 || !verseId) throw new Error(`${file}:${index + 1}: expected “surface = meaning” under a # verse heading`);
-    verses[verseId].push([line.slice(0, separator).trim(), line.slice(separator + 3).trim()]);
+    blocks.at(-1)[1].push([line.slice(0, separator).trim(), line.slice(separator + 3).trim()]);
   }
   if (!songId) throw new Error(`${file}: missing “@ song-id” line`);
-  return { songId, verses };
+  return { songId, blocks };
 }
 const editorialGlosses = { files: 0, placed: 0, keptReference: [], bySong: new Map() };
 const editorialIdByKey = new Map();
 // Stored compactly as [surface, meaning]; the app expands them into glossary entries.
 const editorialGlossEntries = {};
 for (const file of (await readdir(EDITORIAL_GLOSSES_DIR).catch(() => [])).filter((name) => name.endsWith(".txt")).sort()) {
-  const { songId, verses } = parseGlossFile(await readFile(`${EDITORIAL_GLOSSES_DIR}/${file}`, "utf8"), file);
+  const { songId, blocks } = parseGlossFile(await readFile(`${EDITORIAL_GLOSSES_DIR}/${file}`, "utf8"), file);
   editorialGlosses.files += 1;
   const editorialId = (surface, meaning) => {
     const key = `${surface.toLowerCase()}\u0000${meaning}`;
@@ -603,7 +606,7 @@ for (const file of (await readdir(EDITORIAL_GLOSSES_DIR).catch(() => [])).filter
     editorialGlosses.bySong.set(songId, (editorialGlosses.bySong.get(songId) ?? 0) + 1);
   };
   const wordPattern = (surface) => new RegExp(`(?<![\\p{L}\\p{M}])${escapeRegExp(surface)}(?![\\p{L}\\p{M}])`, "gu");
-  for (const [verseId, pairs] of Object.entries(verses)) {
+  for (const [verseId, pairs] of blocks) {
     if (verseId === "*") continue;
     const candidate = appVerses.find((item) => item.song.id === songId && item.verse.id === verseId);
     if (!candidate) throw new Error(`Editorial gloss verse not found: ${file} ${songId} ${verseId}`);
@@ -625,7 +628,7 @@ for (const file of (await readdir(EDITORIAL_GLOSSES_DIR).catch(() => [])).filter
   }
   // “# *” lists refrains and recurring words glossed alike in every verse of the
   // song; they fill whatever the verse-specific lines left open.
-  for (const [surface, meaning] of verses["*"] ?? []) {
+  for (const [surface, meaning] of blocks.filter(([verseId]) => verseId === "*").flatMap(([, pairs]) => pairs)) {
     let found = false;
     for (const candidate of appVerses.filter((item) => item.song.id === songId)) {
       const state = verseState(candidate);
@@ -640,6 +643,46 @@ for (const file of (await readdir(EDITORIAL_GLOSSES_DIR).catch(() => [])).filter
     }
     if (!found) throw new Error(`Editorial gloss for every verse not found: ${file} “${surface}”`);
   }
+}
+
+// Editorial lexicon (scripts/word-for-word-editorial-lexicon.txt): reviewed,
+// context-neutral meanings applied to every remaining uncovered occurrence of a
+// word, in place of the general-glossary guess. Longer phrases are placed first.
+const lexicon = new Map();
+for (const raw of (await readFile(LEXICON_FILE, "utf8").catch(() => "")).split("\n")) {
+  const line = raw.trim();
+  if (!line || line.startsWith("//")) continue;
+  const separator = line.indexOf(" = ");
+  if (separator < 0) throw new Error(`${LEXICON_FILE}: expected “surface = meaning”: ${line}`);
+  const surface = line.slice(0, separator).trim();
+  if (!lexicon.has(surface)) lexicon.set(surface, line.slice(separator + 3).trim());
+}
+const lexiconPlaced = { count: 0, unused: [] };
+for (const [surface, meaning] of [...lexicon].sort((left, right) => right[0].length - left[0].length)) {
+  const pattern = new RegExp(`(?<![\\p{L}\\p{M}])${escapeRegExp(surface)}(?![\\p{L}\\p{M}])`, "gu");
+  let used = false;
+  for (const candidate of appVerses) {
+    if (!pattern.test(candidate.context)) continue;
+    pattern.lastIndex = 0;
+    const state = verseState(candidate);
+    state.spans ??= [];
+    for (const match of candidate.context.matchAll(pattern)) {
+      const start = match.index;
+      const end = start + surface.length;
+      if (state.spans.some((span) => span.start < end && start < span.end)) continue;
+      const key = `${surface.toLowerCase()}\u0000${meaning}`;
+      if (!editorialIdByKey.has(key)) {
+        const id = `ed-${String(editorialIdByKey.size + 1).padStart(5, "0")}`;
+        editorialIdByKey.set(key, id);
+        editorialGlossEntries[id] = [surface, meaning];
+      }
+      state.spans.push({ start, end, entryIds: [editorialIdByKey.get(key)] });
+      lexiconPlaced.count += 1;
+      used = true;
+    }
+    state.spans.sort((left, right) => left.start - right.start);
+  }
+  if (!used) lexiconPlaced.unused.push(surface);
 }
 
 const glossaryIds = new Set([...glossary.entries.map((entry) => entry.id), ...Object.keys(editorialEntries), ...Object.keys(editorialGlossEntries)]);
@@ -691,6 +734,7 @@ for (const override of appliedOverrides) lines.push(`| ${songById.get(override.s
 lines.push("", "## Editorial glosses", "", `Words with no reference synonym, glossed per verse from scripts/word-for-word-editorial-glosses/ (${editorialGlosses.files} songs, ${editorialGlosses.placed} glosses). Meanings follow Gauḍīya Vaiṣṇava usage and each verse's English translation.`, "");
 for (const [songId, count] of editorialGlosses.bySong) lines.push(`- ${songById.get(songId)?.title}: ${count}`);
 if (editorialGlosses.keptReference.length) lines.push("", "Editorial glosses skipped because the reference already glosses those words:", "", ...editorialGlosses.keptReference.map(({ songId, verseId, surface }) => `- ${songById.get(songId)?.title} ${verseId}: ${surface}`));
+lines.push("", "## Editorial lexicon", "", `Context-neutral meanings from scripts/word-for-word-editorial-lexicon.txt placed on ${lexiconPlaced.count} remaining words.${lexiconPlaced.unused.length ? ` Entries not used anywhere: ${lexiconPlaced.unused.join(", ")}.` : ""}`);
 lines.push("", "## Refrains carried to their repeats", "");
 const propagatedBySong = new Map();
 for (const item of propagated) propagatedBySong.set(item.songId, [...(propagatedBySong.get(item.songId) ?? []), item.surface]);

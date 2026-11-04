@@ -52,3 +52,9 @@ patit-pāvan = O saviour of the fallen
 gurudev = Gurudeva
 sapārṣada = with Your associates
 gaurahari = Gaurahari
+
+# verse-3
+// Context correction for a word the lexicon glosses differently elsewhere.
+// The first ādi-deva is glossed by the reference; this one is in the sung refrain.
+ādi-deva = and the other gods
+ādi-deva = and the other gods

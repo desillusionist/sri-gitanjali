@@ -7,6 +7,7 @@ import superjson from "superjson";
 import App from "./App";
 import { startLogin } from "./const";
 import "./index.css";
+import { loadWordForWord } from "./lib/wordForWordLoader";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -15,6 +16,16 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
+
+// Fetch the word-for-word data once the page is idle, so a song opens with its
+// tooltips ready (and the data is cached for offline use).
+// Waiting for the service worker first lets it keep a copy of the data.
+window.addEventListener("load", () => {
+  const prefetch = () => void loadWordForWord().catch(() => undefined);
+  const whenIdle = () => ("requestIdleCallback" in window ? window.requestIdleCallback(prefetch, { timeout: 5000 }) : setTimeout(prefetch, 2000));
+  const serviceWorkerReady = "serviceWorker" in navigator ? navigator.serviceWorker.ready : Promise.resolve();
+  void Promise.race([serviceWorkerReady, new Promise((resolve) => setTimeout(resolve, 5000))]).then(whenIdle);
+});
 
 const queryClient = new QueryClient();
 

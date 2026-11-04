@@ -61,3 +61,7 @@ sphuri’ = appearing
 pūrā’o = fulfil
 jāchaye = begs
 bhakativinoda-dāsa = Bhaktivinoda, the servant
+
+# verse-6
+// Context correction for a word the lexicon glosses differently elsewhere.
+rūpa = Rūpa

@@ -1,26 +1,65 @@
-/* Kīrtan Guide PWA: retain song sources offline while navigating to the newest app shell first. */
-const CACHE_NAME = "kirtan-guide-shell-v2";
-const APP_SHELL = [
+/*
+ * Kīrtan Guide PWA: the newest app shell when online, everything already seen
+ * when offline.
+ *
+ * - Pages: network first, falling back to the cached shell (the app routes
+ *   /song/… itself).
+ * - Built assets (/assets/…, hashed): cache first; they never change.
+ * - Song data, fonts and images (/manus-storage/…): served from cache at once
+ *   and refreshed in the background.
+ * Precaching tolerates a missing file, so one absent asset never disables
+ * offline use.
+ */
+const CACHE_NAME = "kirtan-guide-v4";
+const PRECACHE = [
   "/",
   "/manifest.webmanifest",
-  "/manus-storage/kirtan-guide-mark_9e3cc07f.png",
   "/manus-storage/songs_577f33d4.json",
-  "/manus-storage/songs_flattened_8aa8d357.csv"
+  "/manus-storage/ru_user_updates_cd7dcc2b.json",
+  "/manus-storage/PalakaNew_e7867ee6.otf",
+  "/manus-storage/kirtan-guide-peacock-plume_09e0a26b.png",
+  "/manus-storage/kirtan-guide-icon-192.png",
+  "/manus-storage/kirtan-guide-icon-512.png",
+  "/manus-storage/nabadwip-temple02-hero_14e93d5b.webp",
 ];
 
+async function precache() {
+  const cache = await caches.open(CACHE_NAME);
+  // The built scripts and styles named in the page, so the first visit already works offline.
+  let shellAssets = [];
+  try {
+    const html = await (await fetch("/", { cache: "reload" })).text();
+    shellAssets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g)].map((match) => match[1]);
+  } catch {
+    // Offline during install: assets are cached as they load.
+  }
+  await Promise.all([...PRECACHE, ...shellAssets].map(async (path) => {
+    try {
+      const response = await fetch(path, { cache: "reload" });
+      if (response.ok) await cache.put(path, response);
+    } catch {
+      // Missing or unreachable: cached later, the first time it loads.
+    }
+  }));
+}
+
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
+  event.waitUntil(precache());
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))),
-    ),
+    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))),
   );
   self.clients.claim();
 });
+
+async function putInCache(request, response) {
+  if (!response.ok || response.type === "opaque") return;
+  const cache = await caches.open(CACHE_NAME);
+  await cache.put(request, response);
+}
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
@@ -28,33 +67,40 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   // In development, Vite modules must always arrive from the live server.
-  if (url.pathname.startsWith("/src/") || url.pathname.startsWith("/@")) return;
+  if (url.pathname.startsWith("/src/") || url.pathname.startsWith("/@") || url.pathname.startsWith("/node_modules/") || url.pathname.startsWith("/api/")) return;
 
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put("/", response.clone()));
+          event.waitUntil(putInCache("/", response.clone()));
           return response;
         })
-        .catch(() => caches.match("/").then((cached) => cached || Response.error())),
+        .catch(async () => (await caches.match("/")) || Response.error()),
+    );
+    return;
+  }
+
+  if (url.pathname.startsWith("/assets/")) {
+    event.respondWith(
+      caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
+        event.waitUntil(putInCache(event.request, response.clone()));
+        return response;
+      })),
     );
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const networkResponse = fetch(event.request)
+    caches.match(event.request).then((cached) => {
+      const network = fetch(event.request)
         .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          }
+          event.waitUntil(putInCache(event.request, response.clone()));
           return response;
         })
-        .catch(() => cachedResponse || Response.error());
-
-      return cachedResponse || networkResponse;
+        .catch(() => cached || Response.error());
+      if (cached) event.waitUntil(network.catch(() => undefined));
+      return cached || network;
     }),
   );
 });

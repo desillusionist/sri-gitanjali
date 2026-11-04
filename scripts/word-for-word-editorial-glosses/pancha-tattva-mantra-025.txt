@@ -2,5 +2,6 @@
 // Pañcha-tattva mantra. Editorial glosses.
 
 # verse-1
+śrī-advaita = Śrī Advaita
 gadādhara = Gadādhara
 śrīvāsādi-gaura-bhakta-vṛnda = Śrīvāsa and all the devotees of Gaura

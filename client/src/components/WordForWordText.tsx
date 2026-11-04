@@ -1,16 +1,21 @@
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
-import { getWordForWordSegments, type WordForWordEntry } from "@/lib/wordForWordGlossary";
+import type { WordForWordEntry, WordForWordSource } from "@/lib/wordForWordGlossary";
+import { useTranslation } from "@/i18n/LanguageContext";
+import { useWordForWord } from "@/lib/wordForWordLoader";
 
 type WordForWordTriggerProps = {
   text: string;
   tooltipText?: string;
   entries: WordForWordEntry[];
+  source?: WordForWordSource;
   children: ReactNode;
 };
 
-function WordForWordTrigger({ text, tooltipText = text, entries, children }: WordForWordTriggerProps) {
+function WordForWordTrigger({ text, tooltipText = text, entries, source, children }: WordForWordTriggerProps) {
+  const { copy } = useTranslation();
+  const sourceLabel = source === "reference" ? copy.song.wordForWordSourceReference : source === "editorial" ? copy.song.wordForWordSourceEditorial : source === "glossary" ? copy.song.wordForWordSourceGlossary : null;
   const triggerRef = useRef<HTMLSpanElement>(null);
   const closeTimerRef = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -115,6 +120,7 @@ function WordForWordTrigger({ text, tooltipText = text, entries, children }: Wor
           <span className="word-for-word-popup-meanings">
             {entries.map((entry) => <span key={entry.id}>{entry.meaning}</span>)}
           </span>
+          {sourceLabel && <span className={`word-for-word-popup-source is-${source}`}>{sourceLabel}</span>}
         </aside>,
         document.body,
       )}
@@ -134,7 +140,8 @@ type WordForWordTextProps = {
 };
 
 export function WordForWordText({ value, songTitle, verseNumber, songId, verseId, contextValue, contextOffset, renderText = (text) => text }: WordForWordTextProps) {
-  const segments = getWordForWordSegments(value, { songTitle, verseNumber, songId, verseId, contextValue, contextOffset });
+  const wordForWord = useWordForWord();
+  const segments = wordForWord?.getWordForWordSegments(value, { songTitle, verseNumber, songId, verseId, contextValue, contextOffset }) ?? [{ text: value, entries: [] }];
   let sourceOffset = 0;
   return (
     <>
@@ -142,7 +149,7 @@ export function WordForWordText({ value, songTitle, verseNumber, songId, verseId
         const offset = sourceOffset;
         sourceOffset += segment.text.length;
         return segment.entries.length ? (
-          <WordForWordTrigger key={`${segment.text}-${index}`} text={segment.text} tooltipText={segment.tooltipText} entries={segment.entries}>
+          <WordForWordTrigger key={`${segment.text}-${index}`} text={segment.text} tooltipText={segment.tooltipText} entries={segment.entries} source={segment.source}>
             {renderText(segment.text, offset)}
           </WordForWordTrigger>
         ) : <span key={`${segment.text}-${index}`}>{renderText(segment.text, offset)}</span>;

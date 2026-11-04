@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
 // =============================================================================
@@ -150,7 +150,22 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+// Umami analytics: the script tag is added only when both settings exist, so a
+// local or self-hosted copy without analytics loads no broken script.
+function vitePluginOptionalAnalytics(): Plugin {
+  const env = loadEnv("", path.resolve(import.meta.dirname), "VITE_ANALYTICS_");
+  const endpoint = env.VITE_ANALYTICS_ENDPOINT?.replace(/\/+$/, "");
+  const websiteId = env.VITE_ANALYTICS_WEBSITE_ID;
+  return {
+    name: "optional-analytics",
+    transformIndexHtml() {
+      if (!endpoint || !websiteId) return [];
+      return [{ tag: "script", attrs: { defer: true, src: `${endpoint}/umami`, "data-website-id": websiteId }, injectTo: "body" }];
+    },
+  };
+}
+
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginOptionalAnalytics()];
 
 export default defineConfig({
   plugins,

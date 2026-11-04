@@ -30,3 +30,7 @@ sabākāra = of everyone
 keha = anyone
 kichu = anything
 bolibe = should say
+
+# verse-1
+// Context correction for a word the lexicon glosses differently elsewhere.
+vidhi = rule

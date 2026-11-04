@@ -67,12 +67,14 @@ describe("verse-specific word-for-word links", () => {
     expect(meaningOf("sri-guru-parampara-137", "verse-10", "śrīdhara")).toEqual(["Śrīdhara"]);
   });
 
-  it("gives every word of every verse a meaning", () => {
+  it("gives every word of every verse a reviewed meaning", () => {
     const missing: string[] = [];
     for (const song of songs) {
       for (const verse of song.verses) {
         for (const segment of getWordForWordSegments(verseContext(song.id, verse.id), { songId: song.id, verseId: verse.id, songTitle: song.title })) {
           if (!segment.entries.length && /\p{L}/u.test(segment.text)) missing.push(`${song.id} ${verse.id}: ${segment.text.trim()}`);
+          // Every meaning is verse-specific or reviewed; none is a guess from another song.
+          if (segment.source === "glossary") missing.push(`${song.id} ${verse.id}: ${segment.text.trim()} (general glossary)`);
         }
       }
     }
