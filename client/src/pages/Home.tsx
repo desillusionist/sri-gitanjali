@@ -14,6 +14,9 @@ import {
   ALL_RECORDINGS_FILTER,
   UNLISTED_AUTHOR_FILTER,
   WITH_RECORDINGS_FILTER,
+  SOUNDCLOUD_SINGER_LIST,
+  parseRecordingFilter,
+  singerRecordingFilter,
   defaultSongSearchFilters,
   filterSongs,
   getSongAuthors,
@@ -58,7 +61,7 @@ function LibraryHome() {
       query: parameters.get("q") ?? defaultSongSearchFilters.query,
       author: parameters.get("author") ?? defaultSongSearchFilters.author,
       category: parameters.get("category") ?? defaultSongSearchFilters.category,
-      recording: parameters.get("recording") === WITH_RECORDINGS_FILTER ? WITH_RECORDINGS_FILTER : defaultSongSearchFilters.recording,
+      recording: parseRecordingFilter(parameters.get("recording")),
     };
 
     setFilters((current) => (
@@ -201,13 +204,14 @@ function LibraryHome() {
           </label>
           <label className="filter-field">
             <span>{copy.library.filterRecording}</span>
-            <Select value={filters.recording} onValueChange={(recording) => updateFilters({ recording: recording as typeof ALL_RECORDINGS_FILTER | typeof WITH_RECORDINGS_FILTER })}>
+            <Select value={filters.recording} onValueChange={(recording) => updateFilters({ recording: parseRecordingFilter(recording) })}>
               <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterRecording}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="filter-select-content">
                 <SelectItem value={ALL_RECORDINGS_FILTER}>{copy.library.allRecordings}</SelectItem>
                 <SelectItem value={WITH_RECORDINGS_FILTER}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.withRecordings}</span></SelectItem>
+                {SOUNDCLOUD_SINGER_LIST.map((singer) => <SelectItem value={singerRecordingFilter(singer.account)} key={singer.account}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}
               </SelectContent>
             </Select>
           </label>

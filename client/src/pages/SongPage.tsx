@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, soundCloudTrackSecondsFor, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { loadRussianSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
@@ -374,7 +374,9 @@ function SongPageContent() {
     setIsSoundCloudPlayerOpen(false);
     setSoundCloudPlayerUrl(null);
     setSoundCloudPlayerStatus("idle");
-    setSoundCloudDurationMs(null);
+    // A known track length paces the teleprompter at once; the player confirms it when it loads.
+    const knownSeconds = soundCloudSourceUrl ? soundCloudTrackSecondsFor(soundCloudSourceUrl) : null;
+    setSoundCloudDurationMs(knownSeconds ? knownSeconds * 1_000 : null);
   }, [soundCloudSourceUrl]);
 
   useEffect(() => {
@@ -1022,7 +1024,11 @@ function SongPageContent() {
             <div className="song-audio-actions">
               {soundCloudSourceUrls.length > 1 && (
                 <select className="song-audio-version" value={soundCloudRecordingIndex} onChange={(event) => setSoundCloudRecordingIndex(Number(event.target.value))} aria-label={copy.song.audioVersionLabel}>
-                  {soundCloudSourceUrls.map((url, recordingIndex) => <option key={recordingIndex} value={recordingIndex}>{copy.song.audioVersion.replace("{number}", String(recordingIndex + 1))}{soundCloudSingerName(url) ? ` · ${soundCloudSingerName(url)}` : ""}</option>)}
+                  {soundCloudSourceUrls.map((url, recordingIndex) => {
+                    const seconds = soundCloudTrackSecondsFor(url);
+                    const parts = [copy.song.audioVersion.replace("{number}", String(recordingIndex + 1)), soundCloudSingerName(url), seconds ? formatTrackLength(seconds) : null].filter(Boolean);
+                    return <option key={recordingIndex} value={recordingIndex}>{parts.join(copy.song.audioVersionSeparator)}</option>;
+                  })}
                 </select>
               )}
               <button className="song-audio-toggle" type="button" onClick={() => {

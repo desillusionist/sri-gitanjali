@@ -382,7 +382,7 @@ Words the editions genuinely word differently are not linked automatically; they
 
 ## Editorial glosses
 
-Words with no reference synonym, glossed per verse from scripts/word-for-word-editorial-glosses/ (127 songs, 8449 glosses). Meanings follow Gauḍīya Vaiṣṇava usage and each verse's English translation.
+Words with no reference synonym, glossed per verse from scripts/word-for-word-editorial-glosses/ (127 songs, 8462 glosses). Meanings follow Gauḍīya Vaiṣṇava usage and each verse's English translation.
 
 - Āchārya-charaṇa-vandana: 80
 - Āchārya vandana: 276
@@ -390,10 +390,10 @@ Words with no reference synonym, glossed per verse from scripts/word-for-word-ed
 - Ājñā-Ṭahal: 29
 - Akrodha paramānanda: 33
 - Āmāra jīvana: 56
-- Anya-abhilāṣa chāḍi: 217
+- Anya-abhilāṣa chāḍi: 221
 - Ātma-nivedana: 55
 - Ātma-samarpaṇe: 61
-- Auspicious Invocation to Śaraṇāgati: 45
+- Auspicious Invocation to Śaraṇāgati: 46
 - Avatāra Sāra: 49
 - Bhagavān Śrīla Bhakti Siddhānta Saraswatī Ṭhākur: 15
 - Bhajan-gīti: 68
@@ -424,9 +424,9 @@ Words with no reference synonym, glossed per verse from scripts/word-for-word-ed
 - Mayura mukuṭa: 13
 - Nām-saṅkīrtan: 3
 - Nitāi guṇamaṇi āmāra: 33
-- Pañcha-tattva Mantra: 2
+- Pañcha-tattva Mantra: 3
 - Prabhāti Gīti: 39
-- Prabhu kohe: 28
+- Prabhu kohe: 29
 - Praṇām Mantra to Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja: 27
 - Praṇām Mantra to Śrīla Swāmī Mahārāja: 14
 - Praṇati Daśakam: 61
@@ -439,8 +439,8 @@ Words with no reference synonym, glossed per verse from scripts/word-for-word-ed
 - Sāvaraṇa-Śrī-Gaura-pāda-padme Prārthanā: 12
 - Śrī Bhog Ārati Gīti: 9
 - Śrī Dayita Dās Praṇati Pañchakam: 41
-- Śrī Gaura-ārati: 98
-- Śrī Gaura Purṇīmā: 458
+- Śrī Gaura-ārati: 99
+- Śrī Gaura Purṇīmā: 459
 - Śrī Gaurahari-Kusuma-Stavāṣṭakam: 44
 - Śrī Godrumachandra-bhajanopadeśa: 136
 - Śrī Govinda Kuṇḍa Gupta-Govardhan Ārati: 55
@@ -456,14 +456,14 @@ Words with no reference synonym, glossed per verse from scripts/word-for-word-ed
 - Śrī Nagara Kīrtana 4: 3
 - Śrī Nagara Kīrtana 8: 59
 - Śrī Nāmāṣṭakam 7: 48
-- Śrī Nāmāṣṭakam 8: 49
+- Śrī Nāmāṣṭakam 8: 50
 - Śrī Prasāda-sevāya Gīti: 32
 - Śrī Rādhāṣṭaka 1: 45
 - Śrī Rādhāṣṭaka 2: 61
 - Śrī Rādhāṣṭaka 8: 58
 - Śrī Rādhikā-stava: 5
 - Śrī Śachīnandana-vandanā: 39
-- Śrī Sāraswat-ārati: 88
+- Śrī Sāraswat-ārati: 89
 - Śrī Śikṣāṣṭakam 1: 19
 - Śrī Śikṣāṣṭakam 2: 39
 - Śrī Śikṣāṣṭakam 3: 62
@@ -481,7 +481,7 @@ Words with no reference synonym, glossed per verse from scripts/word-for-word-ed
 - Śrī Śrī Girirāj-Govardhan Ārati: 62
 - Śrī Śrī Govardhana-vāsa-prārthanā-daśakam: 121
 - Śrī Śrī Gurvāṣṭaka: 14
-- Śrī Śrī Nitāi-Chaitanya-Ārati: 61
+- Śrī Śrī Nitāi-Chaitanya-Ārati: 62
 - Śrī Śrī Prabhupāda-padma Stavakaḥ: 51
 - Śrī Śrī Premadhāma-deva-stotram: 1443
 - Śrī Śrīmad Gaura-Kiśora-namaskāra Daśakam: 82
@@ -504,7 +504,7 @@ Words with no reference synonym, glossed per verse from scripts/word-for-word-ed
 - Śrita Kamalā: 34
 - Sva-Niṣṭha: 27
 - Tātala Saikate: 62
-- Ṭhākura-vaiṣṇava-gaṇa: 58
+- Ṭhākura-vaiṣṇava-gaṇa: 59
 - Ṭhākura-vaiṣṇava-pada: 47
 - The Glory of the Śrī Chaitanya Sāraswat Maṭh: 10
 - Tumi sarveśvareśvara: 45
@@ -515,9 +515,14 @@ Words with no reference synonym, glossed per verse from scripts/word-for-word-ed
 Editorial glosses skipped because the reference already glosses those words:
 
 - Śrī Gaura-ārati verse-3: gaṇe
+- Śrī Gaura-ārati verse-3: ādi-deva
 - Śrī Nagara Kīrtana 4 verse-2: kṛṣṇa
 - Śrī Vraja-dhāma-mahimāmṛta verse-9: jaya
 - Śrī Vraja-dhāma-mahimāmṛta verse-9: jaya
+
+## Editorial lexicon
+
+Context-neutral meanings from scripts/word-for-word-editorial-lexicon.txt placed on 2785 remaining words. Entries not used anywhere: chā.
 
 ## Refrains carried to their repeats
 
@@ -537,4 +542,3 @@ Editorial glosses skipped because the reference already glosses those words:
 
 ## App songs without reference synonyms
 
-- Hare Krishna Mahāmantra

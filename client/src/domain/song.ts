@@ -3,6 +3,8 @@
  * а интерфейс использует спокойную редакционную иерархию вокруг него.
  */
 
+import { soundCloudTrackSeconds } from "@/data/soundcloudDurations";
+
 export type SongLine = {
   id: string;
   transliteration: string;
@@ -47,7 +49,18 @@ export const UNLISTED_AUTHOR_FILTER = "__unlisted_author__";
 export const ALL_RECORDINGS_FILTER = "__all_recordings__";
 export const WITH_RECORDINGS_FILTER = "__with_recordings__";
 
-export type RecordingFilter = typeof ALL_RECORDINGS_FILTER | typeof WITH_RECORDINGS_FILTER;
+/** Filter by recordings: any song, songs with a recording, or songs recorded by one singer (`singer:<SoundCloud account>`). */
+export type RecordingFilter = typeof ALL_RECORDINGS_FILTER | typeof WITH_RECORDINGS_FILTER | `singer:${string}`;
+
+export function singerRecordingFilter(account: string): RecordingFilter {
+  return `singer:${account}`;
+}
+
+export function parseRecordingFilter(value: string | null): RecordingFilter {
+  if (value === WITH_RECORDINGS_FILTER) return WITH_RECORDINGS_FILTER;
+  const account = value?.startsWith("singer:") ? value.slice("singer:".length) : null;
+  return account && SOUNDCLOUD_SINGER_LIST.some((singer) => singer.account === account) ? singerRecordingFilter(account) : ALL_RECORDINGS_FILTER;
+}
 
 export type SongSearchFilters = {
   query: string;
@@ -118,15 +131,43 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
   return Array.from(new Set(validUrls));
 }
 
-// Singers whose SoundCloud accounts are named in the recording picker.
-const SOUNDCLOUD_SINGERS: Readonly<Record<string, string>> = { "bhakti-lalita-devi": "Bhakti Lalita Devi", huron: "Manasa Krishna" };
+// Singers whose SoundCloud accounts are named in the recording picker and the library filter.
+export const SOUNDCLOUD_SINGER_LIST: readonly { account: string; name: string }[] = [
+  { account: "huron", name: "Manasa Krishna" },
+  { account: "bhakti-lalita-devi", name: "Bhakti Lalita Devi" },
+];
 
-export function soundCloudSingerName(url: string): string | null {
+function soundCloudAccount(url: string): string | null {
   try {
-    return SOUNDCLOUD_SINGERS[new URL(url).pathname.split("/")[1] ?? ""] ?? null;
+    return new URL(url).pathname.split("/")[1] || null;
   } catch {
     return null;
   }
+}
+
+export function soundCloudSingerName(url: string): string | null {
+  const account = soundCloudAccount(url);
+  return SOUNDCLOUD_SINGER_LIST.find((singer) => singer.account === account)?.name ?? null;
+}
+
+/** Known track length in seconds (from soundcloudDurations.ts), or null. */
+export function soundCloudTrackSecondsFor(url: string): number | null {
+  try {
+    return soundCloudTrackSeconds[new URL(url).pathname.replace(/\/+$/, "")] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function formatTrackLength(seconds: number): string {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const rest = String(seconds % 60).padStart(2, "0");
+  return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
+}
+
+export function hasRecordingBySinger(song: Pick<Song, "audioLink" | "audioLinks">, account: string): boolean {
+  return getSoundCloudRecordingUrls(song).some((url) => soundCloudAccount(url) === account);
 }
 
 export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioLinks">): string | null {
@@ -355,7 +396,8 @@ export function filterSongs(songs: Song[], filters: SongSearchFilters): Song[] {
       filters.author === ALL_AUTHORS_FILTER ||
       (filters.author === UNLISTED_AUTHOR_FILTER ? !song.poet?.trim() : song.poet?.trim() === filters.author);
     const matchesCategory = filters.category === ALL_CATEGORIES_FILTER || song.category === filters.category;
-    const matchesRecording = filters.recording === ALL_RECORDINGS_FILTER || hasSoundCloudRecording(song);
+    const matchesRecording = filters.recording === ALL_RECORDINGS_FILTER
+      || (filters.recording === WITH_RECORDINGS_FILTER ? hasSoundCloudRecording(song) : hasRecordingBySinger(song, filters.recording.slice("singer:".length)));
 
     return matchesQuery && matchesAuthor && matchesCategory && matchesRecording;
   });
