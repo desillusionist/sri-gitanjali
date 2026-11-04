@@ -8,6 +8,9 @@ import App from "./App";
 import { startLogin } from "./const";
 import "./index.css";
 import { loadWordForWord } from "./lib/wordForWordLoader";
+import { initTheme } from "./lib/theme";
+
+initTheme();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

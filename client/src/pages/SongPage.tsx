@@ -15,10 +15,11 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, soundCloudTrackSecondsFor, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
+import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingingFollower";
 import { loadRussianSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
 import { toast } from "sonner";
@@ -207,6 +208,50 @@ function SongMatchText({
   });
 }
 
+type SingingFollowControlsProps = {
+  copy: ReturnType<typeof useTranslation>["copy"];
+  isOn: boolean;
+  onToggle: (on: boolean) => void;
+  isCallAndResponse: boolean;
+  onCallAndResponse: (on: boolean) => void;
+  status: SingingFollowerStatus;
+  isSinging: boolean;
+  syllablesPerSecond: number | null;
+  level: number;
+};
+
+/** The “Follow the singing” switch and its live status, shown in the pace panel. */
+function SingingFollowControls({ copy, isOn, onToggle, isCallAndResponse, onCallAndResponse, status, isSinging, syllablesPerSecond, level }: SingingFollowControlsProps) {
+  const statusText = status === "denied" ? copy.song.teleprompterFollowDenied
+    : status === "unavailable" ? copy.song.teleprompterFollowUnavailable
+    : status === "starting" ? copy.song.teleprompterFollowStarting
+    : !isSinging ? copy.song.teleprompterFollowWaiting
+    : syllablesPerSecond === null ? copy.song.teleprompterFollowListening
+    : copy.song.teleprompterFollowRate.replace("{rate}", syllablesPerSecond.toFixed(1));
+  return (
+    <div className="singing-follow">
+      <label className="singing-follow-toggle">
+        <input type="checkbox" checked={isOn} onChange={(event) => onToggle(event.target.checked)} />
+        <Mic size={14} aria-hidden="true" />
+        <span>{copy.song.teleprompterFollowSinging}</span>
+      </label>
+      {isOn && (
+        <>
+          <p className={`singing-follow-status is-${status}`} aria-live="polite">
+            {status === "listening" && <span className="singing-follow-meter" aria-hidden="true"><span style={{ transform: `scaleX(${level})` }} /></span>}
+            {status === "denied" || status === "unavailable" ? <MicOff size={13} aria-hidden="true" /> : null}
+            {statusText}
+          </p>
+          <label className="singing-follow-toggle is-secondary">
+            <input type="checkbox" checked={isCallAndResponse} onChange={(event) => onCallAndResponse(event.target.checked)} />
+            <span>{copy.song.teleprompterFollowCallResponse}</span>
+          </label>
+        </>
+      )}
+    </div>
+  );
+}
+
 function SongPageContent() {
   const [, params] = useRoute("/song/:id");
   const { songs, status, isFavorite, toggleFavorite } = useSongLibrary();
@@ -277,7 +322,26 @@ function SongPageContent() {
   const [failedSecondaryTranslationVerseIds, setFailedSecondaryTranslationVerseIds] = useState<Set<string>>(() => new Set());
   const { mutateAsync: requestSecondaryTranslationVerse } = trpc.secondaryTranslation.translateVerse.useMutation();
   const audioMatchedScrollSpeed = getAudioMatchedScrollSpeed(teleprompterScrollRange, soundCloudDurationMs);
-  const effectiveTeleprompterSpeed = !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterScrollSpeed;
+  const followerSpeedRef = useRef<number | null>(null);
+  const [isFollowingSinging, setIsFollowingSinging] = useState(false);
+  const [isCallAndResponse, setIsCallAndResponse] = useState(false);
+  const singing = useSingingFollower(isTeleprompterOpen && isFollowingSinging);
+  const isSingingFollowActive = isFollowingSinging && singing.status === "listening";
+  const repeatFactor = isCallAndResponse ? 2 : 1;
+  const totalTeleprompterSyllables = useMemo(() => displayedVerses.reduce((total, verse) => total + Math.max(1, countVerseSyllables(verse.lines)), 0), [displayedVerses]);
+  // Follow the singing: scroll at the sung syllable rate, hold still while nobody sings.
+  const singingScrollSpeed = (() => {
+    if (!isSingingFollowActive) return null;
+    if (!singing.isSinging) return 0;
+    if (singing.syllablesPerSecond === null || teleprompterScrollRange <= 0) return followerSpeedRef.current ?? teleprompterScrollSpeed;
+    const target = (singing.syllablesPerSecond / repeatFactor) * (teleprompterScrollRange / totalTeleprompterSyllables);
+    const previous = followerSpeedRef.current ?? target;
+    return Math.min(MAX_TELEPROMPTER_SPEED * 2, previous + (target - previous) * 0.3);
+  })();
+  followerSpeedRef.current = singingScrollSpeed && singingScrollSpeed > 0 ? singingScrollSpeed : followerSpeedRef.current;
+  const effectiveTeleprompterSpeed = singingScrollSpeed !== null
+    ? singingScrollSpeed
+    : !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterScrollSpeed;
   const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, rewindBy: rewindTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", effectiveTeleprompterSpeed, teleprompterScrollRef);
 
   useEffect(() => {
@@ -530,7 +594,7 @@ function SongPageContent() {
   }, [isTeleprompterOpen]);
 
   useEffect(() => {
-    if (!isTeleprompterOpen || teleprompterView !== "slideshow" || !isSlideshowPlaying || displayedVerses.length < 2) {
+    if (!isTeleprompterOpen || teleprompterView !== "slideshow" || !isSlideshowPlaying || displayedVerses.length < 2 || isSingingFollowActive) {
       setSlideshowCountdown((current) => current.remainingMs === 0 && current.totalMs === 0 ? current : { remainingMs: 0, totalMs: 0 });
       return;
     }
@@ -558,7 +622,23 @@ function SongPageContent() {
       window.clearInterval(countdownTimer);
       window.clearTimeout(advanceTimer);
     };
-  }, [displayedVerses, isManualTeleprompterSlideshowPace, isSlideshowPlaying, isTeleprompterOpen, slideshowVerseIndex, soundCloudDurationMs, teleprompterSlideshowSpeed, teleprompterView]);
+  }, [displayedVerses, isManualTeleprompterSlideshowPace, isSingingFollowActive, isSlideshowPlaying, isTeleprompterOpen, slideshowVerseIndex, soundCloudDurationMs, teleprompterSlideshowSpeed, teleprompterView]);
+
+  // Follow the singing in Slideshow: a new slide once its syllables have been sung.
+  const { resetSyllableCount } = singing;
+  useEffect(() => { resetSyllableCount(); }, [resetSyllableCount, slideshowVerseIndex, isSlideshowPlaying, isSingingFollowActive]);
+  const slideSyllableTarget = Math.max(1, countVerseSyllables(displayedVerses[slideshowVerseIndex]?.lines ?? [])) * repeatFactor;
+  useEffect(() => {
+    if (!isSingingFollowActive || teleprompterView !== "slideshow" || !isSlideshowPlaying) return;
+    if (singing.syllableCount < slideSyllableTarget) return;
+    setSlideshowVerseIndex((current) => {
+      if (current >= displayedVerses.length - 1) {
+        setIsSlideshowPlaying(false);
+        return current;
+      }
+      return current + 1;
+    });
+  }, [displayedVerses.length, isSingingFollowActive, isSlideshowPlaying, singing.syllableCount, slideSyllableTarget, teleprompterView]);
 
   useEffect(() => {
     const translationVerseId = activeMatch?.kind === "translation" ? activeMatch.verseId : undefined;
@@ -786,9 +866,12 @@ function SongPageContent() {
   const isManualTeleprompterPace = teleprompterView === "scroll" ? isManualTeleprompterScrollPace : isManualTeleprompterSlideshowPace;
   const paceLandmark = getPaceLandmark(activeTeleprompterSpeed);
   const paceLandmarkLabel = paceLandmark === "slow" ? copy.song.teleprompterPaceSlow : paceLandmark === "fast" ? copy.song.teleprompterPaceFast : copy.song.teleprompterPaceSteady;
-  const paceStatus = isManualTeleprompterPace
+  const paceStatus = isSingingFollowActive ? copy.song.teleprompterPaceStatusFollowing : isManualTeleprompterPace
     ? copy.song.teleprompterPaceStatusManual.replace("{pace}", paceLandmarkLabel)
     : isAudioPaceAvailable ? copy.song.teleprompterPaceStatusAudio : copy.song.teleprompterPaceStatusSteady;
+  const singingFollowControls = (
+    <SingingFollowControls copy={copy} isOn={isFollowingSinging} onToggle={setIsFollowingSinging} isCallAndResponse={isCallAndResponse} onCallAndResponse={setIsCallAndResponse} status={singing.status} isSinging={singing.isSinging} syllablesPerSecond={singing.syllablesPerSecond} level={singing.level} />
+  );
   const toggleSlideshow = () => {
     if (isSlideshowPlaying) {
       setIsSlideshowPlaying(false);
@@ -816,10 +899,11 @@ function SongPageContent() {
                   <Tooltip><TooltipTrigger asChild><PopoverTrigger asChild><button className={`teleprompter-speed-trigger ${isManualTeleprompterPace ? "is-manual" : ""}`} type="button" aria-label={copy.song.teleprompterPaceSettings}><Gauge size={16} aria-hidden="true" /></button></PopoverTrigger></TooltipTrigger><TooltipContent side="left">{copy.song.teleprompterPaceSettings}</TooltipContent></Tooltip>
                   <PopoverContent className="teleprompter-speed-popover" align="end" side="bottom" sideOffset={8}>
                     <div className="teleprompter-speed-popover-heading"><Gauge size={15} aria-hidden="true" /><span>{copy.song.teleprompterManualPace}</span></div>
-                    <Slider id="teleprompter-speed-collapsed" value={[activeTeleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
+                    <Slider id="teleprompter-speed-collapsed" value={[activeTeleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} disabled={isSingingFollowActive} aria-label={copy.song.teleprompterManualPace} />
                     <p className="teleprompter-pace-status" aria-live="polite">{paceStatus}</p>
                     <div className="teleprompter-speed-landmarks" aria-hidden="true"><span>{copy.song.teleprompterPaceSlow}</span><span>{copy.song.teleprompterPaceSteady}</span><span>{copy.song.teleprompterPaceFast}</span></div>
-                    {isAudioPaceAvailable && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
+                    {isAudioPaceAvailable && !isSingingFollowActive && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
+                    {singingFollowControls}
                   </PopoverContent>
                 </Popover>
                 <button className="teleprompter-collapsed-control" type="button" onClick={pauseAndRestoreTeleprompterControls} aria-label={teleprompterView === "slideshow" ? `${copy.song.teleprompterPauseAndShowControls}. ${slideshowCountdownLabel}` : copy.song.teleprompterPauseAndShowControls}>
@@ -830,6 +914,7 @@ function SongPageContent() {
             ) : <>
               <div className="teleprompter-status" aria-live="polite">
               <span aria-hidden="true" />
+              {isSingingFollowActive && <span className={`teleprompter-follow-badge ${singing.isSinging ? "is-hearing" : ""}`} title={copy.song.teleprompterFollowSinging}><Mic size={12} aria-hidden="true" /></span>}
               {isTeleprompterPlaying
                 ? (teleprompterView === "scroll" ? copy.song.teleprompterPlaying : copy.song.teleprompterPlayingSlideshow)
                 : (teleprompterView === "scroll" ? copy.song.teleprompterReady : copy.song.teleprompterReadySlideshow)}
@@ -857,10 +942,11 @@ function SongPageContent() {
                 <Tooltip><TooltipTrigger asChild><PopoverTrigger asChild><button className={`teleprompter-speed-trigger ${isManualTeleprompterPace ? "is-manual" : ""}`} type="button" aria-label={copy.song.teleprompterPaceSettings}><Gauge size={16} aria-hidden="true" /></button></PopoverTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.teleprompterPaceSettings}</TooltipContent></Tooltip>
                 <PopoverContent className="teleprompter-speed-popover" align="end" side="bottom" sideOffset={8}>
                   <div className="teleprompter-speed-popover-heading"><Gauge size={15} aria-hidden="true" /><span>{copy.song.teleprompterManualPace}</span></div>
-                  <Slider id="teleprompter-speed" value={[activeTeleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} aria-label={copy.song.teleprompterManualPace} />
+                  <Slider id="teleprompter-speed" value={[activeTeleprompterSpeed]} min={MIN_TELEPROMPTER_SPEED} max={MAX_TELEPROMPTER_SPEED} step={1} onValueChange={([nextSpeed]) => updateManualTeleprompterSpeed(nextSpeed)} disabled={isSingingFollowActive} aria-label={copy.song.teleprompterManualPace} />
                   <p className="teleprompter-pace-status" aria-live="polite">{paceStatus}</p>
                   <div className="teleprompter-speed-landmarks" aria-hidden="true"><span>{copy.song.teleprompterPaceSlow}</span><span>{copy.song.teleprompterPaceSteady}</span><span>{copy.song.teleprompterPaceFast}</span></div>
-                  {isAudioPaceAvailable && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
+                  {isAudioPaceAvailable && !isSingingFollowActive && <button className="teleprompter-audio-pace-reset" type="button" onClick={useAudioMatchedPace}><Volume2 size={14} aria-hidden="true" /> {copy.song.teleprompterUseAudioPace}</button>}
+                    {singingFollowControls}
                 </PopoverContent>
               </Popover>
               <button className={`teleprompter-play-button ${isTeleprompterPlaying ? "is-playing" : ""}`} type="button" onClick={teleprompterView === "scroll" ? toggleTeleprompter : toggleSlideshow}>

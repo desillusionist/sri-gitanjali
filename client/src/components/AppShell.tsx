@@ -5,8 +5,9 @@
 
 import { brandAssets } from "@/data/sources";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { BookOpenText, Bookmark, ChevronDown, LibraryBig, Search } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { BookOpenText, Bookmark, ChevronDown, LibraryBig, Palette, Search } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { THEMES, setTheme, useTheme, type Theme } from "@/lib/theme";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link, useLocation } from "wouter";
 import { useState, type MouseEvent, type ReactNode } from "react";
@@ -18,6 +19,7 @@ type AppShellProps = {
 export function AppShell({ children }: AppShellProps) {
   const [location] = useLocation();
   const { copy } = useTranslation();
+  const theme = useTheme();
   const [isBrandMenuOpen, setIsBrandMenuOpen] = useState(false);
 
   const navigateToHomeSection = (event: MouseEvent<HTMLAnchorElement>, targetId: "search" | "library") => {
@@ -64,6 +66,23 @@ export function AppShell({ children }: AppShellProps) {
                 <span>{copy.navigation.favorites}</span>
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuSeparator className="brand-menu-separator" />
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="brand-menu-item">
+                <Palette aria-hidden="true" size={17} strokeWidth={1.7} />
+                <span>{copy.navigation.theme}</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="brand-menu">
+                <DropdownMenuRadioGroup value={theme} onValueChange={(value) => setTheme(value as Theme)}>
+                  {THEMES.map((option) => (
+                    <DropdownMenuRadioItem key={option} value={option} className="brand-menu-item theme-option">
+                      <span className={`theme-swatch is-${option}`} aria-hidden="true" />
+                      <span className="theme-option-text"><strong>{copy.navigation.themes[option].name}</strong><small>{copy.navigation.themes[option].description}</small></span>
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
           </DropdownMenuContent>
         </DropdownMenu>
 
