@@ -1,0 +1,105 @@
+{
+  "description": "Reviewed word-for-word links for places where the app's edition words a verse differently from the reference SYNONYMS. Applied by scripts/build-verse-word-for-word.mjs after the automatic alignment. Each entry links `surface` (found inside `within` when the words recur) to reference glossary entries and/or an editorial `meaning`; an entry with neither removes the automatic link.",
+  "entries": [
+    {
+      "songId": "the-deities-in-nabadwip-017",
+      "verseId": "verse-1",
+      "surface": "śrī",
+      "within": "śrī gāndharvā",
+      "entryIds": [
+        "syn-0017-008"
+      ],
+      "note": "Reference reads śrīmad-rādhā; the app reads śrī gāndharvā. śrī keeps the reference gloss of śrīmat."
+    },
+    {
+      "songId": "the-deities-in-nabadwip-017",
+      "verseId": "verse-1",
+      "surface": "gāndharvā",
+      "entryIds": [
+        "syn-0017-009"
+      ],
+      "note": "Gāndharvā is a name of Śrīmatī Rādhārāṇī, so the reference gloss of rādhā applies (the app translation says “Śrī Śrī Gandharvā-Govinda”)."
+    },
+    {
+      "songId": "pranam-mantra-to-srila-swami-maharaja-023",
+      "verseId": "verse-1",
+      "surface": "swāmī śrī bhaktivedānta",
+      "entryIds": [
+        "syn-0004-007"
+      ],
+      "note": "The app reads swāmī śrī bhaktivedānta prabhupādāya where the reference reads śrīmate bhaktivedānta-svāmin iti nāmine; the gloss A.C. Bhaktivedanta Swami belongs to these words only."
+    },
+    {
+      "songId": "pranam-mantra-to-srila-swami-maharaja-023",
+      "verseId": "verse-1",
+      "surface": "prabhupādāya",
+      "term": "prabhupādāya",
+      "meaning": "unto Prabhupāda",
+      "note": "Editorial: dative of prabhupāda, as in the app translation “Bhaktivedānta Swāmī Prabhupāda”; not glossed in the reference."
+    },
+    {
+      "songId": "pranam-mantra-to-srila-swami-maharaja-023",
+      "verseId": "verse-1",
+      "surface": "te",
+      "within": "prabhupādāya te namaḥ",
+      "entryIds": [
+        "syn-0005-002"
+      ],
+      "note": "Same word as namas te in the next reference praṇāma (Śrīla Prabhupāda Praṇati 2)."
+    },
+    {
+      "songId": "pranam-mantra-to-srila-swami-maharaja-023",
+      "verseId": "verse-1",
+      "surface": "namaḥ",
+      "within": "prabhupādāya te namaḥ",
+      "entryIds": [
+        "syn-0004-001"
+      ],
+      "note": "Same word and gloss as the opening namaḥ of the reference praṇāma."
+    },
+    {
+      "songId": "siddhi-lalasa-069",
+      "verseId": "verse-4",
+      "surface": "bheda nā heribo",
+      "entryIds": [
+        "syn-0110-002"
+      ],
+      "note": "Reference reads bheda nā dekhibo; the app reads heribo, a Bengali synonym of dekhibo (“I will see”), so the gloss is unchanged."
+    },
+    {
+      "songId": "siddhi-lalasa-069",
+      "verseId": "verse-4",
+      "surface": "gauḍa-vraja-bane",
+      "term": "gauḍa-vraja-bane",
+      "meaning": "between the forests of Gauḍa (Navadvīpa) and Vraja",
+      "note": "Editorial: the reference reads gauḍa-braja-jane (“the inhabitants of Navadvīpa and Vraja”); the app reads bane, “in the forests”, matching its translation “the forest of Gauḍa and Vraja”."
+    },
+    {
+      "songId": "nam-sankirtan-045",
+      "verseId": "verse-3",
+      "surface": "śrī advaita-chandra",
+      "term": "śrī advaita-chandra",
+      "meaning": "the moonlike Śrī Advaita Āchārya",
+      "note": "Editorial: the reference reads śrī-advaita-sītā (Advaita Āchārya and his wife Sītā); the app reads advaita-chandra, translated “the moonlike Śrī Advaita Āchārya”."
+    },
+    {
+      "songId": "nam-sankirtan-045",
+      "verseId": "verse-10",
+      "surface": "kori āśa",
+      "entryIds": [
+        "syn-0185-003"
+      ],
+      "note": "Reference reads kori āś (final a dropped); the app's āśa is the same word, and the automatic alignment lost it to the reordered second line."
+    },
+    {
+      "songId": "arunodoya-kirtan-1-038",
+      "verseId": "verse-3",
+      "surface": "bolore",
+      "within": "bolore bolore",
+      "entryIds": [
+        "syn-0046-003"
+      ],
+      "note": "Reference reads bolena bolo re; the app repeats bolore (= bolo re, “oh sing!”), so the first one takes the same gloss."
+    }
+  ]
+}

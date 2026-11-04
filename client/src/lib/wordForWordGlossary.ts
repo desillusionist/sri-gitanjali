@@ -2,6 +2,7 @@ import glossaryData from "@/data/word-for-word-glossary.json";
 import derivedAliasesData from "@/data/word-for-word-derived-aliases.json";
 import referenceSectionMappingsData from "@/data/reference-section-mappings.json";
 import referenceSurfaceAliasesData from "@/data/reference-surface-aliases.json";
+import verseSpansData from "@/data/word-for-word-verses.json";
 
 export type WordForWordEntry = {
   id: string;
@@ -38,6 +39,12 @@ const referenceSectionBySongTitle = new Map(
   referenceSectionMappings.mappings.map((mapping) => [normalizeContext(mapping.songTitle), mapping.sectionId]),
 );
 const entriesById = new Map(glossary.entries.map((entry) => [entry.id, entry]));
+// Verse-specific links: the SYNONYMS block that belongs to each app verse,
+// placed on its exact words (see scripts/build-verse-word-for-word.mjs).
+type VerseSpan = { start: number; end: number; surface: string; entryIds: string[] };
+type VerseSpansData = { editorialEntries: Record<string, WordForWordEntry>; songs: Record<string, Record<string, VerseSpan[]>> };
+const verseSpans = verseSpansData as VerseSpansData;
+Object.values(verseSpans.editorialEntries).forEach((entry) => entriesById.set(entry.id, entry));
 const sourceTermsByNormalizedTerm = new Map<string, string[]>();
 const sandhiStartAliases = new Set<string>();
 const sandhiEndAliases = new Set<string>();
@@ -217,7 +224,7 @@ function dedupeMeanings(entries: WordForWordEntry[]): WordForWordEntry[] {
   });
 }
 
-type WordForWordOptions = { songTitle?: string; verseNumber?: number; contextValue?: string; contextOffset?: number };
+type WordForWordOptions = { songTitle?: string; verseNumber?: number; songId?: string; verseId?: string; contextValue?: string; contextOffset?: number };
 
 function getSegmentsForValue(value: string, options: { songTitle?: string; verseNumber?: number } = {}): WordForWordSegment[] {
   if (!value.trim()) return [{ text: value, entries: [] }];
@@ -263,11 +270,49 @@ function getSegmentsForValue(value: string, options: { songTitle?: string; verse
   return segments.length ? segments : [{ text: value, entries: [] }];
 }
 
+/**
+ * Segments a whole verse: the verse's own synonyms first, then the general
+ * glossary for any words between them. A span whose text no longer matches the
+ * verse (the song text was edited) is skipped rather than misplaced.
+ */
+function getVerseSegments(context: string, options: WordForWordOptions): WordForWordSegment[] {
+  const spans = (options.songId && options.verseId ? verseSpans.songs[options.songId]?.[options.verseId] : undefined) ?? [];
+  const placed = spans
+    .filter((span) => context.slice(span.start, span.end) === span.surface)
+    .map((span) => ({ ...span, entries: dedupeMeanings(span.entryIds.map((id) => entriesById.get(id)).filter((entry): entry is WordForWordEntry => Boolean(entry?.meaning?.trim()))) }))
+    .filter((span) => span.entries.length);
+  const fallback = getSegmentsForValue(context, options);
+  if (!placed.length) return fallback;
+
+  const segments: WordForWordSegment[] = [];
+  let offset = 0;
+  const pushGap = (end: number) => {
+    // Fall back to the general glossary only for words lying wholly in the gap.
+    let fallbackOffset = 0;
+    for (const segment of fallback) {
+      const start = fallbackOffset;
+      fallbackOffset += segment.text.length;
+      if (fallbackOffset <= offset || start >= end) continue;
+      const inside = start >= offset && fallbackOffset <= end;
+      segments.push(inside && segment.entries.length ? segment : { text: context.slice(Math.max(start, offset), Math.min(fallbackOffset, end)), entries: [] });
+    }
+    offset = end;
+  };
+  for (const span of placed) {
+    if (span.start < offset) continue;
+    pushGap(span.start);
+    segments.push({ text: span.surface, entries: span.entries });
+    offset = span.end;
+  }
+  pushGap(context.length);
+  return segments;
+}
+
 export function getWordForWordSegments(value: string, options: WordForWordOptions = {}): WordForWordSegment[] {
-  if (!options.contextValue) return getSegmentsForValue(value, options);
+  if (!options.contextValue) return getVerseSegments(value, options);
 
   const contextOffset = options.contextOffset ?? 0;
-  const contextSegments = getSegmentsForValue(options.contextValue, options);
+  const contextSegments = getVerseSegments(options.contextValue, options);
   const rangeStart = contextOffset;
   const rangeEnd = contextOffset + value.length;
   let segmentOffset = 0;

@@ -126,13 +126,15 @@ type WordForWordTextProps = {
   value: string;
   songTitle?: string;
   verseNumber?: number;
+  songId?: string;
+  verseId?: string;
   contextValue?: string;
   contextOffset?: number;
   renderText?: (value: string, sourceOffset: number) => ReactNode;
 };
 
-export function WordForWordText({ value, songTitle, verseNumber, contextValue, contextOffset, renderText = (text) => text }: WordForWordTextProps) {
-  const segments = getWordForWordSegments(value, { songTitle, verseNumber, contextValue, contextOffset });
+export function WordForWordText({ value, songTitle, verseNumber, songId, verseId, contextValue, contextOffset, renderText = (text) => text }: WordForWordTextProps) {
+  const segments = getWordForWordSegments(value, { songTitle, verseNumber, songId, verseId, contextValue, contextOffset });
   let sourceOffset = 0;
   return (
     <>

@@ -880,7 +880,7 @@ function SongPageContent() {
                   <section className="teleprompter-shloka" key={verse.id}>
                     <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
                     <div>
-                      {verse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={verse.originalVerseNumber} /></p>)}
+                      {verse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={verse.originalVerseNumber} songId={song.id} verseId={verse.id} contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")} contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
                     </div>
                   </section>
                 ))}
@@ -892,7 +892,7 @@ function SongPageContent() {
               <section className="teleprompter-slideshow-verse" aria-live="polite">
                 <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${slideshowVerse.originalVerseNumber}`}>{String(slideshowVerseIndex + 1).padStart(2, "0")}</span>
                 <div>
-                  {slideshowVerse.lines.map((line) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={slideshowVerse.originalVerseNumber} /></p>)}
+                  {slideshowVerse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={slideshowVerse.originalVerseNumber} songId={song.id} verseId={slideshowVerse.id} contextValue={slideshowVerse.lines.map((verseLine) => verseLine.transliteration).join("\n")} contextOffset={slideshowVerse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
                 </div>
                 <output className="teleprompter-slide-position" aria-live="polite">{copy.song.teleprompterSlidePosition.replace("{current}", String(slideshowVerseIndex + 1)).replace("{total}", String(displayedVerses.length))}</output>
               </section>
@@ -1093,6 +1093,8 @@ function SongPageContent() {
                         value={line.transliteration}
                         songTitle={song.title}
                         verseNumber={verse.originalVerseNumber}
+                        songId={song.id}
+                        verseId={verse.id}
                         contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")}
                         contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)}
                         renderText={(text, offset) => (
