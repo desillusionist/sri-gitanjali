@@ -380,6 +380,145 @@ Words the editions genuinely word differently are not linked automatically; they
 | Nām-saṅkīrtan | 10 | kori āśa | syn-0185-003 | Reference reads kori āś (final a dropped); the app's āśa is the same word, and the automatic alignment lost it to the reordered second line. |
 | Aruṇodoya-kīrtan 1 | 3 | bolore | syn-0046-003 | Reference reads bolena bolo re; the app repeats bolore (= bolo re, “oh sing!”), so the first one takes the same gloss. |
 
+## Editorial glosses
+
+Words with no reference synonym, glossed per verse from scripts/word-for-word-editorial-glosses/ (127 songs, 8449 glosses). Meanings follow Gauḍīya Vaiṣṇava usage and each verse's English translation.
+
+- Āchārya-charaṇa-vandana: 80
+- Āchārya vandana: 276
+- After parikramā: 15
+- Ājñā-Ṭahal: 29
+- Akrodha paramānanda: 33
+- Āmāra jīvana: 56
+- Anya-abhilāṣa chāḍi: 217
+- Ātma-nivedana: 55
+- Ātma-samarpaṇe: 61
+- Auspicious Invocation to Śaraṇāgati: 45
+- Avatāra Sāra: 49
+- Bhagavān Śrīla Bhakti Siddhānta Saraswatī Ṭhākur: 15
+- Bhajan-gīti: 68
+- Bhajan-Lālasā: 26
+- Dainya: 67
+- Dainya Prārthanā Gīti: 43
+- Dainyātmikā: 60
+- Daśa-vidha Nāmāparādha: 116
+- Dayāl Nitāi Chaitanya: 39
+- Durlabha mānava-janma: 92
+- E ghora saṁsare: 27
+- Emona Gaurāṅga bine nāhi āra: 60
+- Gaṅgadhara Sadāśiva Praṇām-Mantram: 8
+- Gaurā Pahu̐: 30
+- Glorifying the Feet of the Spiritual Master: 4
+- Goptṛtve Varaṇa: 51
+- Guṇa-Kīrtan: 55
+- He deva bhavantaṁ vande: 34
+- Jadi Gaura nā ho’to: 37
+- Jaya Rādhā-Mādhava: 4
+- Jaya Yaśodā-Nandana Kṛṣṇa: 4
+- Kali-ghora timire: 48
+- Ke jabi ke jabi: 31
+- Ki‑rūpe pāibo sevā: 30
+- Mahāprasāda: 12
+- Maṅgalācharaṇa: 10
+- Māyā Duratyayā: 60
+- Mayura mukuṭa: 13
+- Nām-saṅkīrtan: 3
+- Nitāi guṇamaṇi āmāra: 33
+- Pañcha-tattva Mantra: 2
+- Prabhāti Gīti: 39
+- Prabhu kohe: 28
+- Praṇām Mantra to Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja: 27
+- Praṇām Mantra to Śrīla Swāmī Mahārāja: 14
+- Praṇati Daśakam: 61
+- Praṇati-Pañchakam: 24
+- Prārthanā Lalasāmayi: 44
+- Prayers to the Vaiṣṇavas: 12
+- Rādhā-kuṇḍataṭa-kuñja-kuṭīra: 41
+- Rūpa-Kīrtan: 77
+- Sarvasva tomāra: 45
+- Sāvaraṇa-Śrī-Gaura-pāda-padme Prārthanā: 12
+- Śrī Bhog Ārati Gīti: 9
+- Śrī Dayita Dās Praṇati Pañchakam: 41
+- Śrī Gaura-ārati: 98
+- Śrī Gaura Purṇīmā: 458
+- Śrī Gaurahari-Kusuma-Stavāṣṭakam: 44
+- Śrī Godrumachandra-bhajanopadeśa: 136
+- Śrī Govinda Kuṇḍa Gupta-Govardhan Ārati: 55
+- Śrī Govinda Kuṇḍa Māhātmya: 35
+- Śrī Govinda Kuṇḍa Māhātmya (Illumination): 38
+- Śrī Guru Ārati: 101
+- Śrī Guru Ārati-stuti: 76
+- Śrī Guru-paramparā: 26
+- Śrī Guru-Praśastiḥ: 145
+- Śrī Guru-vaiṣṇava Māhātmya-gīti: 17
+- Śrī Hari-vāsara-gīti: 102
+- Śrī Kṛṣṇera Viṁsottara-śata-nāma: 116
+- Śrī Nagara Kīrtana 4: 3
+- Śrī Nagara Kīrtana 8: 59
+- Śrī Nāmāṣṭakam 7: 48
+- Śrī Nāmāṣṭakam 8: 49
+- Śrī Prasāda-sevāya Gīti: 32
+- Śrī Rādhāṣṭaka 1: 45
+- Śrī Rādhāṣṭaka 2: 61
+- Śrī Rādhāṣṭaka 8: 58
+- Śrī Rādhikā-stava: 5
+- Śrī Śachīnandana-vandanā: 39
+- Śrī Sāraswat-ārati: 88
+- Śrī Śikṣāṣṭakam 1: 19
+- Śrī Śikṣāṣṭakam 2: 39
+- Śrī Śikṣāṣṭakam 3: 62
+- Śrī Śikṣāṣṭakam 4: 45
+- Śrī Śikṣāṣṭakam 5: 46
+- Śrī Śikṣāṣṭakam 6: 53
+- Śrī Śikṣāṣṭakam 7a: 60
+- Śrī Śikṣāṣṭakam 7b: 25
+- Śrī Śikṣāṣṭakam 7c: 24
+- Śrī Śikṣāṣṭakam 8a: 50
+- Śrī Śikṣāṣṭakam 8b: 62
+- Śrī Śrī Dāmodarāṣṭakam: 1
+- Śrī Śrī Dayita Dās Daśakam: 212
+- Śrī Śrī Gaurasundarer Avirbhāva Vasare: 125
+- Śrī Śrī Girirāj-Govardhan Ārati: 62
+- Śrī Śrī Govardhana-vāsa-prārthanā-daśakam: 121
+- Śrī Śrī Gurvāṣṭaka: 14
+- Śrī Śrī Nitāi-Chaitanya-Ārati: 61
+- Śrī Śrī Prabhupāda-padma Stavakaḥ: 51
+- Śrī Śrī Premadhāma-deva-stotram: 1443
+- Śrī Śrīmad Gaura-Kiśora-namaskāra Daśakam: 82
+- Śrī Vaiṣṇava-mahimā-gīti: 19
+- Śrī Vraja-dhāma-mahimāmṛta: 1
+- Śrī Yugala-ārati: 23
+- Śrīla Bhakti Bimal Avadhūt Mahārāja: 5
+- Śrīla Bhakti Nirmal Āchārya Mahārāja: 23
+- Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja: 14
+- Śrīla Bhakti Rañjan Madhusūdan Mahārāja: 8
+- Śrīla Bhakti Sudhīr Goswāmī Mahārāja: 7
+- Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja: 15
+- Śrīla Bhakti Vinod Ṭhākur: 3
+- Śrīla Gaura Kiśora Dās Bābājī Mahārāja: 4
+- Śrīla Jagannāth Dās Bābājī Mahārāja: 6
+- Śrīmad Bhakti Vinod-viraha Daśakam: 194
+- Śrīmad Rūpa-pada-rajaḥ Prārthanā Daśakam: 191
+- Śrīman Mahāprabhur śata-nāma: 108
+- Śrīman Nityānanda Dvādaśakam: 212
+- Śrita Kamalā: 34
+- Sva-Niṣṭha: 27
+- Tātala Saikate: 62
+- Ṭhākura-vaiṣṇava-gaṇa: 58
+- Ṭhākura-vaiṣṇava-pada: 47
+- The Glory of the Śrī Chaitanya Sāraswat Maṭh: 10
+- Tumi sarveśvareśvara: 45
+- Vaiṣṇava Ke?: 216
+- Vaiṣṇava Vijñāpti: 2
+- Vimala hemajini: 52
+
+Editorial glosses skipped because the reference already glosses those words:
+
+- Śrī Gaura-ārati verse-3: gaṇe
+- Śrī Nagara Kīrtana 4 verse-2: kṛṣṇa
+- Śrī Vraja-dhāma-mahimāmṛta verse-9: jaya
+- Śrī Vraja-dhāma-mahimāmṛta verse-9: jaya
+
 ## Refrains carried to their repeats
 
 - Praṇām Mantra to Śrīla Swāmī Mahārāja: namaḥ (1 occurrences)
@@ -398,115 +537,4 @@ Words the editions genuinely word differently are not linked automatically; they
 
 ## App songs without reference synonyms
 
-- Śrīla Bhakti Bimal Avadhūt Mahārāja
-- Śrīla Bhakti Sudhīr Goswāmī Mahārāja
-- Śrīla Bhakti Rañjan Madhusūdan Mahārāja
-- Śrīla Bhakti Nirmal Āchārya Mahārāja
-- Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja
-- Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja
-- Bhagavān Śrīla Bhakti Siddhānta Saraswatī Ṭhākur
-- Śrīla Gaura Kiśora Dās Bābājī Mahārāja
-- Śrīla Bhakti Vinod Ṭhākur
-- Śrīla Jagannāth Dās Bābājī Mahārāja
-- Maṅgalācharaṇa
-- Glorifying the Feet of the Spiritual Master
-- Prayers to the Vaiṣṇavas
-- The Glory of the Śrī Chaitanya Sāraswat Maṭh
-- Pañcha-tattva Mantra
 - Hare Krishna Mahāmantra
-- Daśa-vidha Nāmāparādha
-- Śrī Śrī Govardhana-vāsa-prārthanā-daśakam
-- Śrī Govinda Kuṇḍa Gupta-Govardhan Ārati
-- Śrī Śrī Girirāj-Govardhan Ārati
-- Śrī Śrī Nitāi-Chaitanya-Ārati
-- Śrī Guru Ārati
-- Śrī Guru Ārati-stuti
-- Prabhāti Gīti
-- Śrī Śachīnandana-vandanā
-- Auspicious Invocation to Śaraṇāgati
-- Bhajan-gīti
-- Ṭhākura-vaiṣṇava-gaṇa
-- Mahāprasāda
-- Śrī Prasāda-sevāya Gīti
-- Śrī Sāraswat-ārati
-- Dainya Prārthanā Gīti
-- Śrī Śrī Prabhupāda-padma Stavakaḥ
-- Śrī Śrī Premadhāma-deva-stotram
-- Ājñā-Ṭahal
-- Sva-Niṣṭha
-- Nitāi guṇamaṇi āmāra
-- Akrodha paramānanda
-- Dayāl Nitāi Chaitanya
-- Gaurā Pahu̐
-- Avatāra Sāra
-- Kali-ghora timire
-- Jadi Gaura nā ho’to
-- Emona Gaurāṅga bine nāhi āra
-- Ke jabi ke jabi
-- Vimala hemajini
-- Śrī Śrī Gaurasundarer Avirbhāva Vasare
-- Śrī Godrumachandra-bhajanopadeśa
-- Ṭhākura-vaiṣṇava-pada
-- Prārthanā Lalasāmayi
-- Śrī Nāmāṣṭakam 8
-- Śrī Nāmāṣṭakam 7
-- Ki‑rūpe pāibo sevā
-- E ghora saṁsare
-- Vaiṣṇava Ke?
-- Dainyātmikā
-- Goptṛtve Varaṇa
-- Dainya
-- Bhajan-Lālasā
-- Ātma-nivedana
-- Āmāra jīvana
-- Tumi sarveśvareśvara
-- Sarvasva tomāra
-- Tātala Saikate
-- Ātma-samarpaṇe
-- Durlabha mānava-janma
-- Anya-abhilāṣa chāḍi
-- Śrī Śikṣāṣṭakam 1
-- Śrī Śikṣāṣṭakam 2
-- Śrī Śikṣāṣṭakam 3
-- Śrī Śikṣāṣṭakam 4
-- Śrī Śikṣāṣṭakam 5
-- Śrī Śikṣāṣṭakam 6
-- Śrī Śikṣāṣṭakam 7a
-- Śrī Śikṣāṣṭakam 7b
-- Śrī Śikṣāṣṭakam 7c
-- Śrī Śikṣāṣṭakam 8a
-- Śrī Śikṣāṣṭakam 8b
-- Śrī Rādhāṣṭaka 1
-- Śrī Rādhāṣṭaka 2
-- Śrī Rādhāṣṭaka 8
-- Rādhā-kuṇḍataṭa-kuñja-kuṭīra
-- He deva bhavantaṁ vande
-- Mayura mukuṭa
-- Śrī Yugala-ārati
-- Rūpa-Kīrtan
-- Guṇa-Kīrtan
-- Jaya Yaśodā-Nandana Kṛṣṇa
-- Śrita Kamalā
-- Āchārya-charaṇa-vandana
-- Śrī Dayita Dās Praṇati Pañchakam
-- Śrīman Mahāprabhur śata-nāma
-- Śrī Kṛṣṇera Viṁsottara-śata-nāma
-- Śrī Hari-vāsara-gīti
-- Śrī Gaura Purṇīmā
-- Prabhu kohe
-- After parikramā
-- Śrī Nagara Kīrtana 8
-- Śrīmad Bhakti Vinod-viraha Daśakam
-- Śrī Śrīmad Gaura-Kiśora-namaskāra Daśakam
-- Śrī Śrī Dayita Dās Daśakam
-- Śrīmad Rūpa-pada-rajaḥ Prārthanā Daśakam
-- Śrīman Nityānanda Dvādaśakam
-- Śrī Gaurahari-Kusuma-Stavāṣṭakam
-- Praṇām Mantra to Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja
-- Praṇati Daśakam
-- Śrī Govinda Kuṇḍa Māhātmya
-- Śrī Govinda Kuṇḍa Māhātmya (Illumination)
-- Gaṅgadhara Sadāśiva Praṇām-Mantram
-- Śrī Guru-Praśastiḥ
-- Praṇati-Pañchakam
-- Māyā Duratyayā

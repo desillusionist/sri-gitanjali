@@ -1,0 +1,11 @@
+@ sri-nagara-kirtana-4-150
+// Śrī Nagara-kīrtana 4: sung additions the reference does not gloss. Editorial glosses.
+
+# verse-2
+// The first “kṛṣṇa” (in kṛṣṇa-dās) is glossed by the reference.
+kṛṣṇa = Kṛṣṇa
+kṛṣṇa = Kṛṣṇa
+
+# verse-3
+rādhā = Rādhā
+jāy = go

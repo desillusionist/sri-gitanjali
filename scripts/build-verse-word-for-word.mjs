@@ -4,7 +4,7 @@
 // verse each block belongs to and where each synonym sits in that verse.
 //
 // Usage: node scripts/build-verse-word-for-word.mjs <reference.html> [report.md]
-import { readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 
 const [htmlPath, reportPath = "word-for-word-verse-alignment-report.md"] = process.argv.slice(2);
 if (!htmlPath) throw new Error("Pass the path to SongBook-wordForWord-Vedabase-updated.html");
@@ -13,6 +13,7 @@ const SONGS_FILE = "local-storage/songs_577f33d4.json";
 const GLOSSARY_FILE = "client/src/data/word-for-word-glossary.json";
 const OUTPUT_FILE = "client/src/data/word-for-word-verses.json";
 const OVERRIDES_FILE = "scripts/word-for-word-verse-overrides.json";
+const EDITORIAL_GLOSSES_DIR = "scripts/word-for-word-editorial-glosses";
 
 // A reference block is assigned to an app verse when this share of its letter
 // trigrams occurs in that verse (after spelling folding).
@@ -554,7 +555,94 @@ for (const song of songs) {
   }
 }
 
-const glossaryIds = new Set([...glossary.entries.map((entry) => entry.id), ...Object.keys(editorialEntries)]);
+// Editorial glosses for words the reference leaves without a synonym, one text
+// file per song in scripts/word-for-word-editorial-glosses/:
+//
+//   @ song-id
+//   # verse-1
+//   surface = meaning
+//
+// Pairs are listed in reading order; a surface is looked up as a whole word or
+// phrase after the previous one, so repeated words resolve in order. Words that
+// already carry a reference synonym keep it. Lines starting with // are notes.
+function parseGlossFile(text, file) {
+  let songId = null;
+  let verseId = null;
+  const verses = {};
+  for (const [index, raw] of text.split("\n").entries()) {
+    const line = raw.trim();
+    if (!line || line.startsWith("//")) continue;
+    if (line.startsWith("@")) { songId = line.slice(1).trim(); continue; }
+    if (line.startsWith("#")) { verseId = line.slice(1).trim(); verses[verseId] ??= []; continue; }
+    const separator = line.indexOf(" = ");
+    if (separator < 0 || !verseId) throw new Error(`${file}:${index + 1}: expected “surface = meaning” under a # verse heading`);
+    verses[verseId].push([line.slice(0, separator).trim(), line.slice(separator + 3).trim()]);
+  }
+  if (!songId) throw new Error(`${file}: missing “@ song-id” line`);
+  return { songId, verses };
+}
+const editorialGlosses = { files: 0, placed: 0, keptReference: [], bySong: new Map() };
+const editorialIdByKey = new Map();
+// Stored compactly as [surface, meaning]; the app expands them into glossary entries.
+const editorialGlossEntries = {};
+for (const file of (await readdir(EDITORIAL_GLOSSES_DIR).catch(() => [])).filter((name) => name.endsWith(".txt")).sort()) {
+  const { songId, verses } = parseGlossFile(await readFile(`${EDITORIAL_GLOSSES_DIR}/${file}`, "utf8"), file);
+  editorialGlosses.files += 1;
+  const editorialId = (surface, meaning) => {
+    const key = `${surface.toLowerCase()}\u0000${meaning}`;
+    if (!editorialIdByKey.has(key)) {
+      const id = `ed-${String(editorialIdByKey.size + 1).padStart(5, "0")}`;
+      editorialIdByKey.set(key, id);
+      editorialGlossEntries[id] = [surface, meaning];
+    }
+    return editorialIdByKey.get(key);
+  };
+  const place = (state, start, end, surface, meaning) => {
+    state.spans.push({ start, end, entryIds: [editorialId(surface, meaning)] });
+    editorialGlosses.placed += 1;
+    editorialGlosses.bySong.set(songId, (editorialGlosses.bySong.get(songId) ?? 0) + 1);
+  };
+  const wordPattern = (surface) => new RegExp(`(?<![\\p{L}\\p{M}])${escapeRegExp(surface)}(?![\\p{L}\\p{M}])`, "gu");
+  for (const [verseId, pairs] of Object.entries(verses)) {
+    if (verseId === "*") continue;
+    const candidate = appVerses.find((item) => item.song.id === songId && item.verse.id === verseId);
+    if (!candidate) throw new Error(`Editorial gloss verse not found: ${file} ${songId} ${verseId}`);
+    const state = verseState(candidate);
+    state.spans ??= [];
+    let cursor = 0;
+    for (const [surface, meaning] of pairs) {
+      const pattern = wordPattern(surface);
+      pattern.lastIndex = cursor;
+      const match = pattern.exec(candidate.context);
+      if (!match) throw new Error(`Editorial gloss not found in order: ${file} ${verseId} “${surface}”`);
+      const start = match.index;
+      const end = start + surface.length;
+      cursor = end;
+      if (state.spans.some((span) => span.start < end && start < span.end)) editorialGlosses.keptReference.push({ songId, verseId, surface });
+      else place(state, start, end, surface, meaning);
+    }
+    state.spans.sort((left, right) => left.start - right.start);
+  }
+  // “# *” lists refrains and recurring words glossed alike in every verse of the
+  // song; they fill whatever the verse-specific lines left open.
+  for (const [surface, meaning] of verses["*"] ?? []) {
+    let found = false;
+    for (const candidate of appVerses.filter((item) => item.song.id === songId)) {
+      const state = verseState(candidate);
+      state.spans ??= [];
+      for (const match of candidate.context.matchAll(wordPattern(surface))) {
+        found = true;
+        const start = match.index;
+        const end = start + surface.length;
+        if (!state.spans.some((span) => span.start < end && start < span.end)) place(state, start, end, surface, meaning);
+      }
+      state.spans.sort((left, right) => left.start - right.start);
+    }
+    if (!found) throw new Error(`Editorial gloss for every verse not found: ${file} “${surface}”`);
+  }
+}
+
+const glossaryIds = new Set([...glossary.entries.map((entry) => entry.id), ...Object.keys(editorialEntries), ...Object.keys(editorialGlossEntries)]);
 const output = {};
 for (const { candidate, spans = [] } of verseStates.values()) {
   if (!spans.length) continue;
@@ -564,8 +652,9 @@ for (const { candidate, spans = [] } of verseStates.values()) {
 
 await writeFile(OUTPUT_FILE, `${JSON.stringify({
   schemaVersion: 1,
-  description: "Verse-specific word-for-word spans: character ranges in each app verse (lines joined by \\n) linked to glossary entries from the SYNONYMS block that belongs to that verse. Generated by scripts/build-verse-word-for-word.mjs.",
+  description: "Verse-specific word-for-word spans: character ranges in each app verse (lines joined by \\n) linked to glossary entries from the SYNONYMS block that belongs to that verse, or to editorial glosses (editorialGlosses: id -> [surface, meaning]) for words the reference leaves unglossed. Generated by scripts/build-verse-word-for-word.mjs.",
   editorialEntries,
+  editorialGlosses: editorialGlossEntries,
   songs: output,
 })}\n`);
 
@@ -599,6 +688,9 @@ lines.push("", "## Placed by direct search (word order differs between editions)
 for (const { block, entry, candidate } of report.reordered) lines.push(`| ${block.sectionId} | ${entry.sourceTerm} | ${candidate.song.title} | ${candidate.verse.originalVerseNumber} |`);
 lines.push("", "## Manual links (editorial)", "", "| Song | Verse | App words | Linked to | Note |", "|---|---|---|---|---|");
 for (const override of appliedOverrides) lines.push(`| ${songById.get(override.songId)?.title} | ${override.verseId.replace("verse-", "")} | ${override.surface} | ${[...override.entryIds.filter((id) => !id.startsWith("edit-")), ...(override.meaning ? [`“${override.meaning}” (editorial)`] : [])].join(", ") || "(no link)"} | ${override.note} |`);
+lines.push("", "## Editorial glosses", "", `Words with no reference synonym, glossed per verse from scripts/word-for-word-editorial-glosses/ (${editorialGlosses.files} songs, ${editorialGlosses.placed} glosses). Meanings follow Gauḍīya Vaiṣṇava usage and each verse's English translation.`, "");
+for (const [songId, count] of editorialGlosses.bySong) lines.push(`- ${songById.get(songId)?.title}: ${count}`);
+if (editorialGlosses.keptReference.length) lines.push("", "Editorial glosses skipped because the reference already glosses those words:", "", ...editorialGlosses.keptReference.map(({ songId, verseId, surface }) => `- ${songById.get(songId)?.title} ${verseId}: ${surface}`));
 lines.push("", "## Refrains carried to their repeats", "");
 const propagatedBySong = new Map();
 for (const item of propagated) propagatedBySong.set(item.songId, [...(propagatedBySong.get(item.songId) ?? []), item.surface]);

@@ -1,0 +1,8 @@
+@ sri-vraja-dhama-mahimamrta-131
+// Śrī Vraja-dhāma-mahimāmṛta: a word the reference does not gloss. Editorial glosses.
+
+# verse-9
+// The first two “jaya” are glossed by the reference; listed to reach the third.
+jaya = glory
+jaya = glory
+jaya = glory

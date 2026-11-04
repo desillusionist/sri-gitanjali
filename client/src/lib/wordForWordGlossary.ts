@@ -42,9 +42,18 @@ const entriesById = new Map(glossary.entries.map((entry) => [entry.id, entry]));
 // Verse-specific links: the SYNONYMS block that belongs to each app verse,
 // placed on its exact words (see scripts/build-verse-word-for-word.mjs).
 type VerseSpan = { start: number; end: number; surface: string; entryIds: string[] };
-type VerseSpansData = { editorialEntries: Record<string, WordForWordEntry>; songs: Record<string, Record<string, VerseSpan[]>> };
-const verseSpans = verseSpansData as VerseSpansData;
+type VerseSpansData = {
+  editorialEntries: Record<string, WordForWordEntry>;
+  // Editorial glosses for words the reference leaves unglossed, as [surface, meaning]
+  // (scripts/word-for-word-editorial-glosses/).
+  editorialGlosses: Record<string, [string, string]>;
+  songs: Record<string, Record<string, VerseSpan[]>>;
+};
+const verseSpans = verseSpansData as unknown as VerseSpansData;
 Object.values(verseSpans.editorialEntries).forEach((entry) => entriesById.set(entry.id, entry));
+Object.entries(verseSpans.editorialGlosses).forEach(([id, [sourceTerm, meaning]]) => {
+  entriesById.set(id, { id, sectionId: "editorial-gloss", entryOrder: 0, collection: "Editorial gloss", songOrPrayer: "", verseLabel: null, sourceTerm, meaning, parseStatus: "editorial", rawSegment: `${sourceTerm} = ${meaning}` });
+});
 const sourceTermsByNormalizedTerm = new Map<string, string[]>();
 const sandhiStartAliases = new Set<string>();
 const sandhiEndAliases = new Set<string>();

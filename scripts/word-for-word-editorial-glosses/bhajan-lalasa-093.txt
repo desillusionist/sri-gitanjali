@@ -1,0 +1,36 @@
+@ bhajan-lalasa-093
+// Bhajana-lālasā (Śrīla Bhaktivinoda Ṭhākura, Śaraṇāgati): the verses the reference does not gloss. Editorial glosses.
+
+# verse-1
+agati = helpless
+hoiyā = being
+dekhi = I see
+upāya = means
+āro = other
+agatira = of the helpless
+śaraṇa = shelter
+tomāya = You
+korinu = I have made
+
+# verse-2
+karama = pious deeds
+geyāna = knowledge
+sādhana = practice
+bhajana = worship
+
+# verse-3
+vākya-mano-vega = the urges of speech and mind
+krodha-jihvā-vega = the urges of anger and the tongue
+udara-upastha-vega = the urges of the belly and genitals
+miliyā = joining
+bhāsāye = set adrift
+diteche = are giving
+paramodvega = great anxiety
+
+# verse-4
+oneka = many
+damane = in subduing
+chāḍiyāchi = I have given up
+anāthera = of the destitute
+ḍāki = I call
+nāma = Name

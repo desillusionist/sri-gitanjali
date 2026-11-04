@@ -1,0 +1,55 @@
+@ srita-kamala-135
+// Śrita Kamalā (Śrīla Jayadeva Gosvāmī, Gīta-govinda). Editorial glosses.
+// Note: the app text has “gaṣjana” and “raṣjana” in verse 3, probably typos for gañjana and rañjana; glossed as written.
+
+# verse-1
+śrita-kamalā-kuchha-maṇḍala = embraced by the bosom of Kamalā (Lakṣmī)
+dhṛta-kuṇḍala = wearing earrings
+kalita-lalita-vana-māla = adorned with a charming forest garland
+
+# verse-2
+dina-maṇi-maṇḍala-maṇḍana = shining like the orb of the sun
+bhava-khaṇḍana = destroyer of material existence
+muni-jana-mānasa-haṁsa = the swan in the lake of the sages’ minds
+
+# verse-3
+kāliya-viṣa-dhara-gaṣjana = subduer of the venomous Kāliya
+jana-raṣjana = delighter of the people
+yadukula-nalina-dineśa = the sun for the lotus of the Yadu dynasty
+
+# verse-4
+madhu-mura-naraka-vināśana = destroyer of Madhu, Mura and Naraka
+garuḍāsana = seated on Garuḍa
+sura-kula-keli-nidāna = the source of the gods’ joy
+
+# verse-5
+amala-kamala-dala-lochana = with eyes like spotless lotus petals
+bhava-mochana = deliverer from material existence
+tribhuvana-bhuvana-nidhāna = the abode of the three worlds
+
+# verse-6
+janaka-sutā-kṛta-bhūṣaṇa = adorned by Janaka’s daughter (Sītā)
+jita-dūṣaṇa = conqueror of Dūṣaṇa
+samara-śamita-daśa-kaṇṭha = who killed ten-headed Rāvaṇa in battle
+
+# verse-7
+abhinava-jala-dhara-sundara = beautiful like a fresh rain cloud
+dhṛta-mandara = holder of Mandara (and Govardhana)
+śrī-mukha-chandra-chakora = the chakora bird for the moon of Śrī (Rādhā)’s face
+
+# verse-8
+charaṇaṁ = at the feet
+praṇatā = bowed
+vayam = we
+bhāvaya = consider
+kuru = please give
+kuśalaṁ = welfare
+praṇateṣu = to those who bow
+
+# verse-9
+śrī-jayadeva-kaver = of the poet Śrī Jayadeva
+idaṁ = this
+kurute = gives
+mudam = joy
+maṅgalam = auspicious
+ujjvala-gītaṁ = brilliant song

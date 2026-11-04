@@ -61,6 +61,24 @@ describe("verse-specific word-for-word links", () => {
     expect(lineFour.some((segment) => segment.entries.some((entry) => entry.meaning === "in Jayatīrtha's service"))).toBe(true);
   });
 
+  it("uses editorial glosses for words the reference leaves unglossed", () => {
+    expect(meaningOf("sri-sri-premadhama-deva-stotram-057", "verse-1", "naumi")).toEqual(["I offer my obeisances"]);
+    expect(meaningOf("sri-gaura-purnima-147", "verse-89", "phālgun")).toEqual(["Phālguna"]);
+    expect(meaningOf("sri-guru-parampara-137", "verse-10", "śrīdhara")).toEqual(["Śrīdhara"]);
+  });
+
+  it("gives every word of every verse a meaning", () => {
+    const missing: string[] = [];
+    for (const song of songs) {
+      for (const verse of song.verses) {
+        for (const segment of getWordForWordSegments(verseContext(song.id, verse.id), { songId: song.id, verseId: verse.id, songTitle: song.title })) {
+          if (!segment.entries.length && /\p{L}/u.test(segment.text)) missing.push(`${song.id} ${verse.id}: ${segment.text.trim()}`);
+        }
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+
   it("ignores links whose words no longer match an edited verse", () => {
     const segments = getWordForWordSegments("edited text without the original words", { songId: "sri-guru-parampara-137", verseId: "verse-2" });
     expect(segments.map((segment) => segment.text).join("")).toBe("edited text without the original words");
