@@ -301,6 +301,8 @@ function SongPageContent() {
     return song.verses.map((verse) => ({
       ...verse,
       lines: areSecondaryOrnamentsHidden ? hideSecondarySongOrnamentsInLines(verse.lines) : verse.lines,
+      // The verse as stored, so word-for-word links stay on the right words when ornaments are hidden.
+      sourceContextValue: verse.lines.map((line) => line.transliteration).join("\n"),
     }));
   }, [areSecondaryOrnamentsHidden, song]);
   const matches = useMemo(() => song ? getSongSearchMatches(song, query) : [], [query, song]);
@@ -968,7 +970,7 @@ function SongPageContent() {
                   <section className="teleprompter-shloka" key={verse.id}>
                     <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
                     <div>
-                      {verse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={verse.originalVerseNumber} songId={song.id} verseId={verse.id} contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")} contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
+                      {verse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={verse.originalVerseNumber} songId={song.id} verseId={verse.id} contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")} sourceContextValue={verse.sourceContextValue} contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
                     </div>
                   </section>
                 ))}
@@ -980,7 +982,7 @@ function SongPageContent() {
               <section className="teleprompter-slideshow-verse" aria-live="polite">
                 <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${slideshowVerse.originalVerseNumber}`}>{String(slideshowVerseIndex + 1).padStart(2, "0")}</span>
                 <div>
-                  {slideshowVerse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={slideshowVerse.originalVerseNumber} songId={song.id} verseId={slideshowVerse.id} contextValue={slideshowVerse.lines.map((verseLine) => verseLine.transliteration).join("\n")} contextOffset={slideshowVerse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
+                  {slideshowVerse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={slideshowVerse.originalVerseNumber} songId={song.id} verseId={slideshowVerse.id} contextValue={slideshowVerse.lines.map((verseLine) => verseLine.transliteration).join("\n")} sourceContextValue={slideshowVerse.sourceContextValue} contextOffset={slideshowVerse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
                 </div>
                 <output className="teleprompter-slide-position" aria-live="polite">{copy.song.teleprompterSlidePosition.replace("{current}", String(slideshowVerseIndex + 1)).replace("{total}", String(displayedVerses.length))}</output>
               </section>
@@ -1188,7 +1190,7 @@ function SongPageContent() {
                         songId={song.id}
                         verseId={verse.id}
                         contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")}
-                        contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)}
+                        sourceContextValue={verse.sourceContextValue} contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)}
                         renderText={(text, offset) => (
                           <SongMatchText
                             value={text}

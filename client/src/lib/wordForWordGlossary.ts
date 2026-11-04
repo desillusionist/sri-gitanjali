@@ -1,3 +1,4 @@
+import { hideSecondarySongOrnamentsWithOffsets } from "@/domain/song";
 import glossaryData from "@/data/word-for-word-glossary.json";
 import derivedAliasesData from "@/data/word-for-word-derived-aliases.json";
 import referenceSectionMappingsData from "@/data/reference-section-mappings.json";
@@ -237,7 +238,16 @@ function dedupeMeanings(entries: WordForWordEntry[]): WordForWordEntry[] {
   });
 }
 
-type WordForWordOptions = { songTitle?: string; verseNumber?: number; songId?: string; verseId?: string; contextValue?: string; contextOffset?: number };
+type WordForWordOptions = {
+  songTitle?: string;
+  verseNumber?: number;
+  songId?: string;
+  verseId?: string;
+  contextValue?: string;
+  contextOffset?: number;
+  /** The verse as stored, when the shown text has its secondary ornaments hidden. */
+  sourceContextValue?: string;
+};
 
 function getSegmentsForValue(value: string, options: { songTitle?: string; verseNumber?: number } = {}): WordForWordSegment[] {
   if (!value.trim()) return [{ text: value, entries: [] }];
@@ -284,12 +294,39 @@ function getSegmentsForValue(value: string, options: { songTitle?: string; verse
 }
 
 /**
+ * Links are anchored to the verse as stored. When “Hide secondary song
+ * ornaments” shortens it, each link moves to where its words now sit; a link
+ * whose words were all hidden is dropped.
+ */
+function mapSpansOntoShortenedVerse(spans: VerseSpan[], source: string, shown: string): VerseSpan[] {
+  const { text, offsets } = hideSecondarySongOrnamentsWithOffsets(source);
+  if (text !== shown) return spans;
+  const shownIndexByOffset = new Map(offsets.map((offset, index) => [offset, index]));
+  return spans.flatMap((span) => {
+    if (source.slice(span.start, span.end) !== span.surface) return [];
+    const shownIndexes: number[] = [];
+    for (let offset = span.start; offset < span.end; offset += 1) {
+      const index = shownIndexByOffset.get(offset);
+      if (index !== undefined) shownIndexes.push(index);
+    }
+    const letters = shownIndexes.filter((index) => isWordCharacter(shown[index]) || /[\u1e00-\u1eff]/.test(shown[index]));
+    if (!letters.length) return [];
+    const start = Math.min(...letters);
+    const end = Math.max(...letters) + 1;
+    return [{ ...span, start, end, surface: shown.slice(start, end) }];
+  });
+}
+
+/**
  * Segments a whole verse: the verse's own synonyms first, then the general
  * glossary for any words between them. A span whose text no longer matches the
  * verse (the song text was edited) is skipped rather than misplaced.
  */
 function getVerseSegments(context: string, options: WordForWordOptions): WordForWordSegment[] {
-  const spans = (options.songId && options.verseId ? verseSpans.songs[options.songId]?.[options.verseId] : undefined) ?? [];
+  const storedSpans = (options.songId && options.verseId ? verseSpans.songs[options.songId]?.[options.verseId] : undefined) ?? [];
+  const spans = options.sourceContextValue && options.sourceContextValue !== context
+    ? mapSpansOntoShortenedVerse(storedSpans, options.sourceContextValue, context)
+    : storedSpans;
   const placed = spans
     .filter((span) => context.slice(span.start, span.end) === span.surface)
     .map((span) => ({ ...span, entries: dedupeMeanings(span.entryIds.map((id) => entriesById.get(id)).filter((entry): entry is WordForWordEntry => Boolean(entry?.meaning?.trim()))) }))

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import verseData from "@/data/word-for-word-verses.json";
 import type { Song } from "@/domain/song";
 import { getWordForWordSegments } from "@/lib/wordForWordGlossary";
+import { hideSecondarySongOrnamentsInLines } from "@/domain/song";
 
 const songs: Song[] = JSON.parse(readFileSync("local-storage/songs_577f33d4.json", "utf8"));
 const spansBySong = (verseData as { songs: Record<string, Record<string, Array<{ start: number; end: number; surface: string }>>> }).songs;
@@ -79,6 +80,21 @@ describe("verse-specific word-for-word links", () => {
       }
     }
     expect(missing).toEqual([]);
+  });
+
+  it("keeps verse meanings when secondary ornaments are hidden", () => {
+    const problems: string[] = [];
+    for (const song of songs) {
+      for (const verse of song.verses) {
+        const source = verseContext(song.id, verse.id);
+        const shown = hideSecondarySongOrnamentsInLines(verse.lines).map((line) => line.transliteration).join("\n");
+        if (shown === source) continue;
+        for (const segment of getWordForWordSegments(shown, { songId: song.id, verseId: verse.id, songTitle: song.title, sourceContextValue: source })) {
+          if (/\p{L}/u.test(segment.text) && (!segment.entries.length || segment.source === "glossary")) problems.push(`${song.id} ${verse.id}: ${segment.text.trim()}`);
+        }
+      }
+    }
+    expect(problems).toEqual([]);
   });
 
   it("ignores links whose words no longer match an edited verse", () => {

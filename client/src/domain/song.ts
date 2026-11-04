@@ -230,6 +230,47 @@ export function hideSecondarySongOrnamentsInLines(lines: SongLine[]): SongLine[]
   });
 }
 
+/**
+ * The same text as hideSecondarySongOrnamentsInLines (lines joined by "\n"),
+ * plus, for each character, its position in the original joined text, so
+ * links anchored to the original verse can be placed on the shortened one.
+ */
+export function hideSecondarySongOrnamentsWithOffsets(context: string): { text: string; offsets: number[] } {
+  let parenthesisDepth = 0;
+  let originalOffset = 0;
+  const visibleLines: Array<Array<{ character: string; offset: number }>> = [];
+  for (const line of context.split("\n")) {
+    const tokens: Array<{ character: string; offset: number }> = [];
+    for (const character of line) {
+      const offset = originalOffset;
+      originalOffset += character.length;
+      if (character === "(") { parenthesisDepth += 1; continue; }
+      if (character === ")" && parenthesisDepth > 0) { parenthesisDepth -= 1; continue; }
+      if (parenthesisDepth === 0) tokens.push({ character, offset });
+    }
+    originalOffset += 1; // the "\n"
+    // Mirror hideSecondarySongOrnaments: collapse runs of whitespace, drop space before punctuation, trim.
+    const collapsed: typeof tokens = [];
+    for (const token of tokens) {
+      const isSpace = /\s/.test(token.character);
+      const previous = collapsed[collapsed.length - 1];
+      if (isSpace && previous && /\s/.test(previous.character)) continue;
+      if (/[,.;:!?]/.test(token.character)) while (collapsed.length && /\s/.test(collapsed[collapsed.length - 1].character)) collapsed.pop();
+      collapsed.push(isSpace ? { character: " ", offset: token.offset } : token);
+    }
+    while (collapsed.length && /\s/.test(collapsed[0].character)) collapsed.shift();
+    while (collapsed.length && /\s/.test(collapsed[collapsed.length - 1].character)) collapsed.pop();
+    if (collapsed.length) visibleLines.push(collapsed);
+  }
+  const offsets: number[] = [];
+  let text = "";
+  visibleLines.forEach((line, index) => {
+    if (index) { text += "\n"; offsets.push(-1); }
+    for (const token of line) { text += token.character; offsets.push(token.offset); }
+  });
+  return { text, offsets };
+}
+
 export function normalizeSearchText(value: string): string {
   return value
     .normalize("NFKD")
