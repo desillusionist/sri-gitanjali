@@ -27,7 +27,7 @@ export function AppShell({ children }: AppShellProps) {
 
     event.preventDefault();
     const hash = `#${targetId}`;
-    window.history.pushState(null, "", `/${hash}`);
+    window.history.pushState(null, "", `${import.meta.env.BASE_URL}${hash}`);
     document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 

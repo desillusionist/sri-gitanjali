@@ -10,7 +10,10 @@ import Home from "./pages/Home";
 import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 import SongPage from "./pages/SongPage";
-import { Route, Switch } from "wouter";
+import { Route, Router as WouterRouter, Switch } from "wouter";
+
+// "/sri-gitanjali" on GitHub Pages, "" everywhere else.
+const ROUTER_BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -31,7 +34,7 @@ export default function App() {
         <TooltipProvider>
           <LanguageProvider>
             <SongLibraryProvider>
-              <Router />
+              <WouterRouter base={ROUTER_BASE}><Router /></WouterRouter>
               <Toaster richColors position="bottom-right" />
             </SongLibraryProvider>
           </LanguageProvider>

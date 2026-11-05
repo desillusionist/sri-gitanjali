@@ -10,26 +10,28 @@
  * Precaching tolerates a missing file, so one absent asset never disables
  * offline use.
  */
-const CACHE_NAME = "kirtan-guide-v4";
+const CACHE_NAME = "kirtan-guide-v5";
+// "/" locally, "/sri-gitanjali/" on GitHub Pages.
+const BASE = new URL(self.registration.scope).pathname;
 const PRECACHE = [
-  "/",
-  "/manifest.webmanifest",
-  "/manus-storage/songs_577f33d4.json",
-  "/manus-storage/ru_user_updates_cd7dcc2b.json",
-  "/manus-storage/PalakaNew_e7867ee6.otf",
-  "/manus-storage/kirtan-guide-peacock-plume_09e0a26b.png",
-  "/manus-storage/kirtan-guide-icon-192.png",
-  "/manus-storage/kirtan-guide-icon-512.png",
-  "/manus-storage/nabadwip-temple02-hero_14e93d5b.webp",
-];
+  "",
+  "manifest.webmanifest",
+  "manus-storage/songs_577f33d4.json",
+  "manus-storage/ru_user_updates_cd7dcc2b.json",
+  "manus-storage/PalakaNew_e7867ee6.otf",
+  "manus-storage/kirtan-guide-peacock-plume_09e0a26b.png",
+  "manus-storage/kirtan-guide-icon-192.png",
+  "manus-storage/kirtan-guide-icon-512.png",
+  "manus-storage/nabadwip-temple02-hero_14e93d5b.webp",
+].map((path) => BASE + path);
 
 async function precache() {
   const cache = await caches.open(CACHE_NAME);
   // The built scripts and styles named in the page, so the first visit already works offline.
   let shellAssets = [];
   try {
-    const html = await (await fetch("/", { cache: "reload" })).text();
-    shellAssets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g)].map((match) => match[1]);
+    const html = await (await fetch(BASE, { cache: "reload" })).text();
+    shellAssets = [...html.matchAll(/(?:src|href)="([^"]*\/assets\/[^"]+)"/g)].map((match) => new URL(match[1], self.location.href).pathname);
   } catch {
     // Offline during install: assets are cached as they load.
   }
@@ -67,21 +69,23 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   // In development, Vite modules must always arrive from the live server.
-  if (url.pathname.startsWith("/src/") || url.pathname.startsWith("/@") || url.pathname.startsWith("/node_modules/") || url.pathname.startsWith("/api/")) return;
+  if (!url.pathname.startsWith(BASE)) return;
+  const path = url.pathname.slice(BASE.length - 1);
+  if (path.startsWith("/src/") || path.startsWith("/@") || path.startsWith("/node_modules/") || path.startsWith("/api/")) return;
 
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          event.waitUntil(putInCache("/", response.clone()));
+          event.waitUntil(putInCache(BASE, response.clone()));
           return response;
         })
-        .catch(async () => (await caches.match("/")) || Response.error()),
+        .catch(async () => (await caches.match(BASE)) || Response.error()),
     );
     return;
   }
 
-  if (url.pathname.startsWith("/assets/")) {
+  if (path.startsWith("/assets/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
         event.waitUntil(putInCache(event.request, response.clone()));

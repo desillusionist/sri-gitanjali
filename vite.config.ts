@@ -165,9 +165,27 @@ function vitePluginOptionalAnalytics(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginOptionalAnalytics()];
+// GitHub Pages serves the site from /<repository>/; everywhere else it lives at /.
+const BASE = process.env.PAGES_BASE || "/";
+
+// Song data, fonts and images are referenced as /manus-storage/… in index.html
+// and the stylesheet; under a sub-path they need the base in front.
+function vitePluginStorageBase(): Plugin {
+  const prefix = (code: string) => code.replace(/(["'(])\/manus-storage\//g, `$1${BASE}manus-storage/`);
+  return {
+    name: "storage-base",
+    apply: () => BASE !== "/",
+    transformIndexHtml: (html) => prefix(html),
+    transform(code, id) {
+      if (/\.css($|\?)/.test(id)) return { code: prefix(code), map: null };
+    },
+  };
+}
+
+const plugins = [vitePluginStorageBase(), react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginOptionalAnalytics()];
 
 export default defineConfig({
+  base: BASE,
   plugins,
   resolve: {
     alias: {

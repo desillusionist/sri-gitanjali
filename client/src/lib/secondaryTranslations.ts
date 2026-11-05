@@ -12,10 +12,18 @@ export const secondaryTranslationLanguages = [
   { code: "bn", name: "বাংলা", label: "Bengali", lang: "bn" },
 ] as const;
 
+/**
+ * Languages offered in the reader. A static copy of the site (GitHub Pages) has
+ * no server to translate on demand, so it offers only the packaged ones.
+ */
+export const availableSecondaryTranslationLanguages = import.meta.env.VITE_STATIC_SITE === "true"
+  ? secondaryTranslationLanguages.filter((language) => language.code === "ru")
+  : secondaryTranslationLanguages;
+
 export type SecondaryTranslationLanguage = (typeof secondaryTranslationLanguages)[number]["code"];
 
 export function isSecondaryTranslationLanguage(value: unknown): value is SecondaryTranslationLanguage {
-  return secondaryTranslationLanguages.some((language) => language.code === value);
+  return availableSecondaryTranslationLanguages.some((language) => language.code === value);
 }
 
 type RussianTranslationPackage = {
