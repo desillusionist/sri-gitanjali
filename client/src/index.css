@@ -139,9 +139,10 @@
 :root[data-theme="arati"] .search-deck .library-search { background: #14181b; }
 :root[data-theme="arati"] .hero-art img { filter: brightness(0.82); }
 /* Minimal theme: no decorative imagery, shadows or textures. */
-:root[data-theme="plain"] .song-sheet::before,
 :root[data-theme="plain"] .library-hero-image,
 :root[data-theme="plain"] .hero-art { display: none; }
+/* Without the picture the intro would sit right on the search panel. */
+:root[data-theme="plain"] .header-copy { padding-bottom: 2rem; }
 :root[data-theme="plain"] *:not(:focus-visible) { box-shadow: none !important; }
 
 
@@ -503,7 +504,6 @@ a { color: inherit; text-decoration: none; }
 .favorites-empty p { max-width: 34rem; margin: 0 0 0.65rem; color: var(--ink-soft); line-height: 1.6; }
 
 .song-sheet { position: relative; padding: clamp(1.8rem, 5vw, 4.2rem); overflow: clip; background-color: var(--paper-bright); background-image: linear-gradient(105deg, rgba(var(--paper-rgb), 0.44), transparent 16%, rgba(var(--paper-rgb), 0.12) 100%); box-shadow: 16px 18px 0 rgba(var(--ink-rgb), 0.08); }
-.song-sheet::before { content: ""; position: absolute; right: -9rem; bottom: -13rem; width: 29rem; height: 38rem; opacity: 0.14; background: url('/manus-storage/kirtan-guide-reading-detail_86487ef9.jpg') center / cover; transform: rotate(-9deg); }
 .song-sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.3; background: repeating-linear-gradient(0deg, transparent 0, transparent 2.72rem, rgba(var(--grain-rgb), 0.055) 2.72rem, rgba(var(--grain-rgb), 0.055) calc(2.72rem + 1px)); }
 .song-sheet > * { position: relative; z-index: 1; }
 .song-reading-tools-dock { position: sticky; top: 1rem; z-index: 80; display: flex; justify-content: flex-end; height: 2.3rem; margin-bottom: -2.3rem; pointer-events: none; }

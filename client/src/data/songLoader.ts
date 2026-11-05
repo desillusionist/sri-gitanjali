@@ -1,11 +1,11 @@
 /**
  * Паломнический свиток: источник данных остаётся локальным и прозрачным;
- * JSON даёт быстрый старт, CSV сохраняет проверяемый путь импорта.
+ * песни загружаются из одного JSON-файла.
  */
 
 import type { Song } from "@/domain/song";
-import { parseSongsFromCsv, parseSongsJson } from "./songParser";
-import { SONGS_CSV_URL, SONGS_JSON_URL } from "./sources";
+import { parseSongsJson } from "./songParser";
+import { SONGS_JSON_URL } from "./sources";
 import { soundCloudRecordingOverlay } from "./soundcloudRecordings";
 
 async function fetchText(url: string): Promise<string> {
@@ -23,10 +23,5 @@ function applySoundCloudRecordingOverlay(songs: Song[]): Song[] {
 }
 
 export async function loadSongs(): Promise<{ songs: Song[]; source: "json" | "csv" }> {
-  try {
-    return { songs: applySoundCloudRecordingOverlay(parseSongsJson(await fetchText(SONGS_JSON_URL))), source: "json" };
-  } catch {
-    const csv = await fetchText(SONGS_CSV_URL);
-    return { songs: applySoundCloudRecordingOverlay(parseSongsFromCsv(csv)), source: "csv" };
-  }
+  return { songs: applySoundCloudRecordingOverlay(parseSongsJson(await fetchText(SONGS_JSON_URL))), source: "json" };
 }
