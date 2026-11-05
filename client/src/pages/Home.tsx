@@ -32,7 +32,23 @@ import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } fro
 import { Link } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+/**
+ * Room the filter lists keep free at the screen edges. At the top that is the
+ * sticky header, so a list opening upwards never slides under it.
+ */
+function useListClearance() {
+  const [top, setTop] = useState(12);
+  useEffect(() => {
+    const measure = () => setTop(Math.max(0, document.querySelector(".reading-rail")?.getBoundingClientRect().bottom ?? 0) + 8);
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+  return useMemo(() => ({ top, bottom: 12 }), [top]);
+}
+
 function LibraryHome() {
+  const listClearance = useListClearance();
   const { songs, status, error, reload } = useSongLibrary();
   const { copy } = useTranslation();
   const [filters, setFilters] = useState(defaultSongSearchFilters);
@@ -113,7 +129,7 @@ function LibraryHome() {
 
   return (
     <div className="library-page">
-      <header className="library-header" style={{ paddingBottom: "0px", marginRight: "-14px" }}>
+      <header className="library-header" style={{ paddingBottom: "0px" }}>
         <div className="header-copy">
           <p className="eyebrow" style={{ width: "min(340px, 100%)", fontSize: "13px", paddingBottom: "18px" }}>{copy.library.eyebrow}</p>
           <h1>{copy.library.title}<br /><em>{copy.library.titleEmphasis}</em></h1>
@@ -183,7 +199,7 @@ function LibraryHome() {
               <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterAuthor}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="filter-select-content">
+              <SelectContent className="filter-select-content" collisionPadding={listClearance}>
                 <SelectItem value={ALL_AUTHORS_FILTER}>{copy.library.allAuthors}</SelectItem>
                 {hasUnlistedAuthors && <SelectItem value={UNLISTED_AUTHOR_FILTER}>{copy.library.unlistedAuthor}</SelectItem>}
                 {authors.map((author) => <SelectItem value={author} key={author}>{author}</SelectItem>)}
@@ -196,7 +212,7 @@ function LibraryHome() {
               <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterCategory}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="filter-select-content">
+              <SelectContent className="filter-select-content" collisionPadding={listClearance}>
                 <SelectItem value={ALL_CATEGORIES_FILTER}>{copy.library.allCategories}</SelectItem>
                 {availableCategories.map((category) => <SelectItem value={category} key={category}>{category}</SelectItem>)}
               </SelectContent>
@@ -208,7 +224,7 @@ function LibraryHome() {
               <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterRecording}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="filter-select-content">
+              <SelectContent className="filter-select-content" collisionPadding={listClearance}>
                 <SelectItem value={ALL_RECORDINGS_FILTER}>{copy.library.allRecordings}</SelectItem>
                 <SelectItem value={WITH_RECORDINGS_FILTER}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.withRecordings}</span></SelectItem>
                 {SOUNDCLOUD_SINGER_LIST.map((singer) => <SelectItem value={singerRecordingFilter(singer.account)} key={singer.account}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}

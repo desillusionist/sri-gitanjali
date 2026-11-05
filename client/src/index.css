@@ -198,7 +198,7 @@ a { color: inherit; text-decoration: none; }
 .theme-option-text { display: grid; gap: 0.05rem; }
 .theme-option-text strong { color: var(--ink); font-weight: 700; }
 .theme-option-text small { color: var(--ink-soft); font-size: 0.68rem; font-weight: 500; }
-.theme-swatch { flex: none; width: 1.15rem; height: 1.15rem; border: 1px solid rgba(var(--ink-rgb), 0.2); border-radius: 50%; }
+.theme-swatch { flex: none; width: 1.15rem; height: 1.15rem; border: 1px solid rgba(var(--ink-rgb), 0.2); border-radius: 3px; }
 .theme-swatch.is-saffron { background: linear-gradient(135deg, #efe6d4 50%, #d96d32 50%); }
 .theme-swatch.is-tulasi { background: linear-gradient(135deg, #e7ebdc 50%, #2f6a3e 50%); }
 .theme-swatch.is-arati { background: linear-gradient(135deg, #14181b 50%, #ec8a4c 50%); }
@@ -213,7 +213,7 @@ a { color: inherit; text-decoration: none; }
 .eyebrow { margin: 0; color: var(--saffron-deep); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.16em; line-height: 1.4; text-transform: uppercase; }
 .header-copy > .eyebrow { letter-spacing: 0.08em; text-transform: none; }
 
-.library-header { display: grid; grid-template-columns: minmax(0, 0.94fr) minmax(360px, 0.96fr); gap: clamp(2rem, 5vw, 5.4rem); align-items: center; min-height: 370px; padding-bottom: clamp(3rem, 6vw, 5.5rem); }
+.library-header { margin-right: -14px; display: grid; grid-template-columns: minmax(0, 0.94fr) minmax(360px, 0.96fr); gap: clamp(2rem, 5vw, 5.4rem); align-items: center; min-height: 370px; padding-bottom: clamp(3rem, 6vw, 5.5rem); }
 .header-copy { padding-top: 1.2rem; }
 .header-copy h1 { max-width: 11ch; margin: 0.7rem 0 1rem; color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(3rem, 5.8vw, 5.6rem); font-weight: 600; letter-spacing: -0.066em; line-height: 0.86; }
 .header-copy h1 em { color: var(--saffron-deep); font-weight: 600; }
@@ -603,7 +603,7 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 680px) {
   .library-page, .song-page { padding: 1.15rem; }
-  .library-header { grid-template-columns: 1fr; min-height: auto; padding-bottom: 2.8rem; }
+  .library-header { margin-right: 0; grid-template-columns: 1fr; min-height: auto; padding-bottom: 2.8rem; }
   .header-copy h1 { max-width: 10.5ch; font-size: clamp(3.25rem, 15vw, 4.4rem); }
   .hero-art { min-height: 240px; margin: 0.25rem 0 0.6rem; transform: rotate(0.7deg); }
   .hero-art img { min-height: 240px; }
