@@ -142,6 +142,7 @@ export const translations = {
       secondaryTranslationsLabel: "Second translation language",
       secondaryTranslationsDescription: "Add a second translation generated from the English explanation.",
       secondaryTranslationsNone: "English only",
+      secondaryTranslationsDraftLabel: "{language} · draft",
       secondaryTranslationsLoading: "Preparing {language} translation…",
       secondaryTranslationsUnavailable: "The second translation is temporarily unavailable.",
       showAllTranslations: "Show all translations",
