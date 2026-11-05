@@ -45,7 +45,7 @@ the batch files together.
 | Bhakti Vinod Ṭhākur | 巴克提维诺德·塔库尔 |
 | Narottam Dās Ṭhākur | 那柔达玛·达斯·塔库尔 |
 | Bhakti Siddhānta Saraswatī | 巴克提希丹塔·萨拉斯瓦蒂 |
-| Śrīdhar Mahārāj / Govinda Mahārāj | 圣德哈尔·玛哈拉佳 / 哥文达·玛哈拉佳 |
+| Śrīdhar Mahārāja / Govinda Mahārāja | 圣德哈尔·玛哈拉佳 / 哥文达·玛哈拉佳 |
 | Śrī Chaitanya Sāraswat Maṭh | 圣柴坦尼亚·萨拉斯瓦特寺院 |
 | Gurudeva / Guru / Divine Master / spiritual master | 古茹提瓦 / 古茹 / 神圣的导师 / 灵性导师 |
 | Brahmā / Shiva / Indra / Nārada | 梵天 / 湿婆 / 因陀罗 / 那茹达 |

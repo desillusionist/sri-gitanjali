@@ -16,6 +16,8 @@ import {
   WITH_RECORDINGS_FILTER,
   SOUNDCLOUD_SINGER_LIST,
   parseRecordingFilter,
+  parseLanguageFilter,
+  ALL_LANGUAGES_FILTER,
   singerRecordingFilter,
   defaultSongSearchFilters,
   filterSongs,
@@ -30,6 +32,7 @@ import { ArrowUpRight, ArrowDownAZ, BookOpen, Clock3, DatabaseZap, LibraryBig, L
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
 import { Link } from "wouter";
+import { SONG_LANGUAGE_ORDER, SONG_LANGUAGES } from "@/lib/songLanguages";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 /**
@@ -78,10 +81,11 @@ function LibraryHome() {
       author: parameters.get("author") ?? defaultSongSearchFilters.author,
       category: parameters.get("category") ?? defaultSongSearchFilters.category,
       recording: parseRecordingFilter(parameters.get("recording")),
+      language: parseLanguageFilter(parameters.get("language")),
     };
 
     setFilters((current) => (
-      current.query === nextFilters.query && current.author === nextFilters.author && current.category === nextFilters.category && current.recording === nextFilters.recording
+      current.query === nextFilters.query && current.author === nextFilters.author && current.category === nextFilters.category && current.recording === nextFilters.recording && current.language === nextFilters.language
         ? current
         : nextFilters
     ));
@@ -228,6 +232,22 @@ function LibraryHome() {
                 <SelectItem value={ALL_RECORDINGS_FILTER}>{copy.library.allRecordings}</SelectItem>
                 <SelectItem value={WITH_RECORDINGS_FILTER}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.withRecordings}</span></SelectItem>
                 {SOUNDCLOUD_SINGER_LIST.map((singer) => <SelectItem value={singerRecordingFilter(singer.account)} key={singer.account}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}
+              </SelectContent>
+            </Select>
+          </label>
+          <label className="filter-field">
+            <span>{copy.library.filterLanguage}</span>
+            <Select value={filters.language} onValueChange={(language) => updateFilters({ language })}>
+              <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterLanguage}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="filter-select-content" collisionPadding={listClearance}>
+                <SelectItem value={ALL_LANGUAGES_FILTER}>{copy.library.allLanguages}</SelectItem>
+                {SONG_LANGUAGE_ORDER.map((language) => (
+                  <SelectItem value={language} key={language}>
+                    <span className="language-filter-option">{SONG_LANGUAGES[language].english}<span lang={SONG_LANGUAGES[language].lang}>{SONG_LANGUAGES[language].native}</span></span>
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </label>

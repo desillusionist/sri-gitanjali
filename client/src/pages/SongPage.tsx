@@ -22,6 +22,9 @@ import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link, useRoute } from "wouter";
+import { AuthorChip } from "@/components/AuthorChip";
+import { findAuthorByPoet } from "@/lib/authors";
+import { getSongLanguage, SONG_LANGUAGES } from "@/lib/songLanguages";
 import { toast } from "sonner";
 
 const READING_FONT_SIZE_ADJUSTMENTS = [-0.18, -0.09, 0, 0.12, 0.24] as const;
@@ -743,6 +746,9 @@ function SongPageContent() {
 
   const favorite = isFavorite(song.id);
   const author = song.poet;
+  const authorBio = findAuthorByPoet(author);
+  const songLanguage = getSongLanguage(song.id);
+  const songLanguageInfo = songLanguage ? SONG_LANGUAGES[songLanguage] : undefined;
   const toggleSongFavorite = () => {
     toggleFavorite(song.id);
     toast.success(favorite ? copy.song.removedFavorite : copy.song.addedFavorite);
@@ -1099,9 +1105,15 @@ function SongPageContent() {
         <div className="song-sheet-intro">
           <div>
             <Link className="eyebrow song-category-link" href={categoryFilterHref} aria-label={copy.song.filterByCategory.replace("{category}", song.category)}>{song.category}</Link>
+            {songLanguage && songLanguageInfo && (
+              <>
+                <span className="song-language-divider" aria-hidden="true">·</span>
+                <Link className={`song-language is-${songLanguage}`} href={`/?language=${songLanguage}#search`} lang={songLanguageInfo.lang} title={copy.song.composedIn.replace("{language}", songLanguageInfo.english)} aria-label={copy.song.filterByLanguage.replace("{language}", songLanguageInfo.english)}>{songLanguageInfo.native}</Link>
+              </>
+            )}
             <h1><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
             <div className="song-meta">
-              <p className="song-poet">{author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
+              <p className="song-poet">{authorBio && authorFilterHref ? <AuthorChip author={authorBio} libraryHref={authorFilterHref} label={<SongMatchText value={author!} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />} /> : author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
             </div>
           </div>
         </div>

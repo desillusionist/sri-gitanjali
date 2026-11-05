@@ -10,7 +10,7 @@
  * Precaching tolerates a missing file, so one absent asset never disables
  * offline use.
  */
-const CACHE_NAME = "kirtan-guide-v5";
+const CACHE_NAME = "kirtan-guide-v6";
 // "/" locally, "/sri-gitanjali/" on GitHub Pages.
 const BASE = new URL(self.registration.scope).pathname;
 const PRECACHE = [
@@ -23,6 +23,9 @@ const PRECACHE = [
   "manus-storage/kirtan-guide-icon-192.png",
   "manus-storage/kirtan-guide-icon-512.png",
   "manus-storage/nabadwip-temple02-hero_14e93d5b.webp",
+  "manus-storage/author-bhaktivinod-thakur.webp",
+  "manus-storage/author-sridhar-maharaj.webp",
+  "manus-storage/author-govinda-maharaj.webp",
 ].map((path) => BASE + path);
 
 async function precache() {

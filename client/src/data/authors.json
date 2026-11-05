@@ -1,0 +1,157 @@
+{
+  "_note": "Author bios. `names` must match the poet field of the songs exactly (accents included). Portraits live in local-storage/ (served as manus-storage/); `focus` is the CSS object-position that centres the face in round crops. Drafted from scsmath.com and standard Gaudiya sources; please review before relying on dates.",
+  "authors": [
+    {
+      "id": "bhakti-vinod-thakur",
+      "names": ["Śrīla Bhakti Vinod Ṭhākur"],
+      "name": "Śrīla Bhakti Vinod Ṭhākur",
+      "dates": "1838–1914",
+      "place": "Born at Ulā (Bīrnagar), Nadia, Bengal",
+      "role": "Pioneer of pure devotion in the modern age",
+      "portrait": "author-bhaktivinod-thakur.webp",
+      "focus": "52% 14%",
+      "summary": "The nineteenth-century pioneer of Krishna consciousness, who revived the teachings of Śrī Chaitanya Mahāprabhu and wrote more than a hundred books. His songbooks, such as Śaraṇāgati and Gītāvalī, are sung daily wherever Mahāprabhu's devotees gather.",
+      "bio": [
+        "Śrīla Sachchidānanda Bhakti Vinod Ṭhākur, known in his public life as Kedārnāth Datta, served as a magistrate under the British government while living as a householder devotee. Alongside that work he composed, edited and published more than a hundred books in Sanskrit, Bengali and English, freeing the devotional culture of Bengal from the misinterpretations that had overgrown it.",
+        "He taught that exclusive surrender (śaraṇāgati) to the service of the Lord's pure devotees is the heart of devotion, and that the paths of karma, jñāna and voidism must be left aside. He inaugurated the worship of Śrī Chaitanya Mahāprabhu at Śrī Yogapīṭh, the Lord's appearance place in Śrī Dhām Māyāpur, and foresaw that people of every land would one day join in the congregational chanting of the Holy Name.",
+        "His songs, gathered in Kalyāṇa-kalpataru, Śaraṇāgati, Gītāvalī and Gīta-mālā, express the whole of Gauḍīya philosophy in simple, heartfelt Bengali. Śrīla Śrīdhar Mahārāja describes him as Mahāprabhu's love divine personified. His son, Śrīla Bhakti Siddhānta Saraswatī Ṭhākur, carried his mission across India."
+      ],
+      "sources": ["https://scsmath.com/docs/bhaktivinod_thakur.html"]
+    },
+    {
+      "id": "sridhar-maharaj",
+      "names": ["Śrīla B.R. Śrīdhar Mahārāja"],
+      "name": "Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja",
+      "dates": "1895–1988",
+      "place": "Born at Hāpāniyā, Burdwan, Bengal",
+      "role": "Founder-Āchārya of Śrī Chaitanya Sāraswat Maṭh",
+      "portrait": "author-sridhar-maharaj.webp",
+      "focus": "51% 18%",
+      "summary": "A senior disciple of Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and founder of Śrī Chaitanya Sāraswat Maṭh in Nabadwīp. His Sanskrit and Bengali prayers, and his treatise Śrī Śrī Prapanna-jīvanāmṛtam, are treasured throughout the Gauḍīya world.",
+      "bio": [
+        "Born into a respected brāhmaṇa family, Śrīla Śrīdhar Mahārāja was drawn from childhood to Śrī Chaitanya Mahāprabhu and the chanting of the Holy Name. He met the Gauḍīya Maṭh in 1923, and in 1926 he gave his life to its mission as an initiated disciple of Śrīla Bhakti Siddhānta Saraswatī Ṭhākur, who in 1930 gave him sannyās and the name Bhakti Rakṣak, \"Guardian of Devotion\".",
+        "He preached across India in Bengali, Hindi, Sanskrit and English. His guru prized his Sanskrit composition Śrī Bhaktivinoda-viraha-daśakam, and shortly before his departure asked him to sing Śrī Rūpa-mañjarī-pada. Afterwards, though widely revered as the senior representative of the line, he lived simply and founded Śrī Chaitanya Sāraswat Maṭh on the bank of the Ganges at Nabadwīp.",
+        "In his eighties seekers from all over the world came to hear him. His recorded talks became the books Search for Śrī Kṛṣṇa, Śrī Guru and His Grace and The Golden Volcano of Divine Love. Before his departure in 1988 he named Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja as his successor."
+      ],
+      "sources": ["https://scsmath.com/docs/sridhar_maharaj.html"]
+    },
+    {
+      "id": "govinda-maharaj",
+      "names": ["Śrīla B.S. Govinda Mahārāja"],
+      "name": "Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja",
+      "dates": "1929–2010",
+      "place": "Born at Bāmunpāṛā, Burdwan, Bengal",
+      "role": "President-Āchārya of Śrī Chaitanya Sāraswat Maṭh",
+      "portrait": "author-govinda-maharaj.webp",
+      "focus": "50% 30%",
+      "summary": "The dearmost servant and chosen successor of Śrīla Śrīdhar Mahārāja, who led Śrī Chaitanya Sāraswat Maṭh from 1988 and carried its message around the world. He composed many prayers and songs in Sanskrit and Bengali.",
+      "bio": [
+        "Śrīla Govinda Mahārāja came to Śrīla Śrīdhar Mahārāja in April 1947, at the age of seventeen, on the appearance day of Lord Nṛsiṁhadev. From then on he was his guru's most intimate servant: he designed and built Śrī Chaitanya Sāraswat Maṭh in Nabadwīp and cared for its mission for decades. Śrīla Bhaktivedānta Swāmī Mahārāja, who knew him closely, called him his \"dearmost son\".",
+        "In 1985 Śrīla Śrīdhar Mahārāja gave him sannyās and named him the next President-Āchārya. From 1988 he travelled around the world many times, and thousands of people in India, the Americas, Europe, Africa, Australia and Asia took shelter of him.",
+        "Deeply learned in Sanskrit and Bengali, he was a gifted speaker of Hari-kathā and a poet whose compositions are sung in the Maṭh every day. Before his departure in 2010 he appointed Śrīla Bhakti Nirmal Āchārya Mahārāja as his successor."
+      ],
+      "sources": ["https://scsmath.com/docs/govinda_maharaj.html"]
+    },
+    {
+      "id": "narottam-das-thakur",
+      "names": ["Śrīla Narottam Dās Ṭhākur"],
+      "name": "Śrīla Narottam Dās Ṭhākur",
+      "dates": "16th century",
+      "place": "Born at Kheturi, Bengal",
+      "role": "Poet of Prema-bhakti-chandrikā and Prārthanā",
+      "summary": "A prince who left his kingdom for Vṛndāvan and became the great singer of the Gauḍīya line. His songs, especially Prema-bhakti-chandrikā and Prārthanā, are the backbone of daily kīrtan.",
+      "bio": [
+        "Born the son of a ruler at Kheturi in northern Bengal, Narottam Dās renounced his inheritance and went to Vṛndāvan, where he became the disciple of Śrī Lokanāth Goswāmī and studied under Śrīla Jīva Goswāmī.",
+        "With Śrīnivās Āchārya and Śyāmānanda Paṇḍit he carried the Goswāmīs' books back to Bengal. The great festival he held at Kheturi united the devotees of the next generation and established the style of kīrtan still sung today.",
+        "His Bengali songs put the deepest teachings of Śrīla Rūpa Goswāmī into words anyone can sing. Prayers such as Śrī Guru-charaṇa-padma and Gaurāṅga bolite habe are sung every day in Gauḍīya temples."
+      ],
+      "sources": []
+    },
+    {
+      "id": "lochan-das-thakur",
+      "names": ["Śrīla Lochan Dās Ṭhākur"],
+      "name": "Śrīla Lochan Dās Ṭhākur",
+      "dates": "16th century",
+      "place": "Born at Kogrām, Burdwan, Bengal",
+      "role": "Author of Śrī Chaitanya-maṅgala",
+      "summary": "A disciple of Śrī Narahari Sarkār Ṭhākur who sang Mahāprabhu's pastimes in Śrī Chaitanya-maṅgala. His songs are simple, sweet and full of village warmth.",
+      "bio": [
+        "Lochan Dās Ṭhākur was a disciple of Śrī Narahari Sarkār Ṭhākur, an intimate associate of Śrī Chaitanya Mahāprabhu.",
+        "His Śrī Chaitanya-maṅgala tells Mahāprabhu's life in songs meant to be sung, and his shorter songs in the folk style praise the mercy of Gaura and Nityānanda in the language of ordinary village people."
+      ],
+      "sources": []
+    },
+    {
+      "id": "krsnadas-kaviraj-goswami",
+      "names": ["Śrīla Kṛṣṇadās Kavirāj Goswāmī"],
+      "name": "Śrīla Kṛṣṇadās Kavirāj Goswāmī",
+      "dates": "16th century",
+      "place": "Born at Jhāmaṭpur, Burdwan, Bengal",
+      "role": "Author of Śrī Chaitanya-charitāmṛta",
+      "summary": "Called to Vṛndāvan by Śrī Nityānanda Prabhu in a dream, he wrote Śrī Chaitanya-charitāmṛta, the definitive account of Mahāprabhu's life and teachings.",
+      "bio": [
+        "Kṛṣṇadās Kavirāj left his home in Bengal after Śrī Nityānanda Prabhu appeared to him in a dream and told him to go to Vṛndāvan. There he lived in the company of the Goswāmīs, especially Śrīla Raghunāth Dās Goswāmī at Rādhā-kuṇḍa.",
+        "In his old age, at the request of the Vṛndāvan devotees, he wrote Śrī Chaitanya-charitāmṛta. It joins Mahāprabhu's pastimes to the full philosophy of the Goswāmīs, and Gauḍīya Vaiṣṇavas regard it as their essential scripture. He also wrote the Sanskrit poem Govinda-līlāmṛta."
+      ],
+      "sources": []
+    },
+    {
+      "id": "rupa-goswami",
+      "names": ["Śrīla Rūpa Goswāmī"],
+      "name": "Śrīla Rūpa Goswāmī",
+      "dates": "16th century",
+      "place": "Gauḍa, Bengal; later Vṛndāvan",
+      "role": "Foremost of Mahāprabhu's followers",
+      "summary": "The associate whom Śrī Chaitanya Mahāprabhu empowered to present His teachings; his followers are called Rūpānugas. His Bhakti-rasāmṛta-sindhu is the science of devotional rasa.",
+      "bio": [
+        "Śrī Rūpa and his brother Śrī Sanātan were ministers at the court of the ruler of Bengal. After meeting Śrī Chaitanya Mahāprabhu they left that life, and at Prayāg Mahāprabhu taught Rūpa the science of devotion for ten days and sent him to Vṛndāvan.",
+        "There he uncovered lost holy places, established the worship of Śrī Govindadev, and wrote Bhakti-rasāmṛta-sindhu, Ujjvala-nīlamaṇi, Upadeśāmṛta, the plays Vidagdha-mādhava and Lalita-mādhava, and many prayers.",
+        "The whole Gauḍīya line takes its stand on his teachings, and its followers are known as Rūpānugas, \"those who follow Rūpa\"."
+      ],
+      "sources": ["https://scsmath.com/docs/disciplic_succession.html"]
+    },
+    {
+      "id": "vrndavan-das-thakur",
+      "names": ["Śrīla Vṛndāvan Dās Ṭhākur"],
+      "name": "Śrīla Vṛndāvan Dās Ṭhākur",
+      "dates": "16th century",
+      "place": "Bengal",
+      "role": "Author of Śrī Chaitanya-bhāgavata",
+      "summary": "A dear disciple of Śrī Nityānanda Prabhu who wrote Śrī Chaitanya-bhāgavata, the first great biography of Mahāprabhu. Śrīla Kṛṣṇadās Kavirāj calls him the Vyāsa of Chaitanya's pastimes.",
+      "bio": [
+        "Vṛndāvan Dās was the son of Nārāyaṇī, a niece of Śrīvās Ṭhākur, and became a dear disciple of Śrī Nityānanda Prabhu.",
+        "His Śrī Chaitanya-bhāgavata describes Mahāprabhu's early life and pastimes in Nabadwīp in loving detail. Śrīla Kṛṣṇadās Kavirāj Goswāmī honours him as the Vyāsa of Chaitanya-līlā and built his own Chaitanya-charitāmṛta on it."
+      ],
+      "sources": []
+    },
+    {
+      "id": "saraswati-thakur",
+      "names": ["Śrīla Saraswatī Ṭhākur"],
+      "name": "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur",
+      "dates": "1874–1937",
+      "place": "Born at Purī, Orissa",
+      "role": "Founder of the Gauḍīya Maṭh",
+      "summary": "The son of Śrīla Bhakti Vinod Ṭhākur, who founded the Gauḍīya Maṭh and spread Mahāprabhu's teachings across India. He was the guru of Śrīla Śrīdhar Mahārāja and Śrīla Bhaktivedānta Swāmī Prabhupād.",
+      "bio": [
+        "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur was the son of Śrīla Bhakti Vinod Ṭhākur and the disciple of Śrīla Gaura Kiśor Dās Bābājī Mahārāja. A scholar of great learning, he gave his life to publishing and preaching the pure teachings of Mahāprabhu.",
+        "In the 1920s and 1930s he set up sixty-four Gauḍīya Maṭhs in India, revived Vaiṣṇava tridaṇḍi-sannyās, and taught that devotion, not birth, qualifies one to serve. Śrīla Śrīdhar Mahārāja describes him as lion-like outside and very sweet within, his one aim being the divine love of Vṛndāvan.",
+        "His disciples, among them Śrīla Śrīdhar Mahārāja and Śrīla A.C. Bhaktivedānta Swāmī Prabhupād, carried his message across the world."
+      ],
+      "sources": ["https://scsmath.com/docs/saraswati_thakur.html"]
+    },
+    {
+      "id": "jayadeva-goswami",
+      "names": ["Śrīla Jayadeva Goswāmī"],
+      "name": "Śrīla Jayadeva Goswāmī",
+      "dates": "12th century",
+      "place": "Bengal",
+      "role": "Poet of Gīta-govinda",
+      "summary": "The Sanskrit poet of Gīta-govinda, whose songs of Rādhā and Kṛṣṇa Śrī Chaitanya Mahāprabhu relished with His closest associates.",
+      "bio": [
+        "Jayadeva lived in Bengal in the twelfth century and is remembered as a poet at the court of King Lakṣmaṇa Sena.",
+        "His Gīta-govinda sings the pastimes of Śrī Rādhā and Kṛṣṇa in lyrical Sanskrit. Śrī Chaitanya Mahāprabhu relished its songs night after night with Svarūp Dāmodar and Rāya Rāmānanda, and its opening hymn to the ten avatāras is still sung widely."
+      ],
+      "sources": []
+    }
+  ]
+}

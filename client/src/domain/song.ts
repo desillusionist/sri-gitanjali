@@ -4,6 +4,7 @@
  */
 
 import { soundCloudTrackSeconds } from "@/data/soundcloudDurations";
+import { getSongLanguage, isSongLanguage } from "@/lib/songLanguages";
 
 export type SongLine = {
   id: string;
@@ -48,6 +49,12 @@ export const ALL_CATEGORIES_FILTER = "__all_categories__";
 export const UNLISTED_AUTHOR_FILTER = "__unlisted_author__";
 export const ALL_RECORDINGS_FILTER = "__all_recordings__";
 export const WITH_RECORDINGS_FILTER = "__with_recordings__";
+export const ALL_LANGUAGES_FILTER = "__all_languages__";
+
+/** A language code from the URL, or every language when it is missing or unknown. */
+export function parseLanguageFilter(value: string | null): string {
+  return isSongLanguage(value) ? value : ALL_LANGUAGES_FILTER;
+}
 
 /** Filter by recordings: any song, songs with a recording, or songs recorded by one singer (`singer:<SoundCloud account>`). */
 export type RecordingFilter = typeof ALL_RECORDINGS_FILTER | typeof WITH_RECORDINGS_FILTER | `singer:${string}`;
@@ -67,6 +74,7 @@ export type SongSearchFilters = {
   author: string;
   category: string;
   recording: RecordingFilter;
+  language: string;
 };
 
 export type HighlightPart = {
@@ -95,6 +103,7 @@ export const defaultSongSearchFilters: SongSearchFilters = {
   author: ALL_AUTHORS_FILTER,
   category: ALL_CATEGORIES_FILTER,
   recording: ALL_RECORDINGS_FILTER,
+  language: ALL_LANGUAGES_FILTER,
 };
 
 export const categoryOrder = [
@@ -440,12 +449,14 @@ export function filterSongs(songs: Song[], filters: SongSearchFilters): Song[] {
     const matchesRecording = filters.recording === ALL_RECORDINGS_FILTER
       || (filters.recording === WITH_RECORDINGS_FILTER ? hasSoundCloudRecording(song) : hasRecordingBySinger(song, filters.recording.slice("singer:".length)));
 
-    return matchesQuery && matchesAuthor && matchesCategory && matchesRecording;
+    const matchesLanguage = filters.language === ALL_LANGUAGES_FILTER || getSongLanguage(song.id) === filters.language;
+
+    return matchesQuery && matchesAuthor && matchesCategory && matchesRecording && matchesLanguage;
   });
 }
 
 export function hasActiveSongFilters(filters: SongSearchFilters): boolean {
-  return Boolean(normalizeSearchText(filters.query)) || filters.author !== ALL_AUTHORS_FILTER || filters.category !== ALL_CATEGORIES_FILTER || filters.recording !== ALL_RECORDINGS_FILTER;
+  return Boolean(normalizeSearchText(filters.query)) || filters.author !== ALL_AUTHORS_FILTER || filters.category !== ALL_CATEGORIES_FILTER || filters.recording !== ALL_RECORDINGS_FILTER || filters.language !== ALL_LANGUAGES_FILTER;
 }
 
 export function groupSongsByCategory(songs: Song[]): SongCategory[] {

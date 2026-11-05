@@ -9,6 +9,7 @@ import { getHighlightParts, getSongSearchExcerpt, getSongSearchMatches, getSound
 import { useTranslation } from "@/i18n/LanguageContext";
 import { Bookmark, BookmarkCheck, ChevronRight, Volume2 } from "lucide-react";
 import { Link } from "wouter";
+import { getSongLanguage, SONG_LANGUAGES } from "@/lib/songLanguages";
 
 function HighlightedText({ value, query }: { value: string; query: string }) {
   return getHighlightParts(value, query).map((part, index) =>
@@ -26,6 +27,8 @@ export function SongListItem({ song, query = "", variant = "default" }: SongList
   const { isFavorite, toggleFavorite } = useSongLibrary();
   const { copy } = useTranslation();
   const favorite = isFavorite(song.id);
+  const language = getSongLanguage(song.id);
+  const languageInfo = language ? SONG_LANGUAGES[language] : undefined;
   const hasTextQuery = Boolean(normalizeSearchText(query));
   const excerpt = hasTextQuery ? getSongSearchExcerpt(song, query) : null;
   const matchCount = hasTextQuery ? getSongSearchMatches(song, query).length : 0;
@@ -35,7 +38,12 @@ export function SongListItem({ song, query = "", variant = "default" }: SongList
   return (
     <div className={`song-row ${favorite ? "is-favorite" : ""} ${excerpt ? "has-search-excerpt" : ""}`}>
       <Link href={`/song/${song.id}${hasTextQuery ? `?q=${encodeURIComponent(query.trim())}` : ""}`} className="song-row-link">
-        <span className="song-row-ornament" aria-hidden="true" />
+        {languageInfo ? (
+          <span className={`song-row-seal is-${language}`} lang={languageInfo.lang} title={copy.song.composedIn.replace("{language}", languageInfo.english)}>
+            <span aria-hidden="true">{languageInfo.seal}</span>
+            <span className="sr-only">{languageInfo.english}</span>
+          </span>
+        ) : <span className="song-row-ornament" aria-hidden="true" />}
         <span className="song-row-copy">
           {variant === "opening-line" ? (
             <>
