@@ -17,7 +17,7 @@ export type SecondaryTranslationLanguage = (typeof secondaryTranslationLanguages
 type PackagedLanguage = keyof typeof SECONDARY_TRANSLATION_PACKAGE_URLS;
 
 /** Packaged languages whose translations have not been proof-read yet. */
-const DRAFT_LANGUAGES: ReadonlySet<SecondaryTranslationLanguage> = new Set<SecondaryTranslationLanguage>(["zh"]);
+const DRAFT_LANGUAGES: ReadonlySet<SecondaryTranslationLanguage> = new Set<SecondaryTranslationLanguage>(["zh", "th"]);
 
 export function isDraftSecondaryTranslation(language: SecondaryTranslationLanguage | null) {
   return language !== null && DRAFT_LANGUAGES.has(language);

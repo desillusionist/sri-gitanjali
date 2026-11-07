@@ -87,10 +87,11 @@ for (const book of ["es", "pt", "ua", "lv"]) {
     }
     rows.push(`${best.o.song.id} <- ${slug} score ${best.score.toFixed(2)} verses ${placed}/${best.o.verses.length}`);
   }
-  // Our own Spanish drafts fill the songs and verses kirtan.site lacks; listed in draftKeys until proof-read.
+  // Our own drafts (es, pt) fill the songs and verses kirtan.site lacks; listed in draftKeys until proof-read.
   const draftKeys = [];
-  if (code === "es") {
-    const supplement = JSON.parse(fs.readFileSync(new URL("./es-supplement.json", import.meta.url), "utf8")).translations;
+  const supplementUrl = new URL(`./${code}-supplement.json`, import.meta.url);
+  if (fs.existsSync(supplementUrl)) {
+    const supplement = JSON.parse(fs.readFileSync(supplementUrl, "utf8")).translations;
     for (const [key, text] of Object.entries(supplement)) if (!translations[key]) { translations[key] = text; draftKeys.push(key); }
   }
   report[code] = { songs: new Set(Object.keys(translations).map((k) => k.split("::")[0])).size, verses: Object.keys(translations).length, rows, skipped };

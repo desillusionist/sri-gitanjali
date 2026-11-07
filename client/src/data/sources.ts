@@ -8,6 +8,7 @@ export const RUSSIAN_SECONDARY_TRANSLATIONS_URL = STORAGE + "ru_user_updates_cd7
 export const SECONDARY_TRANSLATION_PACKAGE_URLS = {
   ru: RUSSIAN_SECONDARY_TRANSLATIONS_URL,
   zh: STORAGE + "secondary-translations-zh.json",
+  th: STORAGE + "secondary-translations-th.json",
   // Published translations from kirtan.site (Ukrainian: only the human-made ones). Rebuild with scripts/kirtan-site.
   uk: STORAGE + "secondary-translations-uk.json",
   es: STORAGE + "secondary-translations-es.json",

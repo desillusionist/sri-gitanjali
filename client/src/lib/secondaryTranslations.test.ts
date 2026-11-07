@@ -56,6 +56,7 @@ describe("Russian static secondary translations", () => {
   it("routes packaged languages to their files while retaining the online path for the others", () => {
     expect(usesStaticSecondaryTranslation("ru")).toBe(true);
     expect(usesStaticSecondaryTranslation("zh")).toBe(true);
+    expect(usesStaticSecondaryTranslation("th")).toBe(true);
     expect(usesStaticSecondaryTranslation("uk")).toBe(true);
     expect(usesStaticSecondaryTranslation("es")).toBe(true);
     expect(usesStaticSecondaryTranslation("pt")).toBe(true);
@@ -91,5 +92,33 @@ describe("Chinese packaged translation", () => {
     const fetchImplementation: typeof fetch = async () => new Response(JSON.stringify(raw), { status: 200 });
     const translations = await loadPackagedSecondaryTranslations("zh", fetchImplementation);
     expect(translations.get("vandana-001::verse-1")).toContain("奎师那");
+  });
+});
+
+describe("Thai packaged translation", () => {
+  const storage = path.resolve(import.meta.dirname, "../../../local-storage");
+  const songs = JSON.parse(fs.readFileSync(path.join(storage, "songs_577f33d4.json"), "utf8")) as Array<{ id: string; verses: Array<{ id: string; translation: string }> }>;
+  const raw = JSON.parse(fs.readFileSync(path.join(storage, "secondary-translations-th.json"), "utf8"));
+
+  it("has a Thai meaning for every verse that has an English one", () => {
+    const translations = parseSecondaryTranslationPackage(raw, "th");
+    const missing = songs.flatMap((song) => song.verses
+      .filter((verse) => verse.translation?.trim() && !translations.get(`${song.id}::${verse.id}`))
+      .map((verse) => `${song.id}::${verse.id}`));
+    expect(missing).toEqual([]);
+  });
+
+  it("writes names in Thai script, keeping IAST only on quoted Sanskrit lines", () => {
+    const leftovers = Object.entries(raw.translations as Record<string, string>).flatMap(([id, text]) => text.split("\n")
+      .filter((line) => /[\u0e00-\u0e7f]/.test(line) && /[A-Za-zāīūṛṅñṭḍṇśṣṁṃḥ]/i.test(line))
+      .map((line) => `${id}: ${line.slice(0, 40)}`));
+    expect(leftovers).toEqual([]);
+  });
+
+  it("is marked as a draft and loads like the other packages", async () => {
+    expect(isDraftSecondaryTranslation("th")).toBe(true);
+    const fetchImplementation: typeof fetch = async () => new Response(JSON.stringify(raw), { status: 200 });
+    const translations = await loadPackagedSecondaryTranslations("th", fetchImplementation);
+    expect(translations.get("vandana-001::verse-1")).toContain("กฤษณทาส");
   });
 });

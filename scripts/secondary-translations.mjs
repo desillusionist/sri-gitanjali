@@ -21,6 +21,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const SONGS = path.join(ROOT, "local-storage/songs_577f33d4.json");
@@ -126,7 +127,8 @@ function build(lang) {
   console.log(`Wrote ${Object.keys(ordered).length} verses to ${path.relative(ROOT, output)}`);
 }
 
-const [command, lang, arg, chars] = process.argv.slice(2);
+const isMain = process.argv[1] !== undefined && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const [command, lang, arg, chars] = isMain ? process.argv.slice(2) : [];
 if (command === "export" && lang && arg) exportBatches(lang, path.resolve(arg), Number(chars) || 8000);
 else if (command === "build" && lang) build(lang);
 else if (command) {
