@@ -59,7 +59,8 @@ export function usePlaylist() {
     write(next);
   }, []);
   const addMany = useCallback((urls: string[]) => write([...read(), ...urls.filter((url) => !read().includes(url))]), []);
+  const removeMany = useCallback((urls: string[]) => write(read().filter((track) => !urls.includes(track))), []);
   const clear = useCallback(() => write([]), []);
 
-  return { tracks, has, add, remove, toggle, move, addMany, clear };
+  return { tracks, has, add, remove, toggle, move, addMany, removeMany, clear };
 }

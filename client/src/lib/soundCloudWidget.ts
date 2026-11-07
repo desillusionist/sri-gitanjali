@@ -10,6 +10,7 @@ export type SoundCloudWidget = {
   load: (url: string, options?: Record<string, unknown> & { callback?: () => void }) => void;
   play: () => void;
   pause: () => void;
+  toggle: () => void;
 };
 
 type SoundCloudWidgetApi = {
@@ -31,6 +32,19 @@ export const SOUNDCLOUD_PLAYER_OPTIONS = {
   show_teaser: "false",
   visual: "false",
   color: "#b85e32",
+} as const;
+
+/**
+ * The same options for `widget.load()`, which needs real booleans: given the strings the URL uses,
+ * it treats "false" as set and swaps in the tall artwork player.
+ */
+export const SOUNDCLOUD_LOAD_OPTIONS = {
+  hide_related: true,
+  show_comments: false,
+  show_reposts: false,
+  show_teaser: false,
+  visual: false,
+  color: SOUNDCLOUD_PLAYER_OPTIONS.color,
 } as const;
 
 /** Widget address for a soundcloud.com track page (the widget resolves page URLs itself). */

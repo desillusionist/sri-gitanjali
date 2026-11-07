@@ -1152,7 +1152,7 @@ function SongPageContent() {
                       <span className="audio-row-title">{singer}</span>
                       {seconds ? <span className="audio-row-length">{formatTrackLength(seconds)}</span> : null}
                     </button>
-                    <PlaylistToggleButton url={url} label={`${song.title} (${singer})`} />
+                    <PlaylistToggleButton urls={[url]} addLabel={copy.playlist.addTrack.replace("{track}", `${song.title} (${singer})`)} removeLabel={copy.playlist.removeTrack.replace("{track}", `${song.title} (${singer})`)} />
                     </div>
                     {isCurrent && (
                       <div className="audio-row-player">

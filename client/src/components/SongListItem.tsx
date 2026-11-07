@@ -5,10 +5,11 @@
  */
 
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchExcerpt, getSongSearchMatches, getSoundCloudRecordingCount, normalizeSearchText, songFirstLine, type SecondaryTranslationLookup, type Song } from "@/domain/song";
+import { getHighlightParts, getSongSearchExcerpt, getSongSearchMatches, getSoundCloudRecordingCount, getSoundCloudRecordingUrls, normalizeSearchText, songFirstLine, type SecondaryTranslationLookup, type Song } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { Bookmark, BookmarkCheck, ChevronRight, Volume2 } from "lucide-react";
 import { Link } from "wouter";
+import { PlaylistToggleButton } from "@/components/PlaylistToggleButton";
 import { getSongLanguage, SONG_LANGUAGES } from "@/lib/songLanguages";
 
 function HighlightedText({ value, query }: { value: string; query: string }) {
@@ -72,6 +73,14 @@ export function SongListItem({ song, query = "", variant = "default", secondary,
         {matchCount > 0 && <span className="song-match-count" aria-label={copy.library.matchCountLabel.replace("{count}", String(matchCount))}>{copy.library.matchCountLabel.replace("{count}", String(matchCount))}</span>}
         <ChevronRight size={18} aria-hidden="true" />
       </Link>
+      {recordingCount > 0 && (
+        <PlaylistToggleButton
+          className="row-playlist-button"
+          urls={getSoundCloudRecordingUrls(song)}
+          addLabel={copy.playlist.addSong.replace("{song}", song.title)}
+          removeLabel={copy.playlist.removeSong.replace("{song}", song.title)}
+        />
+      )}
       <button
         className="row-favorite-button"
         type="button"

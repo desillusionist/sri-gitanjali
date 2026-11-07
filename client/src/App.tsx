@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { SongLibraryProvider } from "./contexts/SongLibraryContext";
+import { PlayerProvider } from "./contexts/PlayerContext";
+import { PlayerDock } from "./components/PlayerDock";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import Home from "./pages/Home";
@@ -11,7 +13,6 @@ import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 import SongPage from "./pages/SongPage";
 import AuthorPage from "./pages/AuthorPage";
-import RecordingsPage from "./pages/RecordingsPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import { Route, Router as WouterRouter, Switch } from "wouter";
 
@@ -23,7 +24,6 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/favorites" component={FavoritesPage} />
-      <Route path="/recordings" component={RecordingsPage} />
       <Route path="/playlist" component={PlaylistPage} />
       <Route path="/song/:id" component={SongPage} />
       <Route path="/author/:id" component={AuthorPage} />
@@ -40,7 +40,12 @@ export default function App() {
         <TooltipProvider>
           <LanguageProvider>
             <SongLibraryProvider>
-              <WouterRouter base={ROUTER_BASE}><Router /></WouterRouter>
+              <WouterRouter base={ROUTER_BASE}>
+                <PlayerProvider>
+                  <Router />
+                  <PlayerDock />
+                </PlayerProvider>
+              </WouterRouter>
               <Toaster richColors position="bottom-right" />
             </SongLibraryProvider>
           </LanguageProvider>
