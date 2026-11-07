@@ -37,6 +37,14 @@ const DEFAULT_TELEPROMPTER_SPEED = 30;
 const MIN_TELEPROMPTER_SPEED = 1;
 const MAX_TELEPROMPTER_SPEED = 72;
 const SECONDARY_TRANSLATION_CONCURRENCY = 2;
+/**
+ * Share of a recording the printed lyrics take up. Most recordings close with a few rounds of
+ * the Hare Krishna mahā-mantra, and singers skip some of the bracketed ornaments, so pacing the
+ * lyrics over the whole track would run behind the singer.
+ */
+const LYRICS_SHARE_OF_RECORDING = 0.85;
+/** Songs with more recordings than this show them behind a single summary row. */
+const FOLDED_RECORDING_THRESHOLD = 2;
 
 type PaceLandmark = "slow" | "steady" | "fast";
 
@@ -284,10 +292,14 @@ function SongPageContent() {
   const [isTeleprompterPacePanelOpen, setIsTeleprompterPacePanelOpen] = useState(false);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const [isSoundCloudPlayerOpen, setIsSoundCloudPlayerOpen] = useState(false);
+  // Songs with many recordings fold their list, so the lyrics stay near the top.
+  const [isAudioListExpanded, setIsAudioListExpanded] = useState(false);
   const [soundCloudRecordingIndex, setSoundCloudRecordingIndex] = useState(0);
   const [soundCloudPlayerUrl, setSoundCloudPlayerUrl] = useState<string | null>(null);
   const [soundCloudPlayerStatus, setSoundCloudPlayerStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
-  const [soundCloudDurationMs, setSoundCloudDurationMs] = useState<number | null>(null);
+  const [soundCloudTrackMs, setSoundCloudDurationMs] = useState<number | null>(null);
+  // Pace the lyrics over the part of the track they are sung in.
+  const soundCloudDurationMs = soundCloudTrackMs ? soundCloudTrackMs * LYRICS_SHARE_OF_RECORDING : null;
   const [teleprompterScrollRange, setTeleprompterScrollRange] = useState(0);
   const [isPageScrolled, setIsPageScrolled] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
@@ -1130,14 +1142,27 @@ function SongPageContent() {
         </div>
         {soundCloudSourceUrl && (
           <section className="song-audio" aria-label={copy.song.audioPlayerLabel}>
-            <ul className="audio-list">
+            {soundCloudSourceUrls.length > FOLDED_RECORDING_THRESHOLD && (
+              <div className="audio-row-head audio-list-summary">
+                <button className="audio-row-toggle" type="button" onClick={() => setIsAudioListExpanded((expanded) => !expanded)} aria-expanded={isAudioListExpanded} aria-controls={`audio-list-${song.id}`}>
+                  <ChevronRight className="audio-row-chevron" size={15} aria-hidden="true" />
+                  <span className="audio-row-note" aria-hidden="true">♪</span>
+                  <span className="audio-row-title">{copy.song.audioRecordingsSummary.replace("{count}", String(soundCloudSourceUrls.length))}</span>
+                  <span className="audio-row-length">{isAudioListExpanded ? copy.song.audioRecordingsHide : copy.song.audioRecordingsShow}</span>
+                </button>
+                <PlaylistToggleButton urls={soundCloudSourceUrls} addLabel={copy.playlist.addSong.replace("{song}", song.title)} removeLabel={copy.playlist.removeSong.replace("{song}", song.title)} />
+              </div>
+            )}
+            <ul className={`audio-list${soundCloudSourceUrls.length > FOLDED_RECORDING_THRESHOLD ? " is-foldable" : ""}`} id={`audio-list-${song.id}`}>
               {soundCloudSourceUrls.map((url, recordingIndex) => {
                 const isCurrent = recordingIndex === soundCloudRecordingIndex;
                 const isOpen = isCurrent && isSoundCloudPlayerOpen;
                 const seconds = soundCloudTrackSecondsFor(url);
                 const singer = soundCloudSingerName(url) ?? copy.song.audioVersion.replace("{number}", String(recordingIndex + 1));
+                // A folded list still keeps the open player, and the hidden probe that reads the track length.
+                const isTucked = soundCloudSourceUrls.length > FOLDED_RECORDING_THRESHOLD && !isAudioListExpanded && !isOpen;
                 return (
-                  <li className={`audio-row${isOpen ? " is-open" : ""}`} key={url}>
+                  <li className={`audio-row${isOpen ? " is-open" : ""}${isTucked ? " is-tucked" : ""}`} key={url}>
                     <div className="audio-row-head">
                     <button className="audio-row-toggle" type="button" onClick={() => {
                         if (isOpen) {
@@ -1242,7 +1267,7 @@ function SongPageContent() {
                         <p className="translation"><SongMatchText value={verse.translation} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
                         {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
                         {selectedSecondaryLanguage && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
-                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang}><SongMatchText value={secondaryTranslation} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
+                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang}><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><SongMatchText value={secondaryTranslation} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
                       </div>
                     </>
                   )}

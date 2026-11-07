@@ -525,6 +525,11 @@ a { color: inherit; text-decoration: none; }
 .song-audio-status a { color: var(--saffron-deep); font-weight: 700; text-underline-offset: 0.18rem; }
 /* Recording rows: one line per singer; the open row shows SoundCloud's 20px one-line player. */
 .audio-list > li { min-width: 0; }
+.audio-list-summary .audio-row-length { font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.66rem; }
+.audio-list-summary .audio-row-toggle[aria-expanded="true"] .audio-row-chevron { transform: rotate(90deg); }
+.audio-list.is-foldable { padding-left: 1.4rem; }
+.audio-row.is-tucked > .audio-row-head { display: none; }
+.audio-row.is-tucked:not(:has(iframe)) { display: none; }
 .audio-list { display: grid; gap: 0.1rem; margin: 0; padding: 0; list-style: none; }
 .audio-row-toggle { display: flex; width: 100%; gap: 0.42rem; align-items: center; min-height: 2.3rem; padding: 0.3rem 0; color: var(--ink); border: 0; background: none; font-size: 0.86rem; font-weight: 600; text-align: left; cursor: pointer; }
 .audio-row-chevron { flex: 0 0 auto; color: var(--ink-soft); transition: transform 180ms var(--ease-out); }
@@ -559,6 +564,9 @@ a { color: inherit; text-decoration: none; }
 /* The text-size buttons scale translations too, a little more gently than the verse. */
 .translation { max-width: 51ch; margin: 1.05rem 0 0 0.18rem; padding: 0.05rem 0 0.08rem 0.92rem; border-left: 2px solid rgba(var(--saffron-rgb), 0.28); color: var(--translation-ink); font-size: calc(0.82rem + var(--reading-font-size-adjustment, 0rem) * 0.6); font-style: italic; white-space: pre-line; line-height: 1.68; }
 .secondary-translation { margin-top: 0.68rem; color: var(--secondary-ink); border-left-color: #5d90b5; font-style: normal; }
+/* The language code sits just left of the divider line, level with the first line. */
+.secondary-translation { position: relative; }
+.secondary-translation-language { position: absolute; top: 0.38rem; right: calc(100% + 0.32rem); color: #5d90b5; font-family: "DM Sans", Arial, sans-serif; font-size: 0.56rem; font-style: normal; font-weight: 700; letter-spacing: 0.06em; line-height: 1; white-space: nowrap; }
 .secondary-translation[lang="zh-Hans"] { font-family: "Noto Sans SC", sans-serif; }
 .secondary-translation[lang="th"] { font-family: "Noto Sans Thai", sans-serif; }
 .secondary-translation[lang="hi"] { font-family: "Noto Sans Devanagari", sans-serif; }
@@ -814,4 +822,20 @@ a { color: inherit; text-decoration: none; }
   .player-dock { left: 220px; }
 }
 html.has-player-dock .app-main { padding-bottom: 6.5rem; }
+.player-dock .playlist-control.is-active { color: var(--saffron-deep); }
+.player-drawer { margin: -0.1rem -0.25rem 0.5rem -0.5rem; padding-bottom: 0.45rem; border-bottom: 1px solid var(--hairline); }
+.player-drawer-head { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; align-items: baseline; justify-content: space-between; padding: 0.15rem 0.25rem 0.4rem 0.5rem; }
+.player-drawer-page-link { display: inline-flex; gap: 0.3rem; align-items: center; color: var(--saffron-deep); font-size: 0.74rem; font-weight: 700; text-decoration: none; }
+.player-drawer-page-link:hover { text-decoration: underline; text-underline-offset: 0.18rem; }
+.player-drawer-list { max-height: min(46vh, 22rem); margin: 0; padding: 0; overflow-y: auto; overscroll-behavior: contain; list-style: none; }
+.player-drawer-row { display: flex; min-width: 0; align-items: center; }
+.player-drawer-row + .player-drawer-row { border-top: 1px solid var(--hairline); }
+.player-drawer-play { display: flex; flex: 1; min-width: 0; gap: 0.55rem; align-items: center; min-height: 2.6rem; padding: 0.25rem 0.5rem; color: var(--ink); border: 0; background: none; text-align: left; cursor: pointer; }
+.player-drawer-play:hover strong { color: var(--saffron-deep); }
+.player-drawer-number { flex: none; width: 1.2rem; color: var(--ink-soft); font-size: 0.74rem; font-variant-numeric: tabular-nums; text-align: right; }
+.player-drawer-text { display: grid; min-width: 0; }
+.player-drawer-text strong, .player-drawer-text small { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.player-drawer-text strong { font-size: 0.82rem; font-weight: 600; }
+.player-drawer-text small { color: var(--ink-soft); font-size: 0.7rem; }
+.player-drawer-row.is-current strong, .player-drawer-row.is-current .player-drawer-number { color: var(--saffron-deep); }
 html.has-player-dock [data-sonner-toaster] { bottom: 6.5rem !important; }
