@@ -1,5 +1,5 @@
 {
-  "_note": "Author bios. `names` must match the poet field of the songs exactly (accents included). Portraits live in local-storage/ (served as manus-storage/); `focus` is the CSS object-position that centres the face in round crops. Drafted from scsmath.com and standard Gaudiya sources; please review before relying on dates.",
+  "_note": "Author bios. `names` must match the poet field of the songs exactly (accents included). Portraits live in local-storage/ (served as manus-storage/); `portraitLarge` is an optional sharper copy for the enlarged view; `focus` is the CSS transform-origin that centres the face in round crops. Drafted from scsmath.com and standard Gaudiya sources; please review before relying on dates.",
   "authors": [
     {
       "id": "bhakti-vinod-thakur",
@@ -9,7 +9,8 @@
       "place": "Born at Ulā (Bīrnagar), Nadia, Bengal",
       "role": "Pioneer of pure devotion in the modern age",
       "portrait": "author-bhaktivinod-thakur.webp",
-      "focus": "52% 14%",
+      "portraitLarge": "author-bhaktivinod-thakur-large.webp",
+      "focus": "52% -24%",
       "summary": "The nineteenth-century pioneer of Krishna consciousness, who revived the teachings of Śrī Chaitanya Mahāprabhu and wrote more than a hundred books. His songbooks, such as Śaraṇāgati and Gītāvalī, are sung daily wherever Mahāprabhu's devotees gather.",
       "bio": [
         "Śrīla Sachchidānanda Bhakti Vinod Ṭhākur, known in his public life as Kedārnāth Datta, served as a magistrate under the British government while living as a householder devotee. Alongside that work he composed, edited and published more than a hundred books in Sanskrit, Bengali and English, freeing the devotional culture of Bengal from the misinterpretations that had overgrown it.",
@@ -134,7 +135,8 @@
       "place": "Born at Purī, Orissa",
       "role": "Founder of the Gauḍīya Maṭh",
       "portrait": "author-saraswati-thakur.webp",
-      "focus": "50% 2%",
+      "portraitLarge": "author-saraswati-thakur-large.webp",
+      "focus": "50% -28%",
       "summary": "The son of Śrīla Bhakti Vinod Ṭhākur, who founded the Gauḍīya Maṭh and spread Mahāprabhu's teachings across India. He was the guru of Śrīla Śrīdhar Mahārāja and Śrīla Bhaktivedānta Swāmī Prabhupād.",
       "bio": [
         "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur was the son of Śrīla Bhakti Vinod Ṭhākur and the disciple of Śrīla Gaura Kiśor Dās Bābājī Mahārāja. A scholar of great learning, he gave his life to publishing and preaching the pure teachings of Mahāprabhu.",

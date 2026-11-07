@@ -12,6 +12,8 @@ export type Author = {
   place: string;
   role: string;
   portrait?: string;
+  /** A sharper copy for the enlarged view on the author's page. */
+  portraitLarge?: string;
   /** CSS object-position that keeps the face in view in a round crop. */
   focus?: string;
   summary: string;
@@ -40,6 +42,10 @@ export function authorHref(author: Author): string {
 
 export function authorPortraitUrl(author: Author): string | undefined {
   return author.portrait ? STORAGE_URL + author.portrait : undefined;
+}
+
+export function authorLargePortraitUrl(author: Author): string | undefined {
+  return author.portraitLarge ? STORAGE_URL + author.portraitLarge : authorPortraitUrl(author);
 }
 
 /** Up to two initials, skipping honorifics, for authors without a portrait. */

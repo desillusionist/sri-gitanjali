@@ -292,6 +292,8 @@ export const translations = {
       songCountOne: "1 song",
       showInLibrary: "Show in the library",
       sources: "Sources",
+      enlargePortrait: "Enlarge the portrait of {author}",
+      closePortrait: "Close the portrait",
       notFoundTitle: "No page for this author yet",
       notFoundDetail: "Author pages are being written one by one.",
       backToLibrary: "Back to the library",

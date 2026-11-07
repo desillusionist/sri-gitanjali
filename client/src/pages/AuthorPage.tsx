@@ -2,6 +2,7 @@
 
 import { AppShell } from "@/components/AppShell";
 import { AuthorPortrait } from "@/components/AuthorPortrait";
+import { PortraitViewer } from "@/components/PortraitViewer";
 import { SongListItem } from "@/components/SongListItem";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { useTranslation } from "@/i18n/LanguageContext";
@@ -21,7 +22,7 @@ function AuthorContent({ author }: { author: Author }) {
   return (
     <article className="author-page">
       <header className="author-header">
-        <AuthorPortrait author={author} variant="tall" />
+        {author.portrait ? <PortraitViewer author={author} /> : <AuthorPortrait author={author} variant="tall" />}
         <div className="author-header-copy">
           <span className="eyebrow">{copy.author.eyebrow}</span>
           <h1>{author.name}</h1>

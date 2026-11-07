@@ -22,8 +22,10 @@ describe("authors", () => {
   });
 
   it("has a portrait file for every portrait it names", () => {
-    for (const author of AUTHORS.filter((entry) => entry.portrait)) {
-      expect(fs.existsSync(path.resolve(__dirname, "../../../local-storage", author.portrait!)), author.id).toBe(true);
+    for (const author of AUTHORS) {
+      for (const file of [author.portrait, author.portraitLarge].filter(Boolean)) {
+        expect(fs.existsSync(path.resolve(__dirname, "../../../local-storage", file!)), `${author.id}: ${file}`).toBe(true);
+      }
     }
   });
 
