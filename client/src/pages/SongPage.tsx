@@ -125,6 +125,12 @@ type ReadingPreferences = {
   isManualTeleprompterScrollPace: boolean;
   isManualTeleprompterSlideshowPace: boolean;
   secondaryTranslationLanguage: SecondaryTranslationLanguage | null;
+  /**
+   * Pixels of lyrics per sung syllable on the screen where the manual scroll speed was chosen.
+   * The speed is rescaled by the current screen's density, so turning the phone (or changing
+   * the font) keeps the same singing pace instead of the same pixels per second.
+   */
+  teleprompterScrollDensity?: number;
   /** Legacy values are read once for backwards-compatible localStorage migration. */
   teleprompterSpeed?: number;
   isManualTeleprompterPace?: boolean;
@@ -178,6 +184,7 @@ function readReadingPreferences(): ReadingPreferences {
       isManualTeleprompterScrollPace: typeof parsed.isManualTeleprompterScrollPace === "boolean" ? parsed.isManualTeleprompterScrollPace : legacyManualPace,
       isManualTeleprompterSlideshowPace: typeof parsed.isManualTeleprompterSlideshowPace === "boolean" ? parsed.isManualTeleprompterSlideshowPace : legacyManualPace,
       secondaryTranslationLanguage: isSecondaryTranslationLanguage(parsed.secondaryTranslationLanguage) ? parsed.secondaryTranslationLanguage : null,
+      teleprompterScrollDensity: typeof parsed.teleprompterScrollDensity === "number" && parsed.teleprompterScrollDensity > 0 ? parsed.teleprompterScrollDensity : undefined,
     };
   } catch {
     return DEFAULT_READING_PREFERENCES;
@@ -280,6 +287,7 @@ function SongPageContent() {
   const [readingLineHeightStep, setReadingLineHeightStep] = useState(initialReadingPreferences.readingLineHeightStep);
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
   const [teleprompterScrollSpeed, setTeleprompterScrollSpeed] = useState(initialReadingPreferences.teleprompterScrollSpeed);
+  const [teleprompterScrollDensity, setTeleprompterScrollDensity] = useState(initialReadingPreferences.teleprompterScrollDensity);
   const [teleprompterSlideshowSpeed, setTeleprompterSlideshowSpeed] = useState(initialReadingPreferences.teleprompterSlideshowSpeed);
   const [isManualTeleprompterScrollPace, setIsManualTeleprompterScrollPace] = useState(initialReadingPreferences.isManualTeleprompterScrollPace);
   const [isManualTeleprompterSlideshowPace, setIsManualTeleprompterSlideshowPace] = useState(initialReadingPreferences.isManualTeleprompterSlideshowPace);
@@ -301,6 +309,8 @@ function SongPageContent() {
   // Pace the lyrics over the part of the track they are sung in.
   const soundCloudDurationMs = soundCloudTrackMs ? soundCloudTrackMs * LYRICS_SHARE_OF_RECORDING : null;
   const [teleprompterScrollRange, setTeleprompterScrollRange] = useState(0);
+  // Height of the lyrics alone, without the lead-in and run-out space around them.
+  const [teleprompterTextHeight, setTeleprompterTextHeight] = useState(0);
   const [isPageScrolled, setIsPageScrolled] = useState(false);
   const matchElements = useRef(new Map<string, HTMLElement>());
   const teleprompterScrollRef = useRef<HTMLDivElement>(null);
@@ -352,11 +362,19 @@ function SongPageContent() {
   const isSingingFollowActive = isFollowingSinging && singing.status === "listening";
   const repeatFactor = isCallAndResponse ? 2 : 1;
   const totalTeleprompterSyllables = useMemo(() => displayedVerses.reduce((total, verse) => total + Math.max(1, countVerseSyllables(verse.lines)), 0), [displayedVerses]);
+  // The manual speed keeps its singing pace across orientations, fonts and songs.
+  const teleprompterDensity = teleprompterTextHeight > 0 ? teleprompterTextHeight / Math.max(1, totalTeleprompterSyllables) : null;
+  useEffect(() => {
+    if (teleprompterDensity !== null && teleprompterScrollDensity === undefined) setTeleprompterScrollDensity(teleprompterDensity);
+  }, [teleprompterDensity, teleprompterScrollDensity]);
+  const manualTeleprompterScrollSpeed = teleprompterDensity !== null && teleprompterScrollDensity
+    ? Math.max(MIN_TELEPROMPTER_SPEED, teleprompterScrollSpeed * (teleprompterDensity / teleprompterScrollDensity))
+    : teleprompterScrollSpeed;
   // Follow the singing: scroll at the sung syllable rate, hold still while nobody sings.
   const singingScrollSpeed = (() => {
     if (!isSingingFollowActive) return null;
     if (!singing.isSinging) return 0;
-    if (singing.syllablesPerSecond === null || teleprompterScrollRange <= 0) return followerSpeedRef.current ?? teleprompterScrollSpeed;
+    if (singing.syllablesPerSecond === null || teleprompterScrollRange <= 0) return followerSpeedRef.current ?? manualTeleprompterScrollSpeed;
     const target = (singing.syllablesPerSecond / repeatFactor) * (teleprompterScrollRange / totalTeleprompterSyllables);
     const previous = followerSpeedRef.current ?? target;
     return Math.min(MAX_TELEPROMPTER_SPEED * 2, previous + (target - previous) * 0.3);
@@ -364,7 +382,7 @@ function SongPageContent() {
   followerSpeedRef.current = singingScrollSpeed && singingScrollSpeed > 0 ? singingScrollSpeed : followerSpeedRef.current;
   const effectiveTeleprompterSpeed = singingScrollSpeed !== null
     ? singingScrollSpeed
-    : !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterScrollSpeed;
+    : !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : manualTeleprompterScrollSpeed;
   const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, rewindBy: rewindTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", effectiveTeleprompterSpeed, teleprompterScrollRef);
   // Keep the phone awake for as long as the reader is open, so a pause between verses never lets it lock.
   useScreenWakeLock(isTeleprompterOpen);
@@ -479,11 +497,12 @@ function SongPageContent() {
         isManualTeleprompterScrollPace,
         isManualTeleprompterSlideshowPace,
         secondaryTranslationLanguage,
+        teleprompterScrollDensity,
       } satisfies ReadingPreferences));
     } catch {
       // Reading remains fully functional when browser storage is unavailable.
     }
-  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterScrollPace, isManualTeleprompterSlideshowPace, readingFontSizeStep, readingLineHeightStep, secondaryTranslationLanguage, teleprompterScrollSpeed, teleprompterSlideshowSpeed]);
+  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterScrollPace, isManualTeleprompterSlideshowPace, readingFontSizeStep, readingLineHeightStep, secondaryTranslationLanguage, teleprompterScrollDensity, teleprompterScrollSpeed, teleprompterSlideshowSpeed]);
 
   useEffect(() => {
     if (!isReaderPanelOpen) return;
@@ -588,10 +607,17 @@ function SongPageContent() {
     const scrollContainer = teleprompterScrollRef.current;
     if (!isTeleprompterOpen || teleprompterView !== "scroll" || !scrollContainer) {
       setTeleprompterScrollRange(0);
+      setTeleprompterTextHeight(0);
       return;
     }
 
-    const measureScrollRange = () => setTeleprompterScrollRange(Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight));
+    const measureScrollRange = () => {
+      setTeleprompterScrollRange(Math.max(0, scrollContainer.scrollHeight - scrollContainer.clientHeight));
+      const shlokas = scrollContainer.querySelectorAll<HTMLElement>(".teleprompter-shloka");
+      const first = shlokas[0];
+      const last = shlokas[shlokas.length - 1];
+      setTeleprompterTextHeight(first && last ? Math.max(0, last.offsetTop + last.offsetHeight - first.offsetTop) : 0);
+    };
     const frame = window.requestAnimationFrame(measureScrollRange);
     const resizeObserver = new ResizeObserver(measureScrollRange);
     resizeObserver.observe(scrollContainer);
@@ -610,8 +636,10 @@ function SongPageContent() {
     const documentOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
+    document.documentElement.classList.add("is-teleprompter-open");
 
     return () => {
+      document.documentElement.classList.remove("is-teleprompter-open");
       document.body.style.overflow = bodyOverflow;
       document.documentElement.style.overflow = documentOverflow;
     };
@@ -838,6 +866,7 @@ function SongPageContent() {
     if (teleprompterView === "scroll") {
       setIsManualTeleprompterScrollPace(true);
       setTeleprompterScrollSpeed(speed);
+      if (teleprompterDensity !== null) setTeleprompterScrollDensity(teleprompterDensity);
       return;
     }
 

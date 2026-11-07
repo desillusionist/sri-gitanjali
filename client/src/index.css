@@ -420,7 +420,11 @@ a { color: inherit; text-decoration: none; }
 .teleprompter-slide-nav:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.65); outline-offset: 0.2rem; }
 .teleprompter-slide-nav:disabled { color: #b8aea0; border-color: var(--hairline); background: rgba(var(--paper-rgb), 0.42); box-shadow: none; cursor: not-allowed; }
 .teleprompter-slide-position { position: absolute; right: clamp(1rem, 3vw, 2.3rem); bottom: clamp(1rem, 3vw, 2.3rem); color: var(--saffron-deep); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em; }
-.teleprompter-reading-content { width: min(100%, 66rem); margin: 0 auto; padding: clamp(4rem, 11vh, 8.5rem) clamp(1.25rem, 7vw, 7rem) 32vh; }
+.teleprompter-reading-content { width: min(100%, 66rem); margin: 0 auto; padding: var(--teleprompter-lead-in) clamp(1.25rem, 7vw, 7rem) 32vh; }
+/* The first line starts at the foot of the screen and rises into view. */
+.teleprompter-overlay { --teleprompter-lead-in: calc(100dvh - 9rem); }
+/* Nothing in the app pops up over the lyrics while the teleprompter is open. */
+html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 /* Verses are spaced exactly like lines (0.22em, split around the divider) so auto-scroll time is spread evenly over every line. The font size matches .teleprompter-line so em units agree. */
 .teleprompter-shloka { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: clamp(1rem, 3vw, 2.6rem); padding: 0.11em 0; border-top: 1px solid var(--hairline); font-size: calc(clamp(2.15rem, 4.6vw, 4.7rem) + var(--reading-font-size-adjustment, 0rem)); }
 .teleprompter-shloka:first-child { padding-top: 0; border-top: 0; }
@@ -679,7 +683,7 @@ a { color: inherit; text-decoration: none; }
   .teleprompter-view-switch button { flex: 1; }
   .teleprompter-overlay .teleprompter-mode-controls { display: grid; grid-column: 1 / -1; grid-row: 3; grid-template-columns: 1fr; gap: 0.48rem; }
   .teleprompter-overlay .teleprompter-play-button { min-width: 0; }
-  .teleprompter-reading-content { padding: 3.5rem 1.2rem 28vh; }
+  .teleprompter-reading-content { padding: var(--teleprompter-lead-in) 1.2rem 28vh; }
   .teleprompter-shloka { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; padding: 0.11em 0; font-size: calc(clamp(2.15rem, 10vw, 3.25rem) + var(--reading-font-size-adjustment, 0rem)); }
   .teleprompter-slideshow-surface { grid-template-columns: 2.3rem minmax(0, 1fr) 2.3rem; gap: 0.38rem; padding: 0.8rem; }
   .teleprompter-slideshow-verse { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; padding: 1.5rem; }
