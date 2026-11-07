@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, filterSongs, getOriginalMatchRanges, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, type Song } from "./song";
+import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, ALL_LANGUAGES_FILTER, filterSongs, getOriginalMatchRanges, getSongRecordings, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, type Song } from "./song";
 
 describe("search phrase normalization", () => {
   it("treats spaces, hyphens, and n-dashes as equivalent separators", () => {
@@ -33,5 +33,37 @@ describe("recording filter by singer", () => {
     expect(parseRecordingFilter("singer:huron")).toBe("singer:huron");
     expect(parseRecordingFilter("singer:someone-else")).toBe(ALL_RECORDINGS_FILTER);
     expect(parseRecordingFilter(null)).toBe(ALL_RECORDINGS_FILTER);
+  });
+});
+
+describe("search in the second translation", () => {
+  const song = {
+    id: "s1", title: "Vibhāvarī śeṣa", poet: "", category: "Morning",
+    verses: [{ id: "verse-1", lines: [{ id: "l1", transliteration: "vibhāvarī śeṣa, āloka-praveśa" }], translation: "The night has come to an end." }],
+  } as unknown as Song;
+  const spanish = new Map([["s1::verse-1", "La noche terminó y la alborada despunta."]]);
+  const lookup = (item: Song, verse: { id: string }) => spanish.get(`${item.id}::${verse.id}`);
+  const filters = { query: "alborada", author: ALL_AUTHORS_FILTER, category: ALL_CATEGORIES_FILTER, recording: ALL_RECORDINGS_FILTER, language: ALL_LANGUAGES_FILTER } as const;
+
+  it("finds songs by their second translation only when one is given", () => {
+    expect(filterSongs([song], filters)).toHaveLength(0);
+    expect(filterSongs([song], filters, lookup)).toHaveLength(1);
+    expect(filterSongs([song], { ...filters, query: "TERMINO" }, lookup)).toHaveLength(1);
+  });
+
+  it("counts and quotes matches in the second translation", () => {
+    expect(getSongSearchMatches(song, "alborada", lookup).map((match) => match.fieldId)).toEqual(["secondary:verse-1"]);
+    expect(getSongSearchExcerpt(song, "alborada", lookup)?.source).toBe("secondaryTranslation");
+    expect(getSongSearchExcerpt(song, "alborada")).toBeNull();
+  });
+});
+
+describe("recordings list", () => {
+  it("lists each recording with its song, in book order", () => {
+    const songs = [
+      { id: "a", title: "A", verses: [], audioLinks: ["https://soundcloud.com/huron/a", "https://soundcloud.com/bhakti-lalita-devi/a2"] },
+      { id: "b", title: "B", verses: [] },
+    ] as unknown as Song[];
+    expect(getSongRecordings(songs).map((recording) => [recording.song.id, recording.singer])).toEqual([["a", "Manasa Krishna"], ["a", "Bhakti Lalita Devi"]]);
   });
 });

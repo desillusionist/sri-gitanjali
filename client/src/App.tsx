@@ -11,6 +11,8 @@ import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 import SongPage from "./pages/SongPage";
 import AuthorPage from "./pages/AuthorPage";
+import RecordingsPage from "./pages/RecordingsPage";
+import PlaylistPage from "./pages/PlaylistPage";
 import { Route, Router as WouterRouter, Switch } from "wouter";
 
 // "/sri-gitanjali" on GitHub Pages, "" everywhere else.
@@ -21,6 +23,8 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/favorites" component={FavoritesPage} />
+      <Route path="/recordings" component={RecordingsPage} />
+      <Route path="/playlist" component={PlaylistPage} />
       <Route path="/song/:id" component={SongPage} />
       <Route path="/author/:id" component={AuthorPage} />
       <Route path="/404" component={NotFound} />

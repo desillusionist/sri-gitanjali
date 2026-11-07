@@ -83,7 +83,10 @@ export type HighlightPart = {
   matchIndex?: number;
 };
 
-export type SongSearchMatchKind = "title" | "author" | "comment" | "line" | "translation";
+export type SongSearchMatchKind = "title" | "author" | "comment" | "line" | "translation" | "secondaryTranslation";
+
+/** Looks up a verse's second translation (in the reader's chosen language), when one is loaded. */
+export type SecondaryTranslationLookup = (song: Song, verse: Verse) => string | undefined;
 
 export type SongSearchMatch = {
   id: string;
@@ -95,7 +98,7 @@ export type SongSearchMatch = {
 
 export type SongSearchExcerpt = {
   text: string;
-  source: "line" | "translation" | "comment";
+  source: "line" | "translation" | "secondaryTranslation" | "comment";
 };
 
 export const defaultSongSearchFilters: SongSearchFilters = {
@@ -371,12 +374,13 @@ function buildContextExcerpt(value: string, query: string, radius = 44): string 
   return `${start > 0 ? "…" : ""}${excerpt}${end < value.length ? "…" : ""}`;
 }
 
-export function getSongSearchExcerpt(song: Song, query: string): SongSearchExcerpt | null {
+export function getSongSearchExcerpt(song: Song, query: string, secondary?: SecondaryTranslationLookup): SongSearchExcerpt | null {
   if (!normalizeSearchText(query)) return null;
 
   const candidates: Array<{ text: string; source: SongSearchExcerpt["source"] }> = [
     ...song.verses.flatMap((verse) => verse.lines.map((line) => ({ text: line.transliteration, source: "line" as const }))),
     ...song.verses.map((verse) => ({ text: verse.translation, source: "translation" as const })),
+    ...(secondary ? song.verses.map((verse) => ({ text: secondary(song, verse) ?? "", source: "secondaryTranslation" as const })) : []),
     ...(song.comment ? [{ text: song.comment, source: "comment" as const }] : []),
   ];
 
@@ -388,7 +392,7 @@ export function getSongSearchExcerpt(song: Song, query: string): SongSearchExcer
   return null;
 }
 
-export function getSongSearchMatches(song: Song, query: string): SongSearchMatch[] {
+export function getSongSearchMatches(song: Song, query: string, secondary?: SecondaryTranslationLookup): SongSearchMatch[] {
   if (!normalizeSearchText(query)) return [];
 
   const matches: SongSearchMatch[] = [];
@@ -404,18 +408,21 @@ export function getSongSearchMatches(song: Song, query: string): SongSearchMatch
   song.verses.forEach((verse) => {
     verse.lines.forEach((line) => addMatches(line.transliteration, `line:${line.id}`, "line", verse.id));
     if (verse.translation) addMatches(verse.translation, `translation:${verse.id}`, "translation", verse.id);
+    const secondaryText = secondary?.(song, verse);
+    if (secondaryText) addMatches(secondaryText, `secondary:${verse.id}`, "secondaryTranslation", verse.id);
   });
 
   return matches;
 }
 
-export function songSearchText(song: Song): string {
+export function songSearchText(song: Song, secondary?: SecondaryTranslationLookup): string {
   return [
     song.title,
     song.poet ?? "",
     song.comment ?? "",
     ...song.verses.flatMap((verse) => [
       verse.translation,
+      secondary?.(song, verse) ?? "",
       ...verse.lines.map((line) => line.transliteration),
     ]),
   ]
@@ -437,11 +444,11 @@ export function getSongCategories(songs: Song[]): string[] {
   });
 }
 
-export function filterSongs(songs: Song[], filters: SongSearchFilters): Song[] {
+export function filterSongs(songs: Song[], filters: SongSearchFilters, secondary?: SecondaryTranslationLookup): Song[] {
   const query = normalizeSearchText(filters.query);
 
   return songs.filter((song) => {
-    const matchesQuery = !query || normalizeSearchText(songSearchText(song)).includes(query);
+    const matchesQuery = !query || normalizeSearchText(songSearchText(song, secondary)).includes(query);
     const matchesAuthor =
       filters.author === ALL_AUTHORS_FILTER ||
       (filters.author === UNLISTED_AUTHOR_FILTER ? !song.poet?.trim() : song.poet?.trim() === filters.author);
@@ -511,4 +518,16 @@ export function createSlug(value: string): string {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "") || "song"
   );
+}
+
+export type SongRecording = { url: string; song: Song; singer: string | null; seconds: number | null };
+
+/** Every SoundCloud recording in the book, in book order, with its song. */
+export function getSongRecordings(songs: Song[]): SongRecording[] {
+  return songs.flatMap((song) => getSoundCloudRecordingUrls(song).map((url) => ({
+    url,
+    song,
+    singer: soundCloudSingerName(url),
+    seconds: soundCloudTrackSecondsFor(url),
+  })));
 }

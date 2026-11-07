@@ -15,8 +15,11 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, soundCloudTrackSecondsFor, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
+import { READING_PREFERENCES_STORAGE_KEY } from "@/hooks/useSecondarySearch";
+import { PlaylistToggleButton } from "@/components/PlaylistToggleButton";
+import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
 import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingingFollower";
-import { availableSecondaryTranslationLanguages, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
+import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
@@ -30,7 +33,6 @@ import { toast } from "sonner";
 const READING_FONT_SIZE_ADJUSTMENTS = [-0.18, -0.09, 0, 0.12, 0.24] as const;
 const READING_LINE_HEIGHTS = [1.04, 1.08, 1.12, 1.18, 1.26] as const;
 const DEFAULT_READING_STEP = 2;
-const READING_PREFERENCES_STORAGE_KEY = "kirtan-guide.reading-preferences";
 const DEFAULT_TELEPROMPTER_SPEED = 30;
 const MIN_TELEPROMPTER_SPEED = 1;
 const MAX_TELEPROMPTER_SPEED = 72;
@@ -308,13 +310,6 @@ function SongPageContent() {
       sourceContextValue: verse.lines.map((line) => line.transliteration).join("\n"),
     }));
   }, [areSecondaryOrnamentsHidden, song]);
-  const matches = useMemo(() => song ? getSongSearchMatches(song, query) : [], [query, song]);
-  const matchesByField = useMemo(() => {
-    const byField = new Map<string, SongSearchMatch[]>();
-    matches.forEach((match) => byField.set(match.fieldId, [...(byField.get(match.fieldId) ?? []), match]));
-    return byField;
-  }, [matches]);
-  const activeMatch = matches[activeMatchIndex] ?? null;
   const secondaryTranslationInput = useMemo(() => {
     if (!secondaryTranslationLanguage || usesStaticSecondaryTranslation(secondaryTranslationLanguage) || !song) return undefined;
     const verses = song.verses
@@ -325,6 +320,17 @@ function SongPageContent() {
   const [secondaryTranslationsByVerse, setSecondaryTranslationsByVerse] = useState<Map<string, string>>(() => new Map());
   const [pendingSecondaryTranslationVerseIds, setPendingSecondaryTranslationVerseIds] = useState<Set<string>>(() => new Set());
   const [failedSecondaryTranslationVerseIds, setFailedSecondaryTranslationVerseIds] = useState<Set<string>>(() => new Set());
+  // A packaged language may cover only part of the book; such songs get one quiet note, not an error per verse.
+  const [isSongUntranslatedInPackage, setIsSongUntranslatedInPackage] = useState(false);
+  // In-song search also covers the second translation on screen.
+  const secondarySearchLookup = useMemo(() => secondaryTranslationsByVerse.size ? (_song: unknown, verse: { id: string }) => secondaryTranslationsByVerse.get(verse.id) : undefined, [secondaryTranslationsByVerse]);
+  const matches = useMemo(() => song ? getSongSearchMatches(song, query, secondarySearchLookup) : [], [query, song, secondarySearchLookup]);
+  const matchesByField = useMemo(() => {
+    const byField = new Map<string, SongSearchMatch[]>();
+    matches.forEach((match) => byField.set(match.fieldId, [...(byField.get(match.fieldId) ?? []), match]));
+    return byField;
+  }, [matches]);
+  const activeMatch = matches[activeMatchIndex] ?? null;
   const { mutateAsync: requestSecondaryTranslationVerse } = trpc.secondaryTranslation.translateVerse.useMutation();
   const audioMatchedScrollSpeed = getAudioMatchedScrollSpeed(teleprompterScrollRange, soundCloudDurationMs);
   const followerSpeedRef = useRef<number | null>(null);
@@ -348,6 +354,8 @@ function SongPageContent() {
     ? singingScrollSpeed
     : !isManualTeleprompterScrollPace && audioMatchedScrollSpeed !== null ? audioMatchedScrollSpeed : teleprompterScrollSpeed;
   const { isPlaying: isAutoScrollPlaying, pause: pauseTeleprompter, rewindBy: rewindTeleprompter, toggle: toggleTeleprompter } = useTeleprompter(isTeleprompterOpen && teleprompterView === "scroll", effectiveTeleprompterSpeed, teleprompterScrollRef);
+  // Keep the phone awake for as long as the reader is open, so a pause between verses never lets it lock.
+  useScreenWakeLock(isTeleprompterOpen);
 
   useEffect(() => {
     setQuery(routeQuery);
@@ -362,6 +370,7 @@ function SongPageContent() {
     setSecondaryTranslationsByVerse(new Map());
     setPendingSecondaryTranslationVerseIds(new Set());
     setFailedSecondaryTranslationVerseIds(new Set());
+    setIsSongUntranslatedInPackage(false);
 
     if (usesStaticSecondaryTranslation(secondaryTranslationLanguage) && song) {
       const translatableVerses = song.verses.filter((verse) => Boolean(verse.translation.trim()));
@@ -371,15 +380,13 @@ function SongPageContent() {
       void loadPackagedSecondaryTranslations(secondaryTranslationLanguage)
         .then((packageTranslations) => {
           if (isCancelled) return;
-          const missingVerseIds = new Set<string>();
           const nextTranslations = new Map<string, string>();
           translatableVerses.forEach((verse) => {
             const translation = packageTranslations.get(`${song.id}::${verse.id}`);
             if (translation) nextTranslations.set(verse.id, translation);
-            else missingVerseIds.add(verse.id);
           });
           setSecondaryTranslationsByVerse(nextTranslations);
-          setFailedSecondaryTranslationVerseIds(missingVerseIds);
+          setIsSongUntranslatedInPackage(translatableVerses.length > 0 && nextTranslations.size === 0);
         })
         .catch(() => {
           if (!isCancelled) setFailedSecondaryTranslationVerseIds(verseIds);
@@ -1120,51 +1127,63 @@ function SongPageContent() {
 
         <div className="song-utility-row">
           <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
-          {soundCloudSourceUrl && (
-            <div className="song-audio-actions">
-              {soundCloudSourceUrls.length > 1 && (
-                <select className="song-audio-version" value={soundCloudRecordingIndex} onChange={(event) => setSoundCloudRecordingIndex(Number(event.target.value))} aria-label={copy.song.audioVersionLabel}>
-                  {soundCloudSourceUrls.map((url, recordingIndex) => {
-                    const seconds = soundCloudTrackSecondsFor(url);
-                    const parts = [copy.song.audioVersion.replace("{number}", String(recordingIndex + 1)), soundCloudSingerName(url), seconds ? formatTrackLength(seconds) : null].filter(Boolean);
-                    return <option key={recordingIndex} value={recordingIndex}>{parts.join(copy.song.audioVersionSeparator)}</option>;
-                  })}
-                </select>
-              )}
-              <button className="song-audio-toggle" type="button" onClick={() => {
-                  if (isSoundCloudPlayerOpen) {
-                    setIsSoundCloudPlayerOpen(false);
-                    return;
-                  }
-                  openSoundCloudPlayer();
-                }} aria-expanded={isSoundCloudPlayerOpen} aria-controls={`soundcloud-player-${song.id}`} aria-label={copy.song.audioRecordingDetail}>
-                  <Volume2 size={16} aria-hidden="true" />
-                  <span>{isSoundCloudPlayerOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}</span>
-              </button>
-            </div>
-          )}
         </div>
         {soundCloudSourceUrl && (
-          <div className="song-audio" aria-label={copy.song.audioPlayerLabel}>
-            {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "loading" && <p className="song-audio-status" role="status">{copy.song.audioPlayerLoading}</p>}
-            {isSoundCloudPlayerOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={soundCloudSourceUrl} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
-            {soundCloudPlayerUrl && (
-              <iframe
-                id={`soundcloud-player-${song.id}`}
-                ref={soundCloudPlayerRef}
-                className={`soundcloud-player ${isSoundCloudPlayerOpen ? "is-visible" : "is-duration-probe"}`}
-                src={soundCloudPlayerUrl}
-                title={copy.song.soundCloudPlayerTitle.replace("{song}", song.title)}
-                allow="autoplay"
-                loading="eager"
-                aria-hidden={!isSoundCloudPlayerOpen}
-                tabIndex={isSoundCloudPlayerOpen ? 0 : -1}
-              />
-            )}
-          </div>
+          <section className="song-audio" aria-label={copy.song.audioPlayerLabel}>
+            <ul className="audio-list">
+              {soundCloudSourceUrls.map((url, recordingIndex) => {
+                const isCurrent = recordingIndex === soundCloudRecordingIndex;
+                const isOpen = isCurrent && isSoundCloudPlayerOpen;
+                const seconds = soundCloudTrackSecondsFor(url);
+                const singer = soundCloudSingerName(url) ?? copy.song.audioVersion.replace("{number}", String(recordingIndex + 1));
+                return (
+                  <li className={`audio-row${isOpen ? " is-open" : ""}`} key={url}>
+                    <div className="audio-row-head">
+                    <button className="audio-row-toggle" type="button" onClick={() => {
+                        if (isOpen) {
+                          setIsSoundCloudPlayerOpen(false);
+                          return;
+                        }
+                        setSoundCloudRecordingIndex(recordingIndex);
+                        openSoundCloudPlayer();
+                      }} aria-expanded={isOpen} aria-controls={`soundcloud-player-${song.id}`} aria-label={`${isOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}: ${singer}`}>
+                      <ChevronRight className="audio-row-chevron" size={15} aria-hidden="true" />
+                      <span className="audio-row-note" aria-hidden="true">♪</span>
+                      <span className="audio-row-title">{singer}</span>
+                      {seconds ? <span className="audio-row-length">{formatTrackLength(seconds)}</span> : null}
+                    </button>
+                    <PlaylistToggleButton url={url} label={`${song.title} (${singer})`} />
+                    </div>
+                    {isCurrent && (
+                      <div className="audio-row-player">
+                        {isOpen && soundCloudPlayerStatus === "loading" && <p className="song-audio-status" role="status">{copy.song.audioPlayerLoading}</p>}
+                        {isOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={url} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
+                        {soundCloudPlayerUrl && (
+                          <iframe
+                            id={`soundcloud-player-${song.id}`}
+                            ref={soundCloudPlayerRef}
+                            className={`soundcloud-player ${isOpen ? "is-visible" : "is-duration-probe"}`}
+                            src={soundCloudPlayerUrl}
+                            title={copy.song.soundCloudPlayerTitle.replace("{song}", song.title)}
+                            allow="autoplay"
+                            loading="eager"
+                            aria-hidden={!isOpen}
+                            tabIndex={isOpen ? 0 : -1}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
         )}
 
+        {songLanguageInfo && <p className="song-original-language">{copy.song.originalLanguage.replace("{language}", songLanguageInfo.english)}</p>}
         {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
+
+        {selectedSecondaryLanguage && isSongUntranslatedInPackage && <p className="secondary-translation-status song-untranslated-note" role="status">{copy.song.secondaryTranslationNotYet.replace("{language}", selectedSecondaryLanguage.label)}</p>}
 
         <div className="song-verses">
           {displayedVerses.map((verse, verseIndex) => {
@@ -1223,7 +1242,7 @@ function SongPageContent() {
                         <p className="translation"><SongMatchText value={verse.translation} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
                         {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
                         {selectedSecondaryLanguage && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
-                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang}>{secondaryTranslation}</p>}
+                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang}><SongMatchText value={secondaryTranslation} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
                       </div>
                     </>
                   )}

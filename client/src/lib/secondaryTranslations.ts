@@ -8,6 +8,7 @@ export const secondaryTranslationLanguages = [
   { code: "zh", name: "中文", label: "Chinese", lang: "zh-Hans" },
   { code: "th", name: "ไทย", label: "Thai", lang: "th" },
   { code: "pt", name: "Português", label: "Portuguese", lang: "pt" },
+  { code: "lv", name: "Latviešu", label: "Latvian", lang: "lv" },
   { code: "hi", name: "हिन्दी", label: "Hindi", lang: "hi" },
   { code: "bn", name: "বাংলা", label: "Bengali", lang: "bn" },
 ] as const;
@@ -32,6 +33,13 @@ export const availableSecondaryTranslationLanguages = import.meta.env.VITE_STATI
 
 export function isSecondaryTranslationLanguage(value: unknown): value is SecondaryTranslationLanguage {
   return availableSecondaryTranslationLanguages.some((language) => language.code === value);
+}
+
+const draftVerseKeys = new Map<SecondaryTranslationLanguage, Set<string>>();
+
+/** True when this verse's packaged translation is marked as a draft (call after the package has loaded). */
+export function isDraftPackagedVerse(language: SecondaryTranslationLanguage | null, key: string) {
+  return language !== null && (draftVerseKeys.get(language)?.has(key) ?? false);
 }
 
 const packagePromises = new Map<SecondaryTranslationLanguage, Promise<Map<string, string>>>();
@@ -60,6 +68,8 @@ export function parseSecondaryTranslationPackage(value: unknown, language: Secon
   }
 
   if (!translations.size) throw new Error(`The ${language} translation package is empty.`);
+  // Optional: verses in an otherwise published package that are still drafts (e.g. our own Spanish fill-ins).
+  draftVerseKeys.set(language, new Set(Array.isArray(value.draftKeys) ? value.draftKeys.filter((key): key is string => typeof key === "string") : []));
   return translations;
 }
 

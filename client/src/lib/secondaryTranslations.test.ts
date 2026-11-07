@@ -56,7 +56,11 @@ describe("Russian static secondary translations", () => {
   it("routes packaged languages to their files while retaining the online path for the others", () => {
     expect(usesStaticSecondaryTranslation("ru")).toBe(true);
     expect(usesStaticSecondaryTranslation("zh")).toBe(true);
-    expect(usesStaticSecondaryTranslation("uk")).toBe(false);
+    expect(usesStaticSecondaryTranslation("uk")).toBe(true);
+    expect(usesStaticSecondaryTranslation("es")).toBe(true);
+    expect(usesStaticSecondaryTranslation("pt")).toBe(true);
+    expect(usesStaticSecondaryTranslation("lv")).toBe(true);
+    expect(usesStaticSecondaryTranslation("it")).toBe(false);
     expect(usesStaticSecondaryTranslation(null)).toBe(false);
   });
 });

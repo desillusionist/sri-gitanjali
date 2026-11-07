@@ -519,18 +519,23 @@ a { color: inherit; text-decoration: none; }
 .song-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 0.72rem; align-items: baseline; }
 .song-utility-row { display: flex; max-width: 47rem; gap: 0.75rem; align-items: center; justify-content: space-between; padding-top: 0.62rem; }
 .song-verse-count { margin: 0; color: var(--saffron-deep); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
-.song-audio-actions { display: inline-flex; gap: 0.42rem; align-items: center; }
-.song-audio { display: grid; gap: 0.7rem; max-width: 47rem; margin-top: 0.72rem; }
+.song-audio { max-width: 47rem; margin-top: 0.4rem; }
 .song-audio-status { margin: 0; padding: 0.6rem 0.72rem; color: var(--ink-soft); border-left: 2px solid rgba(var(--saffron-rgb), 0.36); background: rgba(var(--paper-rgb), 0.64); font-size: 0.76rem; line-height: 1.45; }
 .song-audio-status.is-error { color: #7c3d25; }
 .song-audio-status a { color: var(--saffron-deep); font-weight: 700; text-underline-offset: 0.18rem; }
-.song-audio-toggle { display: inline-flex; flex: 0 0 auto; gap: 0.42rem; align-items: center; min-height: 2.1rem; padding: 0.46rem 0.62rem; color: var(--ink-soft); border: 1px solid var(--hairline); background: rgba(var(--paper-rgb), 0.76); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out), background 160ms var(--ease-out), transform 160ms var(--ease-out); }
-.song-audio-toggle:hover { color: var(--saffron-deep); border-color: rgba(var(--saffron-rgb), 0.42); background: var(--saffron-tint); }
-.song-audio-toggle:active { transform: scale(0.97); }
-.song-audio-toggle:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.6); outline-offset: 0.2rem; }
-.song-audio-version { min-height: 2.1rem; max-width: 8.5rem; padding: 0.42rem 1.8rem 0.42rem 0.56rem; color: var(--ink-soft); border: 1px solid var(--hairline); border-radius: 0; background: rgba(var(--paper-rgb), 0.76); font-family: "DM Sans", Arial, sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
-.song-audio-version:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.6); outline-offset: 0.2rem; }
-.soundcloud-player { display: block; width: 100%; height: 112px; border: 0; background: var(--paper-cream); }
+/* Recording rows: one line per singer; the open row shows SoundCloud's 20px one-line player. */
+.audio-list { display: grid; gap: 0.1rem; margin: 0; padding: 0; list-style: none; }
+.audio-row-toggle { display: flex; width: 100%; gap: 0.42rem; align-items: center; min-height: 2.3rem; padding: 0.3rem 0; color: var(--ink); border: 0; background: none; font-size: 0.86rem; font-weight: 600; text-align: left; cursor: pointer; }
+.audio-row-chevron { flex: 0 0 auto; color: var(--ink-soft); transition: transform 180ms var(--ease-out); }
+.audio-row.is-open .audio-row-chevron { transform: rotate(90deg); }
+.audio-row-note { flex: 0 0 auto; color: var(--saffron); font-size: 0.95rem; line-height: 1; }
+.audio-row-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.audio-row-length { margin-left: auto; padding-left: 0.6rem; color: var(--ink-soft); font-size: 0.74rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.audio-row-toggle:hover .audio-row-title { color: var(--saffron-deep); }
+.audio-row-toggle:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.6); outline-offset: 0.15rem; }
+.audio-row-player { display: grid; gap: 0.5rem; padding: 0 0 0.55rem 1.4rem; }
+.audio-row:not(.is-open) .audio-row-player { padding: 0; }
+.soundcloud-player { display: block; width: 100%; height: 20px; border: 0; background: transparent; }
 .soundcloud-player.is-duration-probe { position: fixed; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
 .song-category-link, .song-poet-link { color: inherit; text-decoration: none; transition: color 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
 .song-category-link:hover, .song-poet-link:hover { color: var(--saffron-deep); text-decoration: underline; text-decoration-color: rgba(var(--saffron-rgb), 0.5); text-underline-offset: 0.24rem; }
@@ -644,9 +649,6 @@ a { color: inherit; text-decoration: none; }
   .reader-panel-space { flex-basis: 0.15rem; }
   .reader-panel-divider { margin: 0 0.15rem; }
   .song-utility-row { gap: 0.55rem; }
-  .song-audio-actions { gap: 0.3rem; }
-  .song-audio-version { max-width: 7.2rem; min-height: 2rem; padding-left: 0.42rem; font-size: 0.58rem; }
-  .song-audio-toggle { min-height: 2rem; padding: 0.4rem 0.54rem; }
   .in-song-search { grid-template-columns: auto minmax(0, 1fr) auto; max-width: none; }
   .in-song-search input { grid-column: 2; grid-row: 1; padding-right: 1.85rem; }
   .in-song-search-clear { grid-column: 2; grid-row: 1; justify-self: end; z-index: 1; }
@@ -745,3 +747,48 @@ a { color: inherit; text-decoration: none; }
 .song-row-seal.is-sa { background: var(--saffron-tint); border-color: rgba(var(--saffron-rgb), 0.3); }
 .language-filter-option { display: inline-flex; gap: 0.5rem; align-items: baseline; }
 .language-filter-option > span { color: inherit; opacity: 0.68; font-size: 0.9em; }
+
+/* Original language, spelled out in English for readers of neither script. */
+.song-original-language { max-width: 55ch; margin: 1.6rem 0 0; color: var(--ink-soft); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; }
+.song-original-language + .song-comment { margin-top: 0.6rem; }
+.song-row-language { font-weight: 500; }
+
+/* Second translations in search: language tag on library excerpts, draft mark on unreviewed verses. */
+.song-search-excerpt-language { margin-right: 0.35rem; color: var(--saffron-deep); font-family: "DM Sans", Arial, sans-serif; font-size: 0.6rem; font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-decoration: none; }
+.secondary-translation-draft { display: inline-block; margin-left: 0.45rem; padding: 0 0.32rem; border: 1px solid var(--hairline); color: var(--ink-soft); font-family: "DM Sans", Arial, sans-serif; font-size: 0.6rem; font-style: normal; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; vertical-align: 0.15em; cursor: help; }
+
+/* Recording rows: the toggle fills the row; small actions sit at its end. */
+.audio-row-head { display: flex; gap: 0.2rem; align-items: center; }
+.audio-row-head .audio-row-toggle { flex: 1; min-width: 0; }
+.audio-row-title small { margin-left: 0.5rem; color: var(--ink-soft); font-size: 0.78rem; font-weight: 500; }
+.playlist-toggle, .playlist-row-action, .playlist-control { display: inline-grid; flex: none; place-items: center; width: 2.1rem; height: 2.1rem; padding: 0; color: var(--ink-soft); border: 0; background: none; cursor: pointer; }
+.playlist-toggle:hover, .playlist-row-action:hover:not(:disabled), .playlist-control:hover:not(:disabled) { color: var(--saffron-deep); }
+.playlist-toggle.is-in-playlist { color: var(--saffron); }
+.playlist-row-action:disabled, .playlist-control:disabled { opacity: 0.3; cursor: default; }
+
+/* Recordings page */
+.recordings-section, .playlist-section { max-width: 52rem; padding-bottom: 4rem; }
+.recordings-toolbar { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; align-items: center; margin-bottom: 1.2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--hairline); }
+.recordings-search { display: flex; flex: 1 1 15rem; gap: 0.5rem; align-items: center; min-height: 2.5rem; padding: 0 0.7rem; color: var(--ink-soft); border: 1px solid var(--hairline); background: var(--paper-cream); }
+.recordings-search input { width: 100%; min-width: 0; color: var(--ink); border: 0; outline: 0; background: none; font: inherit; font-size: 0.9rem; }
+.recordings-singers { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.recordings-singer { padding: 0.3rem 0.7rem; color: var(--ink-soft); border: 1px solid var(--hairline); background: none; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+.recordings-singer.is-active { color: var(--paper-cream); border-color: var(--saffron-deep); background: var(--saffron-deep); }
+.recordings-add-all:disabled { opacity: 0.4; cursor: default; }
+.recordings-list .audio-row, .playlist-list .audio-row { border-bottom: 1px solid var(--hairline); }
+.recording-song-link { justify-self: start; color: var(--saffron-deep); font-size: 0.78rem; font-weight: 600; }
+.recordings-empty { color: var(--ink-soft); }
+
+/* Playlist page */
+.playlist-deck { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem 1rem; align-items: end; margin-bottom: 1.4rem; padding: 1rem 1.1rem; border: 1px solid var(--hairline); background: var(--paper-cream); }
+.playlist-now h2 { margin: 0.3rem 0 0.15rem; font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.7rem; font-weight: 600; line-height: 1.05; }
+.playlist-now h2 a { color: inherit; text-decoration: none; }
+.playlist-now p { margin: 0; color: var(--ink-soft); font-size: 0.85rem; }
+.playlist-controls { display: flex; gap: 0.2rem; }
+.playlist-player { grid-column: 1 / -1; }
+.playlist-hint { grid-column: 1 / -1; margin: 0; color: var(--ink-soft); font-size: 0.74rem; }
+.playlist-list { counter-reset: none; }
+.playlist-row-number { width: 1.4rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+.playlist-row.is-current .audio-row-toggle { color: var(--saffron-deep); }
+.playlist-row.is-current .playlist-row-number { color: var(--saffron); }
+.playlist-clear { margin-top: 1.2rem; }

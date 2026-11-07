@@ -3,18 +3,44 @@
  * reader opens a teleprompter or player for a linked recording.
  */
 
-type SoundCloudWidget = {
+export type SoundCloudWidget = {
   bind: (eventName: string, listener: () => void) => void;
+  unbind: (eventName: string) => void;
   getDuration: (callback: (durationMs: number) => void) => void;
+  load: (url: string, options?: Record<string, unknown> & { callback?: () => void }) => void;
+  play: () => void;
+  pause: () => void;
 };
 
 type SoundCloudWidgetApi = {
   Widget: ((iframe: HTMLIFrameElement | string) => SoundCloudWidget) & {
     Events: {
       READY: string;
+      PLAY: string;
+      PAUSE: string;
+      FINISH: string;
     };
   };
 };
+
+/** Player options shared by every embedded player in the app. */
+export const SOUNDCLOUD_PLAYER_OPTIONS = {
+  hide_related: "true",
+  show_comments: "false",
+  show_reposts: "false",
+  show_teaser: "false",
+  visual: "false",
+  color: "#b85e32",
+} as const;
+
+/** Widget address for a soundcloud.com track page (the widget resolves page URLs itself). */
+export function soundCloudPlayerSrc(trackUrl: string, autoPlay = false): string {
+  const src = new URL("https://w.soundcloud.com/player/");
+  src.searchParams.set("url", trackUrl);
+  for (const [key, value] of Object.entries(SOUNDCLOUD_PLAYER_OPTIONS)) src.searchParams.set(key, value);
+  src.searchParams.set("auto_play", String(autoPlay));
+  return src.toString();
+}
 
 declare global {
   interface Window {

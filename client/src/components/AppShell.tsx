@@ -5,7 +5,7 @@
 
 import { brandAssets } from "@/data/sources";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { BookOpenText, Bookmark, ChevronDown, LibraryBig, Palette, Search } from "lucide-react";
+import { BookOpenText, Bookmark, ChevronDown, LibraryBig, ListMusic, Palette, Search, Volume2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { THEMES, setTheme, useTheme, type Theme } from "@/lib/theme";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -64,6 +64,19 @@ export function AppShell({ children }: AppShellProps) {
               <Link href="/favorites" onClick={() => setIsBrandMenuOpen(false)}>
                 <Bookmark aria-hidden="true" size={17} strokeWidth={1.7} />
                 <span>{copy.navigation.favorites}</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="brand-menu-separator" />
+            <DropdownMenuItem asChild className="brand-menu-item">
+              <Link href="/recordings" onClick={() => setIsBrandMenuOpen(false)}>
+                <Volume2 aria-hidden="true" size={17} strokeWidth={1.7} />
+                <span>{copy.navigation.recordings}</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="brand-menu-item">
+              <Link href="/playlist" onClick={() => setIsBrandMenuOpen(false)}>
+                <ListMusic aria-hidden="true" size={17} strokeWidth={1.7} />
+                <span>{copy.navigation.playlist}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="brand-menu-separator" />

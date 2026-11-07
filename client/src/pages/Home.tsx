@@ -28,6 +28,8 @@ import {
   hasActiveSongFilters,
 } from "@/domain/song";
 import { useRecentSearches } from "@/hooks/useRecentSearches";
+import { useSecondarySearch } from "@/hooks/useSecondarySearch";
+import { availableSecondaryTranslationLanguages, usesStaticSecondaryTranslation } from "@/lib/secondaryTranslations";
 import { ArrowUpRight, ArrowDownAZ, BookOpen, Clock3, DatabaseZap, LibraryBig, Loader2, Search, Sparkles, Trash2, Volume2, X } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
@@ -60,7 +62,10 @@ function LibraryHome() {
   const [libraryView, setLibraryView] = useState<"library" | "index">("library");
   const { recentSearches, rememberSearch, clearRecentSearches } = useRecentSearches();
 
-  const filteredSongs = useMemo(() => filterSongs(songs, filters), [filters, songs]);
+  const secondarySearch = useSecondarySearch();
+  const searchableSecondaryLanguages = useMemo(() => availableSecondaryTranslationLanguages.filter((language) => usesStaticSecondaryTranslation(language.code)), []);
+  const secondarySearchLanguage = searchableSecondaryLanguages.find((language) => language.code === secondarySearch.language) ?? null;
+  const filteredSongs = useMemo(() => filterSongs(songs, filters, secondarySearch.lookup), [filters, songs, secondarySearch.lookup]);
   const authors = useMemo(() => getSongAuthors(songs), [songs]);
   const availableCategories = useMemo(() => getSongCategories(songs), [songs]);
   const hasUnlistedAuthors = useMemo(() => songs.some((song) => !song.poet?.trim()), [songs]);
@@ -156,7 +161,7 @@ function LibraryHome() {
               value={filters.query}
               onChange={(event) => updateFilters({ query: event.target.value })}
               onKeyDown={handleSearchKeyDown}
-              placeholder={copy.library.searchPlaceholder}
+              placeholder={secondarySearchLanguage ? copy.library.searchPlaceholderWithLanguage.replace("{language}", secondarySearchLanguage.label) : copy.library.searchPlaceholder}
               aria-label={copy.library.searchLabel}
             />
             {filtersActive && <span className="search-count">{filteredSongs.length}</span>}
@@ -232,6 +237,22 @@ function LibraryHome() {
                 <SelectItem value={ALL_RECORDINGS_FILTER}>{copy.library.allRecordings}</SelectItem>
                 <SelectItem value={WITH_RECORDINGS_FILTER}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.withRecordings}</span></SelectItem>
                 {SOUNDCLOUD_SINGER_LIST.map((singer) => <SelectItem value={singerRecordingFilter(singer.account)} key={singer.account}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}
+              </SelectContent>
+            </Select>
+          </label>
+          <label className="filter-field">
+            <span>{copy.library.filterSearchLanguage}</span>
+            <Select value={secondarySearch.language ?? "en"} onValueChange={(code) => secondarySearch.setLanguage(searchableSecondaryLanguages.find((language) => language.code === code)?.code ?? null)}>
+              <SelectTrigger className="filter-select w-full" aria-label={copy.library.filterSearchLanguage}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="filter-select-content" collisionPadding={listClearance}>
+                <SelectItem value="en">{copy.library.searchEnglishOnly}</SelectItem>
+                {searchableSecondaryLanguages.map((language) => (
+                  <SelectItem value={language.code} key={language.code}>
+                    <span className="language-filter-option">{copy.library.searchAlsoIn.replace("{language}", language.label)}<span lang={language.lang}>{language.name}</span></span>
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </label>
@@ -327,7 +348,7 @@ function LibraryHome() {
                               ) : <span className="category-song-count">{category.songs.length} {copy.library.songCount}</span>}
                             </header>
                             <div className="song-list" id={songListId}>
-                              {visibleSongs.map((song) => <SongListItem song={song} query={filters.query} key={song.id} />)}
+                              {visibleSongs.map((song) => <SongListItem song={song} query={filters.query} secondary={secondarySearch.lookup} secondaryLanguage={secondarySearchLanguage} key={song.id} />)}
                             </div>
                           </section>
                         );
@@ -368,7 +389,7 @@ function LibraryHome() {
                           <p>{copy.library.indexGroupCount.replace("{count}", String(group.songs.length))}</p>
                         </header>
                         <div className="song-list index-song-list">
-                          {group.songs.map((song) => <SongListItem song={song} query={filters.query} variant="opening-line" key={song.id} />)}
+                          {group.songs.map((song) => <SongListItem song={song} query={filters.query} secondary={secondarySearch.lookup} secondaryLanguage={secondarySearchLanguage} variant="opening-line" key={song.id} />)}
                         </div>
                       </section>
                     ))}
