@@ -26,6 +26,7 @@ import {
   groupSongsByCategory,
   groupSongsByFirstLine,
   hasActiveSongFilters,
+  type SongSearchFilters,
 } from "@/domain/song";
 import { useRecentSearches } from "@/hooks/useRecentSearches";
 import { useSecondarySearch } from "@/hooks/useSecondarySearch";
@@ -52,11 +53,51 @@ function useListClearance() {
   return useMemo(() => ({ top, bottom: 12 }), [top]);
 }
 
+const FILTERS_STORAGE_KEY = "kirtan-guide.library-filters";
+const FILTER_PARAMETERS = ["q", "author", "category", "recording", "language"];
+
+/** Filters named in the address win; otherwise the ones left behind when the reader opened a song. */
+function initialLibraryFilters(): SongSearchFilters {
+  const parameters = new URLSearchParams(window.location.search);
+  if (FILTER_PARAMETERS.some((name) => parameters.has(name))) {
+    return {
+      query: parameters.get("q") ?? defaultSongSearchFilters.query,
+      author: parameters.get("author") ?? defaultSongSearchFilters.author,
+      category: parameters.get("category") ?? defaultSongSearchFilters.category,
+      recording: parseRecordingFilter(parameters.get("recording")),
+      language: parseLanguageFilter(parameters.get("language")),
+    };
+  }
+  try {
+    const stored = JSON.parse(window.sessionStorage.getItem(FILTERS_STORAGE_KEY) ?? "null") as Partial<Record<keyof SongSearchFilters, unknown>> | null;
+    if (!stored) return defaultSongSearchFilters;
+    const text = (value: unknown, fallback: string) => (typeof value === "string" ? value : fallback);
+    return {
+      query: text(stored.query, defaultSongSearchFilters.query),
+      author: text(stored.author, defaultSongSearchFilters.author),
+      category: text(stored.category, defaultSongSearchFilters.category),
+      recording: parseRecordingFilter(typeof stored.recording === "string" ? stored.recording : null),
+      language: parseLanguageFilter(typeof stored.language === "string" ? stored.language : null),
+    };
+  } catch {
+    return defaultSongSearchFilters;
+  }
+}
+
+function storeLibraryFilters(filters: SongSearchFilters) {
+  try {
+    if (hasActiveSongFilters(filters)) window.sessionStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters));
+    else window.sessionStorage.removeItem(FILTERS_STORAGE_KEY);
+  } catch {
+    // Storage blocked: the library starts unfiltered next time.
+  }
+}
+
 function LibraryHome() {
   const listClearance = useListClearance();
   const { songs, status, error, reload } = useSongLibrary();
   const { copy } = useTranslation();
-  const [filters, setFilters] = useState(defaultSongSearchFilters);
+  const [filters, setFilters] = useState(initialLibraryFilters);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [expandedCategoryIds, setExpandedCategoryIds] = useState<Set<string>>(() => new Set());
   const [libraryView, setLibraryView] = useState<"library" | "index">("library");
@@ -80,14 +121,7 @@ function LibraryHome() {
   }, [initialIndex]);
   const indexedLetters = useMemo(() => new Set(initialIndex.map((group) => group.letter)), [initialIndex]);
   useEffect(() => {
-    const parameters = new URLSearchParams(window.location.search);
-    const nextFilters = {
-      query: parameters.get("q") ?? defaultSongSearchFilters.query,
-      author: parameters.get("author") ?? defaultSongSearchFilters.author,
-      category: parameters.get("category") ?? defaultSongSearchFilters.category,
-      recording: parseRecordingFilter(parameters.get("recording")),
-      language: parseLanguageFilter(parameters.get("language")),
-    };
+    const nextFilters = initialLibraryFilters();
 
     setFilters((current) => (
       current.query === nextFilters.query && current.author === nextFilters.author && current.category === nextFilters.category && current.recording === nextFilters.recording && current.language === nextFilters.language
@@ -111,6 +145,8 @@ function LibraryHome() {
     window.addEventListener("hashchange", syncIndexViewFromHash);
     return () => window.removeEventListener("hashchange", syncIndexViewFromHash);
   }, []);
+
+  useEffect(() => storeLibraryFilters(filters), [filters]);
 
   const updateFilters = (patch: Partial<typeof filters>) => setFilters((current) => ({ ...current, ...patch }));
   const clearFilters = () => setFilters(defaultSongSearchFilters);
@@ -165,6 +201,11 @@ function LibraryHome() {
               aria-label={copy.library.searchLabel}
             />
             {filtersActive && <span className="search-count">{filteredSongs.length}</span>}
+            {filtersActive && (
+              <button type="button" className="search-reset" onClick={clearFilters} aria-label={copy.library.resetSearch} title={copy.library.resetSearch}>
+                <X size={16} aria-hidden="true" />
+              </button>
+            )}
           </label>
 
           {isSearchFocused && recentSearches.length > 0 ? (

@@ -96,6 +96,7 @@ export const translations = {
       noMatchesEyebrow: "No matches",
       noMatchesTitle: "Try another line or author name.",
       clearSearch: "Clear search",
+      resetSearch: "Reset the search and filters",
       matchCountLabel: "{count} matches",
     },
     song: {
