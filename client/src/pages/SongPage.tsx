@@ -15,6 +15,7 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, soundCloudTrackSecondsFor, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
+import { useTeleprompterGestures } from "@/hooks/useTeleprompterGestures";
 import { READING_PREFERENCES_STORAGE_KEY } from "@/hooks/useSecondarySearch";
 import { PlaylistToggleButton } from "@/components/PlaylistToggleButton";
 import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
@@ -23,7 +24,7 @@ import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSe
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
 import { Link, useRoute } from "wouter";
 import { AuthorChip } from "@/components/AuthorChip";
 import { findAuthorByPoet } from "@/lib/authors";
@@ -131,6 +132,8 @@ type ReadingPreferences = {
    * the font) keeps the same singing pace instead of the same pixels per second.
    */
   teleprompterScrollDensity?: number;
+  /** Teleprompter lyrics size, set with a pinch (1 = the size the reading font gives). */
+  teleprompterFontScale?: number;
   /** Legacy values are read once for backwards-compatible localStorage migration. */
   teleprompterSpeed?: number;
   isManualTeleprompterPace?: boolean;
@@ -149,6 +152,15 @@ const DEFAULT_READING_PREFERENCES: ReadingPreferences = {
 };
 
 type TeleprompterView = "scroll" | "slideshow";
+
+const MIN_TELEPROMPTER_FONT_SCALE = 0.6;
+const MAX_TELEPROMPTER_FONT_SCALE = 2.2;
+/** Idle time before the teleprompter's control bar slides away. */
+const TELEPROMPTER_CHROME_IDLE_MS = 3500;
+
+function clampTeleprompterFontScale(scale: number) {
+  return Math.min(MAX_TELEPROMPTER_FONT_SCALE, Math.max(MIN_TELEPROMPTER_FONT_SCALE, scale));
+}
 
 function readReadingPreferences(): ReadingPreferences {
   if (typeof window === "undefined") return DEFAULT_READING_PREFERENCES;
@@ -184,6 +196,7 @@ function readReadingPreferences(): ReadingPreferences {
       isManualTeleprompterScrollPace: typeof parsed.isManualTeleprompterScrollPace === "boolean" ? parsed.isManualTeleprompterScrollPace : legacyManualPace,
       isManualTeleprompterSlideshowPace: typeof parsed.isManualTeleprompterSlideshowPace === "boolean" ? parsed.isManualTeleprompterSlideshowPace : legacyManualPace,
       secondaryTranslationLanguage: isSecondaryTranslationLanguage(parsed.secondaryTranslationLanguage) ? parsed.secondaryTranslationLanguage : null,
+      teleprompterFontScale: typeof parsed.teleprompterFontScale === "number" ? clampTeleprompterFontScale(parsed.teleprompterFontScale) : 1,
       teleprompterScrollDensity: typeof parsed.teleprompterScrollDensity === "number" && parsed.teleprompterScrollDensity > 0 ? parsed.teleprompterScrollDensity : undefined,
     };
   } catch {
@@ -288,6 +301,11 @@ function SongPageContent() {
   const [isTeleprompterOpen, setIsTeleprompterOpen] = useState(false);
   const [teleprompterScrollSpeed, setTeleprompterScrollSpeed] = useState(initialReadingPreferences.teleprompterScrollSpeed);
   const [teleprompterScrollDensity, setTeleprompterScrollDensity] = useState(initialReadingPreferences.teleprompterScrollDensity);
+  const [teleprompterFontScale, setTeleprompterFontScale] = useState(initialReadingPreferences.teleprompterFontScale ?? 1);
+  const [isTeleprompterChromeHidden, setIsTeleprompterChromeHidden] = useState(false);
+  const [teleprompterActivity, setTeleprompterActivity] = useState(0);
+  const teleprompterOverlayRef = useRef<HTMLElement | null>(null);
+  const pinchStartScaleRef = useRef(1);
   const [teleprompterSlideshowSpeed, setTeleprompterSlideshowSpeed] = useState(initialReadingPreferences.teleprompterSlideshowSpeed);
   const [isManualTeleprompterScrollPace, setIsManualTeleprompterScrollPace] = useState(initialReadingPreferences.isManualTeleprompterScrollPace);
   const [isManualTeleprompterSlideshowPace, setIsManualTeleprompterSlideshowPace] = useState(initialReadingPreferences.isManualTeleprompterSlideshowPace);
@@ -498,11 +516,12 @@ function SongPageContent() {
         isManualTeleprompterSlideshowPace,
         secondaryTranslationLanguage,
         teleprompterScrollDensity,
+        teleprompterFontScale,
       } satisfies ReadingPreferences));
     } catch {
       // Reading remains fully functional when browser storage is unavailable.
     }
-  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterScrollPace, isManualTeleprompterSlideshowPace, readingFontSizeStep, readingLineHeightStep, secondaryTranslationLanguage, teleprompterScrollDensity, teleprompterScrollSpeed, teleprompterSlideshowSpeed]);
+  }, [areSecondaryOrnamentsHidden, areTranslationsShown, isManualTeleprompterScrollPace, isManualTeleprompterSlideshowPace, readingFontSizeStep, readingLineHeightStep, secondaryTranslationLanguage, teleprompterFontScale, teleprompterScrollDensity, teleprompterScrollSpeed, teleprompterSlideshowSpeed]);
 
   useEffect(() => {
     if (!isReaderPanelOpen) return;
@@ -711,6 +730,34 @@ function SongPageContent() {
     setIsTeleprompterControlsCollapsed(isPlaying);
   }, [isAutoScrollPlaying, isSlideshowPlaying, teleprompterView]);
 
+  // The control bar shows again on any change of state, then slides away after a quiet spell.
+  const revealTeleprompterChrome = useCallback(() => {
+    setIsTeleprompterChromeHidden(false);
+    setTeleprompterActivity((count) => count + 1);
+  }, []);
+  useEffect(revealTeleprompterChrome, [isTeleprompterOpen, isTeleprompterControlsCollapsed, teleprompterView, revealTeleprompterChrome]);
+  useEffect(() => {
+    if (!isTeleprompterOpen || isTeleprompterChromeHidden || isTeleprompterPacePanelOpen) return;
+    const timer = window.setTimeout(() => setIsTeleprompterChromeHidden(true), TELEPROMPTER_CHROME_IDLE_MS);
+    return () => window.clearTimeout(timer);
+  }, [isTeleprompterChromeHidden, isTeleprompterOpen, isTeleprompterPacePanelOpen, teleprompterActivity]);
+  useEffect(() => {
+    if (!isTeleprompterOpen) return;
+    // A mouse near the top edge brings the bar back on desktops.
+    const onMouseMove = (event: MouseEvent) => { if (event.clientY < 110) revealTeleprompterChrome(); };
+    window.addEventListener("mousemove", onMouseMove);
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, [isTeleprompterOpen, revealTeleprompterChrome]);
+
+  useTeleprompterGestures(isTeleprompterOpen, teleprompterOverlayRef, {
+    onSwipe: (direction) => {
+      if (teleprompterView !== "slideshow") return;
+      setSlideshowVerseIndex((current) => Math.min(displayedVerses.length - 1, Math.max(0, current + direction)));
+    },
+    onPinchStart: () => { pinchStartScaleRef.current = teleprompterFontScale; },
+    onPinch: (ratio) => setTeleprompterFontScale(clampTeleprompterFontScale(Math.round(pinchStartScaleRef.current * ratio * 50) / 50)),
+  });
+
   useEffect(() => {
     if (!isTeleprompterOpen) return;
 
@@ -718,6 +765,7 @@ function SongPageContent() {
       const target = event.target;
       if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) return;
       if (target instanceof HTMLElement && target.closest('[data-slot="popover-content"]')) return;
+      revealTeleprompterChrome();
 
       if (teleprompterView === "slideshow" && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
         event.preventDefault();
@@ -733,7 +781,7 @@ function SongPageContent() {
 
     window.addEventListener("keydown", handleTeleprompterKeyboardNavigation);
     return () => window.removeEventListener("keydown", handleTeleprompterKeyboardNavigation);
-  }, [displayedVerses.length, isTeleprompterOpen, rewindTeleprompter, teleprompterView]);
+  }, [displayedVerses.length, isTeleprompterOpen, revealTeleprompterChrome, rewindTeleprompter, teleprompterView]);
 
   if (status !== "ready") {
     return (
@@ -903,6 +951,7 @@ function SongPageContent() {
     "--reading-font-size-adjustment": `${READING_FONT_SIZE_ADJUSTMENTS[readingFontSizeStep]}rem`,
     "--reading-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
     "--teleprompter-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
+    "--teleprompter-font-scale": String(teleprompterFontScale),
   } as CSSProperties;
   const fontSizeState = readingFontSizeStep === DEFAULT_READING_STEP
     ? copy.song.readingDefault
@@ -938,6 +987,15 @@ function SongPageContent() {
     setIsSlideshowPlaying(true);
   };
 
+  // A tap on the lyrics (not on a control or a word's gloss) shows or hides the control bar.
+  const toggleTeleprompterChromeOnTap = (event: ReactMouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    if (target.closest("button, a, input, [role='button'], [role='dialog']:not(.teleprompter-overlay), [data-teleprompter-controls], [data-slot='popover-content']")) return;
+    if (window.getSelection()?.toString()) return;
+    if (isTeleprompterChromeHidden) revealTeleprompterChrome();
+    else setIsTeleprompterChromeHidden(true);
+  };
+
   const pauseAndRestoreTeleprompterControls = () => {
     if (teleprompterView === "scroll") pauseTeleprompter();
     else setIsSlideshowPlaying(false);
@@ -947,8 +1005,8 @@ function SongPageContent() {
   return (
     <div className={`song-page ${isTeleprompterOpen ? "is-teleprompter" : ""}`} style={readingTypographyStyle}>
       {isTeleprompterOpen && (
-        <section className="teleprompter-overlay" role="dialog" aria-modal="true" aria-label={copy.song.teleprompterTitle}>
-          <header className={`teleprompter-overlay-controls ${isTeleprompterControlsCollapsed ? "is-collapsed" : ""}`} data-teleprompter-controls>
+        <section ref={teleprompterOverlayRef} className={`teleprompter-overlay${isTeleprompterChromeHidden ? " is-chrome-hidden" : ""}`} role="dialog" aria-modal="true" aria-label={copy.song.teleprompterTitle} onClick={toggleTeleprompterChromeOnTap}>
+          <header className={`teleprompter-overlay-controls ${isTeleprompterControlsCollapsed ? "is-collapsed" : ""}${isTeleprompterChromeHidden ? " is-hidden" : ""}`} data-teleprompter-controls onPointerDown={revealTeleprompterChrome}>
             {isTeleprompterControlsCollapsed ? (
               <div className="teleprompter-collapsed-actions">
                 <Popover open={isTeleprompterPacePanelOpen} onOpenChange={setIsTeleprompterPacePanelOpen}>
