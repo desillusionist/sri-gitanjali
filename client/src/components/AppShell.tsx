@@ -5,7 +5,7 @@
 
 import { brandAssets } from "@/data/sources";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { BookOpenText, Bookmark, ChevronDown, LibraryBig, ListMusic, Palette, Search } from "lucide-react";
+import { BookOpenText, Bookmark, ChevronDown, LibraryBig, ListMusic, Palette, Search, Users } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { THEMES, setTheme, useTheme, type Theme } from "@/lib/theme";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -48,6 +48,13 @@ export function AppShell({ children }: AppShellProps) {
             <TooltipContent side="right">{copy.navigation.openMenu}</TooltipContent>
           </Tooltip>
           <DropdownMenuContent className="brand-menu" align="start" side="bottom" sideOffset={8}>
+            <DropdownMenuItem asChild className="brand-menu-item">
+              <Link href="/vaisnavas" onClick={() => setIsBrandMenuOpen(false)}>
+                <Users aria-hidden="true" size={17} strokeWidth={1.7} />
+                <span>{copy.navigation.vaisnavas}</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="brand-menu-separator" />
             <DropdownMenuItem asChild className="brand-menu-item">
               <Link href="/#library" onClick={(event) => { navigateToHomeSection(event, "library"); setIsBrandMenuOpen(false); }}>
                 <LibraryBig aria-hidden="true" size={17} strokeWidth={1.7} />

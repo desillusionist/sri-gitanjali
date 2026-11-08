@@ -23,7 +23,7 @@ import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingi
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
+import { ArrowLeft, Info, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
 import { Link, useRoute } from "wouter";
 import { AuthorChip } from "@/components/AuthorChip";
@@ -371,6 +371,9 @@ function SongPageContent() {
     return byField;
   }, [matches]);
   const activeMatch = matches[activeMatchIndex] ?? null;
+  const [isSongNoteOpen, setIsSongNoteOpen] = useState(false);
+  // A search hit inside the note opens it, so the highlighted words can be seen.
+  useEffect(() => { if (activeMatch?.fieldId === "comment") setIsSongNoteOpen(true); }, [activeMatch]);
   const { mutateAsync: requestSecondaryTranslationVerse } = trpc.secondaryTranslation.translateVerse.useMutation();
   const audioMatchedScrollSpeed = getAudioMatchedScrollSpeed(teleprompterScrollRange, soundCloudDurationMs);
   const followerSpeedRef = useRef<number | null>(null);
@@ -1220,6 +1223,16 @@ function SongPageContent() {
             <h1><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
             <div className="song-meta">
               <p className="song-poet">{authorBio && authorFilterHref ? <AuthorChip author={authorBio} libraryHref={authorFilterHref} label={<SongMatchText value={author!} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />} /> : author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
+              {song.comment && (
+                <Popover open={isSongNoteOpen} onOpenChange={setIsSongNoteOpen}>
+                  <PopoverTrigger asChild>
+                    <button type="button" className={`song-note-button${isSongNoteOpen ? " is-open" : ""}`} aria-label={copy.song.songNote} title={copy.song.songNote}><Info size={14} aria-hidden="true" /><span>{copy.song.songNoteShort}</span></button>
+                  </PopoverTrigger>
+                  <PopoverContent className="song-note-popover" align="start" side="bottom" sideOffset={8} collisionPadding={12}>
+                    <SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
+                  </PopoverContent>
+                </Popover>
+              )}
             </div>
           </div>
         </div>
@@ -1293,7 +1306,6 @@ function SongPageContent() {
         )}
 
         {songLanguageInfo && <p className="song-original-language">{copy.song.originalLanguage.replace("{language}", songLanguageInfo.english)}</p>}
-        {song.comment && <p className="song-comment"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
 
         {selectedSecondaryLanguage && isSongUntranslatedInPackage && <p className="secondary-translation-status song-untranslated-note" role="status">{copy.song.secondaryTranslationNotYet.replace("{language}", selectedSecondaryLanguage.label)}</p>}
 

@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { AUTHORS, authorInitials, findAuthorById, findAuthorByPoet } from "./authors";
+import { AUTHORS, authorInitials, findAuthorById, findAuthorByPoet, VAISNAVA_GROUPS } from "./authors";
 
-const songs: { poet?: string }[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../../local-storage/songs_577f33d4.json"), "utf8"));
+const songs: { id?: string; poet?: string }[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../../local-storage/songs_577f33d4.json"), "utf8"));
 const poets = new Set(songs.map((song) => song.poet?.trim()).filter(Boolean));
 
 describe("authors", () => {
@@ -18,6 +18,22 @@ describe("authors", () => {
     for (const author of AUTHORS) {
       expect(author.summary.length).toBeGreaterThan(40);
       expect(author.bio.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("places everyone on the Vaiṣṇavas page and links only to songs that exist", () => {
+    const songIds = new Set((songs as Array<{ id?: string }>).map((song) => song.id));
+    for (const author of AUTHORS) {
+      expect(VAISNAVA_GROUPS, author.id).toContain(author.group);
+      for (const id of author.songIds ?? []) expect(songIds, `${author.id}: ${id}`).toContain(id);
+      expect(JSON.stringify(author), author.id).not.toMatch(/Mahārāj(?![a-zāīū])/);
+    }
+  });
+
+  it("has a page for every named poet in the book", () => {
+    for (const poet of poets) {
+      if (poet === "Traditional" || poet === "Unknown") continue;
+      expect(findAuthorByPoet(poet as string), poet as string).toBeDefined();
     }
   });
 

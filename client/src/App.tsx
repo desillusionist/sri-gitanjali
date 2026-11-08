@@ -13,6 +13,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 import SongPage from "./pages/SongPage";
 import AuthorPage from "./pages/AuthorPage";
+import VaisnavasPage from "./pages/VaisnavasPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import { Route, Router as WouterRouter, Switch } from "wouter";
 
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/playlist" component={PlaylistPage} />
       <Route path="/song/:id" component={SongPage} />
       <Route path="/author/:id" component={AuthorPage} />
+      <Route path="/vaisnavas" component={VaisnavasPage} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

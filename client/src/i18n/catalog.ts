@@ -10,6 +10,7 @@ export const translations = {
       search: "Search",
       favorites: "Favorites",
       playlist: "Playlist",
+      vaisnavas: "Vaiṣṇavas",
       theme: "Theme",
       themes: {
         saffron: { name: "Saffron", description: "Warm paper and saffron (default)" },
@@ -21,6 +22,20 @@ export const translations = {
       openMenu: "Open library navigation",
     },
     railNote: "Songs stay close, even when the printed book is far away.",
+    vaisnavas: {
+      eyebrow: "In this book",
+      title: "The Vaiṣṇavas",
+      titleEmphasis: "of the Kīrtan Guide",
+      lede: "The poets of these songs and the great souls they glorify, from Mahāprabhu and His associates to our own guru-varga.",
+      count: "personalities",
+      groups: {
+        mahaprabhu: "Śrī Chaitanya and His associates",
+        goswamis: "The Goswāmīs of Vṛndāvan",
+        acharyas: "Poets and āchāryas after Mahāprabhu",
+        saraswat: "The Sāraswat guru-varga",
+        ancient: "Sages and poets before Mahāprabhu",
+      },
+    },
     library: {
       eyebrow: "Śrī Chaitanya Sāraswat Maṭh Kīrtan Guide • Śrī Gītāñjali • Gupta Govardhan Edition",
       title: "Find the line,",
@@ -128,6 +143,8 @@ export const translations = {
       audioVersion: "Recording {number}",
       // Joins “Recording N”, the singer and the track length in the recording picker.
       audioVersionSeparator: " · ",
+      songNote: "About this song",
+      songNoteShort: "Note",
       wordForWordSourceReference: "Vedabase synonyms",
       wordForWordSourceEditorial: "Editorial gloss",
       wordForWordSourceGlossary: "Glossary (matched from another song)",
@@ -289,6 +306,9 @@ export const translations = {
       aboutAuthor: "About {author}",
       moreAbout: "Full biography",
       songsTitle: "Songs in this book",
+      honourTitle: "Songs in their honour",
+      vaisnavaEyebrow: "Vaiṣṇava",
+      allVaisnavas: "All Vaiṣṇavas",
       songCount: "{count} songs",
       songCountOne: "1 song",
       showInLibrary: "Show in the library",

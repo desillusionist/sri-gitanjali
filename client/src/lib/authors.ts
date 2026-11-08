@@ -3,6 +3,9 @@
 import authorData from "@/data/authors.json";
 import { STORAGE_URL } from "@/data/sources";
 
+export const VAISNAVA_GROUPS = ["mahaprabhu", "goswamis", "acharyas", "saraswat", "ancient"] as const;
+export type VaisnavaGroup = (typeof VAISNAVA_GROUPS)[number];
+
 export type Author = {
   id: string;
   /** Every spelling of this author's name used in the songs' poet field. */
@@ -16,12 +19,16 @@ export type Author = {
   portraitLarge?: string;
   /** CSS object-position that keeps the face in view in a round crop. */
   focus?: string;
+  /** Where the person sits on the Vaiṣṇavas page. */
+  group?: VaisnavaGroup;
+  /** Songs in this book written in their honour. */
+  songIds?: string[];
   summary: string;
   bio: string[];
   sources: string[];
 };
 
-export const AUTHORS: Author[] = authorData.authors;
+export const AUTHORS: Author[] = authorData.authors as Author[];
 
 const normalize = (name: string) => name.normalize("NFC").trim().toLowerCase();
 

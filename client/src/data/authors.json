@@ -1,9 +1,11 @@
 {
-  "_note": "Author bios. `names` must match the poet field of the songs exactly (accents included). Portraits live in local-storage/ (served as manus-storage/); `portraitLarge` is an optional sharper copy for the enlarged view; `focus` is the CSS transform-origin that centres the face in round crops. Drafted from scsmath.com and standard Gaudiya sources; please review before relying on dates.",
+  "_note": "Vaiṣṇavas named in the guide: song authors (`names` must match the poet field of the songs exactly, accents included) and the personalities the songs honour (`names` empty, `songIds` lists the songs about them). Portraits live in local-storage/ (served as manus-storage/); `portraitLarge` is an optional sharper copy for the enlarged view; `focus` is the CSS transform-origin that centres the face in round crops. `group` places them on the Vaiṣṇavas page. Drafted from scsmath.com, gaudiyahistory and standard Gauḍīya sources; please review before relying on dates.",
   "authors": [
     {
       "id": "bhakti-vinod-thakur",
-      "names": ["Śrīla Bhakti Vinod Ṭhākur"],
+      "names": [
+        "Śrīla Bhakti Vinod Ṭhākur"
+      ],
       "name": "Śrīla Bhakti Vinod Ṭhākur",
       "dates": "1838–1914",
       "place": "Born at Ulā (Bīrnagar), Nadia, Bengal",
@@ -17,11 +19,20 @@
         "He taught that exclusive surrender (śaraṇāgati) to the service of the Lord's pure devotees is the heart of devotion, and that the paths of karma, jñāna and voidism must be left aside. He inaugurated the worship of Śrī Chaitanya Mahāprabhu at Śrī Yogapīṭh, the Lord's appearance place in Śrī Dhām Māyāpur, and foresaw that people of every land would one day join in the congregational chanting of the Holy Name.",
         "His songs, gathered in Kalyāṇa-kalpataru, Śaraṇāgati, Gītāvalī and Gīta-mālā, express the whole of Gauḍīya philosophy in simple, heartfelt Bengali. Śrīla Śrīdhar Mahārāja describes him as Mahāprabhu's love divine personified. His son, Śrīla Bhakti Siddhānta Saraswatī Ṭhākur, carried his mission across India."
       ],
-      "sources": ["https://scsmath.com/docs/bhaktivinod_thakur.html"]
+      "sources": [
+        "https://scsmath.com/docs/bhaktivinod_thakur.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "srila-bhakti-vinod-thakur-011",
+        "srimad-bhakti-vinod-viraha-dasakam-152"
+      ]
     },
     {
       "id": "sridhar-maharaj",
-      "names": ["Śrīla B.R. Śrīdhar Mahārāja"],
+      "names": [
+        "Śrīla B.R. Śrīdhar Mahārāja"
+      ],
       "name": "Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja",
       "dates": "1895–1988",
       "place": "Born at Hāpāniyā, Burdwan, Bengal",
@@ -35,11 +46,23 @@
         "He preached across India in Bengali, Hindi, Sanskrit and English. His guru prized his Sanskrit composition Śrī Bhaktivinoda-viraha-daśakam, and shortly before his departure asked him to sing Śrī Rūpa-mañjarī-pada. Afterwards, though widely revered as the senior representative of the line, he lived simply and founded Śrī Chaitanya Sāraswat Maṭh on the bank of the Ganges at Nabadwīp.",
         "In his eighties seekers from all over the world came to hear him. His recorded talks became the books Search for Śrī Kṛṣṇa, Śrī Guru and His Grace and The Golden Volcano of Divine Love. Before his departure in 1988 he named Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja as his successor."
       ],
-      "sources": ["https://scsmath.com/docs/sridhar_maharaj.html"]
+      "sources": [
+        "https://scsmath.com/docs/sridhar_maharaj.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "srila-bhakti-raksak-sridhar-dev-goswami-maharaja-008",
+        "pranam-mantra-to-srila-bhakti-raksak-sridhar-dev-goswami-maharaja-158",
+        "pranati-dasakam-159",
+        "sri-guru-prasastih-163",
+        "pranati-panchakam-164"
+      ]
     },
     {
       "id": "govinda-maharaj",
-      "names": ["Śrīla B.S. Govinda Mahārāja"],
+      "names": [
+        "Śrīla B.S. Govinda Mahārāja"
+      ],
       "name": "Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja",
       "dates": "1929–2010",
       "place": "Born at Bāmunpāṛā, Burdwan, Bengal",
@@ -52,11 +75,21 @@
         "In 1985 Śrīla Śrīdhar Mahārāja gave him sannyās and named him the next President-Āchārya. From 1988 he travelled around the world many times, and thousands of people in India, the Americas, Europe, Africa, Australia and Asia took shelter of him.",
         "Deeply learned in Sanskrit and Bengali, he was a gifted speaker of Hari-kathā and a poet whose compositions are sung in the Maṭh every day. Before his departure in 2010 he appointed Śrīla Bhakti Nirmal Āchārya Mahārāja as his successor."
       ],
-      "sources": ["https://scsmath.com/docs/govinda_maharaj.html"]
+      "sources": [
+        "https://scsmath.com/docs/govinda_maharaj.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "srila-bhakti-sundar-govinda-dev-goswami-maharaja-007",
+        "sri-guru-arati-032",
+        "acharya-charana-vandana-136"
+      ]
     },
     {
       "id": "narottam-das-thakur",
-      "names": ["Śrīla Narottam Dās Ṭhākur"],
+      "names": [
+        "Śrīla Narottam Dās Ṭhākur"
+      ],
       "name": "Śrīla Narottam Dās Ṭhākur",
       "dates": "16th century",
       "place": "Born at Kheturi, Bengal",
@@ -69,11 +102,14 @@
         "With Śrīnivās Āchārya and Śyāmānanda Paṇḍit he carried the Goswāmīs' books back to Bengal. The great festival he held at Kheturi united the devotees of the next generation and established the style of kīrtan still sung today.",
         "His Bengali songs put the deepest teachings of Śrīla Rūpa Goswāmī into words anyone can sing. Prayers such as Śrī Guru-charaṇa-padma and Gaurāṅga bolite habe are sung every day in Gauḍīya temples."
       ],
-      "sources": []
+      "sources": [],
+      "group": "acharyas"
     },
     {
       "id": "lochan-das-thakur",
-      "names": ["Śrīla Lochan Dās Ṭhākur"],
+      "names": [
+        "Śrīla Lochan Dās Ṭhākur"
+      ],
       "name": "Śrīla Lochan Dās Ṭhākur",
       "dates": "16th century",
       "place": "Born at Kogrām, Burdwan, Bengal",
@@ -83,11 +119,14 @@
         "Lochan Dās Ṭhākur was a disciple of Śrī Narahari Sarkār Ṭhākur, an intimate associate of Śrī Chaitanya Mahāprabhu.",
         "His Śrī Chaitanya-maṅgala tells Mahāprabhu's life in songs meant to be sung, and his shorter songs in the folk style praise the mercy of Gaura and Nityānanda in the language of ordinary village people."
       ],
-      "sources": []
+      "sources": [],
+      "group": "acharyas"
     },
     {
       "id": "krsnadas-kaviraj-goswami",
-      "names": ["Śrīla Kṛṣṇadās Kavirāj Goswāmī"],
+      "names": [
+        "Śrīla Kṛṣṇadās Kavirāj Goswāmī"
+      ],
       "name": "Śrīla Kṛṣṇadās Kavirāj Goswāmī",
       "dates": "16th century",
       "place": "Born at Jhāmaṭpur, Burdwan, Bengal",
@@ -97,11 +136,14 @@
         "Kṛṣṇadās Kavirāj left his home in Bengal after Śrī Nityānanda Prabhu appeared to him in a dream and told him to go to Vṛndāvan. There he lived in the company of the Goswāmīs, especially Śrīla Raghunāth Dās Goswāmī at Rādhā-kuṇḍa.",
         "In his old age, at the request of the Vṛndāvan devotees, he wrote Śrī Chaitanya-charitāmṛta. It joins Mahāprabhu's pastimes to the full philosophy of the Goswāmīs, and Gauḍīya Vaiṣṇavas regard it as their essential scripture. He also wrote the Sanskrit poem Govinda-līlāmṛta."
       ],
-      "sources": []
+      "sources": [],
+      "group": "goswamis"
     },
     {
       "id": "rupa-goswami",
-      "names": ["Śrīla Rūpa Goswāmī"],
+      "names": [
+        "Śrīla Rūpa Goswāmī"
+      ],
       "name": "Śrīla Rūpa Goswāmī",
       "dates": "16th century",
       "place": "Gauḍa, Bengal; later Vṛndāvan",
@@ -112,11 +154,21 @@
         "There he uncovered lost holy places, established the worship of Śrī Govindadev, and wrote Bhakti-rasāmṛta-sindhu, Ujjvala-nīlamaṇi, Upadeśāmṛta, the plays Vidagdha-mādhava and Lalita-mādhava, and many prayers.",
         "The whole Gauḍīya line takes its stand on his teachings, and its followers are known as Rūpānugas, \"those who follow Rūpa\"."
       ],
-      "sources": ["https://scsmath.com/docs/disciplic_succession.html"]
+      "sources": [
+        "https://scsmath.com/docs/disciplic_succession.html"
+      ],
+      "group": "goswamis",
+      "songIds": [
+        "sri-sri-sad-gosvami-astakam-083",
+        "sri-rupa-manjari-pada-106",
+        "srimad-rupa-pada-rajah-prarthana-dasakam-155"
+      ]
     },
     {
       "id": "vrndavan-das-thakur",
-      "names": ["Śrīla Vṛndāvan Dās Ṭhākur"],
+      "names": [
+        "Śrīla Vṛndāvan Dās Ṭhākur"
+      ],
       "name": "Śrīla Vṛndāvan Dās Ṭhākur",
       "dates": "16th century",
       "place": "Bengal",
@@ -126,11 +178,14 @@
         "Vṛndāvan Dās was the son of Nārāyaṇī, a niece of Śrīvās Ṭhākur, and became a dear disciple of Śrī Nityānanda Prabhu.",
         "His Śrī Chaitanya-bhāgavata describes Mahāprabhu's early life and pastimes in Nabadwīp in loving detail. Śrīla Kṛṣṇadās Kavirāj Goswāmī honours him as the Vyāsa of Chaitanya-līlā and built his own Chaitanya-charitāmṛta on it."
       ],
-      "sources": []
+      "sources": [],
+      "group": "acharyas"
     },
     {
       "id": "saraswati-thakur",
-      "names": ["Śrīla Saraswatī Ṭhākur"],
+      "names": [
+        "Śrīla Saraswatī Ṭhākur"
+      ],
       "name": "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur",
       "dates": "1874–1937",
       "place": "Born at Purī, Orissa",
@@ -144,11 +199,24 @@
         "In the 1920s and 1930s he set up sixty-four Gauḍīya Maṭhs in India, revived Vaiṣṇava tridaṇḍi-sannyās, and taught that devotion, not birth, qualifies one to serve. Śrīla Śrīdhar Mahārāja describes him as lion-like outside and very sweet within, his one aim being the divine love of Vṛndāvan.",
         "His disciples, among them Śrīla Śrīdhar Mahārāja and Śrīla A.C. Bhaktivedānta Swāmī Prabhupād, carried his message across the world."
       ],
-      "sources": ["https://scsmath.com/docs/saraswati_thakur.html"]
+      "sources": [
+        "https://scsmath.com/docs/saraswati_thakur.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "bhagavan-srila-bhakti-siddhanta-saraswati-thakur-009",
+        "sri-saraswat-arati-050",
+        "sri-sri-prabhupada-padma-stavakah-056",
+        "sri-dayita-das-pranati-panchakam-138",
+        "acharya-vandana-139",
+        "sri-sri-dayita-das-dasakam-154"
+      ]
     },
     {
       "id": "jayadeva-goswami",
-      "names": ["Śrīla Jayadeva Goswāmī"],
+      "names": [
+        "Śrīla Jayadeva Goswāmī"
+      ],
       "name": "Śrīla Jayadeva Goswāmī",
       "dates": "12th century",
       "place": "Bengal",
@@ -157,6 +225,721 @@
       "bio": [
         "Jayadeva lived in Bengal in the twelfth century and is remembered as a poet at the court of King Lakṣmaṇa Sena.",
         "His Gīta-govinda sings the pastimes of Śrī Rādhā and Kṛṣṇa in lyrical Sanskrit. Śrī Chaitanya Mahāprabhu relished its songs night after night with Svarūp Dāmodar and Rāya Rāmānanda, and its opening hymn to the ten avatāras is still sung widely."
+      ],
+      "sources": [],
+      "group": "ancient"
+    },
+    {
+      "id": "chaitanya-mahaprabhu",
+      "names": [
+        "Śrī Chaitanya Mahāprabhu"
+      ],
+      "name": "Śrī Chaitanya Mahāprabhu",
+      "dates": "1486–1534",
+      "place": "Born at Māyāpur, Nabadwīp, Bengal",
+      "role": "The Golden Avatār",
+      "group": "mahaprabhu",
+      "summary": "Kṛṣṇa Himself, appearing with the heart and halo of Śrī Rādhā, who inaugurated the congregational chanting of the Holy Name as the religion of the age. His eight verses, Śrī Śikṣāṣṭakam, are the only writing He left.",
+      "bio": [
+        "Born as Viśvambhar, the son of Jagannāth Miśra and Śachī Devī, He was known in His youth as Nimāi Paṇḍit, an unrivalled scholar of Nabadwīp. After taking initiation from Īśvara Purī at Gayā He was overwhelmed by divine love, and with Nityānanda Prabhu, Advaita Āchārya, Gadādhara Paṇḍit and Śrīvās Ṭhākur He flooded Nadia with Hari-nām saṅkīrtan.",
+        "At twenty-four He accepted sannyās from Keśava Bhāratī and took the name Śrī Kṛṣṇa Chaitanya. He travelled through South India and to Vṛndāvan, empowered Śrī Rūpa and Śrī Sanātan to write the scriptures of pure devotion, and spent His last eighteen years at Purī, absorbed in Śrī Rādhā's separation from Kṛṣṇa, which He shared with Svarūp Dāmodar and Rāmānanda Rāy."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "songIds": [
+        "namo-maha-vadanyaya-015",
+        "sri-sachinandana-vandana-036",
+        "sri-gaura-arati-049",
+        "sri-sri-premadhama-deva-stotram-057",
+        "sri-sri-gaurasundarer-avirbhava-vasare-076",
+        "sriman-mahaprabhur-sata-nama-143",
+        "sri-gaura-purnima-147",
+        "sri-gaurahari-kusuma-stavastakam-157"
+      ]
+    },
+    {
+      "id": "nityananda-prabhu",
+      "names": [],
+      "name": "Śrī Nityānanda Prabhu",
+      "dates": "Born 1474",
+      "place": "Born at Ekachakra, Bīrbhūm, Bengal",
+      "role": "The original spiritual master",
+      "group": "mahaprabhu",
+      "summary": "Balarām appearing as Mahāprabhu's dearest companion, the most merciful avatār, who gave the Holy Name to everyone without considering their faults.",
+      "bio": [
+        "As a boy at Ekachakra He left home with a wandering sannyāsī and travelled the holy places of India, meeting Mādhavendra Purī on the way. He came to Nabadwīp, met Mahāprabhu at the house of Nandanāchārya, and became His inseparable associate.",
+        "Ordered to preach the Name door to door, He delivered the drunkard brothers Jagāi and Mādhāi even after Mādhāi struck Him. Later Mahāprabhu sent Him to Bengal, where He spread the saṅkīrtan movement and the worship of Gaura-Nitāi."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "songIds": [
+        "nitai-gunamani-amara-061",
+        "akrodha-paramananda-062",
+        "sri-sri-gaura-nityanander-daya-063",
+        "dayal-nitai-chaitanya-064",
+        "sriman-nityananda-dvadasakam-156"
+      ]
+    },
+    {
+      "id": "advaita-acharya",
+      "names": [],
+      "name": "Śrī Advaita Āchārya",
+      "dates": "15th–16th century",
+      "place": "Śāntipur, Bengal",
+      "role": "Whose call brought Mahāprabhu down",
+      "group": "mahaprabhu",
+      "summary": "An expansion of Mahā-Viṣṇu and Sadāśiva, whose tears and prayers called the Lord to descend. He is one of the Pañcha-tattva and the teacher of devotion among Mahāprabhu's associates.",
+      "bio": [
+        "An elder Vaiṣṇava scholar of Śāntipur, he grieved to see the world without devotion and worshipped the Lord with Ganges water and tulasī, praying for Him to appear. He was a disciple of Mādhavendra Purī.",
+        "With Haridās Ṭhākur he danced on the night of Mahāprabhu's birth, and he remained one of the Lord's elders throughout His Pastimes. His wife Sītā Ṭhākurāṇī is also honoured in the Gauḍīya line."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "gadadhara-pandit",
+      "names": [],
+      "name": "Śrī Gadādhara Paṇḍit",
+      "dates": "1486–1534",
+      "place": "Born at Belpukur, Bengal",
+      "role": "Śrī Rādhā's own power in Gaura-līlā",
+      "group": "mahaprabhu",
+      "summary": "Mahāprabhu's childhood friend and constant companion, understood by the Gauḍīya āchāryas as the internal potency of Śrī Rādhā in Gaura-līlā.",
+      "bio": [
+        "Gadādhara studied with Nimāi in Nabadwīp and later accepted kṣetra-sannyās at Purī so as to remain near Him, worshipping Ṭoṭā Gopīnāth and reciting the Bhāgavatam for the Lord.",
+        "He is one of the Pañcha-tattva. His disciples include Lokanāth Goswāmī, the guru of Narottam Dās Ṭhākur, and his nephew Nayanānanda."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "srivas-thakur",
+      "names": [],
+      "name": "Śrī Śrīvās Ṭhākur",
+      "dates": "15th–16th century",
+      "place": "Nabadwīp, Bengal",
+      "role": "In whose courtyard saṅkīrtan began",
+      "group": "mahaprabhu",
+      "summary": "The pure devotee in the Pañcha-tattva, the incarnation of Nārada Muni, in whose house Mahāprabhu held kīrtan every night for a year.",
+      "bio": [
+        "Śrīvās Paṇḍit was an elder Vaiṣṇava of Nabadwīp. Behind the closed doors of his courtyard Mahāprabhu revealed Himself and danced in kīrtan with His intimate devotees.",
+        "When his son died during a kīrtan he hid his grief so as not to disturb the Lord's joy. His wife Mālinī Devī nursed the infant Nimāi."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "haridas-thakur",
+      "names": [],
+      "name": "Śrī Haridās Ṭhākur",
+      "dates": "Died 1527",
+      "place": "Born at Buḍhan, Bengal",
+      "role": "The Nāmāchārya",
+      "group": "mahaprabhu",
+      "summary": "Born in a Muslim family, he chanted three hundred thousand Names a day and was honoured by Mahāprabhu as the teacher of the Holy Name.",
+      "bio": [
+        "Beaten in twenty-two marketplaces by order of the Kazi, he kept chanting and prayed for his persecutors. He lived at Phuliyā and Śāntipur near Advaita Āchārya, and later at Purī in a small hut near Siddha Bakula.",
+        "He left this world holding Mahāprabhu's feet to his heart and chanting His Name, and the Lord Himself carried his body to the sea and buried him."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "svarup-damodar",
+      "names": [],
+      "name": "Śrī Svarūp Dāmodar Goswāmī",
+      "dates": "16th century",
+      "place": "Nabadwīp, Bengal; later Purī",
+      "role": "Mahāprabhu's secretary and dearest confidant",
+      "group": "mahaprabhu",
+      "summary": "Lalitā Sakhī in Gaura-līlā, who knew the Lord's heart more deeply than anyone and sang the songs that matched His moods at Purī.",
+      "bio": [
+        "Born Puruṣottam Āchārya in Nabadwīp, he took sannyās at Vārāṇasī and came to Purī to serve Mahāprabhu. Every writing presented to the Lord was first examined by him.",
+        "With Rāmānanda Rāy he comforted Mahāprabhu in His last years of separation from Kṛṣṇa. His notes (kaḍacha) became a source for Śrī Chaitanya-charitāmṛta, and Raghunāth Dās Goswāmī was placed in his care."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "ramananda-ray",
+      "names": [],
+      "name": "Śrī Rāmānanda Rāy",
+      "dates": "16th century",
+      "place": "Governor of Rājmahendrī on the Godāvarī",
+      "role": "Speaker of the highest truths of rasa",
+      "group": "mahaprabhu",
+      "summary": "Viśākhā Sakhī in Gaura-līlā. On the bank of the Godāvarī Mahāprabhu asked and he answered the famous questions that rise step by step to Śrī Rādhā's love.",
+      "bio": [
+        "A governor under King Pratāparudra and a poet in Sanskrit, he met Mahāprabhu during the Lord's South Indian tour. Their conversation, the Rāmānanda-saṁvād, is the heart of Śrī Chaitanya-charitāmṛta's teaching.",
+        "He later gave up his post to live at Purī, where with Svarūp Dāmodar he shared Mahāprabhu's deepest moods."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "vasudeva-ghosa",
+      "names": [
+        "Śrīla Vāsudeva Ghoṣa"
+      ],
+      "name": "Śrīla Vāsudeva Ghoṣa",
+      "dates": "16th century",
+      "place": "Bengal",
+      "role": "Poet of Gaura-līlā",
+      "group": "mahaprabhu",
+      "summary": "One of three brothers who sang kīrtan with Mahāprabhu and Nityānanda Prabhu, and a poet whose songs describe the Lord's Pastimes as he saw them.",
+      "bio": [
+        "With his brothers Govinda and Mādhava Ghoṣa he was a kīrtan singer in Mahāprabhu's party at Nabadwīp and Purī, and later accompanied Nityānanda Prabhu in Bengal.",
+        "His Bengali songs on Gaurāṅga are among the earliest eyewitness poems of the Lord's life. His song in this book asks what would have become of us if Gaura had not come."
+      ],
+      "sources": []
+    },
+    {
+      "id": "madhavendra-puri",
+      "names": [],
+      "name": "Śrī Mādhavendra Purī",
+      "dates": "15th century",
+      "place": "South India; travelled across India",
+      "role": "The seed of the tree of divine love",
+      "group": "mahaprabhu",
+      "summary": "The sannyāsī in the Madhva line whose heart first held the mood of separation from Kṛṣṇa; Mahāprabhu called him the root of the tree of prema.",
+      "bio": [
+        "He revealed the Deity of Gopāl on Govardhan Hill and received the sweet rice of Kṣīra-chora Gopīnāth at Remuṇā. Advaita Āchārya, Īśvara Purī and Nityānanda Prabhu were his disciples or followers.",
+        "His verse 'ayi dīna-dayārdra nātha', spoken in Śrī Rādhā's separation, was relished by Mahāprabhu above all others."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "isvara-puri",
+      "names": [],
+      "name": "Śrī Īśvara Purī",
+      "dates": "15th–16th century",
+      "place": "Kumārhaṭṭa, Bengal",
+      "role": "Mahāprabhu's initiating guru",
+      "group": "mahaprabhu",
+      "summary": "The dearest disciple of Mādhavendra Purī, who served his guru to the last and was later honoured to give initiation to Mahāprabhu at Gayā.",
+      "bio": [
+        "He met Nimāi Paṇḍit in Nabadwīp and, at Gayā in 1508, gave Him the ten-syllable Gopāl mantra. From that day Mahāprabhu's mood of divine love was revealed.",
+        "Mahāprabhu treated his servants Govinda and Kāśīśvara as His own, accepting them into His service at Purī on Īśvara Purī's instruction."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "sanatan-goswami",
+      "names": [],
+      "name": "Śrīla Sanātan Goswāmī",
+      "dates": "16th century",
+      "place": "Rāmakeli, Bengal; later Vṛndāvan",
+      "role": "Āchārya of sambandha-jñāna",
+      "group": "goswamis",
+      "summary": "Śrī Rūpa's elder brother, a minister of the Bengal sultan who left everything for Mahāprabhu and received from Him the teachings on the soul, the Lord and the practice of devotion.",
+      "bio": [
+        "Imprisoned for resigning his post, he escaped and met Mahāprabhu at Vārāṇasī, where the Lord taught him for two months. In Vṛndāvan he revealed the Deity of Madana-mohan.",
+        "His works include Bṛhad-bhāgavatāmṛta and the commentary Bṛhad-vaiṣṇava-toṣaṇī. Śrīla Śrīdhar Mahārāja's prayers honour him with Śrī Rūpa as the founders of the Rūpānuga line."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "songIds": [
+        "sri-sri-sad-gosvami-astakam-083"
+      ]
+    },
+    {
+      "id": "raghunath-das-goswami",
+      "names": [
+        "Śrīla Raghunāth Dās Goswāmī"
+      ],
+      "name": "Śrīla Raghunāth Dās Goswāmī",
+      "dates": "16th century",
+      "place": "Born at Saptagrām, Bengal; later Rādhā Kuṇḍa",
+      "role": "Āchārya of prayojana, the goal of devotion",
+      "group": "goswamis",
+      "summary": "The son of a wealthy landholder who escaped home to serve Mahāprabhu at Purī, and later lived for decades at Rādhā Kuṇḍa in renunciation and longing for Śrī Rādhā's service.",
+      "bio": [
+        "Mahāprabhu placed him in the care of Svarūp Dāmodar and gave him His own Govardhan-śilā and guñja-mālā. After the Lord's departure he went to Vṛndāvan to Śrī Rūpa and Sanātan.",
+        "His prayers, such as Vilāpa-kusumāñjali and the Govardhana-vāsa-prārthanā-daśakam in this book, express the mood of a maidservant of Śrī Rādhā. Śrī Chaitanya Sāraswat Maṭh worships Girirāj in his remembrance."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "songIds": [
+        "sri-sri-sad-gosvami-astakam-083"
+      ]
+    },
+    {
+      "id": "raghunath-bhatta-goswami",
+      "names": [],
+      "name": "Śrīla Raghunāth Bhaṭṭa Goswāmī",
+      "dates": "16th century",
+      "place": "Vārāṇasī; later Vṛndāvan",
+      "role": "Reciter of the Bhāgavatam",
+      "group": "goswamis",
+      "summary": "One of the Six Goswāmīs, whose recitation of Śrīmad Bhāgavatam in Vṛndāvan moved listeners to tears.",
+      "bio": [
+        "The son of Tapan Miśra, he served Mahāprabhu as a boy at Vārāṇasī and later cooked for Him at Purī. The Lord sent him to Vṛndāvan to read the Bhāgavatam under Śrī Rūpa.",
+        "He arranged the worship of Śrī Govindadev and was known for never hearing or speaking a word of criticism of anyone."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "songIds": [
+        "sri-sri-sad-gosvami-astakam-083"
+      ]
+    },
+    {
+      "id": "jiva-goswami",
+      "names": [],
+      "name": "Śrīla Jīva Goswāmī",
+      "dates": "16th century",
+      "place": "Rāmakeli, Bengal; later Vṛndāvan",
+      "role": "Philosopher of the Gauḍīya line",
+      "group": "goswamis",
+      "summary": "The nephew of Śrī Rūpa and Sanātan, whose Ṣaṭ Sandarbhas set out the full philosophy of acintya-bhedābheda and pure devotion from the scriptures.",
+      "bio": [
+        "As a child he dreamt of Mahāprabhu and later received the dust of His feet at Nabadwīp from Nityānanda Prabhu. He studied in Vārāṇasī and became the disciple of Śrī Rūpa in Vṛndāvan.",
+        "He founded the Rādhā-Dāmodar temple and, after the elder Goswāmīs, guided the whole Vaiṣṇava community; Śrīnivās Āchārya, Narottam Dās and Śyāmānanda studied under him."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "songIds": [
+        "sri-sri-sad-gosvami-astakam-083"
+      ]
+    },
+    {
+      "id": "gopal-bhatta-goswami",
+      "names": [],
+      "name": "Śrīla Gopāl Bhaṭṭa Goswāmī",
+      "dates": "16th century",
+      "place": "Śrī Raṅgam, South India; later Vṛndāvan",
+      "role": "Āchārya of Deity worship",
+      "group": "goswamis",
+      "summary": "One of the Six Goswāmīs, who as a boy served Mahāprabhu at Śrī Raṅgam and later revealed the Deity of Śrī Rādhā-ramaṇa from a śālagrām-śilā.",
+      "bio": [
+        "Mahāprabhu stayed with his father Veṅkaṭa Bhaṭṭa for the four months of the rains. He later came to Vṛndāvan, compiled the Hari-bhakti-vilāsa with Sanātan Goswāmī, and was the guru of Śrīnivās Āchārya.",
+        "Śrīla Jīva Goswāmī acknowledges that he first began the work that became the Ṣaṭ Sandarbhas."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "songIds": [
+        "sri-sri-sad-gosvami-astakam-083"
+      ]
+    },
+    {
+      "id": "srinivas-acharya",
+      "names": [
+        "Śrīla Śrīnivās Āchārya"
+      ],
+      "name": "Śrīla Śrīnivās Āchārya",
+      "dates": "16th–17th century",
+      "place": "Born at Chākhandi, Bengal",
+      "role": "Who carried the Goswāmīs' books to Bengal",
+      "group": "acharyas",
+      "summary": "Born of Mahāprabhu's mercy, he studied under Śrīla Jīva Goswāmī and, with Narottam and Śyāmānanda, carried the Goswāmīs' writings from Vṛndāvan to Bengal.",
+      "bio": [
+        "A disciple of Gopāl Bhaṭṭa Goswāmī, he was given the title Āchārya by Jīva Goswāmī. When the books were stolen on the way, he recovered them and converted the king Bīr Hāmbīr of Viṣṇupur.",
+        "His Ṣaḍ-gosvāmy-aṣṭakam in this book is sung daily in praise of the Six Goswāmīs."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "govinda-das-kaviraj",
+      "names": [
+        "Śrīla Govinda dās Kavirāj"
+      ],
+      "name": "Śrīla Govinda Dās Kavirāj",
+      "dates": "16th century",
+      "place": "Bengal",
+      "role": "Poet of Rādhā-Kṛṣṇa līlā",
+      "group": "acharyas",
+      "summary": "One of the great Vaiṣṇava poets of Bengal, the younger brother of Rāmachandra Kavirāj and a disciple of Śrīnivās Āchārya.",
+      "bio": [
+        "Writing in Brajabuli, he composed hundreds of songs on the Pastimes of Rādhā-Kṛṣṇa and Gaura, admired by Jīva Goswāmī himself.",
+        "His song in this book, 'Bhajahu̐ re mana', counsels the mind to worship the feet of Nanda's son through the nine processes of devotion."
+      ],
+      "sources": []
+    },
+    {
+      "id": "devakinandana-das-thakur",
+      "names": [
+        "Śrīla Devakīnandana Dās Ṭhākur"
+      ],
+      "name": "Śrīla Devakīnandana Dās Ṭhākur",
+      "dates": "16th century",
+      "place": "Bengal",
+      "role": "Author of Vaiṣṇava-vandanā",
+      "group": "acharyas",
+      "summary": "The Gauḍīya poet who composed the famous 'sakala vaiṣṇava-pade mora namaskāra', from his Vaiṣṇava-vandanā, the Glorification of the Devotees.",
+      "bio": [
+        "Devakīnandana Dās was a disciple of Puruṣottama Dās Ṭhākur, an associate of Nityānanda Prabhu. Śrīvās Paṇḍit is said to have directed him to take shelter of Puruṣottama, who initiated him and gave him his name.",
+        "His Vaiṣṇava-vandanā systematically offers respect and obeisances, name by name, to all the past, present and future associates of Śrī Chaitanya Mahāprabhu. Its closing verses, which ask forgiveness of every Vaiṣṇava, are sung by devotees to this day."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/devakinandana-dasa-thakur/"
+      ]
+    },
+    {
+      "id": "nayanananda-das",
+      "names": [
+        "Śrīla Nayanānanda Dās"
+      ],
+      "name": "Śrīla Nayanānanda Dās",
+      "dates": "16th century",
+      "place": "Bengal",
+      "role": "Poet and nephew of Gadādhara Paṇḍit",
+      "group": "acharyas",
+      "summary": "A nephew and disciple of Gadādhara Paṇḍit who served the Deity of Gopīnāth and wrote songs glorifying Gaurāṅga.",
+      "bio": [
+        "His song in this book, 'Kali-ghora timire', laments that the people of Kali-yuga are indifferent to Lord Gaura and declares that one who knows Gaurāṅga knows everything."
+      ],
+      "sources": []
+    },
+    {
+      "id": "premananda-das",
+      "names": [
+        "Śrīla Premānanda Dās"
+      ],
+      "name": "Śrīla Premānanda Dās",
+      "dates": "16th–17th century",
+      "place": "Bengal",
+      "role": "Poet of Gaura-līlā",
+      "group": "acharyas",
+      "summary": "A Bengali Vaiṣṇava poet whose song 'Emona Gaurāṅga bine nāhi āra' praises Mahāprabhu as the incarnation who gave divine love even to the lowest.",
+      "bio": [
+        "Little more is recorded about his life. His song in this book describes how Mahāprabhu went from house to house begging people to chant, and laments the poet's own lack of attachment to the Lord."
+      ],
+      "sources": []
+    },
+    {
+      "id": "visvanath-chakravarti-thakur",
+      "names": [
+        "Śrīla Viśvanāth Chakravartī Ṭhākur"
+      ],
+      "name": "Śrīla Viśvanāth Chakravartī Ṭhākur",
+      "dates": "c. 1626–1708",
+      "place": "Born at Devagrām, Nadia; later Vṛndāvan",
+      "role": "Commentator on Śrīmad Bhāgavatam",
+      "group": "acharyas",
+      "summary": "The great āchārya of the generation after Narottam, whose commentaries and poems guard the line of rāgānuga devotion. His Gurvāṣṭaka in this book is sung every morning.",
+      "bio": [
+        "Fourth in the line of disciples from Narottam Dās Ṭhākur, he lived in Vṛndāvan and wrote commentaries on Śrīmad Bhāgavatam, Bhagavad-gītā and Chaitanya-charitāmṛta, along with Mādhurya-kādambinī and many prayers.",
+        "He was the instructing guru of Baladeva Vidyābhūṣaṇa, whom he sent to Galtā to defend the Gauḍīya line."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "baladeva-vidyabhusana",
+      "names": [],
+      "name": "Śrīla Baladeva Vidyābhūṣaṇa",
+      "dates": "18th century",
+      "place": "Orissa; later Vṛndāvan",
+      "role": "Author of Govinda-bhāṣya",
+      "group": "acharyas",
+      "summary": "The scholar who wrote the Gauḍīya commentary on the Vedānta-sūtra, Govinda-bhāṣya, establishing Mahāprabhu's line before the scholars of Jaipur.",
+      "bio": [
+        "Originally a scholar of the Madhva school, he learned the Bhāgavatam from Viśvanāth Chakravartī Ṭhākur. At Galtā, when the Gauḍīyas' right to worship Govinda was challenged, he wrote Govinda-bhāṣya, said to be revealed by Govindadev Himself.",
+        "Śrīla Saraswatī Ṭhākur's Guru-paramparā in this book names him after Viśvanāth as a link in the line."
+      ],
+      "sources": [
+        "https://gaudiyahistory.iskcondesiretree.com/"
+      ]
+    },
+    {
+      "id": "chandrasekhara-kavi",
+      "names": [
+        "Śrīla Chandraśekhara Kavi"
+      ],
+      "name": "Śrīla Chandraśekhara Kavi",
+      "dates": "Dates not known",
+      "place": "Bengal",
+      "role": "Poet of the Tulasī-parikramā song",
+      "group": "acharyas",
+      "summary": "The poet of 'Namo namaḥ tulasī mahārāṇī', sung while circumambulating Śrī Tulasī Devī.",
+      "bio": [
+        "Little is recorded about his life. His song in this book glorifies Tulasī as dear to Kṛṣṇa and asks her for the gift of devotion."
+      ],
+      "sources": []
+    },
+    {
+      "id": "kalidas",
+      "names": [
+        "Kālidās"
+      ],
+      "name": "Kālidās",
+      "dates": "Dates not known",
+      "place": "Bengal",
+      "role": "Poet of 'E ghora saṁsare'",
+      "group": "acharyas",
+      "summary": "A Vaiṣṇava poet who wrote 'E ghora saṁsare', declaring that whoever has taken shelter of Gaura-Nityānanda is his shelter in life and death.",
+      "bio": [
+        "Little is recorded about him; the name is shared by several Vaiṣṇavas of Mahāprabhu's time, including the uncle of Raghunāth Dās Goswāmī, famed for honouring the remnants of devotees."
+      ],
+      "sources": []
+    },
+    {
+      "id": "vyasadeva",
+      "names": [],
+      "name": "Śrīla Vyāsadeva",
+      "dates": "Ancient",
+      "place": "Badarikāśram, Himalaya",
+      "role": "Compiler of the Vedas and the Bhāgavatam",
+      "group": "ancient",
+      "summary": "The literary incarnation of the Lord, who divided the Vedas, wrote the Mahābhārata and Purāṇas, and finally, on Nārada's instruction, Śrīmad Bhāgavatam.",
+      "bio": [
+        "Kṛṣṇa Dvaipāyana Vyāsa received the science of devotion from Nārada Muni. His Bhāgavatam is the 'spotless Purāṇa' that Mahāprabhu took as the natural commentary on the Vedānta-sūtra.",
+        "The maṅgalācharaṇa in this book bows to him as the guru of the whole world; Madhva Āchārya, the founder of our sampradāya, met him at Badarikāśram."
+      ],
+      "sources": []
+    },
+    {
+      "id": "narada-muni",
+      "names": [],
+      "name": "Śrī Nārada Muni",
+      "dates": "Ancient",
+      "place": "Travels throughout the universe",
+      "role": "Sage of the gods and guru of Vyāsa",
+      "group": "ancient",
+      "summary": "The son of Brahmā who wanders the worlds playing his vīṇā and singing the Holy Name, and who instructed Vyāsa, Prahlād and Dhruva.",
+      "bio": [
+        "In the line of disciplic succession he received the teachings from Brahmā and gave them to Vyāsadeva. In Gaura-līlā he appears as Śrīvās Ṭhākur.",
+        "Bhakti Vinod Ṭhākur's Nāmāṣṭaka in this book describes how the Holy Name descends when Nārada plays his vīṇā."
+      ],
+      "sources": []
+    },
+    {
+      "id": "satyavrat-muni",
+      "names": [
+        "Śrī Satyavrat Muni"
+      ],
+      "name": "Śrī Satyavrat Muni",
+      "dates": "Ancient",
+      "place": "From the Padma Purāṇa",
+      "role": "Speaker of Śrī Dāmodarāṣṭakam",
+      "group": "ancient",
+      "summary": "The sage of the Padma Purāṇa who spoke the Dāmodarāṣṭakam, the prayer sung every evening of the month of Kārttika.",
+      "bio": [
+        "Śrīla Sanātan Goswāmī recommended this prayer for the month of Ūrja (Kārttika). It describes child Kṛṣṇa bound by Mother Yaśodā's love and asks for nothing but that vision."
+      ],
+      "sources": []
+    },
+    {
+      "id": "garga-muni",
+      "names": [
+        "Garga Muni"
+      ],
+      "name": "Śrī Garga Muni",
+      "dates": "Ancient",
+      "place": "Mathurā region",
+      "role": "Family priest of the Yadus",
+      "group": "ancient",
+      "summary": "The priest of the Yadu dynasty who secretly performed Kṛṣṇa's name-giving ceremony in Gokul and is honoured as author of the Garga Saṁhitā.",
+      "bio": [
+        "In this book his verses glorify Śrī Govinda Kuṇḍa at Govardhan, where Surabhi bathed Kṛṣṇa with her milk."
+      ],
+      "sources": []
+    },
+    {
+      "id": "vidyapati",
+      "names": [
+        "Śrīla Vidyāpati"
+      ],
+      "name": "Śrīla Vidyāpati",
+      "dates": "c. 1352–1448",
+      "place": "Mithilā",
+      "role": "Maithilī poet relished by Mahāprabhu",
+      "group": "ancient",
+      "summary": "The poet of Mithilā whose songs of Rādhā and Kṛṣṇa Mahāprabhu relished in His last years with Svarūp Dāmodar and Rāmānanda Rāy.",
+      "bio": [
+        "Writing in Maithilī, he gave the love of Rādhā and Kṛṣṇa a lyric form that shaped all later Vaiṣṇava poetry in Bengal. His song in this book, 'Tātala saikate', is a confession of a life wasted and a plea for the Lord's shelter."
+      ],
+      "sources": []
+    },
+    {
+      "id": "jagannath-das-babaji",
+      "names": [],
+      "name": "Śrīla Jagannāth Dās Bābājī Mahārāja",
+      "dates": "Died 1894",
+      "place": "Vṛndāvan; later Nabadwīp",
+      "role": "Head of the Vaiṣṇavas of his time",
+      "group": "saraswat",
+      "summary": "The venerable Bābājī honoured by all Vaiṣṇavas of Vṛndāvan and Nabadwīp, who confirmed Śrīla Bhakti Vinod Ṭhākur's discovery of Mahāprabhu's birthplace at Māyāpur.",
+      "bio": [
+        "Living to a great age, he was carried in a basket by his servant. When Bhakti Vinod Ṭhākur found Mahāprabhu's birthplace, the old saint leapt up in ecstasy on reaching the spot.",
+        "He was the instructing guru of Bhakti Vinod Ṭhākur, and Śrīla Śrīdhar Mahārāja's praṇām in this book calls him the grandsire of pure devotion."
+      ],
+      "sources": [],
+      "songIds": [
+        "srila-jagannath-das-babaji-maharaja-012"
+      ]
+    },
+    {
+      "id": "gaura-kisora-das-babaji",
+      "names": [],
+      "name": "Śrīla Gaura Kiśora Dās Bābājī Mahārāja",
+      "dates": "Died 1915",
+      "place": "Vṛndāvan; later Nabadwīp",
+      "role": "Guru of Śrīla Saraswatī Ṭhākur",
+      "group": "saraswat",
+      "summary": "A renounced paramahaṁsa who lived by begging and chanting, whose only disciple was Śrīla Bhakti Siddhānta Saraswatī Ṭhākur.",
+      "bio": [
+        "After many years in Vṛndāvan he came to Nabadwīp, where he lived in solitude, often in the company of Bhakti Vinod Ṭhākur. He rejected imitators of renunciation sharply.",
+        "In 1900 he gave initiation to Bimala Prasād, later Śrīla Saraswatī Ṭhākur, who placed his samādhi at Śrī Dhām Māyāpur."
+      ],
+      "sources": [],
+      "songIds": [
+        "srila-gaura-kisora-das-babaji-maharaja-010",
+        "sri-srimad-gaura-kisora-namaskara-dasakam-153"
+      ]
+    },
+    {
+      "id": "bhaktivedanta-swami",
+      "names": [],
+      "name": "Śrīla A.C. Bhaktivedānta Swāmī Prabhupāda",
+      "dates": "1896–1977",
+      "place": "Born in Kolkata",
+      "role": "Founder-Āchārya of ISKCON",
+      "group": "saraswat",
+      "summary": "A disciple of Śrīla Saraswatī Ṭhākur who at seventy carried the Hare Krishna mahāmantra to the West and spread it across the world.",
+      "bio": [
+        "Born Abhay Charan De, he met his guru in Kolkata in 1922 and was initiated in 1933. He took sannyās in 1959, and in 1965 sailed to New York, where he founded the International Society for Krishna Consciousness.",
+        "He translated Śrīmad Bhāgavatam, Bhagavad-gītā and Chaitanya-charitāmṛta into English. He held Śrīla Śrīdhar Mahārāja in great regard, and Śrīla Govinda Mahārāja's praṇām mantra in this book honours him."
+      ],
+      "sources": [],
+      "songIds": [
+        "pranam-mantra-to-srila-swami-maharaja-023"
+      ]
+    },
+    {
+      "id": "bhakti-nirmal-acharya-maharaja",
+      "names": [],
+      "name": "Śrīla Bhakti Nirmal Āchārya Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Śrī Chaitanya Sāraswat Maṭh, Nabadwīp",
+      "role": "Present Āchārya of Śrī Chaitanya Sāraswat Maṭh",
+      "group": "saraswat",
+      "summary": "The disciple whom Śrīla Govinda Mahārāja, before his departure in 2010, established as Successor Sevaite-President-Āchārya of Śrī Chaitanya Sāraswat Maṭh.",
+      "bio": [
+        "His praṇām in this book honours him as the vigilant guardian of the current of pure devotion that flows from the Rūpānuga guru-varga, and as one who inspires disciples in the East and the West."
+      ],
+      "sources": [
+        "https://scsmathinternational.com/library/SrilaGovindaMaharaj/index.php"
+      ],
+      "songIds": [
+        "srila-bhakti-nirmal-acharya-maharaja-006"
+      ]
+    },
+    {
+      "id": "bhakti-bimal-avadhut-maharaja",
+      "names": [],
+      "name": "Śrīla Bhakti Bimal Avadhūt Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Śrī Chaitanya Sāraswat Maṭh",
+      "role": "Disciple of Śrīla Govinda Mahārāja",
+      "group": "saraswat",
+      "summary": "A sannyāsī of the Sāraswat line, praised in this book's praṇām as the embodiment of Nitāi-Gaura's compassion.",
+      "bio": [
+        "The praṇām in this book describes him as an unconventional devotee (bhaktāvadhūta), pure (vimal) in his exclusive dedication to the Holy Name and to his guru, Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja. More of his life is yet to be added."
+      ],
+      "sources": [],
+      "songIds": [
+        "srila-bhakti-bimal-avadhut-maharaja-003"
+      ]
+    },
+    {
+      "id": "bhakti-sudhir-goswami-maharaja",
+      "names": [],
+      "name": "Śrīla Bhakti Sudhīr Goswāmī Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Sāraswat line",
+      "role": "Disciple of Śrīla Śrīdhar Mahārāja",
+      "group": "saraswat",
+      "summary": "A disciple of Śrīla Śrīdhar Mahārāja, praised in this book's praṇām as addicted to singing the glories of Gaurāṅga.",
+      "bio": [
+        "The praṇām in this book calls him the favourite of Govinda Kṛṣṇa and of Śrīla Govinda Mahārāja, who has taken eternal shelter at the feet of Śrīla Śrīdhar Mahārāja. More of his life is yet to be added."
+      ],
+      "sources": [],
+      "songIds": [
+        "srila-bhakti-sudhir-goswami-maharaja-004"
+      ]
+    },
+    {
+      "id": "bhakti-ranjan-madhusudan-maharaja",
+      "names": [],
+      "name": "Śrīla Bhakti Rañjan Madhusūdan Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Sāraswat line",
+      "role": "Disciple of Śrīla Śrīdhar Mahārāja",
+      "group": "saraswat",
+      "summary": "A sannyāsī very dear to Śrīla Śrīdhar Mahārāja, praised in this book's praṇām for his firm faith in Śrī Gaura Dhām.",
+      "bio": [
+        "The praṇām in this book honours him as the best of preceptors, full of loving attachment to the service of Govinda — both the Lord and Śrīla Govinda Mahārāja. More of his life is yet to be added."
+      ],
+      "sources": [],
+      "songIds": [
+        "srila-bhakti-ranjan-madhusudan-maharaja-005"
+      ]
+    },
+    {
+      "id": "ba-paramahamsa-maharaja",
+      "names": [
+        "Śrīpād B.A. Paramahaṁsa Mahārāja"
+      ],
+      "name": "Śrīpād B.A. Paramahaṁsa Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Sāraswat line",
+      "role": "Poet of Śrī Guru Ārati",
+      "group": "saraswat",
+      "summary": "The author of Śrī Guru Ārati in this book, sung in praise of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+      "bio": [
+        "More of his life is yet to be added."
+      ],
+      "sources": []
+    },
+    {
+      "id": "ba-sagar-maharaja",
+      "names": [
+        "Śrīpād B.Ā. Sāgar Mahārāja"
+      ],
+      "name": "Śrīpād B.Ā. Sāgar Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Sāraswat line",
+      "role": "Poet of Āchārya-charaṇa-vandana",
+      "group": "saraswat",
+      "summary": "The author of Āchārya-charaṇa-vandana in this book, an English hymn to the lotus feet of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+      "bio": [
+        "More of his life is yet to be added."
+      ],
+      "sources": []
+    },
+    {
+      "id": "gopal-govinda-mahanta",
+      "names": [
+        "Gopāl Govinda Mahanta"
+      ],
+      "name": "Gopāl Govinda Mahanta",
+      "dates": "20th century",
+      "place": "Bengal",
+      "role": "Poet of Āchārya-vandana",
+      "group": "saraswat",
+      "summary": "The author of the Bengali Āchārya-vandana in this book, a long hymn glorifying Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and his preaching.",
+      "bio": [
+        "More of his life is yet to be added."
       ],
       "sources": []
     }

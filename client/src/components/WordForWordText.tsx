@@ -5,6 +5,9 @@ import type { WordForWordEntry, WordForWordSource } from "@/lib/wordForWordGloss
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useWordForWord } from "@/lib/wordForWordLoader";
 
+const LONG_PRESS_MS = 450;
+const LONG_PRESS_SLOP = 10;
+
 type WordForWordTriggerProps = {
   text: string;
   tooltipText?: string;
@@ -25,6 +28,13 @@ function WordForWordTrigger({ text, tooltipText = text, entries, source, childre
   const clearCloseTimer = () => {
     if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
     closeTimerRef.current = null;
+  };
+
+  const longPressRef = useRef<{ x: number; y: number; timer: number } | null>(null);
+  const suppressClickRef = useRef(false);
+  const clearLongPress = () => {
+    if (longPressRef.current) window.clearTimeout(longPressRef.current.timer);
+    longPressRef.current = null;
   };
 
   const closeSoon = () => {
@@ -71,7 +81,7 @@ function WordForWordTrigger({ text, tooltipText = text, entries, source, childre
     };
   }, [isOpen]);
 
-  useEffect(() => () => clearCloseTimer(), []);
+  useEffect(() => () => { clearCloseTimer(); clearLongPress(); }, []);
 
   return (
     <>
@@ -83,18 +93,42 @@ function WordForWordTrigger({ text, tooltipText = text, entries, source, childre
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         aria-describedby={isOpen ? popupId : undefined}
-        onMouseEnter={() => { clearCloseTimer(); setIsOpen(true); }}
-        onMouseLeave={closeSoon}
-        onFocus={() => { clearCloseTimer(); setIsOpen(true); }}
+        onPointerEnter={(event) => { if (event.pointerType === "mouse") { clearCloseTimer(); setIsOpen(true); } }}
+        onPointerLeave={(event) => { if (event.pointerType === "mouse") closeSoon(); }}
+        onFocus={(event) => {
+          // Keyboard focus only: a tap also focuses the word, and that must not open it.
+          if (!event.currentTarget.matches(":focus-visible")) return;
+          clearCloseTimer();
+          setIsOpen(true);
+        }}
         onBlur={(event) => {
           const relatedElement = event.relatedTarget instanceof Element ? event.relatedTarget : null;
           if (!relatedElement?.closest(".word-for-word-popup")) closeSoon();
         }}
         onPointerDown={(event) => {
-          if (event.pointerType === "touch") {
-            event.preventDefault();
+          // On touch the meaning opens only on a long press, so taps and scrolling leave it alone.
+          if (event.pointerType !== "touch") return;
+          clearLongPress();
+          longPressRef.current = { x: event.clientX, y: event.clientY, timer: window.setTimeout(() => {
+            longPressRef.current = null;
             clearCloseTimer();
-            setIsOpen((current) => !current);
+            suppressClickRef.current = true;
+            setIsOpen(true);
+            navigator.vibrate?.(10);
+          }, LONG_PRESS_MS) };
+        }}
+        onPointerMove={(event) => {
+          const press = longPressRef.current;
+          if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > LONG_PRESS_SLOP) clearLongPress();
+        }}
+        onPointerUp={clearLongPress}
+        onPointerCancel={clearLongPress}
+        onContextMenu={(event) => { if (suppressClickRef.current || longPressRef.current) event.preventDefault(); }}
+        onClick={(event) => {
+          if (suppressClickRef.current) {
+            event.preventDefault();
+            event.stopPropagation();
+            suppressClickRef.current = false;
           }
         }}
         onKeyDown={(event) => {
