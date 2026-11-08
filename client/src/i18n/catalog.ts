@@ -144,7 +144,6 @@ export const translations = {
       // Joins “Recording N”, the singer and the track length in the recording picker.
       audioVersionSeparator: " · ",
       songNote: "About this song",
-      songNoteShort: "Note",
       wordForWordSourceReference: "Vedabase synonyms",
       wordForWordSourceEditorial: "Editorial gloss",
       wordForWordSourceGlossary: "Glossary (matched from another song)",

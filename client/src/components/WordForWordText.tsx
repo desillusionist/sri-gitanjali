@@ -7,6 +7,47 @@ import { useWordForWord } from "@/lib/wordForWordLoader";
 
 const LONG_PRESS_MS = 450;
 const LONG_PRESS_SLOP = 10;
+const DOUBLE_TAP_MS = 350;
+const DOUBLE_TAP_SLOP = 30;
+const SELECTING_CLASS = "is-text-selecting";
+
+let lastTap: { time: number; x: number; y: number } | null = null;
+let stopTextSelection: (() => void) | null = null;
+
+const isTextSelecting = () => document.documentElement.classList.contains(SELECTING_CLASS);
+
+/**
+ * A double tap hands the verse text back to the phone: the word under the finger is selected and
+ * the system's copy/look-up menu is available until the selection is cleared.
+ */
+function startTextSelection(trigger: HTMLElement) {
+  stopTextSelection?.();
+  const root = document.documentElement;
+  root.classList.add(SELECTING_CLASS);
+  let hadSelection = false;
+  const onSelectionChange = () => {
+    const selection = window.getSelection();
+    if (selection && !selection.isCollapsed) hadSelection = true;
+    else if (hadSelection) stop();
+  };
+  const timeout = window.setTimeout(() => { if (!hadSelection) stop(); }, 5000);
+  function stop() {
+    root.classList.remove(SELECTING_CLASS);
+    document.removeEventListener("selectionchange", onSelectionChange);
+    window.clearTimeout(timeout);
+    if (stopTextSelection === stop) stopTextSelection = null;
+  }
+  stopTextSelection = stop;
+  document.addEventListener("selectionchange", onSelectionChange);
+  window.requestAnimationFrame(() => {
+    const selection = window.getSelection();
+    if (!selection) return;
+    const range = document.createRange();
+    range.selectNodeContents(trigger);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  });
+}
 
 type WordForWordTriggerProps = {
   text: string;
@@ -107,7 +148,7 @@ function WordForWordTrigger({ text, tooltipText = text, entries, source, childre
         }}
         onPointerDown={(event) => {
           // On touch the meaning opens only on a long press, so taps and scrolling leave it alone.
-          if (event.pointerType !== "touch") return;
+          if (event.pointerType !== "touch" || isTextSelecting()) return;
           clearLongPress();
           longPressRef.current = { x: event.clientX, y: event.clientY, timer: window.setTimeout(() => {
             longPressRef.current = null;
@@ -121,9 +162,22 @@ function WordForWordTrigger({ text, tooltipText = text, entries, source, childre
           const press = longPressRef.current;
           if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > LONG_PRESS_SLOP) clearLongPress();
         }}
-        onPointerUp={clearLongPress}
+        onPointerUp={(event) => {
+          const wasTap = longPressRef.current !== null;
+          clearLongPress();
+          if (event.pointerType !== "touch" || !wasTap) return;
+          const now = Date.now();
+          if (lastTap && now - lastTap.time < DOUBLE_TAP_MS && Math.hypot(event.clientX - lastTap.x, event.clientY - lastTap.y) < DOUBLE_TAP_SLOP) {
+            lastTap = null;
+            event.preventDefault();
+            setIsOpen(false);
+            startTextSelection(event.currentTarget);
+          } else {
+            lastTap = { time: now, x: event.clientX, y: event.clientY };
+          }
+        }}
         onPointerCancel={clearLongPress}
-        onContextMenu={(event) => { if (suppressClickRef.current || longPressRef.current) event.preventDefault(); }}
+        onContextMenu={(event) => { if (!isTextSelecting() && (suppressClickRef.current || longPressRef.current)) event.preventDefault(); }}
         onClick={(event) => {
           if (suppressClickRef.current) {
             event.preventDefault();

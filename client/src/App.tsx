@@ -15,7 +15,24 @@ import SongPage from "./pages/SongPage";
 import AuthorPage from "./pages/AuthorPage";
 import VaisnavasPage from "./pages/VaisnavasPage";
 import PlaylistPage from "./pages/PlaylistPage";
-import { Route, Router as WouterRouter, Switch } from "wouter";
+import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
+import { useEffect, useRef } from "react";
+
+/** New pages open at the top; Back and Forward keep the browser's own scroll restoration. */
+function ScrollToTopOnNavigate() {
+  const [location] = useLocation();
+  const lastHistoryStepRef = useRef(0);
+  useEffect(() => {
+    const markHistoryStep = () => { lastHistoryStepRef.current = performance.now(); };
+    window.addEventListener("popstate", markHistoryStep);
+    return () => window.removeEventListener("popstate", markHistoryStep);
+  }, []);
+  useEffect(() => {
+    const isHistoryStep = performance.now() - lastHistoryStepRef.current < 300;
+    if (!isHistoryStep && location !== "/") window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location]);
+  return null;
+}
 
 // "/sri-gitanjali" on GitHub Pages, "" everywhere else.
 const ROUTER_BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -44,6 +61,7 @@ export default function App() {
             <SongLibraryProvider>
               <WouterRouter base={ROUTER_BASE}>
                 <PlayerProvider>
+                  <ScrollToTopOnNavigate />
                   <Router />
                   <PlayerDock />
                 </PlayerProvider>

@@ -1223,22 +1223,22 @@ function SongPageContent() {
             <h1><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
             <div className="song-meta">
               <p className="song-poet">{authorBio && authorFilterHref ? <AuthorChip author={authorBio} libraryHref={authorFilterHref} label={<SongMatchText value={author!} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />} /> : author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
-              {song.comment && (
-                <Popover open={isSongNoteOpen} onOpenChange={setIsSongNoteOpen}>
-                  <PopoverTrigger asChild>
-                    <button type="button" className={`song-note-button${isSongNoteOpen ? " is-open" : ""}`} aria-label={copy.song.songNote} title={copy.song.songNote}><Info size={14} aria-hidden="true" /><span>{copy.song.songNoteShort}</span></button>
-                  </PopoverTrigger>
-                  <PopoverContent className="song-note-popover" align="start" side="bottom" sideOffset={8} collisionPadding={12}>
-                    <SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
-                  </PopoverContent>
-                </Popover>
-              )}
             </div>
           </div>
         </div>
 
         <div className="song-utility-row">
           <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
+          {song.comment && (
+            <Popover open={isSongNoteOpen} onOpenChange={setIsSongNoteOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={`song-note-button${isSongNoteOpen ? " is-open" : ""}`} aria-label={copy.song.songNote} title={copy.song.songNote}><Info size={17} strokeWidth={1.8} aria-hidden="true" /></button>
+              </PopoverTrigger>
+              <PopoverContent className="song-note-popover" align="end" side="bottom" sideOffset={8} collisionPadding={12}>
+                <SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
         {soundCloudSourceUrl && (
           <section className="song-audio" aria-label={copy.song.audioPlayerLabel}>

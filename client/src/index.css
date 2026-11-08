@@ -501,7 +501,11 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .word-for-word-trigger { cursor: help; border-radius: 2px; transition: color 160ms var(--ease-out), background 160ms var(--ease-out); }
 .word-for-word-trigger:hover, .word-for-word-trigger:focus-visible, .word-for-word-trigger[aria-expanded="true"] { color: var(--saffron-deep); background: rgba(var(--saffron-rgb), 0.12); outline: none; }
 .word-for-word-trigger:focus-visible { box-shadow: 0 0 0 2px rgba(var(--saffron-rgb), 0.32); }
-@media (hover: none) { .word-for-word-trigger { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; cursor: default; } }
+@media (hover: none) {
+  .word-for-word-trigger { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; cursor: default; touch-action: manipulation; }
+  /* After a double tap the words are ordinary text again, so the phone's selection menu works. */
+  html.is-text-selecting .word-for-word-trigger { -webkit-touch-callout: default; -webkit-user-select: text; user-select: text; }
+}
 .word-for-word-popup { position: fixed; z-index: 200; display: grid; gap: 0.38rem; width: max-content; max-width: min(340px, calc(100vw - 24px)); padding: 0.72rem 0.82rem; color: var(--ink); background: var(--paper-cream); border: 1px solid rgba(var(--saffron-deep-rgb), 0.3); box-shadow: 5px 6px 0 rgba(var(--ink-rgb), 0.12); font-family: "DM Sans", Arial, sans-serif; font-size: 0.76rem; line-height: 1.45; pointer-events: auto; }
 .word-for-word-popup-term { color: var(--saffron-deep); font-family: "PalakaNew", "Charis SIL", Georgia, serif; font-size: 1rem; }
 .word-for-word-popup-meanings { display: grid; gap: 0.28rem; color: var(--ink-soft); }
@@ -565,9 +569,10 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .song-category-link, .song-poet-link { color: inherit; text-decoration: none; transition: color 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
 .song-category-link:hover, .song-poet-link:hover { color: var(--saffron-deep); text-decoration: underline; text-decoration-color: rgba(var(--saffron-rgb), 0.5); text-underline-offset: 0.24rem; }
 .song-category-link:focus-visible, .song-poet-link:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.55); outline-offset: 0.2rem; }
-.song-note-button { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.18rem 0.55rem 0.18rem 0.42rem; border: 1px solid rgba(var(--saffron-rgb), 0.28); border-radius: 999px; background: transparent; color: var(--saffron-deep); font: inherit; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: background 160ms var(--ease-out); }
-.song-note-button:hover, .song-note-button.is-open { background: rgba(var(--saffron-rgb), 0.1); }
-.song-note-popover { z-index: 60; padding: 1rem 1.15rem; border: 1px solid rgba(var(--saffron-rgb), 0.24); border-radius: 12px; background: var(--paper-cream); box-shadow: 0 18px 44px rgba(var(--ink-rgb), 0.16); width: min(28rem, calc(100vw - 24px)); max-height: min(60vh, 32rem); overflow-y: auto; color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.12rem; line-height: 1.35; white-space: pre-line; }
+.song-note-button { display: inline-grid; flex: none; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--saffron-deep); cursor: pointer; transition: background 160ms var(--ease-out), color 160ms var(--ease-out); }
+.song-note-button:hover, .song-note-button.is-open { background: rgba(var(--saffron-rgb), 0.12); }
+.song-note-button:focus-visible { outline: 2px solid var(--saffron); outline-offset: 1px; }
+.song-note-popover { z-index: 60; padding: 1rem 1.15rem; border: 1px solid rgba(var(--saffron-rgb), 0.3); border-radius: 12px; background: color-mix(in srgb, var(--saffron-tint) 78%, var(--paper-cream)); box-shadow: 0 18px 44px rgba(var(--ink-rgb), 0.16); width: min(28rem, calc(100vw - 24px)); max-height: min(60vh, 32rem); overflow-y: auto; color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.12rem; line-height: 1.35; white-space: pre-line; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .song-verses { position: relative; display: grid; gap: 2.7rem; margin-top: 3.3rem; padding-top: 1.8rem; }
 .verse-block { position: relative; display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 1.3rem; }
@@ -730,7 +735,9 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .author-portrait { display: inline-grid; flex: none; place-items: center; overflow: hidden; background: var(--saffron-tint); color: var(--saffron-deep); }
 .author-portrait img { width: 100%; height: 100%; object-fit: cover; }
 .author-portrait-round { width: 1.9rem; height: 1.9rem; border-radius: 50%; box-shadow: 0 0 0 1px rgba(var(--saffron-rgb), 0.35); }
-.author-portrait-round img { transform: scale(2.1); transform-origin: var(--focus, 50% 20%); }
+.author-portrait-round { position: relative; }
+.author-portrait-round img[style] { position: absolute; max-width: none; height: auto; object-fit: initial; }
+.author-portrait-round img:not([style]) { object-position: 50% 15%; }
 .author-portrait-round.is-monogram span { font-family: var(--font-display); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.02em; }
 .author-portrait-tall { width: clamp(9rem, 22vw, 15rem); aspect-ratio: 3 / 4; box-shadow: 10px 12px 0 rgba(var(--ink-rgb), 0.07); }
 .author-portrait-tall.is-monogram span { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 5rem); font-weight: 600; }
