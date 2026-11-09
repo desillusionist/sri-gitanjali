@@ -11,6 +11,14 @@ import { LibraryBig } from "lucide-react";
 import { useMemo } from "react";
 import { Link, useRoute } from "wouter";
 
+/** A bio paragraph; "## " starts a heading, "### " a small caption (a closing note when last) and "> " a quotation. */
+function BioParagraph({ value, isLast }: { value: string; isLast: boolean }) {
+  if (value.startsWith("## ")) return <h2 className="author-bio-heading">{value.slice(3)}</h2>;
+  if (value.startsWith("### ")) return <p className={isLast ? "author-bio-note" : "author-bio-caption"}>{value.slice(4)}</p>;
+  if (value.startsWith("> ")) return <blockquote className="author-bio-quote"><p>{value.slice(2)}</p></blockquote>;
+  return <p>{value}</p>;
+}
+
 function AuthorContent({ author }: { author: Author }) {
   const { songs, status } = useSongLibrary();
   const { copy } = useTranslation();
@@ -35,7 +43,7 @@ function AuthorContent({ author }: { author: Author }) {
       </header>
 
       <section className="author-bio">
-        {author.bio.map((paragraph) => <p key={paragraph.slice(0, 32)}>{paragraph}</p>)}
+        {author.bio.map((paragraph, index) => <BioParagraph key={index} value={paragraph} isLast={index === author.bio.length - 1} />)}
         {author.sources.length > 0 && (
           <p className="author-sources">
             {copy.author.sources}:{" "}

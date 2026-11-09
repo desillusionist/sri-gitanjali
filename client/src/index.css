@@ -770,6 +770,13 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .author-bio { max-width: 42rem; padding: 1.5rem 0 2.5rem; border-top: 1px solid var(--hairline); }
 .author-bio p { margin: 0 0 1rem; color: var(--ink-soft); font-size: 1rem; line-height: 1.7; }
 .author-bio .author-sources { margin-top: 1.4rem; font-size: 0.78rem; }
+.author-bio .author-bio-heading { margin: 2.2rem 0 0.35rem; color: var(--ink); font-family: var(--font-display); font-size: 1.55rem; font-weight: 600; line-height: 1.15; }
+.author-bio .author-bio-caption { margin: 0 0 1rem; color: var(--saffron-deep); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; line-height: 1.5; text-transform: uppercase; }
+.author-bio :is(p, blockquote) + .author-bio-caption { margin-top: 1.8rem; }
+.author-bio .author-bio-heading + .author-bio-caption { margin-top: 0; }
+.author-bio .author-bio-note { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.8rem; font-style: italic; line-height: 1.55; }
+.author-bio-quote { margin: 0 0 1rem; padding: 0.1rem 0 0.1rem 1.1rem; border-left: 2px solid rgba(var(--saffron-rgb), 0.55); }
+.author-bio .author-bio-quote p { margin: 0; color: var(--ink); font-family: var(--font-display); font-size: 1.14rem; font-style: italic; line-height: 1.55; }
 .author-sources a { color: var(--saffron-deep); }
 .author-songs { padding-bottom: 3rem; }
 .author-eyebrow-link { color: var(--saffron-deep); text-decoration: none; }
