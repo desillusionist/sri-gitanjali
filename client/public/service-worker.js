@@ -5,12 +5,14 @@
  * - Pages: network first, falling back to the cached shell (the app routes
  *   /song/… itself).
  * - Built assets (/assets/…, hashed): cache first; they never change.
- * - Song data, fonts and images (/manus-storage/…): served from cache at once
- *   and refreshed in the background.
+ * - Song data and translations (/manus-storage/….json): network first, so
+ *   corrections show up at once; the cached copy when offline.
+ * - Fonts and images (/manus-storage/…): served from cache at once and
+ *   refreshed in the background.
  * Precaching tolerates a missing file, so one absent asset never disables
  * offline use.
  */
-const CACHE_NAME = "kirtan-guide-v6";
+const CACHE_NAME = "kirtan-guide-v7";
 // "/" locally, "/sri-gitanjali/" on GitHub Pages.
 const BASE = new URL(self.registration.scope).pathname;
 const PRECACHE = [
@@ -94,6 +96,18 @@ self.addEventListener("fetch", (event) => {
         event.waitUntil(putInCache(event.request, response.clone()));
         return response;
       })),
+    );
+    return;
+  }
+
+  if (path.startsWith("/manus-storage/") && path.endsWith(".json")) {
+    event.respondWith(
+      fetch(event.request, { cache: "no-cache" })
+        .then((response) => {
+          event.waitUntil(putInCache(event.request, response.clone()));
+          return response;
+        })
+        .catch(async () => (await caches.match(event.request)) || Response.error()),
     );
     return;
   }

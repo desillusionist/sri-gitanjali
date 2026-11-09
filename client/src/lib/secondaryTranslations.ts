@@ -77,7 +77,7 @@ export function parseSecondaryTranslationPackage(value: unknown, language: Secon
 export function loadPackagedSecondaryTranslations(language: PackagedLanguage, fetchImplementation: typeof fetch = fetch): Promise<Map<string, string>> {
   let promise = packagePromises.get(language);
   if (!promise) {
-    promise = fetchImplementation(SECONDARY_TRANSLATION_PACKAGE_URLS[language], { cache: "force-cache" })
+    promise = fetchImplementation(SECONDARY_TRANSLATION_PACKAGE_URLS[language])
       .then(async (response) => {
         if (!response.ok) throw new Error(`The ${language} translation package could not be loaded.`);
         return parseSecondaryTranslationPackage(await response.json(), language);
