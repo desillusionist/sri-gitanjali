@@ -3,7 +3,7 @@
 import authorData from "@/data/authors.json";
 import { STORAGE_URL } from "@/data/sources";
 
-export const VAISNAVA_GROUPS = ["saraswat", "mahaprabhu", "goswamis", "acharyas", "ancient"] as const;
+export const VAISNAVA_GROUPS = ["saraswat", "exalted", "mahaprabhu", "goswamis", "acharyas", "ancient"] as const;
 export type VaisnavaGroup = (typeof VAISNAVA_GROUPS)[number];
 
 export type Author = {

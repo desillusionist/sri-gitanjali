@@ -1,5 +1,5 @@
 {
-  "_note": "Vaiṣṇavas named in the guide: song authors (`names` must match the poet field of the songs exactly, accents included) and the personalities the songs honour (`names` empty, `songIds` lists the songs about them). Portraits live in local-storage/ (served as manus-storage/); `portraitLarge` is an optional sharper copy for the enlarged view; `focus` is the CSS transform-origin that centres the face in round crops. `group` places them on the Vaiṣṇavas page. Drafted from scsmath.com, gaudiyahistory and standard Gauḍīya sources; please review before relying on dates.",
+  "_note": "Vaiṣṇavas named in the guide: song authors (`names` must match the poet field of the songs exactly, accents included) and the personalities the songs honour (`names` empty, `songIds` lists the songs about them). Portraits live in local-storage/ (served as manus-storage/); `portraitLarge` is an optional sharper copy for the enlarged view; `face` is [centre x, centre y, diameter] of the face, in % of the image width, used to centre round crops. `group` places them on the Vaiṣṇavas page. Drafted from scsmath.com, gaudiyahistory and standard Gauḍīya sources; please review before relying on dates.",
   "authors": [
     {
       "id": "bhakti-bimal-avadhut-maharaja",
@@ -9,6 +9,13 @@
       "place": "Born in Saint Petersburg, Russia",
       "role": "Head of the Russian mission of Śrī Chaitanya Sāraswat Maṭh",
       "group": "saraswat",
+      "portrait": "author-bhakti-bimal-avadhut-maharaja.webp",
+      "portraitLarge": "author-bhakti-bimal-avadhut-maharaja-large.webp",
+      "face": [
+        40,
+        57.5,
+        43
+      ],
       "summary": "A sannyāsī disciple of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja who founded and leads the Russian mission of Śrī Chaitanya Sāraswat Maṭh, and whom this book's praṇām praises as the embodiment of Nitāi-Gaura's compassion.",
       "bio": [
         "Born in Saint Petersburg, he served his guru, Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja, as Jagannāth Vallabha Prabhu. On 28 September 2002, at the Dum Dum Park temple in Kolkata, Śrīla Govinda Mahārāja gave him sannyāsa and the name Bhakti Bimal Avadhūt Mahārāja. He established and heads the Russian mission of Śrī Chaitanya Sāraswat Maṭh.",
@@ -57,6 +64,291 @@
       "songIds": [
         "srila-bhakti-ranjan-madhusudan-maharaja-005"
       ]
+    },
+    {
+      "id": "bhakti-nirmal-acharya-maharaja",
+      "names": [],
+      "name": "Śrīla Bhakti Nirmal Āchārya Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Śrī Chaitanya Sāraswat Maṭh, Nabadwīp",
+      "role": "Present Āchārya of Śrī Chaitanya Sāraswat Maṭh",
+      "group": "saraswat",
+      "summary": "The disciple whom Śrīla Govinda Mahārāja, before his departure in 2010, established as Successor Sevaite-President-Āchārya of Śrī Chaitanya Sāraswat Maṭh.",
+      "bio": [
+        "His praṇām in this book honours him as the vigilant guardian of the current of pure devotion that flows from the Rūpānuga guru-varga, and as one who inspires disciples in the East and the West."
+      ],
+      "sources": [
+        "https://scsmathinternational.com/library/SrilaGovindaMaharaj/index.php"
+      ],
+      "songIds": [
+        "srila-bhakti-nirmal-acharya-maharaja-006"
+      ]
+    },
+    {
+      "id": "govinda-maharaj",
+      "names": [
+        "Śrīla B.S. Govinda Mahārāja"
+      ],
+      "name": "Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja",
+      "dates": "1929–2010",
+      "place": "Born at Bāmunpāṛā, Burdwan, Bengal",
+      "role": "President-Āchārya of Śrī Chaitanya Sāraswat Maṭh",
+      "portrait": "author-govinda-maharaj.webp",
+      "face": [
+        50.6,
+        36.5,
+        60
+      ],
+      "summary": "The dearmost servant and chosen successor of Śrīla Śrīdhar Mahārāja, who led Śrī Chaitanya Sāraswat Maṭh from 1988 and carried its message around the world. He composed many prayers and songs in Sanskrit and Bengali.",
+      "bio": [
+        "Śrīla Govinda Mahārāja came to Śrīla Śrīdhar Mahārāja in April 1947, at the age of seventeen, on the appearance day of Lord Nṛsiṁhadev. From then on he was his guru's most intimate servant: he designed and built Śrī Chaitanya Sāraswat Maṭh in Nabadwīp and cared for its mission for decades. Śrīla Bhaktivedānta Swāmī Mahārāja, who knew him closely, called him his \"dearmost son\".",
+        "In 1985 Śrīla Śrīdhar Mahārāja gave him sannyās and named him the next President-Āchārya. From 1988 he travelled around the world many times, and thousands of people in India, the Americas, Europe, Africa, Australia and Asia took shelter of him.",
+        "Deeply learned in Sanskrit and Bengali, he was a gifted speaker of Hari-kathā and a poet whose compositions are sung in the Maṭh every day. Before his departure in 2010 he appointed Śrīla Bhakti Nirmal Āchārya Mahārāja as his successor."
+      ],
+      "sources": [
+        "https://scsmath.com/docs/govinda_maharaj.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "srila-bhakti-sundar-govinda-dev-goswami-maharaja-007",
+        "sri-guru-arati-032",
+        "acharya-charana-vandana-136"
+      ]
+    },
+    {
+      "id": "sridhar-maharaj",
+      "names": [
+        "Śrīla B.R. Śrīdhar Mahārāja"
+      ],
+      "name": "Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja",
+      "dates": "1895–1988",
+      "place": "Born at Hāpāniyā, Burdwan, Bengal",
+      "role": "Founder-Āchārya of Śrī Chaitanya Sāraswat Maṭh",
+      "portrait": "author-sridhar-maharaj.webp",
+      "face": [
+        48,
+        36.5,
+        46
+      ],
+      "portraitLarge": "author-sridhar-maharaj-large.webp",
+      "summary": "A senior disciple of Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and founder of Śrī Chaitanya Sāraswat Maṭh in Nabadwīp. His Sanskrit and Bengali prayers, and his treatise Śrī Śrī Prapanna-jīvanāmṛtam, are treasured throughout the Gauḍīya world.",
+      "bio": [
+        "Born into a respected brāhmaṇa family, Śrīla Śrīdhar Mahārāja was drawn from childhood to Śrī Chaitanya Mahāprabhu and the chanting of the Holy Name. He met the Gauḍīya Maṭh in 1923, and in 1926 he gave his life to its mission as an initiated disciple of Śrīla Bhakti Siddhānta Saraswatī Ṭhākur, who in 1930 gave him sannyās and the name Bhakti Rakṣak, \"Guardian of Devotion\".",
+        "He preached across India in Bengali, Hindi, Sanskrit and English. His guru prized his Sanskrit composition Śrī Bhaktivinoda-viraha-daśakam, and shortly before his departure asked him to sing Śrī Rūpa-mañjarī-pada. Afterwards, though widely revered as the senior representative of the line, he lived simply and founded Śrī Chaitanya Sāraswat Maṭh on the bank of the Ganges at Nabadwīp.",
+        "In his eighties seekers from all over the world came to hear him. His recorded talks became the books Search for Śrī Kṛṣṇa, Śrī Guru and His Grace and The Golden Volcano of Divine Love. Before his departure in 1988 he named Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja as his successor."
+      ],
+      "sources": [
+        "https://scsmath.com/docs/sridhar_maharaj.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "srila-bhakti-raksak-sridhar-dev-goswami-maharaja-008",
+        "pranam-mantra-to-srila-bhakti-raksak-sridhar-dev-goswami-maharaja-158",
+        "pranati-dasakam-159",
+        "sri-guru-prasastih-163",
+        "pranati-panchakam-164"
+      ]
+    },
+    {
+      "id": "bhaktivedanta-swami",
+      "names": [],
+      "name": "Śrīla A.C. Bhaktivedānta Swāmī Prabhupāda",
+      "dates": "1896–1977",
+      "place": "Born in Kolkata",
+      "role": "Founder-Āchārya of ISKCON",
+      "group": "saraswat",
+      "summary": "A disciple of Śrīla Saraswatī Ṭhākur who at seventy carried the Hare Krishna mahāmantra to the West and spread it across the world.",
+      "bio": [
+        "Born Abhay Charan De, he met his guru in Kolkata in 1922 and was initiated in 1933. He took sannyās in 1959, and in 1965 sailed to New York, where he founded the International Society for Krishna Consciousness.",
+        "He translated Śrīmad Bhāgavatam, Bhagavad-gītā and Chaitanya-charitāmṛta into English. He held Śrīla Śrīdhar Mahārāja in great regard, and Śrīla Govinda Mahārāja's praṇām mantra in this book honours him."
+      ],
+      "sources": [],
+      "songIds": [
+        "pranam-mantra-to-srila-swami-maharaja-023"
+      ]
+    },
+    {
+      "id": "saraswati-thakur",
+      "names": [
+        "Śrīla Saraswatī Ṭhākur"
+      ],
+      "name": "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur",
+      "dates": "1874–1937",
+      "place": "Born at Purī, Orissa",
+      "role": "Founder of the Gauḍīya Maṭh",
+      "portrait": "author-saraswati-thakur.webp",
+      "face": [
+        50,
+        22,
+        42
+      ],
+      "portraitLarge": "author-saraswati-thakur-large.webp",
+      "summary": "The son of Śrīla Bhakti Vinod Ṭhākur, who founded the Gauḍīya Maṭh and spread Mahāprabhu's teachings across India. He was the guru of Śrīla Śrīdhar Mahārāja and Śrīla Bhaktivedānta Swāmī Prabhupād.",
+      "bio": [
+        "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur was the son of Śrīla Bhakti Vinod Ṭhākur and the disciple of Śrīla Gaura Kiśor Dās Bābājī Mahārāja. A scholar of great learning, he gave his life to publishing and preaching the pure teachings of Mahāprabhu.",
+        "In the 1920s and 1930s he set up sixty-four Gauḍīya Maṭhs in India, revived Vaiṣṇava tridaṇḍi-sannyās, and taught that devotion, not birth, qualifies one to serve. Śrīla Śrīdhar Mahārāja describes him as lion-like outside and very sweet within, his one aim being the divine love of Vṛndāvan.",
+        "His disciples, among them Śrīla Śrīdhar Mahārāja and Śrīla A.C. Bhaktivedānta Swāmī Prabhupād, carried his message across the world."
+      ],
+      "sources": [
+        "https://scsmath.com/docs/saraswati_thakur.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "bhagavan-srila-bhakti-siddhanta-saraswati-thakur-009",
+        "sri-saraswat-arati-050",
+        "sri-sri-prabhupada-padma-stavakah-056",
+        "sri-dayita-das-pranati-panchakam-138",
+        "acharya-vandana-139",
+        "sri-sri-dayita-das-dasakam-154"
+      ]
+    },
+    {
+      "id": "gaura-kisora-das-babaji",
+      "names": [],
+      "name": "Śrīla Gaura Kiśora Dās Bābājī Mahārāja",
+      "dates": "Died 1915",
+      "place": "Vṛndāvan; later Nabadwīp",
+      "role": "Guru of Śrīla Saraswatī Ṭhākur",
+      "group": "saraswat",
+      "summary": "A renounced paramahaṁsa who lived by begging and chanting, whose only disciple was Śrīla Bhakti Siddhānta Saraswatī Ṭhākur.",
+      "bio": [
+        "After many years in Vṛndāvan he came to Nabadwīp, where he lived in solitude, often in the company of Bhakti Vinod Ṭhākur. He rejected imitators of renunciation sharply.",
+        "In 1900 he gave initiation to Bimala Prasād, later Śrīla Saraswatī Ṭhākur, who placed his samādhi at Śrī Dhām Māyāpur."
+      ],
+      "sources": [],
+      "songIds": [
+        "srila-gaura-kisora-das-babaji-maharaja-010",
+        "sri-srimad-gaura-kisora-namaskara-dasakam-153"
+      ]
+    },
+    {
+      "id": "bhakti-vinod-thakur",
+      "names": [
+        "Śrīla Bhakti Vinod Ṭhākur"
+      ],
+      "name": "Śrīla Bhakti Vinod Ṭhākur",
+      "dates": "1838–1914",
+      "place": "Born at Ulā (Bīrnagar), Nadia, Bengal",
+      "role": "Pioneer of pure devotion in the modern age",
+      "portrait": "author-bhaktivinod-thakur.webp",
+      "face": [
+        51.5,
+        26,
+        48
+      ],
+      "portraitLarge": "author-bhaktivinod-thakur-large.webp",
+      "summary": "The nineteenth-century pioneer of Krishna consciousness, who revived the teachings of Śrī Chaitanya Mahāprabhu and wrote more than a hundred books. His songbooks, such as Śaraṇāgati and Gītāvalī, are sung daily wherever Mahāprabhu's devotees gather.",
+      "bio": [
+        "Śrīla Sachchidānanda Bhakti Vinod Ṭhākur, known in his public life as Kedārnāth Datta, served as a magistrate under the British government while living as a householder devotee. Alongside that work he composed, edited and published more than a hundred books in Sanskrit, Bengali and English, freeing the devotional culture of Bengal from the misinterpretations that had overgrown it.",
+        "He taught that exclusive surrender (śaraṇāgati) to the service of the Lord's pure devotees is the heart of devotion, and that the paths of karma, jñāna and voidism must be left aside. He inaugurated the worship of Śrī Chaitanya Mahāprabhu at Śrī Yogapīṭh, the Lord's appearance place in Śrī Dhām Māyāpur, and foresaw that people of every land would one day join in the congregational chanting of the Holy Name.",
+        "His songs, gathered in Kalyāṇa-kalpataru, Śaraṇāgati, Gītāvalī and Gīta-mālā, express the whole of Gauḍīya philosophy in simple, heartfelt Bengali. Śrīla Śrīdhar Mahārāja describes him as Mahāprabhu's love divine personified. His son, Śrīla Bhakti Siddhānta Saraswatī Ṭhākur, carried his mission across India."
+      ],
+      "sources": [
+        "https://scsmath.com/docs/bhaktivinod_thakur.html"
+      ],
+      "group": "saraswat",
+      "songIds": [
+        "srila-bhakti-vinod-thakur-011",
+        "srimad-bhakti-vinod-viraha-dasakam-152"
+      ]
+    },
+    {
+      "id": "jagannath-das-babaji",
+      "names": [],
+      "name": "Śrīla Jagannāth Dās Bābājī Mahārāja",
+      "dates": "Died 1894",
+      "place": "Vṛndāvan; later Nabadwīp",
+      "role": "Head of the Vaiṣṇavas of his time",
+      "group": "saraswat",
+      "summary": "The venerable Bābājī honoured by all Vaiṣṇavas of Vṛndāvan and Nabadwīp, who confirmed Śrīla Bhakti Vinod Ṭhākur's discovery of Mahāprabhu's birthplace at Māyāpur.",
+      "bio": [
+        "Living to a great age, he was carried in a basket by his servant. When Bhakti Vinod Ṭhākur found Mahāprabhu's birthplace, the old saint leapt up in ecstasy on reaching the spot.",
+        "He was the instructing guru of Bhakti Vinod Ṭhākur, and Śrīla Śrīdhar Mahārāja's praṇām in this book calls him the grandsire of pure devotion."
+      ],
+      "sources": [],
+      "songIds": [
+        "srila-jagannath-das-babaji-maharaja-012"
+      ]
+    },
+    {
+      "id": "bhakti-lalita-devi-dasi",
+      "names": [],
+      "name": "Śrīmatī Bhakti Lalitā Devī Dāsī",
+      "dates": "Brahmachāriṇī since 1996",
+      "place": "Born in the USA; based in Chiang Mai, Thailand",
+      "role": "Disciple of Śrīla Govinda Mahārāja",
+      "group": "exalted",
+      "portrait": "author-bhakti-lalita-devi-dasi.webp",
+      "portraitLarge": "author-bhakti-lalita-devi-dasi-large.webp",
+      "face": [
+        49.6,
+        27,
+        30
+      ],
+      "summary": "A disciple of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja who served for many years as his personal correspondence secretary, and who now teaches Gauḍīya Vaiṣṇava philosophy and the practice of bhakti-yoga around the world.",
+      "bio": [
+        "Śrīmatī Bhakti Lalitā Devī Dāsī is a disciple of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja, Sevaite-President-Āchārya of Śrī Chaitanya Sāraswat Maṭh. Born in the USA, she lived in India with her spiritual master for more than eighteen years and served as his personal correspondence secretary.",
+        "In 1996 Śrīla Govinda Mahārāja gave her the sacred saffron brahmachārī cloth, an adjustment he made for women for the first time, and added the title “Bhakti” before her initiated name, Lalitā Devī Dāsī.",
+        "She now lives in Chiang Mai, Thailand, and travels the world from time to time, encouraging the hearts and nurturing the faith of devotees and friends. She gives regular morning classes on the philosophy of Gauḍīya Vaiṣṇava culture and the practice of bhakti-yoga, and her kīrtans and Hari-kathā are published on SoundCloud, Spotify and Apple Music."
+      ],
+      "sources": [
+        "https://soundcloud.com/bhakti-lalita-devi",
+        "https://open.spotify.com/artist/438rGlaJ6HH6jn19MDyUCN",
+        "https://podcasters.spotify.com/pod/show/bhakti-lalita-devi",
+        "https://music.apple.com/us/artist/bhakti-lalita-devi/1682513484",
+        "https://www.instagram.com/bhaktilalitaofficial",
+        "https://www.facebook.com/SriGuptaGovardhanMedia",
+        "https://adventuresofmilo.com",
+        "https://www.getmyliinks.me/blalitadd"
+      ]
+    },
+    {
+      "id": "ba-paramahamsa-maharaja",
+      "names": [
+        "Śrīpād B.A. Paramahaṁsa Mahārāja"
+      ],
+      "name": "Śrīpād B.A. Paramahaṁsa Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Sāraswat line",
+      "role": "Poet of Śrī Guru Ārati",
+      "group": "exalted",
+      "summary": "The author of Śrī Guru Ārati in this book, sung in praise of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+      "bio": [
+        "More of his life is yet to be added."
+      ],
+      "sources": []
+    },
+    {
+      "id": "ba-sagar-maharaja",
+      "names": [
+        "Śrīpād B.Ā. Sāgar Mahārāja"
+      ],
+      "name": "Śrīpād B.Ā. Sāgar Mahārāja",
+      "dates": "20th–21st century",
+      "place": "Sāraswat line",
+      "role": "Poet of Āchārya-charaṇa-vandana",
+      "group": "exalted",
+      "summary": "The author of Āchārya-charaṇa-vandana in this book, an English hymn to the lotus feet of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+      "bio": [
+        "More of his life is yet to be added."
+      ],
+      "sources": []
+    },
+    {
+      "id": "gopal-govinda-mahanta",
+      "names": [
+        "Gopāl Govinda Mahanta"
+      ],
+      "name": "Gopāl Govinda Mahanta",
+      "dates": "20th century",
+      "place": "Bengal",
+      "role": "Poet of Āchārya-vandana",
+      "group": "exalted",
+      "summary": "The author of the Bengali Āchārya-vandana in this book, a long hymn glorifying Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and his preaching.",
+      "bio": [
+        "More of his life is yet to be added."
+      ],
+      "sources": []
     },
     {
       "id": "narottam-das-thakur",
@@ -157,25 +449,6 @@
       ],
       "sources": [],
       "group": "acharyas"
-    },
-    {
-      "id": "bhakti-nirmal-acharya-maharaja",
-      "names": [],
-      "name": "Śrīla Bhakti Nirmal Āchārya Mahārāja",
-      "dates": "20th–21st century",
-      "place": "Śrī Chaitanya Sāraswat Maṭh, Nabadwīp",
-      "role": "Present Āchārya of Śrī Chaitanya Sāraswat Maṭh",
-      "group": "saraswat",
-      "summary": "The disciple whom Śrīla Govinda Mahārāja, before his departure in 2010, established as Successor Sevaite-President-Āchārya of Śrī Chaitanya Sāraswat Maṭh.",
-      "bio": [
-        "His praṇām in this book honours him as the vigilant guardian of the current of pure devotion that flows from the Rūpānuga guru-varga, and as one who inspires disciples in the East and the West."
-      ],
-      "sources": [
-        "https://scsmathinternational.com/library/SrilaGovindaMaharaj/index.php"
-      ],
-      "songIds": [
-        "srila-bhakti-nirmal-acharya-maharaja-006"
-      ]
     },
     {
       "id": "jayadeva-goswami",
@@ -732,240 +1005,6 @@
       "summary": "The poet of Mithilā whose songs of Rādhā and Kṛṣṇa Mahāprabhu relished in His last years with Svarūp Dāmodar and Rāmānanda Rāy.",
       "bio": [
         "Writing in Maithilī, he gave the love of Rādhā and Kṛṣṇa a lyric form that shaped all later Vaiṣṇava poetry in Bengal. His song in this book, 'Tātala saikate', is a confession of a life wasted and a plea for the Lord's shelter."
-      ],
-      "sources": []
-    },
-    {
-      "id": "govinda-maharaj",
-      "names": [
-        "Śrīla B.S. Govinda Mahārāja"
-      ],
-      "name": "Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja",
-      "dates": "1929–2010",
-      "place": "Born at Bāmunpāṛā, Burdwan, Bengal",
-      "role": "President-Āchārya of Śrī Chaitanya Sāraswat Maṭh",
-      "portrait": "author-govinda-maharaj.webp",
-      "face": [
-        50.6,
-        36.5,
-        60
-      ],
-      "summary": "The dearmost servant and chosen successor of Śrīla Śrīdhar Mahārāja, who led Śrī Chaitanya Sāraswat Maṭh from 1988 and carried its message around the world. He composed many prayers and songs in Sanskrit and Bengali.",
-      "bio": [
-        "Śrīla Govinda Mahārāja came to Śrīla Śrīdhar Mahārāja in April 1947, at the age of seventeen, on the appearance day of Lord Nṛsiṁhadev. From then on he was his guru's most intimate servant: he designed and built Śrī Chaitanya Sāraswat Maṭh in Nabadwīp and cared for its mission for decades. Śrīla Bhaktivedānta Swāmī Mahārāja, who knew him closely, called him his \"dearmost son\".",
-        "In 1985 Śrīla Śrīdhar Mahārāja gave him sannyās and named him the next President-Āchārya. From 1988 he travelled around the world many times, and thousands of people in India, the Americas, Europe, Africa, Australia and Asia took shelter of him.",
-        "Deeply learned in Sanskrit and Bengali, he was a gifted speaker of Hari-kathā and a poet whose compositions are sung in the Maṭh every day. Before his departure in 2010 he appointed Śrīla Bhakti Nirmal Āchārya Mahārāja as his successor."
-      ],
-      "sources": [
-        "https://scsmath.com/docs/govinda_maharaj.html"
-      ],
-      "group": "saraswat",
-      "songIds": [
-        "srila-bhakti-sundar-govinda-dev-goswami-maharaja-007",
-        "sri-guru-arati-032",
-        "acharya-charana-vandana-136"
-      ]
-    },
-    {
-      "id": "sridhar-maharaj",
-      "names": [
-        "Śrīla B.R. Śrīdhar Mahārāja"
-      ],
-      "name": "Śrīla Bhakti Rakṣak Śrīdhar Dev-Goswāmī Mahārāja",
-      "dates": "1895–1988",
-      "place": "Born at Hāpāniyā, Burdwan, Bengal",
-      "role": "Founder-Āchārya of Śrī Chaitanya Sāraswat Maṭh",
-      "portrait": "author-sridhar-maharaj.webp",
-      "face": [
-        48,
-        36.5,
-        46
-      ],
-      "portraitLarge": "author-sridhar-maharaj-large.webp",
-      "summary": "A senior disciple of Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and founder of Śrī Chaitanya Sāraswat Maṭh in Nabadwīp. His Sanskrit and Bengali prayers, and his treatise Śrī Śrī Prapanna-jīvanāmṛtam, are treasured throughout the Gauḍīya world.",
-      "bio": [
-        "Born into a respected brāhmaṇa family, Śrīla Śrīdhar Mahārāja was drawn from childhood to Śrī Chaitanya Mahāprabhu and the chanting of the Holy Name. He met the Gauḍīya Maṭh in 1923, and in 1926 he gave his life to its mission as an initiated disciple of Śrīla Bhakti Siddhānta Saraswatī Ṭhākur, who in 1930 gave him sannyās and the name Bhakti Rakṣak, \"Guardian of Devotion\".",
-        "He preached across India in Bengali, Hindi, Sanskrit and English. His guru prized his Sanskrit composition Śrī Bhaktivinoda-viraha-daśakam, and shortly before his departure asked him to sing Śrī Rūpa-mañjarī-pada. Afterwards, though widely revered as the senior representative of the line, he lived simply and founded Śrī Chaitanya Sāraswat Maṭh on the bank of the Ganges at Nabadwīp.",
-        "In his eighties seekers from all over the world came to hear him. His recorded talks became the books Search for Śrī Kṛṣṇa, Śrī Guru and His Grace and The Golden Volcano of Divine Love. Before his departure in 1988 he named Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja as his successor."
-      ],
-      "sources": [
-        "https://scsmath.com/docs/sridhar_maharaj.html"
-      ],
-      "group": "saraswat",
-      "songIds": [
-        "srila-bhakti-raksak-sridhar-dev-goswami-maharaja-008",
-        "pranam-mantra-to-srila-bhakti-raksak-sridhar-dev-goswami-maharaja-158",
-        "pranati-dasakam-159",
-        "sri-guru-prasastih-163",
-        "pranati-panchakam-164"
-      ]
-    },
-    {
-      "id": "saraswati-thakur",
-      "names": [
-        "Śrīla Saraswatī Ṭhākur"
-      ],
-      "name": "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur",
-      "dates": "1874–1937",
-      "place": "Born at Purī, Orissa",
-      "role": "Founder of the Gauḍīya Maṭh",
-      "portrait": "author-saraswati-thakur.webp",
-      "face": [
-        50,
-        22,
-        42
-      ],
-      "portraitLarge": "author-saraswati-thakur-large.webp",
-      "summary": "The son of Śrīla Bhakti Vinod Ṭhākur, who founded the Gauḍīya Maṭh and spread Mahāprabhu's teachings across India. He was the guru of Śrīla Śrīdhar Mahārāja and Śrīla Bhaktivedānta Swāmī Prabhupād.",
-      "bio": [
-        "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur was the son of Śrīla Bhakti Vinod Ṭhākur and the disciple of Śrīla Gaura Kiśor Dās Bābājī Mahārāja. A scholar of great learning, he gave his life to publishing and preaching the pure teachings of Mahāprabhu.",
-        "In the 1920s and 1930s he set up sixty-four Gauḍīya Maṭhs in India, revived Vaiṣṇava tridaṇḍi-sannyās, and taught that devotion, not birth, qualifies one to serve. Śrīla Śrīdhar Mahārāja describes him as lion-like outside and very sweet within, his one aim being the divine love of Vṛndāvan.",
-        "His disciples, among them Śrīla Śrīdhar Mahārāja and Śrīla A.C. Bhaktivedānta Swāmī Prabhupād, carried his message across the world."
-      ],
-      "sources": [
-        "https://scsmath.com/docs/saraswati_thakur.html"
-      ],
-      "group": "saraswat",
-      "songIds": [
-        "bhagavan-srila-bhakti-siddhanta-saraswati-thakur-009",
-        "sri-saraswat-arati-050",
-        "sri-sri-prabhupada-padma-stavakah-056",
-        "sri-dayita-das-pranati-panchakam-138",
-        "acharya-vandana-139",
-        "sri-sri-dayita-das-dasakam-154"
-      ]
-    },
-    {
-      "id": "gaura-kisora-das-babaji",
-      "names": [],
-      "name": "Śrīla Gaura Kiśora Dās Bābājī Mahārāja",
-      "dates": "Died 1915",
-      "place": "Vṛndāvan; later Nabadwīp",
-      "role": "Guru of Śrīla Saraswatī Ṭhākur",
-      "group": "saraswat",
-      "summary": "A renounced paramahaṁsa who lived by begging and chanting, whose only disciple was Śrīla Bhakti Siddhānta Saraswatī Ṭhākur.",
-      "bio": [
-        "After many years in Vṛndāvan he came to Nabadwīp, where he lived in solitude, often in the company of Bhakti Vinod Ṭhākur. He rejected imitators of renunciation sharply.",
-        "In 1900 he gave initiation to Bimala Prasād, later Śrīla Saraswatī Ṭhākur, who placed his samādhi at Śrī Dhām Māyāpur."
-      ],
-      "sources": [],
-      "songIds": [
-        "srila-gaura-kisora-das-babaji-maharaja-010",
-        "sri-srimad-gaura-kisora-namaskara-dasakam-153"
-      ]
-    },
-    {
-      "id": "bhakti-vinod-thakur",
-      "names": [
-        "Śrīla Bhakti Vinod Ṭhākur"
-      ],
-      "name": "Śrīla Bhakti Vinod Ṭhākur",
-      "dates": "1838–1914",
-      "place": "Born at Ulā (Bīrnagar), Nadia, Bengal",
-      "role": "Pioneer of pure devotion in the modern age",
-      "portrait": "author-bhaktivinod-thakur.webp",
-      "face": [
-        51.5,
-        26,
-        48
-      ],
-      "portraitLarge": "author-bhaktivinod-thakur-large.webp",
-      "summary": "The nineteenth-century pioneer of Krishna consciousness, who revived the teachings of Śrī Chaitanya Mahāprabhu and wrote more than a hundred books. His songbooks, such as Śaraṇāgati and Gītāvalī, are sung daily wherever Mahāprabhu's devotees gather.",
-      "bio": [
-        "Śrīla Sachchidānanda Bhakti Vinod Ṭhākur, known in his public life as Kedārnāth Datta, served as a magistrate under the British government while living as a householder devotee. Alongside that work he composed, edited and published more than a hundred books in Sanskrit, Bengali and English, freeing the devotional culture of Bengal from the misinterpretations that had overgrown it.",
-        "He taught that exclusive surrender (śaraṇāgati) to the service of the Lord's pure devotees is the heart of devotion, and that the paths of karma, jñāna and voidism must be left aside. He inaugurated the worship of Śrī Chaitanya Mahāprabhu at Śrī Yogapīṭh, the Lord's appearance place in Śrī Dhām Māyāpur, and foresaw that people of every land would one day join in the congregational chanting of the Holy Name.",
-        "His songs, gathered in Kalyāṇa-kalpataru, Śaraṇāgati, Gītāvalī and Gīta-mālā, express the whole of Gauḍīya philosophy in simple, heartfelt Bengali. Śrīla Śrīdhar Mahārāja describes him as Mahāprabhu's love divine personified. His son, Śrīla Bhakti Siddhānta Saraswatī Ṭhākur, carried his mission across India."
-      ],
-      "sources": [
-        "https://scsmath.com/docs/bhaktivinod_thakur.html"
-      ],
-      "group": "saraswat",
-      "songIds": [
-        "srila-bhakti-vinod-thakur-011",
-        "srimad-bhakti-vinod-viraha-dasakam-152"
-      ]
-    },
-    {
-      "id": "jagannath-das-babaji",
-      "names": [],
-      "name": "Śrīla Jagannāth Dās Bābājī Mahārāja",
-      "dates": "Died 1894",
-      "place": "Vṛndāvan; later Nabadwīp",
-      "role": "Head of the Vaiṣṇavas of his time",
-      "group": "saraswat",
-      "summary": "The venerable Bābājī honoured by all Vaiṣṇavas of Vṛndāvan and Nabadwīp, who confirmed Śrīla Bhakti Vinod Ṭhākur's discovery of Mahāprabhu's birthplace at Māyāpur.",
-      "bio": [
-        "Living to a great age, he was carried in a basket by his servant. When Bhakti Vinod Ṭhākur found Mahāprabhu's birthplace, the old saint leapt up in ecstasy on reaching the spot.",
-        "He was the instructing guru of Bhakti Vinod Ṭhākur, and Śrīla Śrīdhar Mahārāja's praṇām in this book calls him the grandsire of pure devotion."
-      ],
-      "sources": [],
-      "songIds": [
-        "srila-jagannath-das-babaji-maharaja-012"
-      ]
-    },
-    {
-      "id": "bhaktivedanta-swami",
-      "names": [],
-      "name": "Śrīla A.C. Bhaktivedānta Swāmī Prabhupāda",
-      "dates": "1896–1977",
-      "place": "Born in Kolkata",
-      "role": "Founder-Āchārya of ISKCON",
-      "group": "saraswat",
-      "summary": "A disciple of Śrīla Saraswatī Ṭhākur who at seventy carried the Hare Krishna mahāmantra to the West and spread it across the world.",
-      "bio": [
-        "Born Abhay Charan De, he met his guru in Kolkata in 1922 and was initiated in 1933. He took sannyās in 1959, and in 1965 sailed to New York, where he founded the International Society for Krishna Consciousness.",
-        "He translated Śrīmad Bhāgavatam, Bhagavad-gītā and Chaitanya-charitāmṛta into English. He held Śrīla Śrīdhar Mahārāja in great regard, and Śrīla Govinda Mahārāja's praṇām mantra in this book honours him."
-      ],
-      "sources": [],
-      "songIds": [
-        "pranam-mantra-to-srila-swami-maharaja-023"
-      ]
-    },
-    {
-      "id": "ba-paramahamsa-maharaja",
-      "names": [
-        "Śrīpād B.A. Paramahaṁsa Mahārāja"
-      ],
-      "name": "Śrīpād B.A. Paramahaṁsa Mahārāja",
-      "dates": "20th–21st century",
-      "place": "Sāraswat line",
-      "role": "Poet of Śrī Guru Ārati",
-      "group": "saraswat",
-      "summary": "The author of Śrī Guru Ārati in this book, sung in praise of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
-      "bio": [
-        "More of his life is yet to be added."
-      ],
-      "sources": []
-    },
-    {
-      "id": "ba-sagar-maharaja",
-      "names": [
-        "Śrīpād B.Ā. Sāgar Mahārāja"
-      ],
-      "name": "Śrīpād B.Ā. Sāgar Mahārāja",
-      "dates": "20th–21st century",
-      "place": "Sāraswat line",
-      "role": "Poet of Āchārya-charaṇa-vandana",
-      "group": "saraswat",
-      "summary": "The author of Āchārya-charaṇa-vandana in this book, an English hymn to the lotus feet of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
-      "bio": [
-        "More of his life is yet to be added."
-      ],
-      "sources": []
-    },
-    {
-      "id": "gopal-govinda-mahanta",
-      "names": [
-        "Gopāl Govinda Mahanta"
-      ],
-      "name": "Gopāl Govinda Mahanta",
-      "dates": "20th century",
-      "place": "Bengal",
-      "role": "Poet of Āchārya-vandana",
-      "group": "saraswat",
-      "summary": "The author of the Bengali Āchārya-vandana in this book, a long hymn glorifying Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and his preaching.",
-      "bio": [
-        "More of his life is yet to be added."
       ],
       "sources": []
     }

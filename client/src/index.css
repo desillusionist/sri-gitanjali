@@ -502,15 +502,22 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .word-for-word-trigger:hover, .word-for-word-trigger:focus-visible, .word-for-word-trigger[aria-expanded="true"] { color: var(--saffron-deep); background: rgba(var(--saffron-rgb), 0.12); outline: none; }
 .word-for-word-trigger:focus-visible { box-shadow: 0 0 0 2px rgba(var(--saffron-rgb), 0.32); }
 @media (hover: none) {
-  .word-for-word-trigger { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; cursor: default; touch-action: manipulation; }
+  .word-for-word-trigger, .holy-name-trigger { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; cursor: default; touch-action: manipulation; }
   /* After a double tap the words are ordinary text again, so the phone's selection menu works. */
-  html.is-text-selecting .word-for-word-trigger { -webkit-touch-callout: default; -webkit-user-select: text; user-select: text; }
+  html.is-text-selecting :is(.word-for-word-trigger, .holy-name-trigger) { -webkit-touch-callout: default; -webkit-user-select: text; user-select: text; }
 }
 .word-for-word-popup { position: fixed; z-index: 200; display: grid; gap: 0.38rem; width: max-content; max-width: min(340px, calc(100vw - 24px)); padding: 0.72rem 0.82rem; color: var(--ink); background: var(--paper-cream); border: 1px solid rgba(var(--saffron-deep-rgb), 0.3); box-shadow: 5px 6px 0 rgba(var(--ink-rgb), 0.12); font-family: "DM Sans", Arial, sans-serif; font-size: 0.76rem; line-height: 1.45; pointer-events: auto; }
 .word-for-word-popup-term { color: var(--saffron-deep); font-family: "PalakaNew", "Charis SIL", Georgia, serif; font-size: 1rem; }
 .word-for-word-popup-meanings { display: grid; gap: 0.28rem; color: var(--ink-soft); }
 .word-for-word-popup-source { padding-top: 0.3rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.72; }
 .word-for-word-popup-source.is-glossary { color: var(--saffron-deep); }
+.holy-name-trigger { cursor: help; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: rgba(var(--saffron-rgb), 0.55); text-decoration-thickness: 1px; text-underline-offset: 0.18em; border-radius: 2px; transition: background 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
+.holy-name-trigger:hover, .holy-name-trigger:focus-visible, .holy-name-trigger[aria-expanded="true"] { text-decoration-color: var(--saffron-deep); background: rgba(var(--saffron-rgb), 0.1); outline: none; }
+.holy-name-popup .word-for-word-popup-source { padding: 0; border: 0; }
+.holy-name-popup-about { color: var(--ink-soft); }
+.holy-name-popup-links { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; padding-top: 0.35rem; border-top: 1px solid var(--hairline); }
+.holy-name-popup-links a { display: inline-flex; align-items: center; gap: 0.25rem; color: var(--saffron-deep); font-weight: 700; text-decoration: none; }
+.holy-name-popup-links a:hover { text-decoration: underline; }
 
 .favorites-page { max-width: 1100px; padding: clamp(1.25rem, 4vw, 4.6rem); }
 .favorites-header { max-width: 52rem; padding: clamp(2rem, 7vw, 6rem) 0 clamp(3rem, 7vw, 5.5rem); }

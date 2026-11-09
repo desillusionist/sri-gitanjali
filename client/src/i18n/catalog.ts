@@ -33,6 +33,7 @@ export const translations = {
         goswamis: "The Goswāmīs of Vṛndāvan",
         acharyas: "Poets and āchāryas after Mahāprabhu",
         saraswat: "The Sāraswat guru-varga",
+        exalted: "Exalted Vaiṣṇavas",
         ancient: "Sages and poets before Mahāprabhu",
       },
     },
@@ -144,6 +145,10 @@ export const translations = {
       // Joins “Recording N”, the singer and the track length in the recording picker.
       audioVersionSeparator: " · ",
       songNote: "About this song",
+      holyNameKinds: { person: "Vaiṣṇava", divine: "The Lord and His own", place: "Holy place", realm: "Spiritual world" },
+      holyNamePage: "Read more",
+      holyNameMap: "Show on Google Maps",
+      holyNameLabel: "About {name}",
       wordForWordSourceReference: "Vedabase synonyms",
       wordForWordSourceEditorial: "Editorial gloss",
       wordForWordSourceGlossary: "Glossary (matched from another song)",
