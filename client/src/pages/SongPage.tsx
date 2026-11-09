@@ -24,13 +24,14 @@ import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingi
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Info, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, SlidersHorizontal, Volume2, X } from "lucide-react";
+import { ArrowLeft, Info, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, Share2, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
 import { Link, useRoute } from "wouter";
 import { AuthorChip } from "@/components/AuthorChip";
 import { findAuthorByPoet } from "@/lib/authors";
 import { getSongLanguage, SONG_LANGUAGES } from "@/lib/songLanguages";
 import { toast } from "sonner";
+import { buildSongShareText, parseSongShareParams, songShareParams } from "@/lib/songShare";
 
 const READING_FONT_SIZE_ADJUSTMENTS = [-0.18, -0.09, 0, 0.12, 0.24] as const;
 const READING_LINE_HEIGHTS = [1.04, 1.08, 1.12, 1.18, 1.26] as const;
@@ -296,6 +297,8 @@ function SongPageContent() {
   const [activeMatchIndex, setActiveMatchIndex] = useState(0);
   const [areTranslationsShown, setAreTranslationsShown] = useState(initialReadingPreferences.areTranslationsShown);
   const [translationOverrides, setTranslationOverrides] = useState<Record<string, boolean>>({});
+  /** A shared link's second language and ornament setting are shown for this visit, not saved as the reader's own. */
+  const sharedViewRef = useRef<{ songId: string; secondaryLanguage?: SecondaryTranslationLanguage | null; areOrnamentsHidden?: boolean } | null>(null);
   const [areSecondaryOrnamentsHidden, setAreSecondaryOrnamentsHidden] = useState(initialReadingPreferences.areSecondaryOrnamentsHidden);
   const [readingFontSizeStep, setReadingFontSizeStep] = useState(initialReadingPreferences.readingFontSizeStep);
   const [readingLineHeightStep, setReadingLineHeightStep] = useState(initialReadingPreferences.readingLineHeightStep);
@@ -413,6 +416,7 @@ function SongPageContent() {
     setQuery(routeQuery);
   }, [routeQuery]);
 
+
   useEffect(() => {
     setActiveMatchIndex(0);
   }, [query, song?.id]);
@@ -498,6 +502,34 @@ function SongPageContent() {
     setSoundCloudPlayerStatus("idle");
   }, [song?.id]);
 
+  // A shared link opens the song as the sender saw it: the same translations open, second language and ornaments.
+  useEffect(() => {
+    if (!song || sharedViewRef.current?.songId === song.id) return;
+    const verseIds = song.verses.map((verse) => verse.id);
+    const shared = parseSongShareParams(window.location.search, verseIds);
+    sharedViewRef.current = { songId: song.id };
+    if (shared.translations) {
+      const openIds = shared.translations === "all" ? verseIds : shared.translations === "none" ? [] : shared.translations;
+      setTranslationOverrides(Object.fromEntries(verseIds.map((id) => [id, openIds.includes(id)])));
+    }
+    if (shared.secondaryLanguage !== undefined) {
+      const language = isSecondaryTranslationLanguage(shared.secondaryLanguage) && availableSecondaryTranslationLanguages.some((item) => item.code === shared.secondaryLanguage) ? shared.secondaryLanguage : null;
+      if (language) {
+        sharedViewRef.current.secondaryLanguage = language;
+        setSecondaryTranslationLanguage(language);
+      }
+    }
+    if (shared.areOrnamentsHidden) {
+      sharedViewRef.current.areOrnamentsHidden = true;
+      setAreSecondaryOrnamentsHidden(true);
+    }
+    if (Object.keys(shared).length) {
+      const url = new URL(window.location.href);
+      ["tr", "lang", "plain"].forEach((key) => url.searchParams.delete(key));
+      window.history.replaceState(window.history.state, "", url);
+    }
+  }, [song]);
+
   useEffect(() => {
     setIsSoundCloudPlayerOpen(false);
     setSoundCloudPlayerUrl(null);
@@ -511,14 +543,14 @@ function SongPageContent() {
     try {
       window.localStorage.setItem(READING_PREFERENCES_STORAGE_KEY, JSON.stringify({
         areTranslationsShown,
-        areSecondaryOrnamentsHidden,
+        areSecondaryOrnamentsHidden: sharedViewRef.current?.areOrnamentsHidden === areSecondaryOrnamentsHidden ? initialReadingPreferences.areSecondaryOrnamentsHidden : areSecondaryOrnamentsHidden,
         readingFontSizeStep,
         readingLineHeightStep,
         teleprompterScrollSpeed,
         teleprompterSlideshowSpeed,
         isManualTeleprompterScrollPace,
         isManualTeleprompterSlideshowPace,
-        secondaryTranslationLanguage,
+        secondaryTranslationLanguage: sharedViewRef.current?.secondaryLanguage === secondaryTranslationLanguage ? initialReadingPreferences.secondaryTranslationLanguage : secondaryTranslationLanguage,
         teleprompterScrollDensity,
         teleprompterFontScale,
       } satisfies ReadingPreferences));
@@ -843,6 +875,51 @@ function SongPageContent() {
     }
   };
 
+  const shareSong = async (format: "link" | "plain" | "markdown") => {
+    const verseIds = song.verses.map((verse) => verse.id);
+    const openTranslationIds = song.verses.filter((verse) => verse.translation && isVerseTranslationVisible(verse.id)).map((verse) => verse.id);
+    const translatedCount = song.verses.filter((verse) => verse.translation).length;
+    const url = new URL(window.location.href);
+    url.search = songShareParams({
+      translations: !hasTranslations ? "none" : openTranslationIds.length === translatedCount ? "all" : openTranslationIds.length ? openTranslationIds : "none",
+      secondaryLanguage: selectedSecondaryLanguage && openTranslationIds.length ? selectedSecondaryLanguage.code : null,
+      areOrnamentsHidden: areSecondaryOrnamentsHidden,
+    }, verseIds).toString();
+    url.hash = "";
+    const link = url.toString();
+    const text = format === "link" ? link : buildSongShareText({
+      title: song.title,
+      poet: song.poet,
+      verseLabel: copy.song.verse,
+      secondaryLabel: selectedSecondaryLanguage?.code.toUpperCase(),
+      url: link,
+      verses: displayedVerses.map((verse) => {
+        const isOpen = Boolean(verse.translation) && isVerseTranslationVisible(verse.id);
+        return {
+          originalVerseNumber: verse.originalVerseNumber,
+          lines: verse.lines,
+          translation: isOpen ? verse.translation : undefined,
+          secondaryTranslation: isOpen && selectedSecondaryLanguage ? secondaryTranslationsByVerse.get(verse.id) : undefined,
+        };
+      }),
+    }, format);
+
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share(format === "link" ? { title: song.title, url: link } : { title: song.title, text });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success(format === "link" ? copy.song.sharedLinkCopied : format === "plain" ? copy.song.copiedPlainText : copy.song.copiedMarkdownText);
+    } catch {
+      toast.error(copy.song.copyFailed);
+    }
+  };
+
   const favorite = isFavorite(song.id);
   const author = song.poet;
   const authorBio = findAuthorByPoet(author);
@@ -1133,6 +1210,8 @@ function SongPageContent() {
             <Tooltip><TooltipTrigger asChild><button className={`reader-panel-action-button ${favorite ? "is-favorite" : ""}`} type="button" onClick={toggleSongFavorite} aria-label={favorite ? copy.song.removeFavorite : copy.song.addFavorite} aria-pressed={favorite}>{favorite ? <BookmarkCheck size={16} aria-hidden="true" /> : <Bookmark size={16} aria-hidden="true" />}</button></TooltipTrigger><TooltipContent side="bottom">{favorite ? copy.song.removeFavorite : copy.song.addFavorite}</TooltipContent></Tooltip>
             <span className="reader-panel-space" aria-hidden="true" />
             <DropdownMenu><Tooltip><TooltipTrigger asChild><DropdownMenuTrigger asChild><button className="reader-panel-action-button" type="button" aria-label={copy.song.copyLabel}><Copy size={16} aria-hidden="true" /></button></DropdownMenuTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.copyLabel}</TooltipContent></Tooltip><DropdownMenuContent className="reader-menu" align="end" side="bottom" sideOffset={7}><DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("plain")}>{copy.song.copyPlainText}</DropdownMenuItem><DropdownMenuItem className="reader-menu-item" onSelect={() => void copySong("markdown")}>{copy.song.copyMarkdownText}</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+            <span className="reader-panel-space" aria-hidden="true" />
+            <DropdownMenu><Tooltip><TooltipTrigger asChild><DropdownMenuTrigger asChild><button className="reader-panel-action-button" type="button" aria-label={copy.song.shareLabel}><Share2 size={16} aria-hidden="true" /></button></DropdownMenuTrigger></TooltipTrigger><TooltipContent side="bottom">{copy.song.shareDescription}</TooltipContent></Tooltip><DropdownMenuContent className="reader-menu" align="end" side="bottom" sideOffset={7}><DropdownMenuItem className="reader-menu-item" onSelect={() => void shareSong("link")}>{copy.song.shareLink}</DropdownMenuItem><DropdownMenuItem className="reader-menu-item" onSelect={() => void shareSong("plain")}>{copy.song.copyPlainText}</DropdownMenuItem><DropdownMenuItem className="reader-menu-item" onSelect={() => void shareSong("markdown")}>{copy.song.copyMarkdownText}</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
             <span className="reader-panel-space" aria-hidden="true" /><span className="reader-panel-divider" aria-hidden="true" /><span className="reader-panel-space" aria-hidden="true" />
             <Tooltip><TooltipTrigger asChild><button id="reader-panel-close" className="reader-panel-action-button reader-panel-close-button" type="button" onClick={() => setIsReaderPanelOpen(false)} aria-label={copy.song.closeReaderPanel}><X size={16} aria-hidden="true" /></button></TooltipTrigger><TooltipContent side="bottom">{copy.song.closeReaderPanel}</TooltipContent></Tooltip>
             <output className="visually-hidden" aria-live="polite">{fontSizeState}, {lineHeightState}</output>
