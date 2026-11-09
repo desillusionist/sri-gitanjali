@@ -26,6 +26,7 @@ export function AuthorChip({ author, label, libraryHref }: AuthorChipProps) {
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="author-card">
+        <span className="info-card-eyebrow">{copy.author.eyebrow}</span>
         <div className="author-card-head">
           <AuthorPortrait author={author} />
           <div>

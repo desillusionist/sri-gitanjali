@@ -1315,7 +1315,8 @@ function SongPageContent() {
                 <button type="button" className={`song-note-button${isSongNoteOpen ? " is-open" : ""}`} aria-label={copy.song.songNote} title={copy.song.songNote}><Info size={17} strokeWidth={1.8} aria-hidden="true" /></button>
               </PopoverTrigger>
               <PopoverContent className="song-note-popover" align="end" side="bottom" sideOffset={8} collisionPadding={12}>
-                <SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />
+                <span className="info-card-eyebrow">{copy.song.songNote}</span>
+                <p className="song-note-body"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
               </PopoverContent>
             </Popover>
           )}
