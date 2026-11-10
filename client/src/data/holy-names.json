@@ -219,7 +219,9 @@
       "Śrī Madhusūdan",
       "Madhusūdan"
      ],
-     "ru": []
+     "ru": [
+      "Мадхусудан*"
+     ]
     },
     {
      "key": "janardana",
@@ -241,6 +243,23 @@
      ],
      "ru": [
       "Ачьют*"
+     ]
+    },
+    {
+     "key": "madanamohan",
+     "name": "Madana-mohan",
+     "about": "A name of Krishna: the one who enchants even Cupid (Madana); also the Deity served by Sanātan Goswāmī in Vṛndāvan.",
+     "aliases": [
+      "Śrī Madana-mohan",
+      "Madana-mohana",
+      "Madana-mohan",
+      "Madan-mohan",
+      "Madanmohan"
+     ],
+     "ru": [
+      "Мадана-мохан*",
+      "Мадан-мохан*",
+      "Маданамохан*"
      ]
     },
     {
@@ -347,6 +366,7 @@
      "aliases": [
       "Śrī Gaurāṅgadev",
       "Lord Gaurāṅgadev",
+      "Gaurāṅgadev",
       "Lord Gaurāṅga",
       "Śrī Gaurāṅga",
       "Gaurāṅga",
@@ -599,10 +619,28 @@
    "about": "Krishna’s incarnation as the ideal king of Ayodhyā, who defeated Rāvaṇa.",
    "aliases": [
     "Lord Rāmachandra",
-    "Rāmachandra"
+    "Rāmachandra",
+    "Lord Rāma"
    ],
    "ru": [
     "Рамачандр*"
+   ],
+   "variants": [
+    {
+     "key": "rama-name",
+     "name": "Rāma",
+     "about": "A name meaning “the one who gives delight”. In the Holy Name the Gauḍīyas see Krishna Himself, who delights Śrī Rādhā; it is also a name of Balarām and of Lord Rāmachandra.",
+     "aliases": [
+      "Rāma"
+     ],
+     "ru": [
+      "Рама",
+      "Рамы",
+      "Раме",
+      "Раму",
+      "Рамой"
+     ]
+    }
    ]
   },
   {
@@ -612,7 +650,10 @@
    "about": "Krishna as the Lord of the Universe, worshipped in Purī with Baladeva and Subhadrā.",
    "aliases": [
     "Lord Jagannāth",
-    "Jagannāthdev"
+    "Jagannāthdev",
+    "Śrī Jagannāth Deva",
+    "Jagannāth Deva",
+    "Śrī Jagannāth"
    ],
    "ru": [
     "Джаганнатхдев*"

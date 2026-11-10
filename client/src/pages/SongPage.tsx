@@ -10,6 +10,7 @@ import { WordForWordText } from "@/components/WordForWordText";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { HolyNameText } from "@/components/HolyNameText";
+import songNotesByLanguage from "@/data/song-notes-i18n.json";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
@@ -1032,6 +1033,9 @@ function SongPageContent() {
   const songHref = (songId: string) => `/song/${songId}${normalizeSearchText(query) ? `?q=${encodeURIComponent(query.trim())}` : ""}`;
   const hasTranslations = song.verses.some((verse) => Boolean(verse.translation));
   const selectedSecondaryLanguage = secondaryTranslationLanguages.find((language) => language.code === secondaryTranslationLanguage) ?? null;
+  // Notes on this song in the second translation's language (e.g. footnotes of the Russian edition).
+  const secondaryNotes = selectedSecondaryLanguage ? ((songNotesByLanguage as unknown as Record<string, Record<string, string[]> | undefined>)[selectedSecondaryLanguage.code]?.[song.id] ?? []) : [];
+  const hasSongNote = Boolean(song.comment || secondaryNotes.length || songLanguageInfo);
   const readingTypographyStyle = {
     "--reading-font-size-adjustment": `${READING_FONT_SIZE_ADJUSTMENTS[readingFontSizeStep]}rem`,
     "--reading-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
@@ -1313,14 +1317,19 @@ function SongPageContent() {
 
         <div className="song-utility-row">
           <p className="song-verse-count">{song.verses.length} {song.verses.length === 1 ? copy.song.verse : copy.song.verses}</p>
-          {song.comment && (
+          {hasSongNote && (
             <Popover open={isSongNoteOpen} onOpenChange={setIsSongNoteOpen}>
               <PopoverTrigger asChild>
-                <button type="button" className={`song-note-button${isSongNoteOpen ? " is-open" : ""}`} aria-label={copy.song.songNote} title={copy.song.songNote}><Info size={17} strokeWidth={1.8} aria-hidden="true" /></button>
+                <button type="button" className={`song-note-button${isSongNoteOpen ? " is-open" : ""}`} aria-label={copy.song.songNote} title={copy.song.songNote}>
+                  <span className="song-note-glyph" aria-hidden="true">i</span>
+                  <Info className="song-note-icon" size={18} strokeWidth={1.8} aria-hidden="true" />
+                </button>
               </PopoverTrigger>
               <PopoverContent className="song-note-popover" align="end" side="bottom" sideOffset={8} collisionPadding={12}>
                 <span className="info-card-eyebrow">{copy.song.songNote}</span>
-                <p className="song-note-body"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>
+                {song.comment && <p className="song-note-body"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
+                {selectedSecondaryLanguage && secondaryNotes.map((note) => <p className="song-note-body" lang={selectedSecondaryLanguage.lang} translate="no" key={note.slice(0, 24)}>{note}</p>)}
+                {songLanguageInfo && <p className="song-note-meta">{copy.song.originalLanguage.replace("{language}", songLanguageInfo.english)}</p>}
               </PopoverContent>
             </Popover>
           )}
@@ -1389,8 +1398,6 @@ function SongPageContent() {
             </ul>
           </section>
         )}
-
-        {songLanguageInfo && <p className="song-original-language">{copy.song.originalLanguage.replace("{language}", songLanguageInfo.english)}</p>}
 
         {selectedSecondaryLanguage && isSongUntranslatedInPackage && <p className="secondary-translation-status song-untranslated-note" role="status">{copy.song.secondaryTranslationNotYet.replace("{language}", selectedSecondaryLanguage.label)}</p>}
 

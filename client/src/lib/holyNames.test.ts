@@ -34,6 +34,9 @@ describe("holy names", () => {
       ["Yādava", "krishna", "yadava"], ["Hari", "krishna", "hari"], ["Mādhava", "krishna", "madhava"], ["Keśava", "krishna", "kesava"], ["Krishna", "krishna", null],
     ]);
     expect(withVariant("Мадхава и Говинда")).toEqual([["Мадхава", "krishna", "madhava"], ["Говинда", "krishna", "govinda"]]);
+    expect(withVariant("Рама, Шри Мадхусудана, Мадана-мохан и Шрила Бхакти Ранджан Мадхусудан Махарадж")).toEqual([
+      ["Рама", "rama", "rama-name"], ["Мадхусудана", "krishna", "madhusudan"], ["Мадана-мохан", "krishna", "madanamohan"], ["Мадхусудан Махарадж", "madhusudan", null],
+    ]);
     for (const entry of HOLY_NAMES) for (const variant of entry.variants ?? []) expect(variant.about, `${entry.id}/${variant.key}`).toBeTruthy();
   });
 
