@@ -16,6 +16,7 @@ function HolyNameTrigger({ entry, variant, locale, lang, children }: { entry: Ho
   return (
     <LongPressTooltip
       className={`holy-name-trigger is-${entry.kind}`}
+      openOnHover={false}
       popupId={`holy-name-${entry.id}${variant ? `-${variant.key}` : ""}`}
       popupLabel={copy.song.holyNameLabel.replace("{name}", name)}
       popupClassName="holy-name-popup"

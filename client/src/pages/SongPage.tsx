@@ -25,7 +25,7 @@ import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingi
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Info, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, Share2, SlidersHorizontal, Volume2, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, Share2, SlidersHorizontal, Volume2, X } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
 import { Link, useRoute } from "wouter";
 import { AuthorChip } from "@/components/AuthorChip";
@@ -587,6 +587,12 @@ function SongPageContent() {
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [isReaderPanelOpen]);
+
+  // Arriving from a search result: open the reading tools, where the search field steps through the matches.
+  const songIdForSearchArrival = song?.id;
+  useEffect(() => {
+    if (songIdForSearchArrival && normalizeSearchText(routeQuery)) setIsReaderPanelOpen(true);
+  }, [routeQuery, songIdForSearchArrival]);
 
   const openSoundCloudPlayer = () => setIsSoundCloudPlayerOpen(true);
 
@@ -1322,7 +1328,6 @@ function SongPageContent() {
               <PopoverTrigger asChild>
                 <button type="button" className={`song-note-button${isSongNoteOpen ? " is-open" : ""}`} aria-label={copy.song.songNote} title={copy.song.songNote}>
                   <span className="song-note-glyph" aria-hidden="true">i</span>
-                  <Info className="song-note-icon" size={18} strokeWidth={1.8} aria-hidden="true" />
                 </button>
               </PopoverTrigger>
               <PopoverContent className="song-note-popover" align="end" side="bottom" sideOffset={8} collisionPadding={12}>

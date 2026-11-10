@@ -507,7 +507,7 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
   html.is-text-selecting :is(.word-for-word-trigger, .holy-name-trigger) { -webkit-touch-callout: default; -webkit-user-select: text; user-select: text; }
 }
 .word-for-word-popup { position: fixed; z-index: 200; width: max-content; max-width: min(340px, calc(100vw - 24px)); pointer-events: auto; }
-.holy-name-trigger { cursor: help; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: rgba(var(--saffron-rgb), 0.55); text-decoration-thickness: 1px; text-underline-offset: 0.18em; border-radius: 2px; transition: background 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
+.holy-name-trigger { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: rgba(var(--saffron-rgb), 0.55); text-decoration-thickness: 1px; text-underline-offset: 0.18em; border-radius: 2px; transition: background 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
 .holy-name-trigger:hover, .holy-name-trigger:focus-visible, .holy-name-trigger[aria-expanded="true"] { text-decoration-color: var(--saffron-deep); background: rgba(var(--saffron-rgb), 0.1); outline: none; }
 
 .favorites-page { max-width: 1100px; padding: clamp(1.25rem, 4vw, 4.6rem); }
@@ -567,12 +567,11 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .song-category-link, .song-poet-link { color: inherit; text-decoration: none; transition: color 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
 .song-category-link:hover, .song-poet-link:hover { color: var(--saffron-deep); text-decoration: underline; text-decoration-color: rgba(var(--saffron-rgb), 0.5); text-underline-offset: 0.24rem; }
 .song-category-link:focus-visible, .song-poet-link:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.55); outline-offset: 0.2rem; }
-.song-note-button { display: inline-grid; flex: none; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--saffron-deep); cursor: pointer; }
-.song-note-button > * { grid-area: 1 / 1; transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
-/* At rest a plain serif “i”; on hover, focus or while open it gains its circle. */
-.song-note-glyph { font-family: var(--font-display); font-size: 1.3rem; font-style: italic; font-weight: 600; line-height: 1; }
-.song-note-icon { opacity: 0; transform: scale(0.85); }
-.song-note-button:hover .song-note-glyph, .song-note-button.is-open .song-note-glyph, .song-note-button:focus-visible .song-note-glyph { opacity: 0; }
+.song-note-button { display: inline-grid; flex: none; place-items: center; width: 1.75rem; height: 1.75rem; padding: 0; border: 1.5px solid transparent; border-radius: 50%; background: transparent; color: var(--saffron-deep); cursor: pointer; transition: border-color 160ms var(--ease-out); }
+/* One serif “i” throughout: plain at rest, circled on hover, focus or while the note is open. */
+.song-note-glyph { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; line-height: 1; transform: translateY(-0.04em); }
+.song-note-button:hover, .song-note-button.is-open, .song-note-button:focus-visible { border-color: currentColor; }
+.song-note-button:focus-visible .song-note-glyph { opacity: 0; }
 .song-note-button:hover .song-note-icon, .song-note-button.is-open .song-note-icon, .song-note-button:focus-visible .song-note-icon { opacity: 1; transform: none; }
 .song-note-button:focus-visible { outline: 2px solid var(--saffron); outline-offset: 1px; }
 .song-note-popover { z-index: 60; max-height: min(60vh, 32rem); overflow-y: auto; }

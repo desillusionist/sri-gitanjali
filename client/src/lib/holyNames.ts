@@ -77,7 +77,9 @@ type CyrillicMatcher = { regex: RegExp; stems: { pattern: RegExp; match: HolyNam
 
 function buildCyrillicMatcher(): CyrillicMatcher {
   // A trailing * lets up to four Russian case-ending letters follow the stem.
-  const stemSource = (stem: string) => stem.split(" ").map((word) => word.endsWith("*") ? `${escapeRegExp(word.slice(0, -1))}[а-яё]{0,4}` : escapeRegExp(word)).join("\\s+");
+  // After a hyphen inside a name either case may follow: "Мадана-мохан" and "Мадана-Мохан".
+  const anyCaseAfterHyphen = (name: string) => name.replace(new RegExp("-([а-яё])", "g"), (_match, letter: string) => `-[${letter}${letter.toUpperCase()}]`);
+  const stemSource = (stem: string) => stem.split(" ").map((word) => word.endsWith("*") ? `${anyCaseAfterHyphen(escapeRegExp(word.slice(0, -1)))}[а-яё]{0,4}` : anyCaseAfterHyphen(escapeRegExp(word))).join("\\s+");
   const stems = allNames("ru")
     .sort((a, b) => b.name.length - a.name.length)
     .map(({ name, match }) => ({ source: stemSource(name), match }));
