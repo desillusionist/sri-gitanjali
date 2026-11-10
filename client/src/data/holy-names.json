@@ -11,50 +11,251 @@
     "Lord Śrī Krishna",
     "Lord Krishna",
     "Krishna",
-    "Kṛṣṇa",
-    "Krishnachandra",
-    "Śrī Krishnachandra",
-    "Govinda",
-    "Lord Govinda",
-    "Gopīnāth",
-    "Mādhava",
-    "Keśava",
-    "Śyāmasundar",
-    "Lord Śyāmasundar",
-    "Śyāma",
-    "Giridhārī",
-    "Gopāl",
-    "Gopāla",
-    "Dāmodar",
-    "Lord Dāmodar",
-    "Śrī Dāmodar",
-    "Mukunda",
-    "Hṛṣīkeśa",
-    "Kāna",
-    "Lord Hari",
-    "Śrī Hari",
-    "Lord Śrī Hari",
-    "Hari",
-    "Murāri",
-    "Nanda-nandana",
-    "Vrajendra-nandana"
+    "Kṛṣṇa"
    ],
    "ru": [
-    "Кришн*",
-    "Говинд*",
-    "Гопинатх*",
-    "Мадхава",
-    "Мадхавы",
-    "Мадхаве",
-    "Мадхаву",
-    "Мадхавой",
-    "Кешав*",
-    "Шьямасундар*",
-    "Гопал*",
-    "Дамодар*",
-    "Хари",
-    "Мукунд*",
-    "Гиридхари"
+    "Кришн*"
+   ],
+   "variants": [
+    {
+     "key": "govinda",
+     "name": "Govinda",
+     "about": "A name of Krishna: the one who gives pleasure to the cows, the land and the senses.",
+     "aliases": [
+      "Lord Govinda",
+      "Govinda"
+     ],
+     "ru": [
+      "Говинд*"
+     ]
+    },
+    {
+     "key": "gopinath",
+     "name": "Gopīnāth",
+     "about": "A name of Krishna: the Lord and beloved of the gopīs.",
+     "aliases": [
+      "Gopīnāth"
+     ],
+     "ru": [
+      "Гопинатх*"
+     ]
+    },
+    {
+     "key": "madhava",
+     "name": "Mādhava",
+     "about": "A name of Krishna: the sweet Lord of springtime, born in the Madhu dynasty, the husband of Mā, the goddess of fortune.",
+     "aliases": [
+      "Mādhava"
+     ],
+     "ru": [
+      "Мадхава",
+      "Мадхавы",
+      "Мадхаве",
+      "Мадхаву",
+      "Мадхавой"
+     ]
+    },
+    {
+     "key": "kesava",
+     "name": "Keśava",
+     "about": "A name of Krishna: the one with beautiful hair, who killed the demon Keśī.",
+     "aliases": [
+      "Keśava"
+     ],
+     "ru": [
+      "Кешав*"
+     ]
+    },
+    {
+     "key": "syamasundar",
+     "name": "Śyāmasundar",
+     "about": "A name of Krishna: the beautiful one, dark like a rain cloud.",
+     "aliases": [
+      "Lord Śyāmasundar",
+      "Śyāmasundar"
+     ],
+     "ru": [
+      "Шьямасундар*"
+     ]
+    },
+    {
+     "key": "syama",
+     "name": "Śyāma",
+     "about": "A name of Krishna: the dark one, whose complexion is like a fresh rain cloud.",
+     "aliases": [
+      "Śyāma"
+     ],
+     "ru": [
+      "Шьяма",
+      "Шьямы",
+      "Шьяме",
+      "Шьяму",
+      "Шьямой"
+     ]
+    },
+    {
+     "key": "giridhari",
+     "name": "Giridhārī",
+     "about": "A name of Krishna: the lifter of Govardhan Hill.",
+     "aliases": [
+      "Giridhārī"
+     ],
+     "ru": [
+      "Гиридхари"
+     ]
+    },
+    {
+     "key": "gopal",
+     "name": "Gopāl",
+     "about": "A name of Krishna: the cowherd boy, protector of the cows.",
+     "aliases": [
+      "Gopāla",
+      "Gopāl"
+     ],
+     "ru": [
+      "Гопал*"
+     ]
+    },
+    {
+     "key": "damodar",
+     "name": "Dāmodar",
+     "about": "A name of Krishna: the one whose waist (udara) Mother Yaśodā bound with a rope (dāma).",
+     "aliases": [
+      "Lord Dāmodar",
+      "Śrī Dāmodar",
+      "Dāmodar"
+     ],
+     "ru": [
+      "Дамодар*"
+     ]
+    },
+    {
+     "key": "mukunda",
+     "name": "Mukunda",
+     "about": "A name of Krishna: the giver of liberation, and of the love that makes liberation insignificant.",
+     "aliases": [
+      "Mukunda"
+     ],
+     "ru": [
+      "Мукунд*"
+     ]
+    },
+    {
+     "key": "hrsikesa",
+     "name": "Hṛṣīkeśa",
+     "about": "A name of Krishna: the master of everyone’s senses.",
+     "aliases": [
+      "Hṛṣīkeśa"
+     ],
+     "ru": [
+      "Хришикеш*"
+     ]
+    },
+    {
+     "key": "kanai",
+     "name": "Kānāi",
+     "about": "Krishna’s affectionate Bengali name, used by His family and friends in Vraja.",
+     "aliases": [
+      "Kānāi",
+      "Kāna"
+     ],
+     "ru": [
+      "Канай*"
+     ]
+    },
+    {
+     "key": "hari",
+     "name": "Hari",
+     "about": "A name of Krishna: the one who takes away all that is inauspicious and steals the hearts of His devotees.",
+     "aliases": [
+      "Lord Śrī Hari",
+      "Lord Hari",
+      "Śrī Hari",
+      "Hari"
+     ],
+     "ru": [
+      "Хари"
+     ]
+    },
+    {
+     "key": "murari",
+     "name": "Murāri",
+     "about": "A name of Krishna: the enemy of the demon Mura.",
+     "aliases": [
+      "Murāri"
+     ],
+     "ru": [
+      "Мурари"
+     ]
+    },
+    {
+     "key": "krishnachandra",
+     "name": "Krishnachandra",
+     "about": "A name of Krishna: the moon of Vraja.",
+     "aliases": [
+      "Śrī Krishnachandra",
+      "Krishnachandra"
+     ],
+     "ru": [
+      "Кришначандр*"
+     ]
+    },
+    {
+     "key": "yadava",
+     "name": "Yādava",
+     "about": "A name of Krishna: the descendant of King Yadu, the jewel of the Yadu dynasty.",
+     "aliases": [
+      "Yādava"
+     ],
+     "ru": [
+      "Ядав*"
+     ]
+    },
+    {
+     "key": "madhusudan",
+     "name": "Madhusūdan",
+     "about": "A name of Krishna: the killer of the demon Madhu.",
+     "aliases": [
+      "Śrī Madhusūdan",
+      "Madhusūdan"
+     ],
+     "ru": []
+    },
+    {
+     "key": "janardana",
+     "name": "Janārdana",
+     "about": "A name of Krishna: the one to whom all people pray, the protector of His devotees.",
+     "aliases": [
+      "Janārdana"
+     ],
+     "ru": [
+      "Джанардан*"
+     ]
+    },
+    {
+     "key": "achyuta",
+     "name": "Achyuta",
+     "about": "A name of Krishna: the infallible one, who never falls from His position.",
+     "aliases": [
+      "Achyuta"
+     ],
+     "ru": [
+      "Ачьют*"
+     ]
+    },
+    {
+     "key": "nandanandana",
+     "name": "Nanda-nandana",
+     "about": "A name of Krishna: the son of Nanda Mahārāja, the king of Vraja.",
+     "aliases": [
+      "Vrajendra-nandana",
+      "Nanda-nandana"
+     ],
+     "ru": [
+      "Нанда-нандан*",
+      "Враджендра-нандан*"
+     ]
+    }
    ]
   },
   {
@@ -66,21 +267,51 @@
     "Śrīmatī Rādhārāṇī",
     "Rādhārāṇī",
     "Śrī Rādhā",
-    "Rādhā",
-    "Śrī Rādhikā",
-    "Śrīmatī Rādhikā",
-    "Rādhikā",
-    "Vṛṣabhānunandinī",
-    "Śrī Vṛṣabhānunandinī",
-    "Vārṣabhānavī",
-    "Gāndharvikā",
-    "Gāndharvā"
+    "Rādhā"
    ],
    "ru": [
     "Радхаран*",
-    "Радх*",
-    "Вришабханунандини",
-    "Гандхарвик*"
+    "Радх*"
+   ],
+   "variants": [
+    {
+     "key": "radhika",
+     "name": "Rādhikā",
+     "about": "A name of Śrīmatī Rādhārāṇī: the one who worships Krishna best.",
+     "aliases": [
+      "Śrīmatī Rādhikā",
+      "Śrī Rādhikā",
+      "Rādhikā"
+     ],
+     "ru": [
+      "Радхик*"
+     ]
+    },
+    {
+     "key": "vrsabhanunandini",
+     "name": "Vṛṣabhānunandinī",
+     "about": "A name of Śrīmatī Rādhārāṇī: the daughter of King Vṛṣabhānu.",
+     "aliases": [
+      "Śrī Vṛṣabhānunandinī",
+      "Vṛṣabhānunandinī",
+      "Vārṣabhānavī"
+     ],
+     "ru": [
+      "Вришабханунандини"
+     ]
+    },
+    {
+     "key": "gandharva",
+     "name": "Gāndharvā",
+     "about": "A name of Śrīmatī Rādhārāṇī: the best of singers and dancers.",
+     "aliases": [
+      "Gāndharvikā",
+      "Gāndharvā"
+     ],
+     "ru": [
+      "Гандхарвик*"
+     ]
+    }
    ]
   },
   {
@@ -100,45 +331,101 @@
     "Śrī Chaitanyadev",
     "Śrīman Mahāprabhu",
     "Mahāprabhu",
-    "Lord Gaurāṅga",
     "Śrī Gaurāṅga Mahāprabhu",
     "Gaurāṅga Mahāprabhu",
-    "Śrī Gaurāṅgadev",
-    "Lord Gaurāṅgadev",
-    "Śrī Gaurāṅga",
-    "Gaurāṅga",
-    "Gaurāṅga Sundar",
-    "Gaurasundar",
-    "Lord Gaurasundar",
-    "Śrī Gaurasundar",
-    "Gaurahari",
-    "Śrī Gaurahari",
-    "Lord Gaurahari",
-    "Gaurachandra",
-    "Lord Gaurachandra",
-    "Śrī Gaurachandra",
-    "Lord Gaura",
-    "Śrī Gaura",
-    "Gaura",
-    "Nimāi",
-    "Viśvambhara",
     "Golden Lord"
    ],
    "ru": [
     "Чайтань*",
-    "Махапрабху",
-    "Гауранг*",
-    "Гаурангадев*",
-    "Гаурасундар*",
-    "Гаурахари",
-    "Гаурачандр*",
-    "Гаура",
-    "Гауры",
-    "Гауре",
-    "Гауру",
-    "Гаурой",
-    "Нима*",
-    "Вишвамбхар*"
+    "Махапрабху"
+   ],
+   "variants": [
+    {
+     "key": "gauranga-name",
+     "name": "Gaurāṅga",
+     "about": "A name of Śrī Chaitanya Mahāprabhu: the one whose limbs are golden.",
+     "aliases": [
+      "Śrī Gaurāṅgadev",
+      "Lord Gaurāṅgadev",
+      "Lord Gaurāṅga",
+      "Śrī Gaurāṅga",
+      "Gaurāṅga",
+      "Lord Gaura",
+      "Śrī Gaura",
+      "Gaura"
+     ],
+     "ru": [
+      "Гауранг*",
+      "Гаурангадев*",
+      "Гаура",
+      "Гауры",
+      "Гауре",
+      "Гауру",
+      "Гаурой"
+     ]
+    },
+    {
+     "key": "gaurasundar",
+     "name": "Gaurasundar",
+     "about": "A name of Śrī Chaitanya Mahāprabhu: the beautiful golden Lord.",
+     "aliases": [
+      "Gaurāṅga Sundar",
+      "Lord Gaurasundar",
+      "Śrī Gaurasundar",
+      "Gaurasundar"
+     ],
+     "ru": [
+      "Гаурасундар*"
+     ]
+    },
+    {
+     "key": "gaurahari",
+     "name": "Gaurahari",
+     "about": "A name of Śrī Chaitanya Mahāprabhu: Hari, Krishna Himself, in golden form.",
+     "aliases": [
+      "Lord Gaurahari",
+      "Śrī Gaurahari",
+      "Gaurahari"
+     ],
+     "ru": [
+      "Гаурахари"
+     ]
+    },
+    {
+     "key": "gaurachandra",
+     "name": "Gaurachandra",
+     "about": "A name of Śrī Chaitanya Mahāprabhu: the golden moon.",
+     "aliases": [
+      "Lord Gaurachandra",
+      "Śrī Gaurachandra",
+      "Gaurachandra"
+     ],
+     "ru": [
+      "Гаурачандр*"
+     ]
+    },
+    {
+     "key": "nimai",
+     "name": "Nimāi",
+     "about": "Mahāprabhu’s childhood name: He was born under a neem tree.",
+     "aliases": [
+      "Nimāi"
+     ],
+     "ru": [
+      "Нима*"
+     ]
+    },
+    {
+     "key": "visvambhara",
+     "name": "Viśvambhara",
+     "about": "Mahāprabhu’s given name: the one who sustains the universe.",
+     "aliases": [
+      "Viśvambhara"
+     ],
+     "ru": [
+      "Вишвамбхар*"
+     ]
+    }
    ],
    "authorId": "chaitanya-mahaprabhu"
   },
@@ -154,17 +441,28 @@
     "Lord Nityānanda",
     "Śrī Nityānanda-chandra",
     "Nityānanda-chandra",
-    "Nityānanda",
-    "Lord Nitāi",
-    "Dayāl Nitāi",
-    "Nitāi",
-    "Nitāichand"
+    "Nityānanda"
    ],
    "ru": [
     "Нитьянанд*",
     "Нитьянанандачандр*",
-    "Нитьянаннд*",
-    "Нита*"
+    "Нитьянаннд*"
+   ],
+   "variants": [
+    {
+     "key": "nitai",
+     "name": "Nitāi",
+     "about": "The affectionate name of Śrī Nityānanda Prabhu.",
+     "aliases": [
+      "Lord Nitāi",
+      "Dayāl Nitāi",
+      "Nitāichand",
+      "Nitāi"
+     ],
+     "ru": [
+      "Нита*"
+     ]
+    }
    ],
    "authorId": "nityananda-prabhu"
   },
@@ -224,13 +522,32 @@
    "aliases": [
     "Lord Balarām",
     "Balarām",
-    "Balarāma",
-    "Baladeva",
-    "Balabhadra"
+    "Balarāma"
    ],
    "ru": [
-    "Баларам*",
-    "Баладев*"
+    "Баларам*"
+   ],
+   "variants": [
+    {
+     "key": "baladeva",
+     "name": "Baladeva",
+     "about": "A name of Lord Balarām: the Lord of strength.",
+     "aliases": [
+      "Baladeva"
+     ],
+     "ru": [
+      "Баладев*"
+     ]
+    },
+    {
+     "key": "balabhadra",
+     "name": "Balabhadra",
+     "about": "A name of Lord Balarām: the strong and auspicious one.",
+     "aliases": [
+      "Balabhadra"
+     ],
+     "ru": []
+    }
    ]
   },
   {
@@ -482,11 +799,21 @@
    "name": "Lakṣmī Devī",
    "about": "The goddess of fortune, eternal consort of Nārāyaṇa.",
    "aliases": [
-    "Lakṣmī",
-    "Nārāyaṇī"
+    "Lakṣmī"
    ],
    "ru": [
     "Лакшми"
+   ],
+   "variants": [
+    {
+     "key": "narayani",
+     "name": "Nārāyaṇī",
+     "about": "A name of Lakṣmī Devī: the consort of Nārāyaṇa.",
+     "aliases": [
+      "Nārāyaṇī"
+     ],
+     "ru": []
+    }
    ]
   },
   {
@@ -728,6 +1055,18 @@
    ],
    "ru": [
     "Кешава Кашмири"
+   ]
+  },
+  {
+   "id": "balabhadra-bhatta",
+   "kind": "person",
+   "name": "Balabhadra Bhaṭṭāchārya",
+   "about": "Mahāprabhu’s companion and servant on His journey through Jhāḍakhaṇḍa to Vṛndāvan.",
+   "aliases": [
+    "Balabhadra Bhaṭṭāchārya"
+   ],
+   "ru": [
+    "Балабхадр* Бхаттачарь*"
    ]
   },
   {
@@ -1035,14 +1374,32 @@
     "Śrīla Bhakti Siddhānta Saraswatī",
     "Śrīla Bhakti Siddhānta",
     "Śrīla Saraswatī Ṭhākur",
-    "Saraswatī Ṭhākur",
-    "Śrī Vārṣabhānavī Dayita Dās",
-    "Dayita Dās",
-    "Prabhupād"
+    "Saraswatī Ṭhākur"
    ],
    "ru": [
     "Бхактисиддхант*",
     "Сарасвати Тхакур*"
+   ],
+   "variants": [
+    {
+     "key": "prabhupad",
+     "name": "Prabhupād",
+     "about": "The title by which the Sāraswat line honours Śrīla Bhakti Siddhānta Saraswatī Ṭhākur: the one at whose feet the masters sit.",
+     "aliases": [
+      "Prabhupād"
+     ],
+     "ru": []
+    },
+    {
+     "key": "dayita-das",
+     "name": "Śrī Vārṣabhānavī Dayita Dās",
+     "about": "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur’s name before sannyāsa: the servant of the beloved of Śrī Rādhā.",
+     "aliases": [
+      "Śrī Vārṣabhānavī Dayita Dās",
+      "Dayita Dās"
+     ],
+     "ru": []
+    }
    ],
    "authorId": "saraswati-thakur"
   },
@@ -1156,6 +1513,19 @@
     "Нирмал*"
    ],
    "authorId": "bhakti-nirmal-acharya-maharaja"
+  },
+  {
+   "id": "baladeva-vidyabhusana",
+   "kind": "person",
+   "name": "Śrīla Baladeva Vidyābhūṣaṇa",
+   "about": "The 18th-century Gauḍīya āchārya who wrote the Govinda-bhāṣya commentary on Vedānta-sūtra.",
+   "aliases": [
+    "Śrīla Baladeva Vidyābhūṣaṇa",
+    "Baladeva Vidyābhūṣaṇa"
+   ],
+   "ru": [
+    "Баладев* Видьябхушан*"
+   ]
   },
   {
    "id": "prahlad",
@@ -1274,15 +1644,26 @@
     "Govardhan Hill",
     "Govardhān Hill",
     "Śrī Govardhan",
-    "Govardhan",
-    "Śrī Śrī Girirāj Jīu",
-    "Śrī Girirāj Jīu",
-    "Śrī Girirāj",
-    "Girirāj"
+    "Govardhan"
    ],
    "ru": [
-    "Говардхан*",
-    "Гирирадж*"
+    "Говардхан*"
+   ],
+   "variants": [
+    {
+     "key": "giriraj",
+     "name": "Girirāj",
+     "about": "Govardhan Hill as the king of mountains, worshipped as non-different from Krishna.",
+     "aliases": [
+      "Śrī Śrī Girirāj Jīu",
+      "Śrī Girirāj Jīu",
+      "Śrī Girirāj",
+      "Girirāj"
+     ],
+     "ru": [
+      "Гирирадж*"
+     ]
+    }
    ],
    "maps": "Govardhan Hill, Uttar Pradesh, India"
   },
@@ -1364,12 +1745,23 @@
    "aliases": [
     "Yamunā River",
     "River Yamunā",
-    "Yamunā",
-    "Kālindī"
+    "Yamunā"
    ],
    "ru": [
-    "Ямун*",
-    "Калинди"
+    "Ямун*"
+   ],
+   "variants": [
+    {
+     "key": "kalindi",
+     "name": "Kālindī",
+     "about": "A name of the Yamunā: the daughter of the sun-god, who flows from Mount Kalinda.",
+     "aliases": [
+      "Kālindī"
+     ],
+     "ru": [
+      "Калинди"
+     ]
+    }
    ],
    "maps": "Yamuna River, Vrindavan, India"
   },
@@ -1399,15 +1791,26 @@
     "Nabadwīp",
     "Navadwīp",
     "Navadvīpa",
-    "Nadia",
-    "Nadīyā",
     "Śrī Gauḍa Maṇḍal",
     "Śrī Gaura Dhāma"
    ],
    "ru": [
     "Навадвип*",
-    "Набадвип*",
-    "Нади*"
+    "Набадвип*"
+   ],
+   "variants": [
+    {
+     "key": "nadia",
+     "name": "Nadia",
+     "about": "The traditional name of the Nabadwīp district in Bengal, Mahāprabhu’s birthplace.",
+     "aliases": [
+      "Nadīyā",
+      "Nadia"
+     ],
+     "ru": [
+      "Нади*"
+     ]
+    }
    ],
    "maps": "Nabadwip, West Bengal, India"
   },
@@ -1499,12 +1902,23 @@
    "aliases": [
     "Jagannāth Purī",
     "Puri Dhām",
-    "Purī Dhām",
-    "Nīlāchala"
+    "Purī Dhām"
    ],
    "ru": [
-    "Джаганнатх*-Пури",
-    "Нилачал*"
+    "Джаганнатх*-Пури"
+   ],
+   "variants": [
+    {
+     "key": "nilachala",
+     "name": "Nīlāchala",
+     "about": "A name of Jagannāth Purī: the blue mountain, where Lord Jagannāth’s temple stands.",
+     "aliases": [
+      "Nīlāchala"
+     ],
+     "ru": [
+      "Нилачал*"
+     ]
+    }
    ],
    "maps": "Jagannath Temple, Puri, Odisha, India"
   },
@@ -1606,6 +2020,22 @@
     "Рамакели"
    ],
    "maps": "Ramkeli, Malda, West Bengal"
+  },
+  {
+   "id": "syama-kunda",
+   "kind": "place",
+   "name": "Śrī Śyāma Kuṇḍa",
+   "about": "Krishna’s lake beside Rādhā Kuṇḍa near Govardhan.",
+   "aliases": [
+    "Śrī Śyāma Kuṇḍa",
+    "Śyāma Kuṇḍa",
+    "Śyāma-kuṇḍa"
+   ],
+   "ru": [
+    "Шьяма-кунд*",
+    "Шьяма Кунд*"
+   ],
+   "maps": "Shyam Kund, Radha Kund, Uttar Pradesh"
   },
   {
    "id": "goloka",

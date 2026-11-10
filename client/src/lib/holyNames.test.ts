@@ -27,4 +27,19 @@ describe("holy names", () => {
   it("finds Russian names in any case ending", () => {
     expect(named("Слава Шри Кришне и Радхарани во Вриндаване")).toEqual([["Кришне", "krishna"], ["Радхарани", "radha"], ["Вриндаване", "vrndavan"]]);
   });
+
+  it("gives each other name of the Lord its own note", () => {
+    const withVariant = (value: string) => getHolyNameSegments(value).filter((segment) => segment.entry).map((segment) => [segment.text, segment.entry!.id, segment.variant?.key ?? null]);
+    expect(withVariant("You are known as Yādava, Hari, Mādhava, and Keśava, O Krishna.")).toEqual([
+      ["Yādava", "krishna", "yadava"], ["Hari", "krishna", "hari"], ["Mādhava", "krishna", "madhava"], ["Keśava", "krishna", "kesava"], ["Krishna", "krishna", null],
+    ]);
+    expect(withVariant("Мадхава и Говинда")).toEqual([["Мадхава", "krishna", "madhava"], ["Говинда", "krishna", "govinda"]]);
+    for (const entry of HOLY_NAMES) for (const variant of entry.variants ?? []) expect(variant.about, `${entry.id}/${variant.key}`).toBeTruthy();
+  });
+
+  it("does not take other people and places for the Lord", () => {
+    expect(named("Balabhadra Bhaṭṭāchārya, Baladeva Vidyābhūṣaṇa, Śyāma Kuṇḍa and Śrīla Bhakti Rañjan Madhusūdan Mahārāja")).toEqual([
+      ["Balabhadra Bhaṭṭāchārya", "balabhadra-bhatta"], ["Baladeva Vidyābhūṣaṇa", "baladeva-vidyabhusana"], ["Śyāma Kuṇḍa", "syama-kunda"], ["Śrīla Bhakti Rañjan Madhusūdan Mahārāja", "madhusudan"],
+    ]);
+  });
 });

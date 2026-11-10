@@ -13,9 +13,23 @@ export type HolyName = {
   authorId?: string;
   /** Google Maps search for places on Earth. */
   maps?: string;
+  /** Other names of the same personality or place, each with its own note. */
+  variants?: HolyNameVariant[];
 };
 
-export type HolyNameSegment = { text: string; entry?: HolyName };
+export type HolyNameVariant = { key: string; name: string; about: string; aliases: string[]; ru: string[] };
+
+export type HolyNameSegment = { text: string; entry?: HolyName; variant?: HolyNameVariant };
+
+type HolyNameMatch = { entry: HolyName; variant?: HolyNameVariant };
+
+/** Every spelling (Latin aliases, Russian stems) with the entry and, for another name, its variant. */
+function allNames(field: "aliases" | "ru") {
+  return HOLY_NAMES.flatMap((entry) => [
+    ...entry[field].map((name) => ({ name, match: { entry } as HolyNameMatch })),
+    ...(entry.variants ?? []).flatMap((variant) => variant[field].map((name) => ({ name, match: { entry, variant } as HolyNameMatch }))),
+  ]);
+}
 
 export const HOLY_NAMES = (data as { entries: HolyName[] }).entries;
 
@@ -47,31 +61,29 @@ function fold(value: string): { folded: string; sourceIndex: number[] } {
 
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-type Matcher = { regex: RegExp; lookup: Map<string, HolyName> };
+type Matcher = { regex: RegExp; lookup: Map<string, HolyNameMatch> };
 
 function buildLatinMatcher(): Matcher {
-  const lookup = new Map<string, HolyName>();
-  for (const entry of HOLY_NAMES) {
-    for (const alias of entry.aliases) {
-      const key = fold(alias).folded;
-      if (!lookup.has(key)) lookup.set(key, entry);
-    }
+  const lookup = new Map<string, HolyNameMatch>();
+  for (const { name, match } of allNames("aliases")) {
+    const key = fold(name).folded;
+    if (!lookup.has(key)) lookup.set(key, match);
   }
   const keys = Array.from(lookup.keys()).sort((a, b) => b.length - a.length).map(escapeRegExp);
   return { regex: new RegExp(`(?<![\\p{L}\\p{N}])(?:${keys.join("|")})(?![\\p{L}\\p{N}])`, "gu"), lookup };
 }
 
-type CyrillicMatcher = { regex: RegExp; stems: { pattern: RegExp; entry: HolyName }[] };
+type CyrillicMatcher = { regex: RegExp; stems: { pattern: RegExp; match: HolyNameMatch }[] };
 
 function buildCyrillicMatcher(): CyrillicMatcher {
   // A trailing * lets up to four Russian case-ending letters follow the stem.
   const stemSource = (stem: string) => stem.split(" ").map((word) => word.endsWith("*") ? `${escapeRegExp(word.slice(0, -1))}[а-яё]{0,4}` : escapeRegExp(word)).join("\\s+");
-  const stems = HOLY_NAMES.flatMap((entry) => entry.ru.map((stem) => ({ stem, entry })))
-    .sort((a, b) => b.stem.length - a.stem.length)
-    .map(({ stem, entry }) => ({ source: stemSource(stem), entry }));
+  const stems = allNames("ru")
+    .sort((a, b) => b.name.length - a.name.length)
+    .map(({ name, match }) => ({ source: stemSource(name), match }));
   return {
     regex: new RegExp(`(?<![\\p{L}\\p{N}])(?:${stems.map((stem) => stem.source).join("|")})(?![\\p{L}\\p{N}])`, "gu"),
-    stems: stems.map(({ source, entry }) => ({ pattern: new RegExp(`^(?:${source})$`, "u"), entry })),
+    stems: stems.map(({ source, match }) => ({ pattern: new RegExp(`^(?:${source})$`, "u"), match })),
   };
 }
 
@@ -82,24 +94,24 @@ let cyrillicMatcher: CyrillicMatcher | null = null;
 export function getHolyNameSegments(value: string): HolyNameSegment[] {
   const segments: HolyNameSegment[] = [];
   let cursor = 0;
-  const push = (start: number, end: number, entry: HolyName) => {
+  const push = (start: number, end: number, { entry, variant }: HolyNameMatch) => {
     if (start > cursor) segments.push({ text: value.slice(cursor, start) });
-    segments.push({ text: value.slice(start, end), entry });
+    segments.push({ text: value.slice(start, end), entry, variant });
     cursor = end;
   };
 
   if (/[а-яё]/i.test(value)) {
     cyrillicMatcher ??= buildCyrillicMatcher();
     for (const match of Array.from(value.matchAll(cyrillicMatcher.regex))) {
-      const entry = cyrillicMatcher.stems.find((stem) => stem.pattern.test(match[0]))?.entry;
-      if (entry) push(match.index!, match.index! + match[0].length, entry);
+      const found = cyrillicMatcher.stems.find((stem) => stem.pattern.test(match[0]))?.match;
+      if (found) push(match.index!, match.index! + match[0].length, found);
     }
   } else {
     latinMatcher ??= buildLatinMatcher();
     const { folded, sourceIndex } = fold(value);
     for (const match of Array.from(folded.matchAll(latinMatcher.regex))) {
-      const entry = latinMatcher.lookup.get(match[0]);
-      if (entry) push(sourceIndex[match.index!], sourceIndex[match.index! + match[0].length], entry);
+      const found = latinMatcher.lookup.get(match[0]);
+      if (found) push(sourceIndex[match.index!], sourceIndex[match.index! + match[0].length], found);
     }
   }
 

@@ -93,6 +93,8 @@ E = [
     ("prakasananda", P, "Prakāśānanda Saraswatī", "The leading Māyāvādī sannyāsī of Kāśī, converted by Mahāprabhu.", ["Prakāśānanda Saraswatī", "Prakāśānanda"], ["Пракашананд*"], None, None),
     ("jagai-madhai", P, "Jagāi and Mādhāi", "Two notorious brothers of Nabadwīp delivered by Nityānanda Prabhu.", ["Jagāi", "Mādhāi"], ["Джагай*", "Мадхай*"], None, None),
     ("kesava-kasmiri", P, "Keśava Kāśmīrī", "A champion scholar defeated by young Nimāi Paṇḍit; later a Vaiṣṇava āchārya.", ["Keśava Kāśmīrī"], ["Кешава Кашмири"], None, None),
+    ("balabhadra-bhatta", P, "Balabhadra Bhaṭṭāchārya", "Mahāprabhu’s companion and servant on His journey through Jhāḍakhaṇḍa to Vṛndāvan.",
+     ["Balabhadra Bhaṭṭāchārya"], ["Балабхадр* Бхаттачарь*"], None, None),
     # --- Goswāmīs ---
     ("rupa", P, "Śrīla Rūpa Goswāmī", "The leader of the six Goswāmīs, empowered by Mahāprabhu to establish the science of rasa.",
      ["Śrīla Rūpa Goswāmī", "Śrī Rūpa Goswāmī", "Rūpa Goswāmī", "Śrīmad Rūpa Prabhu", "Śrī Rūpa Prabhu", "Śrī Rūpa", "Rūpa"], ["Руп*"], "rupa-goswami", None),
@@ -144,6 +146,8 @@ E = [
      ["Śrīla Bhakti Rañjan Madhusūdan Mahārāja", "Bhakti Rañjan Madhusūdan"], ["Мадхусудан* Махарадж*"], "bhakti-ranjan-madhusudan-maharaja", None),
     ("nirmal", P, "Śrīla Bhakti Nirmal Āchārya Mahārāja", "The present āchārya of Śrī Chaitanya Sāraswat Maṭh.",
      ["Śrīla Bhakti Nirmal Āchārya Mahārāja", "Bhakti Nirmal Āchārya"], ["Бхакти Нирмал*", "Нирмал*"], "bhakti-nirmal-acharya-maharaja", None),
+    ("baladeva-vidyabhusana", P, "Śrīla Baladeva Vidyābhūṣaṇa", "The 18th-century Gauḍīya āchārya who wrote the Govinda-bhāṣya commentary on Vedānta-sūtra.",
+     ["Śrīla Baladeva Vidyābhūṣaṇa", "Baladeva Vidyābhūṣaṇa"], ["Баладев* Видьябхушан*"], None, None),
     # --- Others ---
     ("prahlad", P, "Prahlād Mahārāja", "The boy-devotee protected by Lord Nṛsiṁha.", ["Prahlād Mahārāja", "Prahlād"], ["Прахлад*"], None, None),
     ("hiranyakasipu", O, "Hiraṇyakaśipu", "The demon king killed by Lord Nṛsiṁha.", ["Hiraṇyakaśipu"], ["Хираньякашип*"], None, None),
@@ -184,11 +188,80 @@ E = [
     ("godavari", PL, "The Godāvarī", "The river where Mahāprabhu met Rāmānanda Rāy.", ["Godāvarī River", "Godāvarī"], ["Годавар*"], None, "Kovvur, Godavari River, Andhra Pradesh"),
     ("jharikhanda", PL, "Jhāḍakhaṇḍa", "The forest Mahāprabhu crossed on His way to Vṛndāvan, making the animals chant.", ["Jhāḍakhaṇḍa"], ["Джхарикханд*"], None, "Jharkhand, India"),
     ("ramakeli", PL, "Rāmakeli", "The village in Bengal where Mahāprabhu first met Rūpa and Sanātan.", ["Rāmakeli"], ["Рамакели"], None, "Ramkeli, Malda, West Bengal"),
+    ("syama-kunda", PL, "Śrī Śyāma Kuṇḍa", "Krishna’s lake beside Rādhā Kuṇḍa near Govardhan.",
+     ["Śrī Śyāma Kuṇḍa", "Śyāma Kuṇḍa", "Śyāma-kuṇḍa"], ["Шьяма-кунд*", "Шьяма Кунд*"], None, "Shyam Kund, Radha Kund, Uttar Pradesh"),
     # --- The spiritual world (no map) ---
     ("goloka", R, "Goloka Vṛndāvan", "Krishna’s supreme abode in the spiritual sky.", ["Goloka Vṛndāvan", "Goloka"], ["Голок*"], None, None),
     ("vaikuntha", R, "Vaikuṇṭha", "The spiritual realm of Lord Nārāyaṇa, free from all anxiety.", ["Vaikuṇṭha"], ["Вайкунтх*"], None, None),
 ]
 
+# Other names of the same personality or place, each with its own short note.
+# Their aliases and Russian stems are taken out of the main entry, so they no longer show its note.
+VARIANTS = {
+    "krishna": [
+        ("govinda", "Govinda", "A name of Krishna: the one who gives pleasure to the cows, the land and the senses.", ["Lord Govinda", "Govinda"], ["Говинд*"]),
+        ("gopinath", "Gopīnāth", "A name of Krishna: the Lord and beloved of the gopīs.", ["Gopīnāth"], ["Гопинатх*"]),
+        ("madhava", "Mādhava", "A name of Krishna: the sweet Lord of springtime, born in the Madhu dynasty, the husband of Mā, the goddess of fortune.", ["Mādhava"], ["Мадхава", "Мадхавы", "Мадхаве", "Мадхаву", "Мадхавой"]),
+        ("kesava", "Keśava", "A name of Krishna: the one with beautiful hair, who killed the demon Keśī.", ["Keśava"], ["Кешав*"]),
+        ("syamasundar", "Śyāmasundar", "A name of Krishna: the beautiful one, dark like a rain cloud.", ["Lord Śyāmasundar", "Śyāmasundar"], ["Шьямасундар*"]),
+        ("syama", "Śyāma", "A name of Krishna: the dark one, whose complexion is like a fresh rain cloud.", ["Śyāma"], ["Шьяма", "Шьямы", "Шьяме", "Шьяму", "Шьямой"]),
+        ("giridhari", "Giridhārī", "A name of Krishna: the lifter of Govardhan Hill.", ["Giridhārī"], ["Гиридхари"]),
+        ("gopal", "Gopāl", "A name of Krishna: the cowherd boy, protector of the cows.", ["Gopāla", "Gopāl"], ["Гопал*"]),
+        ("damodar", "Dāmodar", "A name of Krishna: the one whose waist (udara) Mother Yaśodā bound with a rope (dāma).", ["Lord Dāmodar", "Śrī Dāmodar", "Dāmodar"], ["Дамодар*"]),
+        ("mukunda", "Mukunda", "A name of Krishna: the giver of liberation, and of the love that makes liberation insignificant.", ["Mukunda"], ["Мукунд*"]),
+        ("hrsikesa", "Hṛṣīkeśa", "A name of Krishna: the master of everyone’s senses.", ["Hṛṣīkeśa"], ["Хришикеш*"]),
+        ("kanai", "Kānāi", "Krishna’s affectionate Bengali name, used by His family and friends in Vraja.", ["Kānāi", "Kāna"], ["Канай*"]),
+        ("hari", "Hari", "A name of Krishna: the one who takes away all that is inauspicious and steals the hearts of His devotees.", ["Lord Śrī Hari", "Lord Hari", "Śrī Hari", "Hari"], ["Хари"]),
+        ("murari", "Murāri", "A name of Krishna: the enemy of the demon Mura.", ["Murāri"], ["Мурари"]),
+        ("krishnachandra", "Krishnachandra", "A name of Krishna: the moon of Vraja.", ["Śrī Krishnachandra", "Krishnachandra"], ["Кришначандр*"]),
+        ("yadava", "Yādava", "A name of Krishna: the descendant of King Yadu, the jewel of the Yadu dynasty.", ["Yādava"], ["Ядав*"]),
+        ("madhusudan", "Madhusūdan", "A name of Krishna: the killer of the demon Madhu.", ["Śrī Madhusūdan", "Madhusūdan"], []),
+        ("janardana", "Janārdana", "A name of Krishna: the one to whom all people pray, the protector of His devotees.", ["Janārdana"], ["Джанардан*"]),
+        ("achyuta", "Achyuta", "A name of Krishna: the infallible one, who never falls from His position.", ["Achyuta"], ["Ачьют*"]),
+        ("nandanandana", "Nanda-nandana", "A name of Krishna: the son of Nanda Mahārāja, the king of Vraja.", ["Vrajendra-nandana", "Nanda-nandana"], ["Нанда-нандан*", "Враджендра-нандан*"]),
+    ],
+    "gauranga": [
+        ("gauranga-name", "Gaurāṅga", "A name of Śrī Chaitanya Mahāprabhu: the one whose limbs are golden.", ["Śrī Gaurāṅgadev", "Lord Gaurāṅgadev", "Lord Gaurāṅga", "Śrī Gaurāṅga", "Gaurāṅga", "Lord Gaura", "Śrī Gaura", "Gaura"], ["Гауранг*", "Гаурангадев*", "Гаура", "Гауры", "Гауре", "Гауру", "Гаурой"]),
+        ("gaurasundar", "Gaurasundar", "A name of Śrī Chaitanya Mahāprabhu: the beautiful golden Lord.", ["Gaurāṅga Sundar", "Lord Gaurasundar", "Śrī Gaurasundar", "Gaurasundar"], ["Гаурасундар*"]),
+        ("gaurahari", "Gaurahari", "A name of Śrī Chaitanya Mahāprabhu: Hari, Krishna Himself, in golden form.", ["Lord Gaurahari", "Śrī Gaurahari", "Gaurahari"], ["Гаурахари"]),
+        ("gaurachandra", "Gaurachandra", "A name of Śrī Chaitanya Mahāprabhu: the golden moon.", ["Lord Gaurachandra", "Śrī Gaurachandra", "Gaurachandra"], ["Гаурачандр*"]),
+        ("nimai", "Nimāi", "Mahāprabhu’s childhood name: He was born under a neem tree.", ["Nimāi"], ["Нима*"]),
+        ("visvambhara", "Viśvambhara", "Mahāprabhu’s given name: the one who sustains the universe.", ["Viśvambhara"], ["Вишвамбхар*"]),
+    ],
+    "radha": [
+        ("radhika", "Rādhikā", "A name of Śrīmatī Rādhārāṇī: the one who worships Krishna best.", ["Śrīmatī Rādhikā", "Śrī Rādhikā", "Rādhikā"], ["Радхик*"]),
+        ("vrsabhanunandini", "Vṛṣabhānunandinī", "A name of Śrīmatī Rādhārāṇī: the daughter of King Vṛṣabhānu.", ["Śrī Vṛṣabhānunandinī", "Vṛṣabhānunandinī", "Vārṣabhānavī"], ["Вришабханунандини"]),
+        ("gandharva", "Gāndharvā", "A name of Śrīmatī Rādhārāṇī: the best of singers and dancers.", ["Gāndharvikā", "Gāndharvā"], ["Гандхарвик*"]),
+    ],
+    "nityananda": [
+        ("nitai", "Nitāi", "The affectionate name of Śrī Nityānanda Prabhu.", ["Lord Nitāi", "Dayāl Nitāi", "Nitāichand", "Nitāi"], ["Нита*"]),
+    ],
+    "balaram": [
+        ("baladeva", "Baladeva", "A name of Lord Balarām: the Lord of strength.", ["Baladeva"], ["Баладев*"]),
+        ("balabhadra", "Balabhadra", "A name of Lord Balarām: the strong and auspicious one.", ["Balabhadra"], []),
+    ],
+    "govardhan": [
+        ("giriraj", "Girirāj", "Govardhan Hill as the king of mountains, worshipped as non-different from Krishna.", ["Śrī Śrī Girirāj Jīu", "Śrī Girirāj Jīu", "Śrī Girirāj", "Girirāj"], ["Гирирадж*"]),
+    ],
+    "yamuna": [
+        ("kalindi", "Kālindī", "A name of the Yamunā: the daughter of the sun-god, who flows from Mount Kalinda.", ["Kālindī"], ["Калинди"]),
+    ],
+    "nabadwip": [
+        ("nadia", "Nadia", "The traditional name of the Nabadwīp district in Bengal, Mahāprabhu’s birthplace.", ["Nadīyā", "Nadia"], ["Нади*"]),
+    ],
+    "puri": [
+        ("nilachala", "Nīlāchala", "A name of Jagannāth Purī: the blue mountain, where Lord Jagannāth’s temple stands.", ["Nīlāchala"], ["Нилачал*"]),
+    ],
+    "laksmi": [
+        ("narayani", "Nārāyaṇī", "A name of Lakṣmī Devī: the consort of Nārāyaṇa.", ["Nārāyaṇī"], []),
+    ],
+    "saraswati-thakur": [
+        ("prabhupad", "Prabhupād", "The title by which the Sāraswat line honours Śrīla Bhakti Siddhānta Saraswatī Ṭhākur: the one at whose feet the masters sit.", ["Prabhupād"], []),
+        ("dayita-das", "Śrī Vārṣabhānavī Dayita Dās", "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur’s name before sannyāsa: the servant of the beloved of Śrī Rādhā.", ["Śrī Vārṣabhānavī Dayita Dās", "Dayita Dās"], []),
+    ],
+}
+
+assert set(VARIANTS) <= {e[0] for e in E}, set(VARIANTS) - {e[0] for e in E}
 out = []
 seen = set()
 for entry in E:
@@ -196,6 +269,12 @@ for entry in E:
     assert id_ not in seen, id_
     seen.add(id_)
     item = {"id": id_, "kind": kind, "name": name, "about": about, "aliases": aliases, "ru": ru}
+    if id_ in VARIANTS:
+        variant_aliases = {alias for v in VARIANTS[id_] for alias in v[3]}
+        variant_ru = {stem for v in VARIANTS[id_] for stem in v[4]}
+        item["aliases"] = [alias for alias in aliases if alias not in variant_aliases]
+        item["ru"] = [stem for stem in ru if stem not in variant_ru]
+        item["variants"] = [{"key": k, "name": n, "about": a, "aliases": al, "ru": r} for k, n, a, al, r in VARIANTS[id_]]
     if author_id:
         item["authorId"] = author_id
     if maps:

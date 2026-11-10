@@ -1,114 +1,475 @@
 {
  "ui": {
-  "kinds": { "person": "Vaiṣṇava", "divine": "Il Signore e i Suoi", "place": "Luogo sacro", "realm": "Mondo spirituale", "other": "Personaggio" },
+  "kinds": {
+   "person": "Vaiṣṇava",
+   "divine": "Il Signore e i Suoi",
+   "place": "Luogo sacro",
+   "realm": "Mondo spirituale",
+   "other": "Personaggio"
+  },
   "page": "Leggi di più",
   "map": "Apri in Google Maps"
  },
  "entries": {
-  "krishna": { "about": "La Suprema Personalità di Dio, il giovane pastore di Vraja e la fonte di tutte le incarnazioni." },
-  "radha": { "about": "L'eterna consorte di Krishna e la personificazione della Sua potenza di piacere, adorata come regina di Vṛndāvan." },
-  "gauranga": { "about": "Krishna stesso, apparso a Nabadwīp nel 1486 con il cuore e lo splendore dorato di Rādhā per donare al mondo l'amore per Krishna attraverso il canto del Santo Nome." },
-  "nityananda": { "about": "Balarām apparso come prima espansione e compagno più intimo di Mahāprabhu, il più misericordioso donatore del Santo Nome." },
-  "advaita": { "about": "Incarnazione di Mahā-Viṣṇu, le cui preghiere portarono Mahāprabhu nel mondo; uno dei Pañcha-tattva." },
-  "gadadhara": { "about": "Compagno intimo di Mahāprabhu, incarnazione dell'energia di Śrīmatī Rādhārāṇī; uno dei Pañcha-tattva." },
-  "srivas": { "about": "Nārada Muni nei passatempi di Mahāprabhu; ogni notte nel suo cortile a Māyāpur si teneva il kīrtan." },
-  "balaram": { "name": "Il Signore Balarām", "about": "Il fratello maggiore e prima espansione di Krishna, il maestro spirituale originale." },
-  "narayana": { "name": "Il Signore Nārāyaṇa", "about": "La maestosa forma a quattro braccia di Krishna, il Signore di Vaikuṇṭha." },
-  "visnu": { "name": "Il Signore Viṣṇu", "about": "Il Signore onnipervadente che mantiene l'universo; espansione di Krishna." },
-  "nrsimha": { "name": "Il Signore Nṛsiṁha", "about": "L'incarnazione metà uomo e metà leone che protesse Prahlād e uccise Hiraṇyakaśipu." },
-  "rama": { "name": "Il Signore Rāmachandra", "about": "L'incarnazione di Krishna come re ideale di Ayodhyā, che sconfisse Rāvaṇa." },
-  "jagannath": { "name": "Il Signore Jagannāth", "about": "Krishna come Signore dell'universo, adorato a Purī insieme a Baladeva e Subhadrā." },
-  "sankarsana": { "name": "Il Signore Saṅkarṣaṇa", "about": "L'espansione di Balarām che sostiene tutta l'esistenza, fonte delle forme di Viṣṇu." },
-  "ananta": { "about": "Il serpente dalle mille teste, espansione di Balarām, che fa da letto a Viṣṇu e canta in eterno le Sue glorie." },
-  "kalki": { "name": "Il Signore Kalki", "about": "L'incarnazione che appare alla fine del Kali-yuga." },
-  "yasoda": { "name": "Madre Yaśodā", "about": "La madre adottiva di Krishna a Vraja, la regina di Nanda Mahārāja." },
-  "nanda": { "about": "Il padre adottivo di Krishna, il re dei pastori di Vraja." },
-  "vrsabhanu": { "about": "Il padre di Śrīmatī Rādhārāṇī, re dei pastori di Varṣāṇā." },
-  "lalita": { "about": "La prima delle otto amiche principali di Śrīmatī Rādhārāṇī." },
-  "visakha": { "about": "L'amica più cara di Śrīmatī Rādhārāṇī, nata lo stesso giorno di Lei." },
-  "rupa-manjari": { "about": "La guida delle giovani ancelle di Rādhārāṇī; la forma eterna di Śrī Rūpa Goswāmī." },
-  "madhumangal": { "about": "Il gioviale amico brāhmaṇa di Krishna a Vraja." },
-  "brahma": { "name": "Il Signore Brahmā", "about": "Il primo essere creato, ingegnere dell'universo e capo della linea Brahma-Mādhva." },
-  "siva": { "name": "Il Signore Śiva", "about": "Il più grande vaiṣṇava tra i semidei, che presiede alla qualità dell'ignoranza." },
-  "indra": { "about": "Il re del cielo, umiliato quando Krishna sollevò la collina Govardhan." },
-  "laksmi": { "about": "La dea della fortuna, eterna consorte di Nārāyaṇa." },
-  "tulasi": { "about": "L'amata devota di Krishna in forma di pianta, Vṛndā Devī, senza le cui foglie Egli non accetta alcuna offerta." },
-  "sachi": { "about": "La madre di Mahāprabhu, Yaśodā nella Gaura-līlā." },
-  "jagannath-misra": { "about": "Il padre di Mahāprabhu, Nanda Mahārāja nella Gaura-līlā." },
-  "sita": { "about": "La moglie di Śrī Advaita Āchārya e una grande devota." },
-  "visnupriya": { "about": "La seconda moglie di Mahāprabhu, che servì il Santo Nome nella separazione da Lui." },
-  "laksmipriya": { "about": "La prima moglie di Mahāprabhu." },
-  "haridas": { "about": "Compagno di Mahāprabhu che cantava trecentomila nomi al giorno, onorato come nāmāchārya." },
-  "svarup": { "about": "Il segretario e confidente più intimo di Mahāprabhu a Purī, Lalitā nella Krishna-līlā." },
-  "ramananda": { "about": "Governatore e poeta con cui Mahāprabhu discusse le verità più alte della devozione sulle rive del Godāvarī." },
-  "sarvabhauma": { "about": "Il grande logico di Purī che Mahāprabhu convertì alla devozione." },
-  "murari": { "about": "Medico e compagno di Mahāprabhu, uno dei Suoi primi biografi, devoto del Signore Rāma." },
-  "mukunda-datta": { "about": "Un cantore dalla voce dolce e amico d'infanzia di Mahāprabhu." },
-  "madhavendra": { "about": "Il seme dell'albero dell'amore divino e nonno spirituale di Mahāprabhu." },
-  "isvara": { "about": "Il guru iniziatore di Mahāprabhu, discepolo di Mādhavendra Purī." },
-  "prataparudra": { "name": "Il re Pratāparudra", "about": "Il re dell'Orissa che servì Mahāprabhu e il Signore Jagannāth." },
-  "prakasananda": { "about": "Il principale sannyāsī māyāvādī di Kāśī, convertito da Mahāprabhu." },
-  "jagai-madhai": { "name": "Jagāi e Mādhāi", "about": "Due famigerati fratelli di Nabadwīp, salvati da Nityānanda Prabhu." },
-  "kesava-kasmiri": { "about": "Un campione di erudizione sconfitto dal giovane Nimāi Paṇḍit; in seguito un āchārya vaiṣṇava." },
-  "rupa": { "about": "La guida dei sei Goswāmī, investito da Mahāprabhu del compito di stabilire la scienza del rasa." },
-  "sanatan": { "about": "Il fratello maggiore di Rūpa Goswāmī, istruito da Mahāprabhu a Kāśī; il maestro del sambandha." },
-  "jiva": { "about": "Nipote di Rūpa e Sanātan, il grande filosofo della scuola e autore dei Sandarbha." },
-  "raghunath-das": { "about": "Il principe rinunciante che visse a Rādhā Kuṇḍa, il prayojanāchārya." },
-  "raghunath-bhatta": { "about": "Il Goswāmī famoso per la sua dolce recitazione dello Śrīmad-Bhāgavatam." },
-  "gopal-bhatta": { "about": "Il Goswāmī dell'India del Sud che servì Śrī Rādhā-Ramaṇ." },
-  "six-goswamis": { "name": "I sei Goswāmī", "about": "Rūpa, Sanātan, Jīva, Raghunāth Dās, Raghunāth Bhaṭṭa e Gopāl Bhaṭṭa, che stabilirono gli insegnamenti di Mahāprabhu a Vṛndāvan." },
-  "krsnadas": { "about": "Autore dello Śrī Chaitanya-charitāmṛta, il racconto definitivo della vita e degli insegnamenti di Mahāprabhu." },
-  "lokanath": { "about": "Compagno di Mahāprabhu a Vṛndāvan e guru di Narottam Dās Ṭhākur." },
-  "narottam": { "about": "Il principe poeta i cui canti bengalesi sono il cuore del kīrtan gauḍīya." },
-  "lochan": { "about": "Poeta dello Śrī Chaitanya-maṅgala e di molti canti della Gaura-līlā." },
-  "vyasa": { "about": "Il compilatore dei Veda e autore dello Śrīmad-Bhāgavatam." },
-  "narada": { "about": "Il saggio viandante che diffonde la devozione in tutto l'universo; il guru di Vyāsadeva." },
-  "sukadeva": { "about": "Il figlio di Vyāsadeva, che narrò lo Śrīmad-Bhāgavatam al re Parīkṣit." },
-  "madhva": { "about": "Il fondatore della scuola Tattvavāda nel XIII secolo, nella cui linea Mahāprabhu ricevette l'iniziazione." },
-  "sankara": { "about": "Il maestro del monismo impersonale dell'VIII secolo, un'incarnazione di Śiva." },
-  "bhakti-vinod": { "about": "Il pioniere della devozione pura nell'età moderna, poeta di molti canti di questo libro." },
-  "jagannath-das": { "about": "La guida dei vaiṣṇava del suo tempo, che identificò il luogo di nascita di Mahāprabhu." },
-  "gaura-kisora": { "about": "Il paramahaṁsa rinunciante e guru di Śrīla Saraswatī Ṭhākur." },
-  "saraswati-thakur": { "about": "Il fondatore del Gauḍīya Maṭh, che portò il messaggio di Mahāprabhu in tutta l'India e in Occidente." },
-  "sridhar": { "about": "Il fondatore-āchārya dello Śrī Chaitanya Sāraswat Maṭh, custode della devozione." },
-  "govinda-maharaj": { "about": "Il successore di Śrīla Śrīdhar Mahārāja, che diffuse la missione del Maṭh in tutto il mondo." },
-  "bhaktivedanta": { "about": "Fondatore-āchārya dell'ISKCON, che diffuse il Santo Nome in tutto il mondo." },
-  "avadhut": { "about": "Discepolo di Śrīla Govinda Mahārāja e guida della missione russa dello Śrī Chaitanya Sāraswat Maṭh." },
-  "sudhir": { "about": "Un sannyāsī anziano dello Śrī Chaitanya Sāraswat Maṭh, fondatore della Guardian of Devotion Press." },
-  "madhusudan": { "about": "Un sannyāsī dello Śrī Chaitanya Sāraswat Maṭh." },
-  "nirmal": { "about": "L'attuale āchārya dello Śrī Chaitanya Sāraswat Maṭh." },
-  "prahlad": { "about": "Il fanciullo devoto protetto dal Signore Nṛsiṁha." },
-  "hiranyakasipu": { "about": "Il re demone ucciso dal Signore Nṛsiṁha." },
-  "kamsa": { "name": "Il re Kaṁsa", "about": "Lo zio tiranno di Krishna, re di Mathurā, ucciso da Krishna." },
-  "ravana": { "about": "Il re demone di Laṅkā, ucciso dal Signore Rāmachandra." },
-  "putana": { "about": "La strega che tentò di avvelenare Krishna bambino e ricevette la posizione di madre." },
-  "kaliya": { "about": "Il serpente dalle molte teste che Krishna domò nella Yamunā." },
-  "vrndavan": { "about": "La dimora boscosa di Krishna sulla Yamunā, a Vraja, dove vissero i Goswāmī; eternamente una con Goloka." },
-  "vraja": { "about": "La terra dell'infanzia di Krishna, intorno a Vṛndāvan e Mathurā." },
-  "govardhan": { "name": "La collina Govardhan", "about": "La collina che Krishna sollevò per sette giorni; adorata come Girirāj, non diversa da Lui." },
-  "radha-kunda": { "about": "Il lago di Śrīmatī Rādhārāṇī presso Govardhan, il luogo di adorazione più elevato." },
-  "govinda-kunda": { "about": "Lo stagno di Govardhan formatosi quando Indra bagnò Krishna." },
-  "vamsivata": { "about": "Il baniano di Vṛndāvan dove il flauto di Krishna chiamava le gopī alla danza rāsa." },
-  "mathura": { "about": "Il luogo di nascita di Krishna, sulla Yamunā." },
-  "gokul": { "about": "Il villaggio di Nanda Mahārāja sull'altra riva della Yamunā, dove Krishna trascorse la Sua infanzia." },
-  "yamuna": { "name": "La Yamunā", "about": "Il fiume sacro di Vraja, amato da Krishna." },
-  "ganga": { "name": "Il Gange", "about": "Il fiume santo che scorre dai piedi del Signore Viṣṇu e attraversa Nabadwīp." },
-  "nabadwip": { "about": "Il luogo di nascita di Mahāprabhu nel Bengala: nove isole sul Gange, non diverse da Vṛndāvan." },
-  "mayapur": { "about": "L'isola di Nabadwīp dove apparve Mahāprabhu." },
-  "godruma": { "about": "L'isola di Nabadwīp dove Śrīla Bhakti Vinod Ṭhākur visse a Svānanda-sukhada-kuñja." },
-  "koladwip": { "about": "L'isola di Nabadwīp dove sorge lo Śrī Chaitanya Sāraswat Maṭh, non diversa da Govardhan." },
-  "kuliya": { "about": "L'attuale città di Nabadwīp, dove le offese vengono perdonate." },
-  "scsmath": { "about": "Il tempio fondato da Śrīla Śrīdhar Mahārāja nel 1941 a Koladwīp, Nabadwīp." },
-  "shantipur": { "about": "La casa di Advaita Āchārya sulle rive del Gange." },
-  "puri": { "about": "La dimora sul mare del Signore Jagannāth in Orissa, dove Mahāprabhu trascorse i Suoi ultimi anni." },
-  "prayaga": { "about": "La confluenza del Gange e della Yamunā, dove Mahāprabhu istruì Śrī Rūpa." },
-  "kasi": { "about": "Vārāṇasī, l'antica città di Śiva, dove Mahāprabhu istruì Sanātan e convertì Prakāśānanda." },
-  "gaya": { "about": "La città santa dove Mahāprabhu incontrò Īśvara Purī e ricevette l'iniziazione." },
-  "dvaraka": { "about": "La città regale di Krishna sul mare occidentale." },
-  "godavari": { "name": "Il Godāvarī", "about": "Il fiume presso cui Mahāprabhu incontrò Rāmānanda Rāy." },
-  "jharikhanda": { "about": "La foresta che Mahāprabhu attraversò diretto a Vṛndāvan, facendo cantare gli animali." },
-  "ramakeli": { "about": "Il villaggio del Bengala dove Mahāprabhu incontrò per la prima volta Rūpa e Sanātan." },
-  "goloka": { "about": "La dimora suprema di Krishna nel cielo spirituale." },
-  "vaikuntha": { "about": "Il regno spirituale del Signore Nārāyaṇa, libero da ogni ansia." }
+  "krishna": {
+   "about": "La Suprema Personalità di Dio, il giovane pastore di Vraja e la fonte di tutte le incarnazioni."
+  },
+  "radha": {
+   "about": "L'eterna consorte di Krishna e la personificazione della Sua potenza di piacere, adorata come regina di Vṛndāvan."
+  },
+  "gauranga": {
+   "about": "Krishna stesso, apparso a Nabadwīp nel 1486 con il cuore e lo splendore dorato di Rādhā per donare al mondo l'amore per Krishna attraverso il canto del Santo Nome."
+  },
+  "nityananda": {
+   "about": "Balarām apparso come prima espansione e compagno più intimo di Mahāprabhu, il più misericordioso donatore del Santo Nome."
+  },
+  "advaita": {
+   "about": "Incarnazione di Mahā-Viṣṇu, le cui preghiere portarono Mahāprabhu nel mondo; uno dei Pañcha-tattva."
+  },
+  "gadadhara": {
+   "about": "Compagno intimo di Mahāprabhu, incarnazione dell'energia di Śrīmatī Rādhārāṇī; uno dei Pañcha-tattva."
+  },
+  "srivas": {
+   "about": "Nārada Muni nei passatempi di Mahāprabhu; ogni notte nel suo cortile a Māyāpur si teneva il kīrtan."
+  },
+  "balaram": {
+   "name": "Il Signore Balarām",
+   "about": "Il fratello maggiore e prima espansione di Krishna, il maestro spirituale originale."
+  },
+  "narayana": {
+   "name": "Il Signore Nārāyaṇa",
+   "about": "La maestosa forma a quattro braccia di Krishna, il Signore di Vaikuṇṭha."
+  },
+  "visnu": {
+   "name": "Il Signore Viṣṇu",
+   "about": "Il Signore onnipervadente che mantiene l'universo; espansione di Krishna."
+  },
+  "nrsimha": {
+   "name": "Il Signore Nṛsiṁha",
+   "about": "L'incarnazione metà uomo e metà leone che protesse Prahlād e uccise Hiraṇyakaśipu."
+  },
+  "rama": {
+   "name": "Il Signore Rāmachandra",
+   "about": "L'incarnazione di Krishna come re ideale di Ayodhyā, che sconfisse Rāvaṇa."
+  },
+  "jagannath": {
+   "name": "Il Signore Jagannāth",
+   "about": "Krishna come Signore dell'universo, adorato a Purī insieme a Baladeva e Subhadrā."
+  },
+  "sankarsana": {
+   "name": "Il Signore Saṅkarṣaṇa",
+   "about": "L'espansione di Balarām che sostiene tutta l'esistenza, fonte delle forme di Viṣṇu."
+  },
+  "ananta": {
+   "about": "Il serpente dalle mille teste, espansione di Balarām, che fa da letto a Viṣṇu e canta in eterno le Sue glorie."
+  },
+  "kalki": {
+   "name": "Il Signore Kalki",
+   "about": "L'incarnazione che appare alla fine del Kali-yuga."
+  },
+  "yasoda": {
+   "name": "Madre Yaśodā",
+   "about": "La madre adottiva di Krishna a Vraja, la regina di Nanda Mahārāja."
+  },
+  "nanda": {
+   "about": "Il padre adottivo di Krishna, il re dei pastori di Vraja."
+  },
+  "vrsabhanu": {
+   "about": "Il padre di Śrīmatī Rādhārāṇī, re dei pastori di Varṣāṇā."
+  },
+  "lalita": {
+   "about": "La prima delle otto amiche principali di Śrīmatī Rādhārāṇī."
+  },
+  "visakha": {
+   "about": "L'amica più cara di Śrīmatī Rādhārāṇī, nata lo stesso giorno di Lei."
+  },
+  "rupa-manjari": {
+   "about": "La guida delle giovani ancelle di Rādhārāṇī; la forma eterna di Śrī Rūpa Goswāmī."
+  },
+  "madhumangal": {
+   "about": "Il gioviale amico brāhmaṇa di Krishna a Vraja."
+  },
+  "brahma": {
+   "name": "Il Signore Brahmā",
+   "about": "Il primo essere creato, ingegnere dell'universo e capo della linea Brahma-Mādhva."
+  },
+  "siva": {
+   "name": "Il Signore Śiva",
+   "about": "Il più grande vaiṣṇava tra i semidei, che presiede alla qualità dell'ignoranza."
+  },
+  "indra": {
+   "about": "Il re del cielo, umiliato quando Krishna sollevò la collina Govardhan."
+  },
+  "laksmi": {
+   "about": "La dea della fortuna, eterna consorte di Nārāyaṇa."
+  },
+  "tulasi": {
+   "about": "L'amata devota di Krishna in forma di pianta, Vṛndā Devī, senza le cui foglie Egli non accetta alcuna offerta."
+  },
+  "sachi": {
+   "about": "La madre di Mahāprabhu, Yaśodā nella Gaura-līlā."
+  },
+  "jagannath-misra": {
+   "about": "Il padre di Mahāprabhu, Nanda Mahārāja nella Gaura-līlā."
+  },
+  "sita": {
+   "about": "La moglie di Śrī Advaita Āchārya e una grande devota."
+  },
+  "visnupriya": {
+   "about": "La seconda moglie di Mahāprabhu, che servì il Santo Nome nella separazione da Lui."
+  },
+  "laksmipriya": {
+   "about": "La prima moglie di Mahāprabhu."
+  },
+  "haridas": {
+   "about": "Compagno di Mahāprabhu che cantava trecentomila nomi al giorno, onorato come nāmāchārya."
+  },
+  "svarup": {
+   "about": "Il segretario e confidente più intimo di Mahāprabhu a Purī, Lalitā nella Krishna-līlā."
+  },
+  "ramananda": {
+   "about": "Governatore e poeta con cui Mahāprabhu discusse le verità più alte della devozione sulle rive del Godāvarī."
+  },
+  "sarvabhauma": {
+   "about": "Il grande logico di Purī che Mahāprabhu convertì alla devozione."
+  },
+  "murari": {
+   "about": "Medico e compagno di Mahāprabhu, uno dei Suoi primi biografi, devoto del Signore Rāma."
+  },
+  "mukunda-datta": {
+   "about": "Un cantore dalla voce dolce e amico d'infanzia di Mahāprabhu."
+  },
+  "madhavendra": {
+   "about": "Il seme dell'albero dell'amore divino e nonno spirituale di Mahāprabhu."
+  },
+  "isvara": {
+   "about": "Il guru iniziatore di Mahāprabhu, discepolo di Mādhavendra Purī."
+  },
+  "prataparudra": {
+   "name": "Il re Pratāparudra",
+   "about": "Il re dell'Orissa che servì Mahāprabhu e il Signore Jagannāth."
+  },
+  "prakasananda": {
+   "about": "Il principale sannyāsī māyāvādī di Kāśī, convertito da Mahāprabhu."
+  },
+  "jagai-madhai": {
+   "name": "Jagāi e Mādhāi",
+   "about": "Due famigerati fratelli di Nabadwīp, salvati da Nityānanda Prabhu."
+  },
+  "kesava-kasmiri": {
+   "about": "Un campione di erudizione sconfitto dal giovane Nimāi Paṇḍit; in seguito un āchārya vaiṣṇava."
+  },
+  "rupa": {
+   "about": "La guida dei sei Goswāmī, investito da Mahāprabhu del compito di stabilire la scienza del rasa."
+  },
+  "sanatan": {
+   "about": "Il fratello maggiore di Rūpa Goswāmī, istruito da Mahāprabhu a Kāśī; il maestro del sambandha."
+  },
+  "jiva": {
+   "about": "Nipote di Rūpa e Sanātan, il grande filosofo della scuola e autore dei Sandarbha."
+  },
+  "raghunath-das": {
+   "about": "Il principe rinunciante che visse a Rādhā Kuṇḍa, il prayojanāchārya."
+  },
+  "raghunath-bhatta": {
+   "about": "Il Goswāmī famoso per la sua dolce recitazione dello Śrīmad-Bhāgavatam."
+  },
+  "gopal-bhatta": {
+   "about": "Il Goswāmī dell'India del Sud che servì Śrī Rādhā-Ramaṇ."
+  },
+  "six-goswamis": {
+   "name": "I sei Goswāmī",
+   "about": "Rūpa, Sanātan, Jīva, Raghunāth Dās, Raghunāth Bhaṭṭa e Gopāl Bhaṭṭa, che stabilirono gli insegnamenti di Mahāprabhu a Vṛndāvan."
+  },
+  "krsnadas": {
+   "about": "Autore dello Śrī Chaitanya-charitāmṛta, il racconto definitivo della vita e degli insegnamenti di Mahāprabhu."
+  },
+  "lokanath": {
+   "about": "Compagno di Mahāprabhu a Vṛndāvan e guru di Narottam Dās Ṭhākur."
+  },
+  "narottam": {
+   "about": "Il principe poeta i cui canti bengalesi sono il cuore del kīrtan gauḍīya."
+  },
+  "lochan": {
+   "about": "Poeta dello Śrī Chaitanya-maṅgala e di molti canti della Gaura-līlā."
+  },
+  "vyasa": {
+   "about": "Il compilatore dei Veda e autore dello Śrīmad-Bhāgavatam."
+  },
+  "narada": {
+   "about": "Il saggio viandante che diffonde la devozione in tutto l'universo; il guru di Vyāsadeva."
+  },
+  "sukadeva": {
+   "about": "Il figlio di Vyāsadeva, che narrò lo Śrīmad-Bhāgavatam al re Parīkṣit."
+  },
+  "madhva": {
+   "about": "Il fondatore della scuola Tattvavāda nel XIII secolo, nella cui linea Mahāprabhu ricevette l'iniziazione."
+  },
+  "sankara": {
+   "about": "Il maestro del monismo impersonale dell'VIII secolo, un'incarnazione di Śiva."
+  },
+  "bhakti-vinod": {
+   "about": "Il pioniere della devozione pura nell'età moderna, poeta di molti canti di questo libro."
+  },
+  "jagannath-das": {
+   "about": "La guida dei vaiṣṇava del suo tempo, che identificò il luogo di nascita di Mahāprabhu."
+  },
+  "gaura-kisora": {
+   "about": "Il paramahaṁsa rinunciante e guru di Śrīla Saraswatī Ṭhākur."
+  },
+  "saraswati-thakur": {
+   "about": "Il fondatore del Gauḍīya Maṭh, che portò il messaggio di Mahāprabhu in tutta l'India e in Occidente."
+  },
+  "sridhar": {
+   "about": "Il fondatore-āchārya dello Śrī Chaitanya Sāraswat Maṭh, custode della devozione."
+  },
+  "govinda-maharaj": {
+   "about": "Il successore di Śrīla Śrīdhar Mahārāja, che diffuse la missione del Maṭh in tutto il mondo."
+  },
+  "bhaktivedanta": {
+   "about": "Fondatore-āchārya dell'ISKCON, che diffuse il Santo Nome in tutto il mondo."
+  },
+  "avadhut": {
+   "about": "Discepolo di Śrīla Govinda Mahārāja e guida della missione russa dello Śrī Chaitanya Sāraswat Maṭh."
+  },
+  "sudhir": {
+   "about": "Un sannyāsī anziano dello Śrī Chaitanya Sāraswat Maṭh, fondatore della Guardian of Devotion Press."
+  },
+  "madhusudan": {
+   "about": "Un sannyāsī dello Śrī Chaitanya Sāraswat Maṭh."
+  },
+  "nirmal": {
+   "about": "L'attuale āchārya dello Śrī Chaitanya Sāraswat Maṭh."
+  },
+  "prahlad": {
+   "about": "Il fanciullo devoto protetto dal Signore Nṛsiṁha."
+  },
+  "hiranyakasipu": {
+   "about": "Il re demone ucciso dal Signore Nṛsiṁha."
+  },
+  "kamsa": {
+   "name": "Il re Kaṁsa",
+   "about": "Lo zio tiranno di Krishna, re di Mathurā, ucciso da Krishna."
+  },
+  "ravana": {
+   "about": "Il re demone di Laṅkā, ucciso dal Signore Rāmachandra."
+  },
+  "putana": {
+   "about": "La strega che tentò di avvelenare Krishna bambino e ricevette la posizione di madre."
+  },
+  "kaliya": {
+   "about": "Il serpente dalle molte teste che Krishna domò nella Yamunā."
+  },
+  "vrndavan": {
+   "about": "La dimora boscosa di Krishna sulla Yamunā, a Vraja, dove vissero i Goswāmī; eternamente una con Goloka."
+  },
+  "vraja": {
+   "about": "La terra dell'infanzia di Krishna, intorno a Vṛndāvan e Mathurā."
+  },
+  "govardhan": {
+   "name": "La collina Govardhan",
+   "about": "La collina che Krishna sollevò per sette giorni; adorata come Girirāj, non diversa da Lui."
+  },
+  "radha-kunda": {
+   "about": "Il lago di Śrīmatī Rādhārāṇī presso Govardhan, il luogo di adorazione più elevato."
+  },
+  "govinda-kunda": {
+   "about": "Lo stagno di Govardhan formatosi quando Indra bagnò Krishna."
+  },
+  "vamsivata": {
+   "about": "Il baniano di Vṛndāvan dove il flauto di Krishna chiamava le gopī alla danza rāsa."
+  },
+  "mathura": {
+   "about": "Il luogo di nascita di Krishna, sulla Yamunā."
+  },
+  "gokul": {
+   "about": "Il villaggio di Nanda Mahārāja sull'altra riva della Yamunā, dove Krishna trascorse la Sua infanzia."
+  },
+  "yamuna": {
+   "name": "La Yamunā",
+   "about": "Il fiume sacro di Vraja, amato da Krishna."
+  },
+  "ganga": {
+   "name": "Il Gange",
+   "about": "Il fiume santo che scorre dai piedi del Signore Viṣṇu e attraversa Nabadwīp."
+  },
+  "nabadwip": {
+   "about": "Il luogo di nascita di Mahāprabhu nel Bengala: nove isole sul Gange, non diverse da Vṛndāvan."
+  },
+  "mayapur": {
+   "about": "L'isola di Nabadwīp dove apparve Mahāprabhu."
+  },
+  "godruma": {
+   "about": "L'isola di Nabadwīp dove Śrīla Bhakti Vinod Ṭhākur visse a Svānanda-sukhada-kuñja."
+  },
+  "koladwip": {
+   "about": "L'isola di Nabadwīp dove sorge lo Śrī Chaitanya Sāraswat Maṭh, non diversa da Govardhan."
+  },
+  "kuliya": {
+   "about": "L'attuale città di Nabadwīp, dove le offese vengono perdonate."
+  },
+  "scsmath": {
+   "about": "Il tempio fondato da Śrīla Śrīdhar Mahārāja nel 1941 a Koladwīp, Nabadwīp."
+  },
+  "shantipur": {
+   "about": "La casa di Advaita Āchārya sulle rive del Gange."
+  },
+  "puri": {
+   "about": "La dimora sul mare del Signore Jagannāth in Orissa, dove Mahāprabhu trascorse i Suoi ultimi anni."
+  },
+  "prayaga": {
+   "about": "La confluenza del Gange e della Yamunā, dove Mahāprabhu istruì Śrī Rūpa."
+  },
+  "kasi": {
+   "about": "Vārāṇasī, l'antica città di Śiva, dove Mahāprabhu istruì Sanātan e convertì Prakāśānanda."
+  },
+  "gaya": {
+   "about": "La città santa dove Mahāprabhu incontrò Īśvara Purī e ricevette l'iniziazione."
+  },
+  "dvaraka": {
+   "about": "La città regale di Krishna sul mare occidentale."
+  },
+  "godavari": {
+   "name": "Il Godāvarī",
+   "about": "Il fiume presso cui Mahāprabhu incontrò Rāmānanda Rāy."
+  },
+  "jharikhanda": {
+   "about": "La foresta che Mahāprabhu attraversò diretto a Vṛndāvan, facendo cantare gli animali."
+  },
+  "ramakeli": {
+   "about": "Il villaggio del Bengala dove Mahāprabhu incontrò per la prima volta Rūpa e Sanātan."
+  },
+  "goloka": {
+   "about": "La dimora suprema di Krishna nel cielo spirituale."
+  },
+  "vaikuntha": {
+   "about": "Il regno spirituale del Signore Nārāyaṇa, libero da ogni ansia."
+  },
+  "krishna/govinda": {
+   "about": "Nome di Krishna: colui che dà gioia alle mucche, alla terra e ai sensi."
+  },
+  "krishna/gopinath": {
+   "about": "Nome di Krishna: il Signore e amato delle gopī."
+  },
+  "krishna/madhava": {
+   "about": "Nome di Krishna: il dolce Signore della primavera, nato nella dinastia Madhu, sposo di Mā, la dea della fortuna."
+  },
+  "krishna/kesava": {
+   "about": "Nome di Krishna: colui dai bei capelli, che uccise il demone Keśī."
+  },
+  "krishna/syamasundar": {
+   "about": "Nome di Krishna: il bello, scuro come una nuvola di pioggia."
+  },
+  "krishna/syama": {
+   "about": "Nome di Krishna: lo scuro, del colore di una fresca nuvola di pioggia."
+  },
+  "krishna/giridhari": {
+   "about": "Nome di Krishna: colui che sollevò la collina Govardhan."
+  },
+  "krishna/gopal": {
+   "about": "Nome di Krishna: il pastorello, protettore delle mucche."
+  },
+  "krishna/damodar": {
+   "about": "Nome di Krishna: colui la cui vita (udara) Madre Yaśodā legò con una corda (dāma)."
+  },
+  "krishna/mukunda": {
+   "about": "Nome di Krishna: colui che dona la liberazione e l'amore che la rende insignificante."
+  },
+  "krishna/hrsikesa": {
+   "about": "Nome di Krishna: il padrone dei sensi di tutti."
+  },
+  "krishna/kanai": {
+   "about": "L'affettuoso nome bengalese di Krishna, usato dalla Sua famiglia e dagli amici a Vraja."
+  },
+  "krishna/hari": {
+   "about": "Nome di Krishna: colui che toglie tutto ciò che è infausto e ruba il cuore dei Suoi devoti."
+  },
+  "krishna/murari": {
+   "about": "Nome di Krishna: il nemico del demone Mura."
+  },
+  "krishna/krishnachandra": {
+   "about": "Nome di Krishna: la luna di Vraja."
+  },
+  "krishna/yadava": {
+   "about": "Nome di Krishna: il discendente del re Yadu, il gioiello della dinastia Yadu."
+  },
+  "krishna/madhusudan": {
+   "about": "Nome di Krishna: l'uccisore del demone Madhu."
+  },
+  "krishna/janardana": {
+   "about": "Nome di Krishna: colui al quale tutti pregano, il protettore dei Suoi devoti."
+  },
+  "krishna/achyuta": {
+   "about": "Nome di Krishna: l'infallibile, che non decade mai dalla Sua posizione."
+  },
+  "krishna/nandanandana": {
+   "about": "Nome di Krishna: il figlio di Nanda Mahārāja, il re di Vraja."
+  },
+  "gauranga/gauranga-name": {
+   "about": "Nome di Śrī Chaitanya Mahāprabhu: colui le cui membra sono d'oro."
+  },
+  "gauranga/gaurasundar": {
+   "about": "Nome di Śrī Chaitanya Mahāprabhu: il bel Signore dorato."
+  },
+  "gauranga/gaurahari": {
+   "about": "Nome di Śrī Chaitanya Mahāprabhu: Hari, Krishna stesso, in forma dorata."
+  },
+  "gauranga/gaurachandra": {
+   "about": "Nome di Śrī Chaitanya Mahāprabhu: la luna dorata."
+  },
+  "gauranga/nimai": {
+   "about": "Il nome d'infanzia di Mahāprabhu: nacque sotto un albero di neem."
+  },
+  "gauranga/visvambhara": {
+   "about": "Il nome di nascita di Mahāprabhu: colui che sostiene l'universo."
+  },
+  "radha/radhika": {
+   "about": "Nome di Śrīmatī Rādhārāṇī: colei che adora Krishna nel modo migliore."
+  },
+  "radha/vrsabhanunandini": {
+   "about": "Nome di Śrīmatī Rādhārāṇī: la figlia del re Vṛṣabhānu."
+  },
+  "radha/gandharva": {
+   "about": "Nome di Śrīmatī Rādhārāṇī: la migliore delle cantanti e danzatrici."
+  },
+  "nityananda/nitai": {
+   "about": "Il nome affettuoso di Śrī Nityānanda Prabhu."
+  },
+  "balaram/baladeva": {
+   "about": "Nome del Signore Balarām: il Signore della forza."
+  },
+  "balaram/balabhadra": {
+   "about": "Nome del Signore Balarām: il forte e propizio."
+  },
+  "govardhan/giriraj": {
+   "about": "La collina Govardhan come re dei monti, adorata come non diversa da Krishna."
+  },
+  "yamuna/kalindi": {
+   "about": "Nome della Yamunā: la figlia del dio del sole, che scorre dal monte Kalinda."
+  },
+  "nabadwip/nadia": {
+   "about": "Il nome tradizionale del distretto di Nabadwīp nel Bengala, luogo di nascita di Mahāprabhu."
+  },
+  "puri/nilachala": {
+   "about": "Nome di Jagannāth Purī: la montagna blu su cui sorge il tempio del Signore Jagannāth."
+  },
+  "laksmi/narayani": {
+   "about": "Nome di Lakṣmī Devī: la consorte di Nārāyaṇa."
+  },
+  "saraswati-thakur/prabhupad": {
+   "about": "Il titolo con cui la linea Sāraswat onora Śrīla Bhakti Siddhānta Saraswatī Ṭhākur: colui ai cui piedi siedono i maestri."
+  },
+  "saraswati-thakur/dayita-das": {
+   "about": "Il nome di Śrīla Bhakti Siddhānta Saraswatī Ṭhākur prima del sannyāsa: il servitore dell'amato di Śrī Rādhā."
+  },
+  "syama-kunda": {
+   "about": "Il lago di Krishna accanto a Rādhā Kuṇḍa, presso Govardhan."
+  },
+  "balabhadra-bhatta": {
+   "about": "Compagno e servitore di Mahāprabhu nel Suo viaggio attraverso Jhāḍakhaṇḍa verso Vṛndāvan."
+  },
+  "baladeva-vidyabhusana": {
+   "about": "Āchārya gauḍīya del XVIII secolo, autore del commento Govinda-bhāṣya al Vedānta-sūtra."
+  }
  }
 }

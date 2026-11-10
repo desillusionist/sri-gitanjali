@@ -4,12 +4,17 @@ import type { HolyNameKind } from "@/lib/holyNames";
 
 export type HolyNameLocale = {
   ui: { kinds: Record<HolyNameKind, string>; page: string; map: string };
-  /** Per entry id: the translated note, and the name where the language spells it differently. */
+  /** Per entry id (or "id/variant" for another name): the translated note, and the name where the language spells it differently. */
   entries: Record<string, { name?: string; about: string }>;
 };
 
 const loaders = import.meta.glob<HolyNameLocale>("../data/holy-names-i18n/*.json", { import: "default" });
 const cache = new Map<string, Promise<HolyNameLocale | null>>();
+
+/** Key of a note in a language file: the entry id, or "id/variant" for one of its other names. */
+export function holyNameNoteKey(id: string, variant?: string) {
+  return variant ? `${id}/${variant}` : id;
+}
 
 export const HOLY_NAME_LOCALES = Object.keys(loaders).map((path) => path.replace(/^.*\/(\w+)\.json$/, "$1"));
 
