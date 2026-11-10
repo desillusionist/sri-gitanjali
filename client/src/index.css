@@ -498,7 +498,7 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .in-song-highlight { padding: 0.03em 0.12em; color: inherit; background: linear-gradient(180deg, transparent 30%, rgba(var(--accent-light-rgb), 0.62) 30%, rgba(var(--accent-light-rgb), 0.62) 90%, transparent 90%); box-decoration-break: clone; -webkit-box-decoration-break: clone; transition: background 180ms var(--ease-out), color 180ms var(--ease-out), box-shadow 180ms var(--ease-out); }
 .in-song-highlight.is-active { color: #33200d; background: #f4b54a; box-shadow: 0 0 0 0.18rem rgba(var(--accent-light-rgb), 0.24); }
 /* Every word has a meaning, so words are not underlined; hovering, tapping or focusing highlights the word. */
-.word-for-word-trigger { cursor: help; border-radius: 2px; transition: color 160ms var(--ease-out), background 160ms var(--ease-out); }
+.word-for-word-trigger { cursor: pointer; border-radius: 2px; transition: color 160ms var(--ease-out), background 160ms var(--ease-out); }
 .word-for-word-trigger:hover, .word-for-word-trigger:focus-visible, .word-for-word-trigger[aria-expanded="true"] { color: var(--saffron-deep); background: rgba(var(--saffron-rgb), 0.12); outline: none; }
 .word-for-word-trigger:focus-visible { box-shadow: 0 0 0 2px rgba(var(--saffron-rgb), 0.32); }
 @media (hover: none) {

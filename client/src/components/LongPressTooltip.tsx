@@ -55,13 +55,17 @@ type LongPressTooltipProps = {
   popupClassName?: string;
   popup: ReactNode;
   children: ReactNode;
+  /** With a mouse, open on hover (default) or only on click; hover still highlights the text. */
+  openOnHover?: boolean;
+  /** Language of the pop-up text when it differs from the page. */
+  popupLang?: string;
 };
 
 /**
  * Inline text with a small pop-up: it opens on mouse hover or keyboard focus, and on touch screens
  * only on a long press, so taps and scrolling leave it alone. A double tap selects the text instead.
  */
-export function LongPressTooltip({ className, popupId, popupLabel, popupClassName, popup, children }: LongPressTooltipProps) {
+export function LongPressTooltip({ className, popupId, popupLabel, popupClassName, popup, children, openOnHover = true, popupLang }: LongPressTooltipProps) {
   const triggerRef = useRef<HTMLSpanElement>(null);
   const closeTimerRef = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -74,6 +78,7 @@ export function LongPressTooltip({ className, popupId, popupLabel, popupClassNam
 
   const longPressRef = useRef<{ x: number; y: number; timer: number } | null>(null);
   const suppressClickRef = useRef(false);
+  const pointerTypeRef = useRef<string>("");
   const clearLongPress = () => {
     if (longPressRef.current) window.clearTimeout(longPressRef.current.timer);
     longPressRef.current = null;
@@ -135,8 +140,8 @@ export function LongPressTooltip({ className, popupId, popupLabel, popupClassNam
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         aria-describedby={isOpen ? popupId : undefined}
-        onPointerEnter={(event) => { if (event.pointerType === "mouse") { clearCloseTimer(); setIsOpen(true); } }}
-        onPointerLeave={(event) => { if (event.pointerType === "mouse") closeSoon(); }}
+        onPointerEnter={(event) => { if (openOnHover && event.pointerType === "mouse") { clearCloseTimer(); setIsOpen(true); } }}
+        onPointerLeave={(event) => { if (openOnHover && event.pointerType === "mouse") closeSoon(); }}
         onFocus={(event) => {
           // Keyboard focus only: a tap also focuses the word, and that must not open it.
           if (!event.currentTarget.matches(":focus-visible")) return;
@@ -148,6 +153,7 @@ export function LongPressTooltip({ className, popupId, popupLabel, popupClassNam
           if (!relatedElement?.closest(`.${POPUP_CLASS}`)) closeSoon();
         }}
         onPointerDown={(event) => {
+          pointerTypeRef.current = event.pointerType;
           // On touch the pop-up opens only on a long press, so taps and scrolling leave it alone.
           if (event.pointerType !== "touch" || isTextSelecting()) return;
           clearLongPress();
@@ -184,6 +190,12 @@ export function LongPressTooltip({ className, popupId, popupLabel, popupClassNam
             event.preventDefault();
             event.stopPropagation();
             suppressClickRef.current = false;
+            return;
+          }
+          // Click-only pop-ups: a mouse click opens or closes them.
+          if (!openOnHover && pointerTypeRef.current === "mouse") {
+            clearCloseTimer();
+            setIsOpen((current) => !current);
           }
         }}
         onKeyDown={(event) => {
@@ -200,6 +212,7 @@ export function LongPressTooltip({ className, popupId, popupLabel, popupClassNam
           id={popupId}
           className={`${POPUP_CLASS}${popupClassName ? ` ${popupClassName}` : ""}`}
           role="dialog"
+          lang={popupLang}
           aria-label={popupLabel}
           style={popupStyle}
           onMouseEnter={clearCloseTimer}

@@ -18,6 +18,7 @@ function WordForWordTrigger({ text, tooltipText = text, entries, source, childre
   return (
     <LongPressTooltip
       className="word-for-word-trigger"
+      openOnHover={false}
       popupId={`word-for-word-${entries[0]?.id ?? text.replace(/\W+/g, "-")}`}
       popupLabel={`Word-for-word meaning of ${tooltipText}`}
       popup={(
