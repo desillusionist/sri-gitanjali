@@ -10,7 +10,7 @@ import { WordForWordText } from "@/components/WordForWordText";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { HolyNameText } from "@/components/HolyNameText";
-import songNotesByLanguage from "@/data/song-notes-i18n.json";
+import { getFootnotes } from "@/lib/footnotes";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
@@ -1039,9 +1039,7 @@ function SongPageContent() {
   const songHref = (songId: string) => `/song/${songId}${normalizeSearchText(query) ? `?q=${encodeURIComponent(query.trim())}` : ""}`;
   const hasTranslations = song.verses.some((verse) => Boolean(verse.translation));
   const selectedSecondaryLanguage = secondaryTranslationLanguages.find((language) => language.code === secondaryTranslationLanguage) ?? null;
-  // Notes on this song in the second translation's language (e.g. footnotes of the Russian edition).
-  const secondaryNotes = selectedSecondaryLanguage ? ((songNotesByLanguage as unknown as Record<string, Record<string, string[]> | undefined>)[selectedSecondaryLanguage.code]?.[song.id] ?? []) : [];
-  const hasSongNote = Boolean(song.comment || secondaryNotes.length || songLanguageInfo);
+  const hasSongNote = Boolean(song.comment || songLanguageInfo);
   const readingTypographyStyle = {
     "--reading-font-size-adjustment": `${READING_FONT_SIZE_ADJUSTMENTS[readingFontSizeStep]}rem`,
     "--reading-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
@@ -1333,7 +1331,6 @@ function SongPageContent() {
               <PopoverContent className="song-note-popover" align="end" side="bottom" sideOffset={8} collisionPadding={12}>
                 <span className="info-card-eyebrow">{copy.song.songNote}</span>
                 {song.comment && <p className="song-note-body"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
-                {selectedSecondaryLanguage && secondaryNotes.map((note) => <p className="song-note-body" lang={selectedSecondaryLanguage.lang} translate="no" key={note.slice(0, 24)}>{note}</p>)}
                 {songLanguageInfo && <p className="song-note-meta">{copy.song.originalLanguage.replace("{language}", songLanguageInfo.english)}</p>}
               </PopoverContent>
             </Popover>
@@ -1460,10 +1457,10 @@ function SongPageContent() {
                   {verse.translation && (
                     <>
                       <div id={`translation-${verse.id}`} hidden={!translationVisible}>
-                        <p className="translation"><HolyNameText value={verse.translation} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(verse.translation.slice(0, offset), query).filter((part) => part.isMatch).length} />} /></p>
+                        <p className="translation"><HolyNameText value={verse.translation} footnotes={getFootnotes("en", song.id, verse.id)} footnoteId={`footnote-${verse.id}`} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(verse.translation.slice(0, offset), query).filter((part) => part.isMatch).length} />} /></p>
                         {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
                         {selectedSecondaryLanguage && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
-                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang} translate="no"><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
+                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang} translate="no"><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} footnotes={getFootnotes(selectedSecondaryLanguage.code, song.id, verse.id)} footnoteId={`footnote-${selectedSecondaryLanguage.code}-${verse.id}`} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
                       </div>
                     </>
                   )}

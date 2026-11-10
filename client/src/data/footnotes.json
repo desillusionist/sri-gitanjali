@@ -1,0 +1,29 @@
+{
+ "_note": "Footnotes to verse translations, by language and \"songId::verseId\". Each sits after the first occurrence of `after` in the translation, or at its end. Shown as a marker that opens on click (desktop) or long press (touch).",
+ "en": {
+  "sri-vaisnava-mahima-giti-055::verse-2": [
+   {
+    "text": "The six urges are those of speech, the mind, anger, the tongue, the belly, and the genitals.\nThe six faults are overeating or collecting more monetary funds than required, overendeavouring for material objectives, unnecessary talking about mundane affairs, being too attached to or too neglectful of Scriptural rules and regulations, associating with worldly-minded persons, and lusting after mundane achievements.\nThe six good qualities are enthusiasm, patience, confidence, the determination to perform activities favourable to devotional service, the resolution to abandon the association of non-devotees, and the discipline required to always follow in the footsteps of the predecessor āchāryas.\nThe six kinds of saintly association are offering gifts in charity, accepting charitable gifts, revealing one’s mind in confidence, inquiring confidentially, accepting prasādam and offering prasādam."
+   }
+  ]
+ },
+ "ru": {
+  "sri-vaisnava-mahima-giti-055::verse-2": [
+   {
+    "after": "общения",
+    "text": "Шесть побуждений: речь, ум, гнев, язык, желудок и гениталии.\nШесть недостатков: переедание или накопление чрезмерных сбережений; тяжкие и ненужные усилия ради достижения мирских целей; праздные разговоры на мирские темы; чрезмерное внимание к соблюдению указаний священных писаний или, наоборот, пренебрежение ими; общение с материалистически настроенными людьми; страстная жажда мирских достижений.\nШесть достоинств: энтузиазм; терпение; уверенность; решимость, необходимая для совершения благоприятных для служения из преданности действий; решимость избегать общения с непреданными; следование примеру ачарьев.\nШесть видов святого общения: дарить подарки, принимать подарки, доверять свои мысли другим, слушать о сокровенном от других, принимать прасад и предлагать прасад."
+   }
+  ],
+  "srimad-bhakti-vinod-viraha-dasakam-152::verse-2": [
+   {
+    "text": "Эта молитва, обращённая к Шриле Бхактивиноду Тхакуру, была составлена ещё при жизни Гуру автора, Шрилы Бхактисиддханты Сарасвати Тхакура Госвами Прабхупады. Прочитав оригинальный санскритский стих, Шрила Прабхупада заметил, говоря о Шриле Шридхаре Махарадже: «Теперь я уверен, что у нас есть один человек, который в состоянии поддерживать стандарт нашей сампрадаи (божественной преемственности духовных учителей)»."
+   }
+  ],
+  "sri-govinda-kunda-mahatmya-illumination-161::verse-3": [
+   {
+    "after": "адхибхаутика",
+    "text": "Тройственные страдания материального мира — это адхьятмика-клеша (страдания, которые причиняют живому существу собственные тело и ум, то есть телесные и душевные недуги), адхидайвика-клеша (страдания, вызываемые стихийными бедствиями) и адхибхаутика-клеша (страдания, доставляемые другими живыми существами)."
+   }
+  ]
+ }
+}

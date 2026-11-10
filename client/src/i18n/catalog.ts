@@ -149,6 +149,7 @@ export const translations = {
       // Joins “Recording N”, the singer and the track length in the recording picker.
       audioVersionSeparator: " · ",
       songNote: "About this song",
+      footnote: "Footnote",
       holyNameKinds: { person: "Vaiṣṇava", divine: "The Lord and His own", place: "Holy place", realm: "Spiritual world", other: "Personality" },
       holyNamePage: "Read more",
       holyNameMap: "Show on Google Maps",

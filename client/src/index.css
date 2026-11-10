@@ -920,6 +920,13 @@ html.has-player-dock [data-sonner-toaster] { bottom: 6.5rem !important; }
 /* Title: the name, place or word. */
 .author-card-name, .word-for-word-popup-term { color: var(--ink); font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; line-height: 1.1; }
 .word-for-word-popup:not(.holy-name-popup) .word-for-word-popup-term { font-family: "PalakaNew", "Charis SIL", Georgia, serif; font-size: 1.05rem; font-weight: 400; }
+/* Footnotes: a small saffron mark in the translation, opening a note card. */
+.footnote-marker { display: inline-block; padding: 0 0.2em; margin-left: 0.05em; color: var(--saffron-deep); font-style: normal; font-weight: 700; line-height: 1; cursor: pointer; border-radius: 2px; }
+.footnote-marker sup { font-size: 0.85em; }
+.footnote-marker:hover, .footnote-marker:focus-visible, .footnote-marker[aria-expanded="true"] { background: rgba(var(--saffron-rgb), 0.14); outline: none; }
+.footnote-popup { max-height: min(60vh, 28rem); overflow-y: auto; }
+.footnote-popup .word-for-word-popup-source { padding: 0; border: 0; color: var(--saffron-deep); }
+.footnote-popup-text { color: var(--ink-soft); font-size: 0.84rem; line-height: 1.55; white-space: pre-line; }
 /* Body text. */
 .author-card-summary, .holy-name-popup-about, .word-for-word-popup-meanings, .song-note-body { color: var(--ink-soft); font-size: 0.84rem; line-height: 1.55; }
 .word-for-word-popup-meanings { display: grid; gap: 0.28rem; }
