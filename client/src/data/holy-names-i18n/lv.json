@@ -229,6 +229,11 @@
   },
   "narottam": {
    "name": "Šrīla Narotama Dāss Thākurs",
+   "aliases": [
+    "Šrīla Narotama Dāss Thākurs",
+    "Narottām*",
+    "Narotam*"
+   ],
    "about": "Princis un dzejnieks, kura bengāļu dziesmas ir gaudīja kīrtana sirds."
   },
   "lochan": {
@@ -606,6 +611,22 @@
   "rama/rama-name": {
    "about": "Vārds, kas nozīmē “prieka devējs”. Svētajā Vārdā gaudījas redz pašu Krišnu, kas iepriecina Šrī Rādhu; tas ir arī Balarāmas un Kunga Rāmačandras vārds.",
    "name": "Rāma"
+  },
+  "srinivas-acharya": {
+   "name": "Šrīla Šrinivāss Āčārja",
+   "aliases": [
+    "Šrinivās* Āčārj*",
+    "Šrīnivās* Āčārj*"
+   ],
+   "about": "Dižais sludinātājs, kas kopā ar Narotamu Dāsu Thākuru un Šjāmānandu Prabhu atveda Gosvāmī grāmatas no Vrindāvanas uz Bengāliju un izplatīja tur Mahāprabhu mācību."
+  },
+  "ramachandra-kaviraj": {
+   "name": "Šrī Rāmačandra Kavirādžs",
+   "aliases": [
+    "Rāmačandr* Čakravartī",
+    "Rāmačandr* Kavirādž*"
+   ],
+   "about": "Šrinivāsa Āčārjas māceklis un Narotama Dāsa Thākura nešķirams draugs, par kura sabiedrību Narotams lūdz savās dziesmās."
   }
  }
 }

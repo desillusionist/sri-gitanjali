@@ -28,6 +28,18 @@ describe("song share text", () => {
   });
 });
 
+describe("song share footnotes", () => {
+  const withNotes = {
+    ...content,
+    verses: [{ ...content.verses[0], translation: "Worship Gaurahari, the friend of devotees.", footnotes: [{ after: "Gaurahari", text: "Gaura, who takes away." }], secondaryFootnotes: [{ text: "Примечание." }] }],
+  };
+
+  it("marks each footnote in the text and adds it below", () => {
+    expect(buildSongShareText(withNotes, "plain")).toContain("Worship Gaurahari*, the friend of devotees.\n* Gaura, who takes away.\n\nRU: Поклоняйтесь Гаурахари.*\n* Примечание.");
+    expect(buildSongShareText(withNotes, "markdown")).toContain("> Worship Gaurahari\\*, the friend of devotees.\n\n<small>\\* Gaura, who takes away.</small>");
+  });
+});
+
 describe("song share link", () => {
   const ids = ["a", "b", "c"];
   it("round-trips the open translations, language and ornaments", () => {

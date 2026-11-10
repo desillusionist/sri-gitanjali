@@ -527,10 +527,12 @@
     "Śrīvās Ṭhākur",
     "Śrīvas Ṭhākur",
     "Śrīvās Paṇḍit",
+    "Śrīnivās Paṇḍit",
     "Śrīvās"
    ],
    "ru": [
-    "Шривас*"
+    "Шривас*",
+    "Шринивас* Пандит*"
    ],
    "authorId": "srivas-thakur"
   },
@@ -1268,6 +1270,43 @@
     "Нароттам*"
    ],
    "authorId": "narottam-das-thakur"
+  },
+  {
+   "id": "srinivas-acharya",
+   "kind": "person",
+   "name": "Śrīla Śrīnivās Āchārya",
+   "about": "The great preacher who, with Narottam Dās Ṭhākur and Śyāmānanda Prabhu, brought the Goswāmīs’ books from Vṛndāvan to Bengal and spread Mahāprabhu’s teachings there.",
+   "aliases": [
+    "Śrīla Śrīnivās Āchārya",
+    "Śrī Śrīnivās Āchārya",
+    "Śrīnivās Āchārya Prabhu",
+    "Śrīnivās Āchārya",
+    "Śrīnivāsa Āchārya",
+    "Śrī Āchārya Ṭhākur",
+    "Āchārya Ṭhākur"
+   ],
+   "ru": [
+    "Шринивас* Ачар*",
+    "Шри Ачар* Тхакур*"
+   ],
+   "authorId": "srinivas-acharya"
+  },
+  {
+   "id": "ramachandra-kaviraj",
+   "kind": "person",
+   "name": "Śrī Rāmachandra Kavirāj",
+   "about": "Śrīnivās Āchārya’s disciple and Narottam Dās Ṭhākur’s inseparable friend, whose company Narottam prays for in his songs.",
+   "aliases": [
+    "Śrī Rāmachandra Chakravartī",
+    "Rāmachandra Chakravartī",
+    "Śrī Rāmachandra Kavirāj",
+    "Rāmachandra Kavirāj",
+    "Rāmachandra Kavirāja"
+   ],
+   "ru": [
+    "Рамачандр* Чакраварти",
+    "Рамачандр* Кавирадж*"
+   ]
   },
   {
    "id": "lochan",

@@ -35,6 +35,8 @@ export function SongListItem({ song, query = "", variant = "default", secondary,
   const languageInfo = language ? SONG_LANGUAGES[language] : undefined;
   const hasTextQuery = Boolean(normalizeSearchText(query));
   const excerpt = hasTextQuery ? getSongSearchExcerpt(song, query, secondary) : null;
+  const isSecondaryExcerpt = excerpt?.source === "secondaryTranslation" || excerpt?.source === "secondaryFootnote";
+  const isFootnoteExcerpt = excerpt?.source === "footnote" || excerpt?.source === "secondaryFootnote";
   const matchCount = hasTextQuery ? getSongSearchMatches(song, query, secondary).length : 0;
   const recordingCount = getSoundCloudRecordingCount(song);
   const recordingCountLabel = (recordingCount === 1 ? copy.library.audioRecordingCountOne : copy.library.audioRecordingCountMany).replace("{count}", String(recordingCount));
@@ -62,9 +64,10 @@ export function SongListItem({ song, query = "", variant = "default", secondary,
             </>
           )}
           {excerpt && (
-            <span className="song-search-excerpt" lang={excerpt.source === "secondaryTranslation" ? secondaryLanguage?.lang : undefined}>
+            <span className="song-search-excerpt" lang={isSecondaryExcerpt ? secondaryLanguage?.lang : undefined}>
               <span aria-hidden="true">↳</span>
-              {excerpt.source === "secondaryTranslation" && secondaryLanguage && <abbr className="song-search-excerpt-language" title={secondaryLanguage.label} lang="en">{secondaryLanguage.code.toUpperCase()}</abbr>}
+              {isSecondaryExcerpt && secondaryLanguage && <abbr className="song-search-excerpt-language" title={secondaryLanguage.label} lang="en">{secondaryLanguage.code.toUpperCase()}</abbr>}
+              {isFootnoteExcerpt && <abbr className="song-search-excerpt-footnote" title={copy.song.footnote} lang="en">*</abbr>}
               <HighlightedText value={excerpt.text} query={query} />
             </span>
           )}

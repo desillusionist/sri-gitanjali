@@ -4,8 +4,14 @@ import type { HolyNameKind } from "@/lib/holyNames";
 
 export type HolyNameLocale = {
   ui: { kinds: Record<HolyNameKind, string>; page: string; map: string };
-  /** Per entry id (or "id/variant" for another name): the translated note, and the name where the language spells it differently. */
-  entries: Record<string, { name?: string; about: string }>;
+  /**
+   * Per entry id (or "id/variant" for another name): the translated note, and the name where the
+   * language spells it differently. A translation in the language finds the entry by that name, or
+   * by its aliases instead when given (a trailing * lets case endings follow).
+   */
+  entries: Record<string, { name?: string; aliases?: string[]; about: string }>;
+  /** Words that contain a name but mean something else, so they are left plain. */
+  ignore?: string[];
 };
 
 const loaders = import.meta.glob<HolyNameLocale>("../data/holy-names-i18n/*.json", { import: "default" });

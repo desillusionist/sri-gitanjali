@@ -3,8 +3,8 @@ import { getFootnotes, placeFootnotes } from "./footnotes";
 
 describe("footnotes", () => {
   it("sit after their anchor, or at the end", () => {
-    expect(placeFootnotes("святого общения. Я преклоняюсь", [{ after: "общения", text: "x" }])).toEqual([{ at: 15, text: "x" }]);
-    expect(placeFootnotes("Verse text.", [{ text: "y" }])).toEqual([{ at: 11, text: "y" }]);
+    expect(placeFootnotes("святого общения. Я преклоняюсь", [{ after: "общения", text: "x" }])).toEqual([{ at: 15, text: "x", index: 0 }]);
+    expect(placeFootnotes("Verse text.", [{ text: "y" }])).toEqual([{ at: 11, text: "y", index: 0 }]);
   });
 
   it("are found for the verse they belong to and their anchors exist", async () => {

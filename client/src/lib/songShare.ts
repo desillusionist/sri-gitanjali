@@ -1,4 +1,5 @@
 /** Song text and links for sharing, built from what the reader currently has on screen. */
+import { placeFootnotes, type Footnote } from "@/lib/footnotes";
 
 export type SongShareVerse = {
   originalVerseNumber: number | string;
@@ -7,7 +8,27 @@ export type SongShareVerse = {
   translation?: string;
   /** Present only when a second translation is on and loaded for this verse. */
   secondaryTranslation?: string;
+  /** Footnotes to each translation, shared with it. */
+  footnotes?: Footnote[];
+  secondaryFootnotes?: Footnote[];
 };
+
+/**
+ * A translation with its footnotes: a * (then **, ***) where each sits in the text, and the notes
+ * below it in the same order. In Markdown the asterisks are escaped.
+ */
+export function withFootnotes(value: string, notes: Footnote[] = [], format: "plain" | "markdown" = "plain"): { text: string; notes: string[] } {
+  const placed = placeFootnotes(value, notes);
+  const star = (count: number) => (format === "markdown" ? "\\*" : "*").repeat(count);
+  let text = "";
+  let cursor = 0;
+  placed.forEach((note, order) => {
+    text += value.slice(cursor, note.at) + star(order + 1);
+    cursor = note.at;
+  });
+  text += value.slice(cursor);
+  return { text, notes: placed.map((note, order) => `${star(order + 1)} ${note.text}`) };
+}
 
 export type SongShareContent = {
   title: string;
@@ -27,8 +48,14 @@ export function buildSongShareText(content: SongShareContent, format: "plain" | 
     blocks.push([title, poet].filter(Boolean).join("\n"));
     for (const verse of verses) {
       const parts = [`(${verse.originalVerseNumber})`, ...verse.lines.map((line) => line.transliteration)];
-      if (verse.translation) parts.push("", verse.translation);
-      if (verse.secondaryTranslation) parts.push("", secondaryLabel ? `${secondaryLabel}: ${verse.secondaryTranslation}` : verse.secondaryTranslation);
+      if (verse.translation) {
+        const { text, notes } = withFootnotes(verse.translation, verse.footnotes);
+        parts.push("", text, ...notes);
+      }
+      if (verse.secondaryTranslation) {
+        const { text, notes } = withFootnotes(verse.secondaryTranslation, verse.secondaryFootnotes);
+        parts.push("", secondaryLabel ? `${secondaryLabel}: ${text}` : text, ...notes);
+      }
       blocks.push(parts.join("\n"));
     }
     blocks.push(url);
@@ -38,8 +65,14 @@ export function buildSongShareText(content: SongShareContent, format: "plain" | 
       // Two trailing spaces keep each sung line on its own line in Markdown.
       const lines = verse.lines.map((line) => `${line.isIndented ? "&emsp;" : ""}${line.transliteration}`).join("  \n");
       const parts = [`### ${capitalize(verseLabel)} ${verse.originalVerseNumber}`, lines];
-      if (verse.translation) parts.push(`> ${verse.translation}`);
-      if (verse.secondaryTranslation) parts.push(`> ${secondaryLabel ? `**${secondaryLabel}:** ` : ""}${verse.secondaryTranslation}`);
+      if (verse.translation) {
+        const { text, notes } = withFootnotes(verse.translation, verse.footnotes, "markdown");
+        parts.push(`> ${text}`, ...notes.map((note) => `<small>${note}</small>`));
+      }
+      if (verse.secondaryTranslation) {
+        const { text, notes } = withFootnotes(verse.secondaryTranslation, verse.secondaryFootnotes, "markdown");
+        parts.push(`> ${secondaryLabel ? `**${secondaryLabel}:** ` : ""}${text}`, ...notes.map((note) => `<small>${note}</small>`));
+      }
       blocks.push(parts.join("\n\n"));
     }
     blocks.push(`[${title}](${url})`);

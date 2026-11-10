@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, ALL_LANGUAGES_FILTER, filterSongs, getOriginalMatchRanges, getSongRecordings, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, type Song } from "./song";
+import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, ALL_LANGUAGES_FILTER, defaultSongSearchFilters, filterSongs, footnoteFieldId, getOriginalMatchRanges, getSongRecordings, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, verseFootnoteTexts, type Song } from "./song";
 
 describe("search phrase normalization", () => {
   it("treats spaces, hyphens, and n-dashes as equivalent separators", () => {
@@ -82,5 +82,18 @@ describe("recordings list", () => {
     expect(getOriginalMatchRanges("in Vṛndāvan—there", "vrindavan")).toEqual([{ start: 3, end: 11 }]);
     expect(getOriginalMatchRanges("Koladvīp", "koladwip")).toEqual([{ start: 0, end: 8 }]);
     expect(getOriginalMatchRanges("Krishna", "krsna")).toEqual([{ start: 0, end: 7 }]);
+  });
+});
+
+describe("footnotes in search", () => {
+  it("finds a song by the text of its footnote", async () => {
+    const songs = (await import("../../../local-storage/songs_577f33d4.json")).default as unknown as Song[];
+    const song = songs.find((item) => item.id === "sri-vaisnava-mahima-giti-055")!;
+    const verse = song.verses.find((item) => item.id === "verse-2")!;
+    expect(verseFootnoteTexts(song, verse).primary.length).toBe(1);
+    const query = "overendeavouring";
+    expect(filterSongs(songs, { ...defaultSongSearchFilters, query }).map((item) => item.id)).toContain(song.id);
+    expect(getSongSearchMatches(song, query).some((match) => match.kind === "footnote" && match.fieldId === footnoteFieldId("verse-2", 0))).toBe(true);
+    expect(getSongSearchExcerpt(song, query)?.source).toBe("footnote");
   });
 });

@@ -14,7 +14,7 @@ import { getFootnotes } from "@/lib/footnotes";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, soundCloudTrackSecondsFor, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { footnoteFieldId, getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, soundCloudTrackSecondsFor, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { useTeleprompterGestures } from "@/hooks/useTeleprompterGestures";
@@ -370,7 +370,7 @@ function SongPageContent() {
   // A packaged language may cover only part of the book; such songs get one quiet note, not an error per verse.
   const [isSongUntranslatedInPackage, setIsSongUntranslatedInPackage] = useState(false);
   // In-song search also covers the second translation on screen.
-  const secondarySearchLookup = useMemo(() => secondaryTranslationsByVerse.size ? (_song: unknown, verse: { id: string }) => secondaryTranslationsByVerse.get(verse.id) : undefined, [secondaryTranslationsByVerse]);
+  const secondarySearchLookup = useMemo(() => secondaryTranslationsByVerse.size ? Object.assign((_song: unknown, verse: { id: string }) => secondaryTranslationsByVerse.get(verse.id), { language: secondaryTranslationLanguage ?? undefined }) : undefined, [secondaryTranslationsByVerse, secondaryTranslationLanguage]);
   const matches = useMemo(() => song ? getSongSearchMatches(song, query, secondarySearchLookup) : [], [query, song, secondarySearchLookup]);
   const matchesByField = useMemo(() => {
     const byField = new Map<string, SongSearchMatch[]>();
@@ -757,7 +757,8 @@ function SongPageContent() {
   }, [displayedVerses.length, isSingingFollowActive, isSlideshowPlaying, singing.syllableCount, slideSyllableTarget, teleprompterView]);
 
   useEffect(() => {
-    const translationVerseId = activeMatch?.kind === "translation" ? activeMatch.verseId : undefined;
+    // A hit in a translation, the second translation or a footnote opens that verse's translation.
+    const translationVerseId = activeMatch?.kind === "translation" || activeMatch?.kind === "secondaryTranslation" || activeMatch?.kind === "footnote" ? activeMatch.verseId : undefined;
     if (!translationVerseId) return;
     setTranslationOverrides((current) => current[translationVerseId] === true ? current : { ...current, [translationVerseId]: true });
   }, [activeMatch]);
@@ -909,6 +910,8 @@ function SongPageContent() {
           lines: verse.lines,
           translation: isOpen ? verse.translation : undefined,
           secondaryTranslation: isOpen && selectedSecondaryLanguage ? secondaryTranslationsByVerse.get(verse.id) : undefined,
+          footnotes: getFootnotes("en", song.id, verse.id),
+          secondaryFootnotes: selectedSecondaryLanguage ? getFootnotes(selectedSecondaryLanguage.code, song.id, verse.id) : [],
         };
       }),
     }, format);
@@ -1035,6 +1038,20 @@ function SongPageContent() {
     if (element) matchElements.current.set(matchId, element);
     else matchElements.current.delete(matchId);
   };
+  // Search hits inside a footnote: its pop-up shows them highlighted, and the * marker stands for them in the page.
+  const noRegister = () => () => undefined;
+  const footnoteSearchFor = (verseId: string, isSecondary = false) => (index: number) => {
+    const fieldMatches = matchesByField.get(footnoteFieldId(verseId, index, isSecondary)) ?? [];
+    if (!fieldMatches.length) return undefined;
+    return {
+      hasMatch: true,
+      isActive: fieldMatches.some((match) => match.id === activeMatch?.id),
+      register: (element: HTMLElement | null) => fieldMatches.forEach((match) => registerMatch(match.id)(element)),
+    };
+  };
+  const renderFootnoteFor = (verseId: string, isSecondary = false) => (text: string, index: number) => (
+    <SongMatchText value={text} query={query} fieldId={footnoteFieldId(verseId, index, isSecondary)} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={noRegister} />
+  );
 
   const songHref = (songId: string) => `/song/${songId}${normalizeSearchText(query) ? `?q=${encodeURIComponent(query.trim())}` : ""}`;
   const hasTranslations = song.verses.some((verse) => Boolean(verse.translation));
@@ -1457,10 +1474,10 @@ function SongPageContent() {
                   {verse.translation && (
                     <>
                       <div id={`translation-${verse.id}`} hidden={!translationVisible}>
-                        <p className="translation"><HolyNameText value={verse.translation} footnotes={getFootnotes("en", song.id, verse.id)} footnoteId={`footnote-${verse.id}`} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(verse.translation.slice(0, offset), query).filter((part) => part.isMatch).length} />} /></p>
+                        <p className="translation"><HolyNameText value={verse.translation} footnotes={getFootnotes("en", song.id, verse.id)} footnoteId={`footnote-${verse.id}`} renderFootnote={renderFootnoteFor(verse.id)} footnoteSearch={footnoteSearchFor(verse.id)} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(verse.translation.slice(0, offset), query).filter((part) => part.isMatch).length} />} /></p>
                         {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
                         {selectedSecondaryLanguage && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
-                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang} translate="no"><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} footnotes={getFootnotes(selectedSecondaryLanguage.code, song.id, verse.id)} footnoteId={`footnote-${selectedSecondaryLanguage.code}-${verse.id}`} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
+                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang} translate="no"><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} footnotes={getFootnotes(selectedSecondaryLanguage.code, song.id, verse.id)} footnoteId={`footnote-${selectedSecondaryLanguage.code}-${verse.id}`} renderFootnote={renderFootnoteFor(verse.id, true)} footnoteSearch={footnoteSearchFor(verse.id, true)} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
                       </div>
                     </>
                   )}

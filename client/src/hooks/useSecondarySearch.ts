@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { SecondaryTranslationLookup } from "@/domain/song";
+import type { SecondaryTranslationLookup, Song, Verse } from "@/domain/song";
 import {
   isSecondaryTranslationLanguage,
   loadPackagedSecondaryTranslations,
@@ -55,8 +55,8 @@ export function useSecondarySearch() {
   }, []);
 
   const lookup = useMemo<SecondaryTranslationLookup | undefined>(
-    () => (translations ? (song, verse) => translations.get(`${song.id}::${verse.id}`) : undefined),
-    [translations],
+    () => (translations ? Object.assign((song: Song, verse: Verse) => translations.get(`${song.id}::${verse.id}`), { language: language ?? undefined }) : undefined),
+    [translations, language],
   );
 
   return { language, setLanguage, lookup, isLoading: language !== null && translations === null };

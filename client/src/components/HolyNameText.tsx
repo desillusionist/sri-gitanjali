@@ -41,11 +41,15 @@ function HolyNameTrigger({ entry, variant, locale, lang, children }: { entry: Ho
   );
 }
 
-function FootnoteMarker({ id, text, lang }: { id: string; text: string; lang?: string }) {
+/** How a footnote stands in the reader's search: whether it has hits, holds the current one, and where to scroll for it. */
+export type FootnoteSearchState = { hasMatch: boolean; isActive: boolean; register: (element: HTMLElement | null) => void };
+
+function FootnoteMarker({ id, text, lang, search }: { id: string; text: ReactNode; lang?: string; search?: FootnoteSearchState }) {
   const { copy } = useTranslation();
   return (
     <LongPressTooltip
-      className="footnote-marker"
+      className={`footnote-marker${search?.hasMatch ? " has-search-match" : ""}${search?.isActive ? " is-active-match" : ""}`}
+      isActive={search?.isActive}
       openOnHover={false}
       popupId={id}
       popupLabel={copy.song.footnote}
@@ -58,7 +62,7 @@ function FootnoteMarker({ id, text, lang }: { id: string; text: string; lang?: s
         </>
       )}
     >
-      <sup aria-label={copy.song.footnote}>*</sup>
+      <sup ref={search?.register} aria-label={copy.song.footnote}>*</sup>
     </LongPressTooltip>
   );
 }
@@ -72,16 +76,21 @@ type HolyNameTextProps = {
   footnotes?: Footnote[];
   /** Unique prefix for the footnote pop-up ids. */
   footnoteId?: string;
+  /** Footnote text with search highlights, by the footnote's index in the verse's list. */
+  renderFootnote?: (text: string, index: number) => ReactNode;
+  /** The search state of each footnote, by the same index. */
+  footnoteSearch?: (index: number) => FootnoteSearchState | undefined;
 };
 
 /** Translation text with its personalities and holy places underlined, each with a short note. */
-export function HolyNameText({ value, renderText = (text) => text, noteLanguage, footnotes = [], footnoteId = "footnote" }: HolyNameTextProps) {
+export function HolyNameText({ value, renderText = (text) => text, noteLanguage, footnotes = [], footnoteId = "footnote", renderFootnote = (text) => text, footnoteSearch }: HolyNameTextProps) {
   const locale = useHolyNameLocale(noteLanguage?.code);
+  const localNames = locale && noteLanguage ? { code: noteLanguage.code, entries: locale.entries, ignore: locale.ignore } : null;
   // The text is split at footnote markers; each piece keeps its offset in the whole text.
   const placed = placeFootnotes(value, footnotes);
-  const pieces: { start: number; end: number; footnote?: string }[] = [];
+  const pieces: { start: number; end: number; footnote?: { text: string; index: number } }[] = [];
   let cursor = 0;
-  placed.forEach((note) => { pieces.push({ start: cursor, end: note.at, footnote: note.text }); cursor = note.at; });
+  placed.forEach((note) => { pieces.push({ start: cursor, end: note.at, footnote: note }); cursor = note.at; });
   pieces.push({ start: cursor, end: value.length });
 
   return (
@@ -90,7 +99,7 @@ export function HolyNameText({ value, renderText = (text) => text, noteLanguage,
         let offset = piece.start;
         return (
           <span key={`piece-${pieceIndex}`} className="translation-piece">
-            {getHolyNameSegments(value.slice(piece.start, piece.end)).map((segment, index) => {
+            {getHolyNameSegments(value.slice(piece.start, piece.end), localNames).map((segment, index) => {
               const start = offset;
               offset += segment.text.length;
               const content = renderText(segment.text, start);
@@ -98,7 +107,7 @@ export function HolyNameText({ value, renderText = (text) => text, noteLanguage,
                 ? <HolyNameTrigger key={`${index}-${segment.entry.id}`} entry={segment.entry} variant={segment.variant} locale={locale} lang={noteLanguage?.lang}>{content}</HolyNameTrigger>
                 : <span key={index}>{content}</span>;
             })}
-            {piece.footnote !== undefined && <FootnoteMarker id={`${footnoteId}-${pieceIndex}`} text={piece.footnote} lang={noteLanguage?.lang} />}
+            {piece.footnote && <FootnoteMarker id={`${footnoteId}-${pieceIndex}`} text={renderFootnote(piece.footnote.text, piece.footnote.index)} lang={noteLanguage?.lang} search={footnoteSearch?.(piece.footnote.index)} />}
           </span>
         );
       })}

@@ -4,6 +4,7 @@
  */
 
 import { soundCloudTrackSeconds } from "@/data/soundcloudDurations";
+import { getFootnotes } from "@/lib/footnotes";
 import { getSongLanguage, isSongLanguage } from "@/lib/songLanguages";
 
 export type SongLine = {
@@ -83,10 +84,21 @@ export type HighlightPart = {
   matchIndex?: number;
 };
 
-export type SongSearchMatchKind = "title" | "author" | "comment" | "line" | "translation" | "secondaryTranslation";
+export type SongSearchMatchKind = "title" | "author" | "comment" | "line" | "translation" | "secondaryTranslation" | "footnote";
 
-/** Looks up a verse's second translation (in the reader's chosen language), when one is loaded. */
-export type SecondaryTranslationLookup = (song: Song, verse: Verse) => string | undefined;
+/**
+ * Looks up a verse's second translation (in the reader's chosen language), when one is loaded.
+ * Its language, when set, also brings that language's footnotes into the search.
+ */
+export type SecondaryTranslationLookup = ((song: Song, verse: Verse) => string | undefined) & { language?: string };
+
+/** The footnotes to a verse's English translation and to its second translation. */
+export function verseFootnoteTexts(song: Song, verse: Verse, secondary?: SecondaryTranslationLookup) {
+  return {
+    primary: getFootnotes("en", song.id, verse.id).map((note) => note.text),
+    secondary: secondary?.language ? getFootnotes(secondary.language, song.id, verse.id).map((note) => note.text) : [],
+  };
+}
 
 export type SongSearchMatch = {
   id: string;
@@ -98,7 +110,7 @@ export type SongSearchMatch = {
 
 export type SongSearchExcerpt = {
   text: string;
-  source: "line" | "translation" | "secondaryTranslation" | "comment";
+  source: "line" | "translation" | "secondaryTranslation" | "footnote" | "secondaryFootnote" | "comment";
 };
 
 export const defaultSongSearchFilters: SongSearchFilters = {
@@ -429,6 +441,8 @@ export function getSongSearchExcerpt(song: Song, query: string, secondary?: Seco
     ...song.verses.flatMap((verse) => verse.lines.map((line) => ({ text: line.transliteration, source: "line" as const }))),
     ...song.verses.map((verse) => ({ text: verse.translation, source: "translation" as const })),
     ...(secondary ? song.verses.map((verse) => ({ text: secondary(song, verse) ?? "", source: "secondaryTranslation" as const })) : []),
+    ...song.verses.flatMap((verse) => verseFootnoteTexts(song, verse).primary.map((text) => ({ text, source: "footnote" as const }))),
+    ...song.verses.flatMap((verse) => verseFootnoteTexts(song, verse, secondary).secondary.map((text) => ({ text, source: "secondaryFootnote" as const }))),
     ...(song.comment ? [{ text: song.comment, source: "comment" as const }] : []),
   ];
 
@@ -458,9 +472,17 @@ export function getSongSearchMatches(song: Song, query: string, secondary?: Seco
     if (verse.translation) addMatches(verse.translation, `translation:${verse.id}`, "translation", verse.id);
     const secondaryText = secondary?.(song, verse);
     if (secondaryText) addMatches(secondaryText, `secondary:${verse.id}`, "secondaryTranslation", verse.id);
+    const footnotes = verseFootnoteTexts(song, verse, secondary);
+    footnotes.primary.forEach((text, index) => addMatches(text, footnoteFieldId(verse.id, index), "footnote", verse.id));
+    footnotes.secondary.forEach((text, index) => addMatches(text, footnoteFieldId(verse.id, index, true), "footnote", verse.id));
   });
 
   return matches;
+}
+
+/** Search field of a verse's footnote, by its place in the verse's list. */
+export function footnoteFieldId(verseId: string, index: number, isSecondary = false) {
+  return `${isSecondary ? "secondary-footnote" : "footnote"}:${verseId}:${index}`;
 }
 
 export function songSearchText(song: Song, secondary?: SecondaryTranslationLookup): string {
@@ -471,6 +493,8 @@ export function songSearchText(song: Song, secondary?: SecondaryTranslationLooku
     ...song.verses.flatMap((verse) => [
       verse.translation,
       secondary?.(song, verse) ?? "",
+      ...verseFootnoteTexts(song, verse, secondary).primary,
+      ...verseFootnoteTexts(song, verse, secondary).secondary,
       ...verse.lines.map((line) => line.transliteration),
     ]),
   ]

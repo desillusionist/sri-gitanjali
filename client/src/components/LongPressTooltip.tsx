@@ -59,13 +59,15 @@ type LongPressTooltipProps = {
   openOnHover?: boolean;
   /** Language of the pop-up text when it differs from the page. */
   popupLang?: string;
+  /** Opens the pop-up while true, e.g. for the current search hit inside it; it closes again when this turns false. */
+  isActive?: boolean;
 };
 
 /**
  * Inline text with a small pop-up: it opens on mouse hover or keyboard focus, and on touch screens
  * only on a long press, so taps and scrolling leave it alone. A double tap selects the text instead.
  */
-export function LongPressTooltip({ className, popupId, popupLabel, popupClassName, popup, children, openOnHover = true, popupLang }: LongPressTooltipProps) {
+export function LongPressTooltip({ className, popupId, popupLabel, popupClassName, popup, children, openOnHover = true, popupLang, isActive = false }: LongPressTooltipProps) {
   const triggerRef = useRef<HTMLSpanElement>(null);
   const closeTimerRef = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -129,6 +131,13 @@ export function LongPressTooltip({ className, popupId, popupLabel, popupClassNam
   }, [isOpen]);
 
   useEffect(() => () => { clearCloseTimer(); clearLongPress(); }, []);
+
+  const wasActiveRef = useRef(false);
+  useEffect(() => {
+    if (isActive) setIsOpen(true);
+    else if (wasActiveRef.current) setIsOpen(false);
+    wasActiveRef.current = isActive;
+  }, [isActive]);
 
   return (
     <>
