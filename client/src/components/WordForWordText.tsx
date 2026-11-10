@@ -23,7 +23,7 @@ function WordForWordTrigger({ text, tooltipText = text, entries, source, childre
       popupLabel={`Word-for-word meaning of ${tooltipText}`}
       popup={(
         <>
-          <span className="word-for-word-popup-term">{tooltipText}</span>
+          <span className="word-for-word-popup-term" translate="no">{tooltipText}</span>
           <span className="word-for-word-popup-meanings">
             {entries.map((entry) => <span key={entry.id}>{entry.meaning}</span>)}
           </span>

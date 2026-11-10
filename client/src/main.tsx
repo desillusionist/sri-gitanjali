@@ -9,7 +9,9 @@ import { startLogin } from "./const";
 import "./index.css";
 import { loadWordForWord } from "./lib/wordForWordLoader";
 import { initTheme } from "./lib/theme";
+import { installTranslationGuard } from "./lib/translationGuard";
 
+installTranslationGuard();
 initTheme();
 
 if ("serviceWorker" in navigator) {

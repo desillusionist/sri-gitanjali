@@ -5,10 +5,12 @@ import { AuthorPortrait } from "@/components/AuthorPortrait";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { AUTHORS, authorHref, VAISNAVA_GROUPS } from "@/lib/authors";
 import { ChevronRight, Users } from "lucide-react";
+import { usePageMeta } from "@/lib/pageMeta";
 import { Link } from "wouter";
 
 function VaisnavasContent() {
   const { copy } = useTranslation();
+  usePageMeta(copy.vaisnavas.title);
   return (
     <div className="favorites-page vaisnavas-page">
       <header className="favorites-header">
@@ -33,7 +35,7 @@ function VaisnavasContent() {
                   <Link href={authorHref(person)} className="vaisnava-row">
                     <AuthorPortrait author={person} />
                     <span className="vaisnava-row-text">
-                      <strong>{person.name}</strong>
+                      <strong translate="no">{person.name}</strong>
                       <small>{person.role} · {person.dates}</small>
                     </span>
                     <ChevronRight size={16} aria-hidden="true" />

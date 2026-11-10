@@ -40,7 +40,7 @@ export function AppShell({ children }: AppShellProps) {
               <DropdownMenuTrigger asChild>
                 <button className="brand-lockup" type="button" aria-label={copy.navigation.openMenu}>
                   <img className="brand-mark" src={brandAssets.mark} alt="" />
-                  <span className="brand-name">Kīrtan<br />Guide</span>
+                  <span className="brand-name" translate="no">Kīrtan<br />Guide</span>
                   <ChevronDown className="brand-menu-chevron" aria-hidden="true" size={15} strokeWidth={1.8} />
                 </button>
               </DropdownMenuTrigger>

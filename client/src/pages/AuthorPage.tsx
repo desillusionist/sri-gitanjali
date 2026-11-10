@@ -9,6 +9,7 @@ import { useTranslation } from "@/i18n/LanguageContext";
 import { findAuthorById, type Author } from "@/lib/authors";
 import { LibraryBig } from "lucide-react";
 import { useMemo } from "react";
+import { usePageMeta } from "@/lib/pageMeta";
 import { Link, useRoute } from "wouter";
 
 /** A bio paragraph; "## " starts a heading, "### " a small caption (a closing note when last) and "> " a quotation. */
@@ -22,6 +23,7 @@ function BioParagraph({ value, isLast }: { value: string; isLast: boolean }) {
 function AuthorContent({ author }: { author: Author }) {
   const { songs, status } = useSongLibrary();
   const { copy } = useTranslation();
+  usePageMeta(author.name, author.summary);
   const names = useMemo(() => new Set(author.names.map((name) => name.normalize("NFC").trim())), [author]);
   const authorSongs = useMemo(() => songs.filter((song) => song.poet && names.has(song.poet.normalize("NFC").trim())), [names, songs]);
   const honourSongs = useMemo(() => (author.songIds ?? []).map((id) => songs.find((song) => song.id === id)).filter((song): song is NonNullable<typeof song> => Boolean(song)), [author, songs]);
@@ -35,7 +37,7 @@ function AuthorContent({ author }: { author: Author }) {
         {author.portrait ? <PortraitViewer author={author} /> : <AuthorPortrait author={author} variant="tall" />}
         <div className="author-header-copy">
           <Link href="/vaisnavas" className="eyebrow author-eyebrow-link">{isPoet ? copy.author.eyebrow : copy.author.vaisnavaEyebrow} · {copy.author.allVaisnavas}</Link>
-          <h1>{author.name}</h1>
+          <h1 translate="no">{author.name}</h1>
           <p className="author-role">{author.role}</p>
           <p className="author-facts">{author.dates} · {author.place}</p>
           <p className="author-summary">{author.summary}</p>

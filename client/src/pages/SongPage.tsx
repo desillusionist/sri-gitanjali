@@ -31,6 +31,7 @@ import { AuthorChip } from "@/components/AuthorChip";
 import { findAuthorByPoet } from "@/lib/authors";
 import { getSongLanguage, SONG_LANGUAGES } from "@/lib/songLanguages";
 import { toast } from "sonner";
+import { usePageMeta } from "@/lib/pageMeta";
 import { buildSongShareText, parseSongShareParams, songShareParams } from "@/lib/songShare";
 
 const READING_FONT_SIZE_ADJUSTMENTS = [-0.18, -0.09, 0, 0.12, 0.24] as const;
@@ -339,6 +340,7 @@ function SongPageContent() {
   const readerPanelRef = useRef<HTMLElement>(null);
   const soundCloudPlayerRef = useRef<HTMLIFrameElement>(null);
   const song = songs.find((item) => item.id === params?.id);
+  usePageMeta(song?.title ?? (status === "ready" ? copy.song.notFoundTitle : null), song ? [song.poet, song.verses.find((verse) => verse.translation)?.translation].filter(Boolean).join(" — ") : null);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
   const next = index >= 0 && index < songs.length - 1 ? songs[index + 1] : null;
@@ -925,6 +927,8 @@ function SongPageContent() {
   const authorBio = findAuthorByPoet(author);
   const songLanguage = getSongLanguage(song.id);
   const songLanguageInfo = songLanguage ? SONG_LANGUAGES[songLanguage] : undefined;
+  // Verses are Bengali or Sanskrit in Latin letters: tagged so, and kept out of machine translation.
+  const verseLang = songLanguageInfo ? `${songLanguageInfo.lang}-Latn` : undefined;
   const toggleSongFavorite = () => {
     toggleFavorite(song.id);
     toast.success(favorite ? copy.song.removedFavorite : copy.song.addedFavorite);
@@ -1163,7 +1167,7 @@ function SongPageContent() {
                   <section className="teleprompter-shloka" key={verse.id}>
                     <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${verse.originalVerseNumber}`}>{String(verseIndex + 1).padStart(2, "0")}</span>
                     <div>
-                      {verse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={verse.originalVerseNumber} songId={song.id} verseId={verse.id} contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")} sourceContextValue={verse.sourceContextValue} contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
+                      {verse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id} lang={verseLang} translate="no"><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={verse.originalVerseNumber} songId={song.id} verseId={verse.id} contextValue={verse.lines.map((verseLine) => verseLine.transliteration).join("\n")} sourceContextValue={verse.sourceContextValue} contextOffset={verse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
                     </div>
                   </section>
                 ))}
@@ -1175,7 +1179,7 @@ function SongPageContent() {
               <section className="teleprompter-slideshow-verse" aria-live="polite">
                 <span className="teleprompter-verse-number" aria-label={`${copy.song.verse} ${slideshowVerse.originalVerseNumber}`}>{String(slideshowVerseIndex + 1).padStart(2, "0")}</span>
                 <div>
-                  {slideshowVerse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id}><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={slideshowVerse.originalVerseNumber} songId={song.id} verseId={slideshowVerse.id} contextValue={slideshowVerse.lines.map((verseLine) => verseLine.transliteration).join("\n")} sourceContextValue={slideshowVerse.sourceContextValue} contextOffset={slideshowVerse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
+                  {slideshowVerse.lines.map((line, lineIndex) => <p className={`teleprompter-line ${line.isIndented ? "is-indented" : ""}`} key={line.id} lang={verseLang} translate="no"><WordForWordText value={line.transliteration} songTitle={song.title} verseNumber={slideshowVerse.originalVerseNumber} songId={song.id} verseId={slideshowVerse.id} contextValue={slideshowVerse.lines.map((verseLine) => verseLine.transliteration).join("\n")} sourceContextValue={slideshowVerse.sourceContextValue} contextOffset={slideshowVerse.lines.slice(0, lineIndex).reduce((offset, verseLine) => offset + verseLine.transliteration.length + 1, 0)} /></p>)}
                 </div>
                 <output className="teleprompter-slide-position" aria-live="polite">{copy.song.teleprompterSlidePosition.replace("{current}", String(slideshowVerseIndex + 1)).replace("{total}", String(displayedVerses.length))}</output>
               </section>
@@ -1300,7 +1304,7 @@ function SongPageContent() {
                 <Link className={`song-language is-${songLanguage}`} href={`/?language=${songLanguage}#search`} lang={songLanguageInfo.lang} title={copy.song.composedIn.replace("{language}", songLanguageInfo.english)} aria-label={copy.song.filterByLanguage.replace("{language}", songLanguageInfo.english)}>{songLanguageInfo.native}</Link>
               </>
             )}
-            <h1><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
+            <h1 lang={verseLang} translate="no"><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
             <div className="song-meta">
               <p className="song-poet">{authorBio && authorFilterHref ? <AuthorChip author={authorBio} libraryHref={authorFilterHref} label={<SongMatchText value={author!} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />} /> : author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
             </div>
@@ -1418,7 +1422,7 @@ function SongPageContent() {
                 )}
                 <div className="verse-copy">
                   {verse.lines.map((line, lineIndex) => (
-                    <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id}>
+                    <p className={`transliteration ${line.isIndented ? "is-indented" : ""}`} key={line.id} lang={verseLang} translate="no">
                       <WordForWordText
                         value={line.transliteration}
                         songTitle={song.title}
@@ -1447,7 +1451,7 @@ function SongPageContent() {
                         <p className="translation"><HolyNameText noteLanguage={selectedSecondaryLanguage} value={verse.translation} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(verse.translation.slice(0, offset), query).filter((part) => part.isMatch).length} />} /></p>
                         {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
                         {selectedSecondaryLanguage && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
-                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang}><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
+                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang} translate="no"><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
                       </div>
                     </>
                   )}

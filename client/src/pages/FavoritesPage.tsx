@@ -9,11 +9,13 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { BookmarkCheck, LibraryBig, Loader2 } from "lucide-react";
 import { useMemo } from "react";
+import { usePageMeta } from "@/lib/pageMeta";
 import { Link } from "wouter";
 
 function FavoritesContent() {
   const { songs, status, favoriteSongIds } = useSongLibrary();
   const { copy } = useTranslation();
+  usePageMeta(copy.favorites.sectionTitle);
   const favorites = useMemo(
     () => songs.filter((song) => favoriteSongIds.has(song.id)),
     [favoriteSongIds, songs],

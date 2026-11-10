@@ -51,14 +51,14 @@ export function SongListItem({ song, query = "", variant = "default", secondary,
         <span className="song-row-copy">
           {variant === "opening-line" ? (
             <>
-              <strong><HighlightedText value={songFirstLine(song)} query={query} /></strong>
+              <strong translate="no"><HighlightedText value={songFirstLine(song)} query={query} /></strong>
               <small className="song-row-meta"><HighlightedText value={song.title} query={query} /> · <HighlightedText value={song.poet || copy.library.noAuthor} query={query} />{languageInfo && <span className="song-row-language"> · {languageInfo.english}</span>}</small>
             </>
           ) : (
             <>
-              <strong><HighlightedText value={song.title} query={query} /></strong>
+              <strong translate="no"><HighlightedText value={song.title} query={query} /></strong>
               <small className="song-row-meta"><HighlightedText value={song.poet || copy.library.noAuthor} query={query} />{languageInfo && <span className="song-row-language"> · {languageInfo.english}</span>}</small>
-              <span className="song-row-opening-line"><HighlightedText value={songFirstLine(song)} query={query} /></span>
+              <span className="song-row-opening-line" translate="no"><HighlightedText value={songFirstLine(song)} query={query} /></span>
             </>
           )}
           {excerpt && (

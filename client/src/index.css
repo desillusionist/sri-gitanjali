@@ -596,6 +596,14 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .secondary-translation[lang="th"] { font-family: "Noto Sans Thai", sans-serif; }
 .secondary-translation[lang="hi"] { font-family: "Noto Sans Devanagari", sans-serif; }
 .secondary-translation[lang="bn"] { font-family: "Noto Sans Bengali", sans-serif; }
+.word-for-word-popup[lang="zh-Hans"] { font-family: "DM Sans", "Noto Sans SC", sans-serif; }
+.word-for-word-popup[lang="th"] { font-family: "DM Sans", "Noto Sans Thai", sans-serif; }
+.word-for-word-popup[lang="hi"] { font-family: "DM Sans", "Noto Sans Devanagari", sans-serif; }
+.word-for-word-popup[lang="bn"] { font-family: "DM Sans", "Noto Sans Bengali", sans-serif; }
+.word-for-word-popup[lang="zh-Hans"] .word-for-word-popup-term { font-family: "Noto Sans SC", sans-serif; }
+.word-for-word-popup[lang="th"] .word-for-word-popup-term { font-family: "Noto Sans Thai", sans-serif; }
+.word-for-word-popup[lang="hi"] .word-for-word-popup-term { font-family: "Noto Sans Devanagari", sans-serif; }
+.word-for-word-popup[lang="bn"] .word-for-word-popup-term { font-family: "Noto Sans Bengali", sans-serif; }
 .secondary-translation-status { max-width: 51ch; margin: 0.62rem 0 0 0.18rem; padding-left: 0.92rem; color: #496f8d; border-left: 2px solid #8cb4d0; font-size: 0.72rem; font-weight: 700; }
 .secondary-translation-status.is-error { color: var(--saffron-deep); border-left-color: var(--saffron); }
 .song-sheet-footer { position: relative; display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1.35rem; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 0.69rem; }

@@ -23,7 +23,7 @@ function HolyNameTrigger({ entry, locale, lang, children }: { entry: HolyName; l
       popup={(
         <>
           <span className="word-for-word-popup-source">{locale?.ui.kinds[entry.kind] ?? copy.song.holyNameKinds[entry.kind]}</span>
-          <span className="word-for-word-popup-term">{name}</span>
+          <span className="word-for-word-popup-term" translate="no">{name}</span>
           <span className="holy-name-popup-about">{note?.about ?? entry.about}</span>
           {(author || mapsUrl) && (
             <span className="holy-name-popup-links">

@@ -10,11 +10,13 @@ import { formatTrackLength, WITH_RECORDINGS_FILTER } from "@/domain/song";
 import { usePlaylist } from "@/hooks/usePlaylist";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { ArrowDown, ArrowUp, ListMusic, Pause, Play, Trash2, X } from "lucide-react";
+import { usePageMeta } from "@/lib/pageMeta";
 import { Link } from "wouter";
 
 function PlaylistContent() {
   const { status } = useSongLibrary();
   const { copy } = useTranslation();
+  usePageMeta("Playlist");
   const { remove, move, clear } = usePlaylist();
   const { items, current, isOpen, isPlaying, play, togglePlay, open, close } = usePlayer();
 

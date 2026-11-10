@@ -36,6 +36,7 @@ import { useTranslation } from "@/i18n/LanguageContext";
 import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
 import { Link } from "wouter";
 import { SONG_LANGUAGE_ORDER, SONG_LANGUAGES } from "@/lib/songLanguages";
+import { usePageMeta } from "@/lib/pageMeta";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 /**
@@ -97,6 +98,7 @@ function LibraryHome() {
   const listClearance = useListClearance();
   const { songs, status, error, reload } = useSongLibrary();
   const { copy } = useTranslation();
+  usePageMeta(null);
   const [filters, setFilters] = useState(initialLibraryFilters);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [expandedCategoryIds, setExpandedCategoryIds] = useState<Set<string>>(() => new Set());

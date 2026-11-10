@@ -135,6 +135,7 @@ export function LongPressTooltip({ className, popupId, popupLabel, popupClassNam
       <span
         ref={triggerRef}
         className={className}
+        translate="no"
         role="button"
         tabIndex={0}
         aria-haspopup="dialog"

@@ -22,7 +22,7 @@ export function AuthorChip({ author, label, libraryHref }: AuthorChipProps) {
       <PopoverTrigger asChild>
         <button type="button" className="author-chip" aria-label={copy.author.aboutAuthor.replace("{author}", author.name)}>
           <AuthorPortrait author={author} />
-          <span className="author-chip-name">{label}</span>
+          <span className="author-chip-name" translate="no">{label}</span>
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="author-card">
@@ -30,7 +30,7 @@ export function AuthorChip({ author, label, libraryHref }: AuthorChipProps) {
         <div className="author-card-head">
           <AuthorPortrait author={author} />
           <div>
-            <p className="author-card-name">{author.name}</p>
+            <p className="author-card-name" translate="no">{author.name}</p>
             <p className="author-card-dates">{author.dates} · {author.role}</p>
           </div>
         </div>
