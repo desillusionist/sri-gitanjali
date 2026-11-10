@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Builds client/src/data/holy-names.json: personalities and holy places named in the translations.
 
-Each entry: id, kind (person | divine | place | realm), name, about (one sentence),
+Each entry: id, kind (person = a Vaiṣṇava | divine | place | realm | other = any other personality), name, about (one sentence),
 aliases (Latin spellings; matching ignores diacritics, so "Vrndavan" also finds "Vṛndāvan"),
 ru (Cyrillic stems; a trailing * lets Russian case endings follow), optional authorId (a page
 under /author/) and maps (a Google Maps search for places on Earth).
@@ -10,7 +10,7 @@ Edit the table below and re-run: python3 scripts/build-holy-names.py
 import json
 import pathlib
 
-P, D, PL, R = "person", "divine", "place", "realm"
+P, D, PL, R, O = "person", "divine", "place", "realm", "other"
 
 E = [
     # --- The Divine ---
@@ -67,7 +67,7 @@ E = [
      ["Lord Brahmā", "Brahmā"], ["Брахма", "Брахмы", "Брахме", "Брахму", "Брахмой"], None, None),
     ("siva", P, "Lord Śiva", "The greatest Vaiṣṇava among the demigods, who presides over the mode of ignorance.",
      ["Lord Shiva", "Lord Śiva", "Shiva", "Śiva"], ["Шив*"], None, None),
-    ("indra", P, "Indra", "The king of heaven, humbled when Krishna lifted Govardhan Hill.", ["King Indra", "Indra"], ["Индр*"], None, None),
+    ("indra", O, "Indra", "The king of heaven, humbled when Krishna lifted Govardhan Hill.", ["King Indra", "Indra"], ["Индр*"], None, None),
     ("laksmi", D, "Lakṣmī Devī", "The goddess of fortune, eternal consort of Nārāyaṇa.", ["Lakṣmī", "Nārāyaṇī"], ["Лакшми"], None, None),
     ("tulasi", D, "Tulasī Devī", "Krishna’s beloved plant-devotee, Vṛndā Devī, without whose leaves He accepts no offering.",
      ["Tulasī Mahārāṇī", "Tulasī Devī", "Tulasī"], ["Туласи"], None, None),
@@ -120,7 +120,7 @@ E = [
      ["Devarṣi Nārada", "Nārada Muni", "Nārada"], ["Нарад*"], "narada-muni", None),
     ("sukadeva", P, "Śukadeva Goswāmī", "Vyāsadeva’s son, who spoke Śrīmad-Bhāgavatam to King Parīkṣit.", ["Śukadeva Goswāmī", "Śukadeva"], ["Шукадев*"], None, None),
     ("madhva", P, "Śrī Madhvāchārya", "The 13th-century founder of the Tattvavāda school, in whose line Mahāprabhu took initiation.", ["Madhvāchārya", "Madhva"], ["Мадхвачарь*", "Мадхв*"], None, None),
-    ("sankara", P, "Śaṅkarāchārya", "The 8th-century teacher of impersonal monism, an incarnation of Śiva.", ["Śaṅkarāchārya"], ["Шанкарачарь*"], None, None),
+    ("sankara", O, "Śaṅkarāchārya", "The 8th-century teacher of impersonal monism, an incarnation of Śiva.", ["Śaṅkarāchārya"], ["Шанкарачарь*"], None, None),
     # --- Sāraswat line ---
     ("bhakti-vinod", P, "Śrīla Bhakti Vinod Ṭhākur", "The pioneer of pure devotion in the modern age, poet of many songs in this book.",
      ["Śrīla Bhakti Vinod Ṭhākur", "Śrī Bhakti Vinod Ṭhākur", "Bhakti Vinod Ṭhākur", "Ṭhākur Bhakti Vinod", "Śrīla Bhakti Vinod", "Śrī Bhakti Vinod", "Bhakti Vinod"], ["Бхактивинод*"], "bhakti-vinod-thakur", None),
@@ -138,7 +138,7 @@ E = [
      ["Bhaktivedānta Swāmī Prabhupāda", "Bhaktivedānta Swāmī", "Śrīla Swāmī Mahārāja"], ["Бхактиведант*"], "bhaktivedanta-swami", None),
     ("avadhut", P, "Śrīla Bhakti Bimal Avadhūt Mahārāja", "Disciple of Śrīla Govinda Mahārāja and head of the Russian mission of Śrī Chaitanya Sāraswat Maṭh.",
      ["Śrīla Bhakti Bimal Avadhūt Mahārāja", "Bhakti Bimal Avadhūt Mahārāja"], ["Авадхут*"], "bhakti-bimal-avadhut-maharaja", None),
-    ("sudhir", P, "Śrīla Bhakti Sudhīr Goswāmī Mahārāja", "A senior sannyāsī of Śrī Chaitanya Sāraswat Maṭh.",
+    ("sudhir", P, "Śrīla Bhakti Sudhīr Goswāmī Mahārāja", "A senior sannyāsī of Śrī Chaitanya Sāraswat Maṭh, founder of the Guardian of Devotion Press.",
      ["Śrīla Bhakti Sudhīr Goswāmī Mahārāja", "Bhakti Sudhīr Goswāmī"], ["Бхакти Судхир*", "Судхир*"], "bhakti-sudhir-goswami-maharaja", None),
     ("madhusudan", P, "Śrīla Bhakti Rañjan Madhusūdan Mahārāja", "A sannyāsī of Śrī Chaitanya Sāraswat Maṭh.",
      ["Śrīla Bhakti Rañjan Madhusūdan Mahārāja", "Bhakti Rañjan Madhusūdan"], ["Мадхусудан* Махарадж*"], "bhakti-ranjan-madhusudan-maharaja", None),
@@ -146,11 +146,11 @@ E = [
      ["Śrīla Bhakti Nirmal Āchārya Mahārāja", "Bhakti Nirmal Āchārya"], ["Бхакти Нирмал*", "Нирмал*"], "bhakti-nirmal-acharya-maharaja", None),
     # --- Others ---
     ("prahlad", P, "Prahlād Mahārāja", "The boy-devotee protected by Lord Nṛsiṁha.", ["Prahlād Mahārāja", "Prahlād"], ["Прахлад*"], None, None),
-    ("hiranyakasipu", P, "Hiraṇyakaśipu", "The demon king killed by Lord Nṛsiṁha.", ["Hiraṇyakaśipu"], ["Хираньякашип*"], None, None),
-    ("kamsa", P, "King Kaṁsa", "Krishna’s tyrant uncle, the king of Mathurā, killed by Krishna.", ["King Kaṁsa", "Kaṁsa"], ["Камс*"], None, None),
-    ("ravana", P, "Rāvaṇa", "The demon king of Laṅkā killed by Lord Rāmachandra.", ["Rāvaṇa"], ["Раван*"], None, None),
-    ("putana", P, "Pūtanā", "The witch who tried to poison baby Krishna and was given a mother’s position.", ["Pūtanā"], ["Путан*"], None, None),
-    ("kaliya", P, "Kālīya", "The many-headed serpent Krishna subdued in the Yamunā.", ["Kālīya"], ["Калия"], None, None),
+    ("hiranyakasipu", O, "Hiraṇyakaśipu", "The demon king killed by Lord Nṛsiṁha.", ["Hiraṇyakaśipu"], ["Хираньякашип*"], None, None),
+    ("kamsa", O, "King Kaṁsa", "Krishna’s tyrant uncle, the king of Mathurā, killed by Krishna.", ["King Kaṁsa", "Kaṁsa"], ["Камс*"], None, None),
+    ("ravana", O, "Rāvaṇa", "The demon king of Laṅkā killed by Lord Rāmachandra.", ["Rāvaṇa"], ["Раван*"], None, None),
+    ("putana", O, "Pūtanā", "The witch who tried to poison baby Krishna and was given a mother’s position.", ["Pūtanā"], ["Путан*"], None, None),
+    ("kaliya", O, "Kālīya", "The many-headed serpent Krishna subdued in the Yamunā.", ["Kālīya"], ["Калия"], None, None),
     # --- Holy places on Earth ---
     ("vrndavan", PL, "Śrī Vṛndāvan", "Krishna’s forest home on the Yamunā in Vraja, where the Goswāmīs lived; eternally one with Goloka.",
      ["Śrī Vṛndāvan Dhām", "Śrī Vṛndāvan", "Vṛndāvan Dhām", "Vṛndāvan", "Vrindavan"], ["Вриндаван*"], None, "Vrindavan, Uttar Pradesh, India"),

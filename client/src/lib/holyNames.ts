@@ -1,7 +1,7 @@
 /** Personalities and holy places named in the translations, found so they can be underlined with a short note. */
 import data from "@/data/holy-names.json";
 
-export type HolyNameKind = "person" | "divine" | "place" | "realm";
+export type HolyNameKind = "person" | "divine" | "place" | "realm" | "other";
 
 export type HolyName = {
   id: string;
