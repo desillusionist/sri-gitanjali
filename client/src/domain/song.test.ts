@@ -66,4 +66,21 @@ describe("recordings list", () => {
     ] as unknown as Song[];
     expect(getSongRecordings(songs).map((recording) => [recording.song.id, recording.singer])).toEqual([["a", "Manasa Krishna"], ["a", "Bhakti Lalita Devi"]]);
   });
+
+  it("finds a word with or without its final a, across spaces and hyphens", () => {
+    expect(getOriginalMatchRanges("Gopīnāth, Madana-mohana!", "Madan mohana")).toEqual([{ start: 10, end: 23 }]);
+    expect(getOriginalMatchRanges("Madan-mohan", "madana mohana")).toEqual([{ start: 0, end: 11 }]);
+    expect(getOriginalMatchRanges("O Gopāla", "gopal")).toEqual([{ start: 2, end: 8 }]);
+  });
+
+  it("folds transliteration spellings on both sides", () => {
+    expect(getOriginalMatchRanges("jaya kṛṣṇa", "krishna")).toEqual([{ start: 5, end: 10 }]);
+    expect(getOriginalMatchRanges("śrī gaurāṅga", "shri gauranga")).toEqual([{ start: 0, end: 12 }]);
+    expect(getOriginalMatchRanges("Śrī Chaitanya", "caitanya")).toEqual([{ start: 4, end: 13 }]);
+    expect(getOriginalMatchRanges("Navadvīp", "nabadwip")).toEqual([{ start: 0, end: 8 }]);
+    expect(getOriginalMatchRanges("Śrī Vṛndāvan", "brindaban")).toEqual([{ start: 4, end: 12 }]);
+    expect(getOriginalMatchRanges("in Vṛndāvan—there", "vrindavan")).toEqual([{ start: 3, end: 11 }]);
+    expect(getOriginalMatchRanges("Koladvīp", "koladwip")).toEqual([{ start: 0, end: 8 }]);
+    expect(getOriginalMatchRanges("Krishna", "krsna")).toEqual([{ start: 0, end: 7 }]);
+  });
 });

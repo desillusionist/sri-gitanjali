@@ -294,45 +294,93 @@ export function normalizeSearchText(value: string): string {
     .toLowerCase();
 }
 
-function normalizedTextWithIndexMap(value: string): { normalized: string; indexes: number[] } {
-  let normalized = "";
-  const indexes: number[] = [];
+const SEPARATORS = /[\s\u002D\u2010-\u2015\u2212]/;
+const COMBINING_MARKS = /[\u0300-\u036f]/g;
+
+/**
+ * Two- and one-letter spellings that stand for the same sound in Bengali and Sanskrit
+ * transliteration, folded to one form on both sides so "krishna" finds "kṛṣṇa",
+ * "shri" finds "śrī", "caitanya" finds "chaitanya" and "nabadwip" finds "Navadvīp".
+ */
+const SPELLING_PAIRS: Record<string, string> = { sh: "s", ri: "r", ch: "c", aa: "a", ee: "i", oo: "u" };
+// Bengali writes b where Sanskrit has v (Nabadwīp / Navadvīp, Brindāban / Vṛndāvan).
+const SPELLING_SINGLES: Record<string, string> = { w: "b", v: "b" };
+
+/** Search form of a text: no accents, separators or case, with spelling variants folded, plus where each folded letter starts and ends in the source. */
+function foldForSearch(value: string): { folded: string; indexes: number[]; ends: number[] } {
+  const letters: string[] = [];
+  const offsets: number[] = [];
+  const letterEnds: number[] = [];
   let originalOffset = 0;
-
   for (const character of value) {
-    const normalizedCharacter = character
-      .normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[\s\u002D\u2010-\u2015\u2212]/g, "")
-      .toLowerCase();
-
-    for (const normalizedPart of normalizedCharacter) {
-      normalized += normalizedPart;
-      indexes.push(originalOffset);
+    const plain = character.normalize("NFKD").replace(COMBINING_MARKS, "").toLowerCase();
+    for (const letter of plain) {
+      if (!SEPARATORS.test(letter)) {
+        letters.push(letter);
+        offsets.push(originalOffset);
+        letterEnds.push(originalOffset + character.length);
+      }
     }
     originalOffset += character.length;
   }
 
-  return { normalized, indexes };
+  let folded = "";
+  const indexes: number[] = [];
+  const ends: number[] = [];
+  for (let index = 0; index < letters.length; index += 1) {
+    const pair = SPELLING_PAIRS[letters[index] + (letters[index + 1] ?? "")];
+    if (pair) {
+      folded += pair;
+      indexes.push(offsets[index]);
+      ends.push(letterEnds[index + 1]);
+      index += 1;
+      continue;
+    }
+    folded += SPELLING_SINGLES[letters[index]] ?? letters[index];
+    indexes.push(offsets[index]);
+    ends.push(letterEnds[index]);
+  }
+  return { folded, indexes, ends };
+}
+
+const escapeForPattern = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const CONSONANT = /[b-df-hj-np-tv-z]$/;
+
+/**
+ * The query as a pattern over folded text. Bengali often drops a word's final "a"
+ * (Madan / Madana, Gopāl / Gopāla), so each query word may end with or without it.
+ */
+function searchPattern(query: string): RegExp | null {
+  const words = query.split(new RegExp(SEPARATORS.source + "+")).map((word) => foldForSearch(word).folded).filter(Boolean);
+  if (!words.length) return null;
+  const source = words.map((word) => {
+    if (word.length > 2 && word.endsWith("a") && CONSONANT.test(word.slice(0, -1))) return `${escapeForPattern(word.slice(0, -1))}a?`;
+    if (word.length > 1 && CONSONANT.test(word)) return `${escapeForPattern(word)}a?`;
+    return escapeForPattern(word);
+  }).join("");
+  return new RegExp(source, "g");
+}
+
+/** True when the text contains the query, allowing for spelling variants. */
+export function textMatchesQuery(value: string, query: string): boolean {
+  const pattern = searchPattern(query);
+  return pattern ? pattern.test(foldForSearch(value).folded) : false;
 }
 
 export type TextMatchRange = { start: number; end: number };
 
 export function getOriginalMatchRanges(value: string, query: string): TextMatchRange[] {
-  const normalizedQuery = normalizeSearchText(query);
-  if (!normalizedQuery) return [];
+  const pattern = searchPattern(query);
+  if (!pattern) return [];
 
-  const { normalized, indexes } = normalizedTextWithIndexMap(value);
+  const { folded, indexes, ends } = foldForSearch(value);
   const ranges: TextMatchRange[] = [];
-  let searchFrom = 0;
-
-  while (searchFrom < normalized.length) {
-    const matchStart = normalized.indexOf(normalizedQuery, searchFrom);
-    if (matchStart === -1) break;
-
-    const matchEnd = matchStart + normalizedQuery.length;
-    ranges.push({ start: indexes[matchStart], end: indexes[matchEnd] ?? value.length });
-    searchFrom = matchEnd;
+  for (const match of Array.from(folded.matchAll(pattern))) {
+    if (!match[0].length) continue;
+    const matchStart = match.index!;
+    const matchEnd = matchStart + match[0].length;
+    // End at the last matched letter, so a following space or dash is not highlighted.
+    ranges.push({ start: indexes[matchStart], end: ends[matchEnd - 1] });
   }
 
   return ranges;
@@ -445,10 +493,10 @@ export function getSongCategories(songs: Song[]): string[] {
 }
 
 export function filterSongs(songs: Song[], filters: SongSearchFilters, secondary?: SecondaryTranslationLookup): Song[] {
-  const query = normalizeSearchText(filters.query);
+  const hasQuery = Boolean(normalizeSearchText(filters.query));
 
   return songs.filter((song) => {
-    const matchesQuery = !query || normalizeSearchText(songSearchText(song, secondary)).includes(query);
+    const matchesQuery = !hasQuery || textMatchesQuery(songSearchText(song, secondary), filters.query);
     const matchesAuthor =
       filters.author === ALL_AUTHORS_FILTER ||
       (filters.author === UNLISTED_AUTHOR_FILTER ? !song.poet?.trim() : song.poet?.trim() === filters.author);
