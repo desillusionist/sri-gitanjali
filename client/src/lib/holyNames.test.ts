@@ -50,6 +50,13 @@ describe("holy names", () => {
     ]);
   });
 
+  it("finds Russian names written as one word or two", () => {
+    expect(named("О Шри Бхакти Винод, Шри Сарасвати Тхакур; Бхактивинода; Шрила Бхакти Сиддханта Сарасвати Тхакур, Шрила Бхакти Сиддханта Сарасвати Госвами")).toEqual([
+      ["Бхакти Винод", "bhakti-vinod"], ["Сарасвати Тхакур", "saraswati-thakur"], ["Бхактивинода", "bhakti-vinod"],
+      ["Бхакти Сиддханта Сарасвати Тхакур", "saraswati-thakur"], ["Бхакти Сиддханта Сарасвати Госвами", "saraswati-thakur"],
+    ]);
+  });
+
   it("finds Śrīnivās Āchārya and Rāmachandra as whole names", () => {
     expect(named("Oh Lord Śrī Śrīnivās Āchārya; for the company of Śrī Rāmachandra Chakravartī, Narottam Dās does pray.")).toEqual([
       ["Śrī Śrīnivās Āchārya", "srinivas-acharya"], ["Śrī Rāmachandra Chakravartī", "ramachandra-kaviraj"], ["Narottam Dās", "narottam"],
