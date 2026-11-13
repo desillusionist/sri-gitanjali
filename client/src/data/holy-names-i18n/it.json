@@ -5,7 +5,8 @@
    "divine": "Il Signore e i Suoi",
    "place": "Luogo sacro",
    "realm": "Mondo spirituale",
-   "other": "Personaggio"
+   "other": "Personaggio",
+   "book": "Libro sacro"
   },
   "page": "Leggi di più",
   "map": "Apri in Google Maps"
@@ -609,6 +610,171 @@
   },
   "krishna/govindadev": {
    "about": "La Divinità di Krishna che Śrīla Rūpa Goswāmī rivelò a Vṛndāvan."
+  },
+  "bhagavatam": {
+   "about": "L’ultima e più matura opera di Vyāsadeva, il Purāṇa immacolato dei passatempi di Krishna e della devozione pura."
+  },
+  "bhagavad-gita": {
+   "about": "Gli insegnamenti di Krishna ad Arjuna sul campo di battaglia di Kurukṣetra, parte del Mahābhārata."
+  },
+  "vedas": {
+   "about": "Le scritture rivelate originarie, che Vyāsadeva divise in quattro: Ṛg, Sāma, Yajur e Atharva."
+  },
+  "puranas": {
+   "about": "Le storie antiche raccolte da Vyāsadeva che spiegano i Veda attraverso i racconti del Signore e dei Suoi devoti."
+  },
+  "upanisads": {
+   "about": "Le parti filosofiche dei Veda, che descrivono la Verità Assoluta."
+  },
+  "vedanta-sutra": {
+   "about": "Gli aforismi di Vyāsadeva che riassumono i Veda; lo Śrīmad-Bhāgavatam ne è il commento naturale."
+  },
+  "mahabharata": {
+   "about": "Il grande poema epico di Vyāsadeva sui Pāṇḍava, che contiene la Bhagavad-gītā."
+  },
+  "padma-purana": {
+   "about": "Uno dei grandi Purāṇa; contiene il Dāmodarāṣṭakam e molte glorie del Santo Nome."
+  },
+  "kurma-purana": {
+   "about": "Il Purāṇa che Mahāprabhu citò nell’India del Sud per mostrare che Rāvaṇa non toccò mai Sītā."
+  },
+  "brahma-samhita": {
+   "about": "Le preghiere del Signore Brahmā a Govinda, che Mahāprabhu trovò nell’India del Sud e portò ai Suoi devoti."
+  },
+  "garga-samhita": {
+   "about": "Il racconto di Garga Muni sui passatempi di Krishna a Vraja e a Dvārakā."
+  },
+  "krsna-karnamrta": {
+   "about": "Il poema di Bilvamaṅgal Ṭhākur sulla dolcezza di Krishna, che Mahāprabhu trovò nell’India del Sud e custodì con amore."
+  },
+  "gita-govinda": {
+   "about": "Il canto sanscrito di Jayadeva Goswāmī sull’amore di Rādhā e Krishna, che Mahāprabhu assaporava a Purī."
+  },
+  "siksastakam": {
+   "about": "Gli otto versi di Mahāprabhu sul canto del Santo Nome, l’unico scritto che Egli lasciò."
+  },
+  "chaitanya-charitamrta": {
+   "about": "Il racconto di Śrīla Kṛṣṇadās Kavirāj Goswāmī sulla vita e gli insegnamenti di Mahāprabhu, scritto a Vṛndāvan."
+  },
+  "chaitanya-bhagavata": {
+   "about": "La biografia di Mahāprabhu scritta da Śrīla Vṛndāvan Dās Ṭhākur, soprattutto dei Suoi passatempi a Nabadwīp."
+  },
+  "chaitanya-mangala": {
+   "about": "La biografia in canto di Mahāprabhu scritta da Śrīla Lochan Dās Ṭhākur."
+  },
+  "bhakti-rasamrta-sindhu": {
+   "about": "L’oceano del nettare della devozione di Śrīla Rūpa Goswāmī: la scienza del servizio devozionale e dei suoi rasa."
+  },
+  "ujjvala-nilamani": {
+   "about": "Lo studio di Śrīla Rūpa Goswāmī sullo stato devozionale più elevato, l’amore delle gopī di Vraja."
+  },
+  "upadesamrta": {
+   "about": "Gli undici versi di istruzione di Śrīla Rūpa Goswāmī per i devoti."
+  },
+  "vidagdha-madhava": {
+   "about": "Il dramma di Śrīla Rūpa Goswāmī sui passatempi di Krishna a Vṛndāvan."
+  },
+  "lalita-madhava": {
+   "about": "Il dramma di Śrīla Rūpa Goswāmī sui passatempi di Krishna a Mathurā e a Dvārakā."
+  },
+  "stava-mala": {
+   "about": "La ghirlanda di preghiere di Śrīla Rūpa Goswāmī, raccolta da Śrīla Jīva Goswāmī."
+  },
+  "hari-bhakti-vilasa": {
+   "about": "Il libro della pratica e del culto vaiṣṇava compilato da Śrīla Sanātan e Gopāl Bhaṭṭa Goswāmī."
+  },
+  "brhad-bhagavatamrta": {
+   "about": "La storia di Śrīla Sanātan Goswāmī sulla ricerca di Nārada del devoto più caro al Signore, che culmina nelle gopī di Vraja."
+  },
+  "brhad-vaisnava-tosani": {
+   "about": "Il commento di Śrīla Sanātan Goswāmī al Decimo Canto dello Śrīmad-Bhāgavatam."
+  },
+  "sat-sandarbha": {
+   "about": "I sei libri di Śrīla Jīva Goswāmī che espongono la filosofia di acintya-bhedābheda a partire dallo Śrīmad-Bhāgavatam."
+  },
+  "tattva-sandarbha": {
+   "about": "Il primo dei Ṣaṭ Sandarbha di Śrīla Jīva Goswāmī, sulle fonti della conoscenza e l’autorità dello Śrīmad-Bhāgavatam."
+  },
+  "paramatma-sandarbha": {
+   "about": "Il terzo dei Ṣaṭ Sandarbha di Śrīla Jīva Goswāmī, sul Signore che vive in ogni cuore."
+  },
+  "govinda-lilamrta": {
+   "about": "Il poema sanscrito di Śrīla Kṛṣṇadās Kavirāj Goswāmī sui passatempi di Rādhā e Krishna negli otto periodi del giorno."
+  },
+  "govinda-bhasya": {
+   "about": "Il commento gauḍīya di Śrīla Baladeva Vidyābhūṣaṇa al Vedānta-sūtra, che si dice gli fu rivelato da Govindadev in persona."
+  },
+  "madhurya-kadambini": {
+   "about": "Il libro di Śrīla Viśvanāth Chakravartī Ṭhākur sulle tappe della devozione, dalla fede all’amore."
+  },
+  "prema-bhakti-chandrika": {
+   "about": "I canti di Śrīla Narottam Dās Ṭhākur sul sentiero della devozione amorosa."
+  },
+  "vilapa-kusumanjali": {
+   "about": "Le preghiere in separazione di Śrīla Raghunāth Dās Goswāmī a Śrīmatī Rādhārāṇī."
+  },
+  "govardhana-dasakam": {
+   "about": "I dieci versi di Śrīla Raghunāth Dās Goswāmī in cui prega di vivere a Govardhan."
+  },
+  "vaisnava-vandana": {
+   "about": "La glorificazione dei devoti di Devakīnandana Dās Ṭhākur, che si inchina a loro uno per uno."
+  },
+  "sad-gosvamy-astakam": {
+   "about": "Gli otto versi di Śrīla Śrīnivās Āchārya in lode dei Sei Goswāmī di Vṛndāvan."
+  },
+  "rupa-manjari-pada": {
+   "about": "Il canto di Śrīla Narottam Dās Ṭhākur ai piedi di Śrī Rūpa Mañjarī, che Śrīla Saraswatī Ṭhākur chiese di ascoltare prima della sua dipartita."
+  },
+  "damodarastakam": {
+   "about": "Gli otto versi di Satyavrat Muni al Signore Dāmodar, dal Padma Purāṇa, cantati ogni sera nel mese di Kārttika."
+  },
+  "saranagati": {
+   "about": "Il canzoniere di Śrīla Bhakti Vinod Ṭhākur sui sei aspetti dell’abbandono."
+  },
+  "gitavali": {
+   "about": "Il canzoniere di Śrīla Bhakti Vinod Ṭhākur per i giorni sacri e per il Santo Nome."
+  },
+  "kalyana-kalpataru": {
+   "about": "Il primo canzoniere di Śrīla Bhakti Vinod Ṭhākur, l’albero dei desideri del bene."
+  },
+  "gita-mala": {
+   "about": "La ghirlanda di canti di Śrīla Bhakti Vinod Ṭhākur, tra cui canti sugli insegnamenti di Śrīla Rūpa Goswāmī."
+  },
+  "bhaktivinoda-viraha-dasakam": {
+   "about": "I dieci versi sanscriti di Śrīla Śrīdhar Mahārāja in separazione da Śrīla Bhakti Vinod Ṭhākur, molto apprezzati dal suo guru."
+  },
+  "prapanna-jivanamrtam": {
+   "about": "L’antologia di versi sull’abbandono di Śrīla Śrīdhar Mahārāja, il nettare della vita per chi si è abbandonato."
+  },
+  "premadhama-deva-stotram": {
+   "about": "L’inno sanscrito di Śrīla Śrīdhar Mahārāja a Śrī Chaitanya Mahāprabhu, il Signore che è la dimora dell’amore divino."
+  },
+  "search-for-krsna": {
+   "about": "I discorsi di Śrīla Śrīdhar Mahārāja che presentano Krishna come la Realtà Bella."
+  },
+  "sri-guru-and-his-grace": {
+   "about": "I discorsi di Śrīla Śrīdhar Mahārāja sul maestro spirituale e la sua misericordia."
+  },
+  "loving-search": {
+   "about": "I discorsi di Śrīla Śrīdhar Mahārāja sulla posizione eterna dell’anima come servitore di Krishna."
+  },
+  "golden-volcano": {
+   "about": "I discorsi di Śrīla Śrīdhar Mahārāja su Śrī Chaitanya Mahāprabhu e i Suoi otto versi, lo Śikṣāṣṭakam."
+  },
+  "subjective-evolution": {
+   "about": "La risposta di Śrīla Śrīdhar Mahārāja alla teoria dell’evoluzione materiale: prima viene la coscienza."
+  },
+  "gita-pearl": {
+   "about": "Il libro di Śrīla Bhakti Bimal Avadhūt Mahārāja sulla Bhagavad-gītā."
+  },
+  "acharya-vandana": {
+   "about": "Il lungo inno bengalese di Gopāl Govinda Mahanta in gloria di Śrīla Bhakti Siddhānta Saraswatī Ṭhākur."
+  },
+  "acharya-charana-vandana": {
+   "about": "L’inno inglese di Śrīpād B.Ā. Sāgar Mahārāja ai piedi di loto di Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja."
+  },
+  "guru-arati": {
+   "about": "Il canto di ārati di Śrīpād B.A. Paramahaṁsa Mahārāja in lode di Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja."
   }
  }
 }

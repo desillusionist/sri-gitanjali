@@ -150,7 +150,7 @@ export const translations = {
       audioVersionSeparator: " · ",
       songNote: "About this song",
       footnote: "Footnote",
-      holyNameKinds: { person: "Vaiṣṇava", divine: "The Lord and His own", place: "Holy place", realm: "Spiritual world", other: "Personality" },
+      holyNameKinds: { person: "Vaiṣṇava", divine: "The Lord and His own", place: "Holy place", realm: "Spiritual world", other: "Personality", book: "Sacred book" },
       holyNamePage: "Read more",
       holyNameMap: "Show on Google Maps",
       holyNameLabel: "About {name}",

@@ -27,6 +27,19 @@ describe("holy names", () => {
     expect(named("Śrī Chaitanya Sāraswat Maṭh at Koladwīp")).toEqual([["Śrī Chaitanya Sāraswat Maṭh", "scsmath"], ["Koladwīp", "koladwip"]]);
   });
 
+  it("takes a book title as a whole instead of the name inside it", () => {
+    expect(named("Śrīla Kṛṣṇadās Kavirāj Goswāmī wrote Śrī Chaitanya-charitāmṛta in Vṛndāvan.")).toEqual([
+      ["Śrīla Kṛṣṇadās Kavirāj Goswāmī", "krsnadas"], ["Śrī Chaitanya-charitāmṛta", "chaitanya-charitamrta"], ["Vṛndāvan", "vrndavan"],
+    ]);
+    expect(named("the Vedas, Śrīmad-Bhāgavata-Purāṇa and Bhagavad-gītā; Hari-bhakti-vilāsa; mahā-bhāgavata")).toEqual([
+      ["Vedas", "vedas"], ["Śrīmad-Bhāgavata-Purāṇa", "bhagavatam"], ["Bhagavad-gītā", "bhagavad-gita"], ["Hari-bhakti-vilāsa", "hari-bhakti-vilasa"],
+    ]);
+    expect(named("В «Чайтанья-чаритамрите» и «Шримад‑Бхагаватам», но не в Веданте")).toEqual([
+      ["Чайтанья-чаритамрите", "chaitanya-charitamrta"], ["Шримад‑Бхагаватам", "bhagavatam"],
+    ]);
+    expect(HOLY_NAMES.find((entry) => entry.id === "saranagati")?.kind).toBe("book");
+  });
+
   it("finds Russian names in any case ending", () => {
     expect(named("Слава Шри Кришне и Радхарани во Вриндаване")).toEqual([["Кришне", "krishna"], ["Радхарани", "radha"], ["Вриндаване", "vrndavan"]]);
   });

@@ -5,7 +5,8 @@
    "divine": "Kungs un Viņa tuvākie",
    "place": "Svēta vieta",
    "realm": "Garīgā pasaule",
-   "other": "Personība"
+   "other": "Personība",
+   "book": "Svētā grāmata"
   },
   "page": "Lasīt vairāk",
   "map": "Skatīt Google Maps"
@@ -791,6 +792,280 @@
   "krishna/govindadev": {
    "name": "Šrī Govindadēvs",
    "about": "Krišnas Dievība, ko Šrīla Rūpa Gosvāmī atklāja Vrindāvanā."
+  },
+  "bhagavatam": {
+   "name": "Šrīmad-Bhāgavatam",
+   "about": "Vjāsadēvas pēdējais un nobriedušākais darbs, nevainojamā Purāna par Krišnas spēlēm un tīru mīlestībpilnu kalpošanu."
+  },
+  "bhagavad-gita": {
+   "name": "Bhagavad-gīta",
+   "aliases": [
+    "Bhagavad-gīt*",
+    "Bhagavad-gita*"
+   ],
+   "about": "Krišnas pamācības Ardžunam Kurukšetras kaujas laukā, “Mahābhāratas” daļa."
+  },
+  "vedas": {
+   "name": "Vēdas",
+   "aliases": [
+    "Vēdas",
+    "Vēdu",
+    "Vēdām",
+    "Vēdās",
+    "Vēdā"
+   ],
+   "about": "Sākotnējie atklātie raksti, ko Vjāsadēva sadalīja četrās daļās: Rig, Sāma, Jadžur un Atharva."
+  },
+  "puranas": {
+   "name": "Purānas",
+   "aliases": [
+    "Purānas",
+    "Purānu",
+    "Purānās",
+    "Purānām",
+    "Purāna"
+   ],
+   "about": "Senās vēstures, ko sakopoja Vjāsadēva; tās izskaidro Vēdas ar stāstiem par Kungu un Viņa bhaktām."
+  },
+  "upanisads": {
+   "name": "Upanišadas",
+   "aliases": [
+    "Upanišad*"
+   ],
+   "about": "Vēdu filozofiskās daļas, kas apraksta Absolūto Patiesību."
+  },
+  "vedanta-sutra": {
+   "name": "Vēdānta-sūtra",
+   "aliases": [
+    "Vēdānta-sūtr*"
+   ],
+   "about": "Vjāsadēvas aforismi, kas apkopo Vēdas; “Šrīmad-Bhāgavatam” ir to dabiskais komentārs."
+  },
+  "mahabharata": {
+   "name": "Mahābhārata",
+   "aliases": [
+    "Mahābhārat*"
+   ],
+   "about": "Vjāsadēvas lielais eposs par Pāndaviem, kurā ietverta “Bhagavad-gīta”."
+  },
+  "padma-purana": {
+   "name": "Padma Purāna",
+   "aliases": [
+    "Padma Purān*",
+    "Padma-purān*"
+   ],
+   "about": "Viena no lielajām Purānām; tajā ir “Dāmodarāštakam” un daudz Svētā Vārda slavinājumu."
+  },
+  "kurma-purana": {
+   "name": "Kūrma Purāna",
+   "aliases": [
+    "Kūrma Purān*",
+    "Kūrma-purān*"
+   ],
+   "about": "Purāna, ko Mahāprabhu citēja Dienvidindijā, lai parādītu, ka Rāvana nekad nav pieskāries Sītai."
+  },
+  "brahma-samhita": {
+   "name": "Brahma-samhita",
+   "aliases": [
+    "Brahma-samhit*"
+   ],
+   "about": "Kunga Brahmas lūgšanas Govindam, ko Mahāprabhu atrada Dienvidindijā un atnesa saviem bhaktām."
+  },
+  "garga-samhita": {
+   "name": "Garga Samhita",
+   "aliases": [
+    "Garga Samhit*",
+    "Garga-samhit*"
+   ],
+   "about": "Garga Muni stāstījums par Krišnas spēlēm Vradžā un Dvārakā."
+  },
+  "krsna-karnamrta": {
+   "name": "Šrī Krišna-karnāmrita",
+   "about": "Bilvamangalas Thākura dzejojums par Krišnas saldumu, ko Mahāprabhu atrada Dienvidindijā un ļoti mīlēja."
+  },
+  "gita-govinda": {
+   "name": "Šrī Gīta-govinda",
+   "about": "Džajadēvas Gosvāmī sanskrita dziesma par Rādhas un Krišnas mīlestību, ko Mahāprabhu baudīja Purī."
+  },
+  "siksastakam": {
+   "name": "Šrī Šikšāštakam",
+   "aliases": [
+    "Šrī Šikšāštakam",
+    "Šikšāštakam"
+   ],
+   "about": "Mahāprabhu astoņi panti par Svētā Vārda daudzināšanu — vienīgais, ko Viņš uzrakstīja."
+  },
+  "chaitanya-charitamrta": {
+   "name": "Šrī Čaitanja-čaritāmrita",
+   "aliases": [
+    "Šrī Čaitanja-čaritāmrit*",
+    "Čaitanja-čaritāmrit*"
+   ],
+   "about": "Šrīlas Krišnadāsa Kavirādžas Gosvāmī stāstījums par Mahāprabhu dzīvi un mācību, uzrakstīts Vrindāvanā."
+  },
+  "chaitanya-bhagavata": {
+   "name": "Šrī Čaitanja-bhāgavata",
+   "aliases": [
+    "Čaitanja-bhāgavat*"
+   ],
+   "about": "Šrīlas Vrindāvana Dāsa Thākura sarakstītā Mahāprabhu biogrāfija, galvenokārt par Viņa spēlēm Navadvīpā."
+  },
+  "chaitanya-mangala": {
+   "name": "Šrī Čaitanja-mangala",
+   "aliases": [
+    "Čaitanja-mangal*"
+   ],
+   "about": "Šrīlas Ločanas Dāsa Thākura dziesmās sarakstītā Mahāprabhu biogrāfija."
+  },
+  "bhakti-rasamrta-sindhu": {
+   "name": "Bhakti-rasāmrita-sindhu",
+   "about": "Šrīlas Rūpas Gosvāmī bhakti nektāra okeāns: zinātne par kalpošanu ar mīlestību un tās rasām."
+  },
+  "ujjvala-nilamani": {
+   "name": "Udžvala-nīlamani",
+   "about": "Šrīlas Rūpas Gosvāmī darbs par augstāko bhakti noskaņu — Vradžas gopī mīlestību."
+  },
+  "upadesamrta": {
+   "name": "Šrī Upadēšāmrita",
+   "about": "Šrīlas Rūpas Gosvāmī vienpadsmit pamācību panti bhaktām."
+  },
+  "vidagdha-madhava": {
+   "name": "Vidagdha-mādhava",
+   "about": "Šrīlas Rūpas Gosvāmī luga par Krišnas spēlēm Vrindāvanā."
+  },
+  "lalita-madhava": {
+   "name": "Lalita-mādhava",
+   "about": "Šrīlas Rūpas Gosvāmī luga par Krišnas spēlēm Mathurā un Dvārakā."
+  },
+  "stava-mala": {
+   "name": "Stava-mālā",
+   "about": "Šrīlas Rūpas Gosvāmī lūgšanu vītne, ko sakopoja Šrīla Džīva Gosvāmī."
+  },
+  "hari-bhakti-vilasa": {
+   "name": "Hari-bhakti-vilāsa",
+   "about": "Grāmata par vaišnavu praksi un pielūgsmi, ko sakopoja Šrīla Sanātana un Gopāla Bhata Gosvāmī."
+  },
+  "brhad-bhagavatamrta": {
+   "name": "Brihad-bhāgavatāmrita",
+   "about": "Šrīlas Sanātanas Gosvāmī stāsts par to, kā Nārada meklēja Kungam visdārgāko bhaktu, — meklējumi, kas ved līdz Vradžas gopī."
+  },
+  "brhad-vaisnava-tosani": {
+   "name": "Brihad-vaišnava-tošanī",
+   "about": "Šrīlas Sanātanas Gosvāmī komentārs “Šrīmad-Bhāgavatam” Desmitajam dziedājumam."
+  },
+  "sat-sandarbha": {
+   "name": "Šat-sandarbha",
+   "about": "Šrīlas Džīvas Gosvāmī sešas grāmatas, kas, balstoties uz “Šrīmad-Bhāgavatam”, izklāsta ačintja-bhēdābhēdas filozofiju."
+  },
+  "tattva-sandarbha": {
+   "name": "Tatva-sandarbha",
+   "about": "Pirmā no Šrīlas Džīvas Gosvāmī “Šat-sandarbhām” — par zināšanu avotiem un “Šrīmad-Bhāgavatam” autoritāti."
+  },
+  "paramatma-sandarbha": {
+   "name": "Paramātma-sandarbha",
+   "about": "Trešā no Šrīlas Džīvas Gosvāmī “Šat-sandarbhām” — par Kungu, kas mīt katrā sirdī."
+  },
+  "govinda-lilamrta": {
+   "name": "Govinda-līlāmrita",
+   "about": "Šrīlas Krišnadāsa Kavirādžas Gosvāmī sanskrita poēma par Rādhas un Krišnas spēlēm astoņos dienas posmos."
+  },
+  "govinda-bhasya": {
+   "name": "Govinda-bhāšja",
+   "about": "Šrīlas Baladēvas Vidjābhūšanas gaudīja komentārs “Vēdānta-sūtrai”, ko, kā saka, viņam atklāja pats Govindadēvs."
+  },
+  "madhurya-kadambini": {
+   "name": "Mādhurja-kādambinī",
+   "about": "Šrīlas Višvanātha Čakravartī Thākura grāmata par bhakti pakāpēm — no ticības līdz mīlestībai."
+  },
+  "prema-bhakti-chandrika": {
+   "name": "Prēma-bhakti-čandrikā",
+   "about": "Šrīlas Narotamas Dāsa Thākura dziesmas par mīlestībpilnas kalpošanas ceļu."
+  },
+  "vilapa-kusumanjali": {
+   "name": "Vilāpa-kusumāndžali",
+   "about": "Šrīlas Raghunātha Dāsa Gosvāmī lūgšanas Šrīmatī Rādhārānī šķirtībā."
+  },
+  "govardhana-dasakam": {
+   "name": "Govardhana-vāsa-prārthanā-dašakam",
+   "about": "Šrīlas Raghunātha Dāsa Gosvāmī desmit panti ar lūgumu dzīvot pie Govardhana."
+  },
+  "vaisnava-vandana": {
+   "name": "Vaišnava-vandanā",
+   "about": "Dēvakīnandanas Dāsa Thākura bhaktu slavinājums, kurā viņš tiem paklanās vienam pēc otra."
+  },
+  "sad-gosvamy-astakam": {
+   "name": "Šrī Šad-gosvāmj-aštakam",
+   "about": "Šrīlas Šrinivāsa Āčārjas astoņi panti Vrindāvanas Sešu Gosvāmī slavai."
+  },
+  "rupa-manjari-pada": {
+   "name": "Šrī Rūpa-mandžarī-pada",
+   "about": "Šrīlas Narotamas Dāsa Thākura dziesma Šrī Rūpas Mandžarī pēdām, ko Šrīla Sarasvatī Thākurs lūdza nodziedāt pirms savas aiziešanas."
+  },
+  "damodarastakam": {
+   "name": "Šrī Dāmodarāštakam",
+   "aliases": [
+    "Šrī Dāmodarāštakam",
+    "Dāmodarāštakam"
+   ],
+   "about": "Satjavratas Muni astoņi panti Kungam Dāmodaram no “Padma Purānas”, ko dzied katru vakaru Kārtikas mēnesī."
+  },
+  "saranagati": {
+   "name": "Šaranāgati",
+   "about": "Šrīlas Bhakti Vinoda Thākura dziesmu krājums par sešām sevis atdošanas daļām."
+  },
+  "gitavali": {
+   "name": "Gītāvalī",
+   "about": "Šrīlas Bhakti Vinoda Thākura dziesmu krājums svētajām dienām un Svētajam Vārdam."
+  },
+  "kalyana-kalpataru": {
+   "name": "Kaljāna-kalpataru",
+   "about": "Šrīlas Bhakti Vinoda Thākura pirmais dziesmu krājums — labklājības vēlmju koks."
+  },
+  "gita-mala": {
+   "name": "Gīta-mālā",
+   "about": "Šrīlas Bhakti Vinoda Thākura dziesmu vītne, starp tām dziesmas par Šrīlas Rūpas Gosvāmī mācību."
+  },
+  "bhaktivinoda-viraha-dasakam": {
+   "name": "Šrī Bhaktivinoda-viraha-dašakam",
+   "about": "Šrīlas Šrīdharas Mahārādžas desmit sanskrita panti šķirtībā no Šrīlas Bhakti Vinoda Thākura, ko augstu vērtēja viņa guru."
+  },
+  "prapanna-jivanamrtam": {
+   "name": "Šrī Šrī Prapanna-džīvanāmritam",
+   "about": "Šrīlas Šrīdharas Mahārādžas pantu krājums par sevis atdošanu — dzīvības nektārs tiem, kas atdevušies."
+  },
+  "premadhama-deva-stotram": {
+   "name": "Šrī Šrī Prēmadhāma-dēva-stotram",
+   "about": "Šrīlas Šrīdharas Mahārādžas sanskrita himna Šrī Čaitanjam Mahāprabhu — Kungam, dievišķās mīlestības mājvietai."
+  },
+  "search-for-krsna": {
+   "about": "Šrīlas Šrīdharas Mahārādžas sarunas par Krišnu kā Skaisto Realitāti."
+  },
+  "sri-guru-and-his-grace": {
+   "about": "Šrīlas Šrīdharas Mahārādžas sarunas par garīgo skolotāju un viņa žēlastību."
+  },
+  "loving-search": {
+   "about": "Šrīlas Šrīdharas Mahārādžas sarunas par dvēseles mūžīgo stāvokli kā Krišnas kalpam."
+  },
+  "golden-volcano": {
+   "about": "Šrīlas Šrīdharas Mahārādžas sarunas par Šrī Čaitanju Mahāprabhu un Viņa astoņiem pantiem, “Šikšāštakam”."
+  },
+  "subjective-evolution": {
+   "about": "Šrīlas Šrīdharas Mahārādžas atbilde materiālās evolūcijas teorijai: pirmā ir apziņa."
+  },
+  "gita-pearl": {
+   "about": "Šrīlas Bhakti Bimala Avadhūtas Mahārādžas grāmata par “Bhagavad-gītu”."
+  },
+  "acharya-vandana": {
+   "name": "Āčārja-vandana",
+   "about": "Gopāla Govindas Mahantas garā bengāļu himna Šrīlas Bhakti Sidhāntas Sarasvatī Thākura slavai."
+  },
+  "acharya-charana-vandana": {
+   "name": "Āčārja-čarana-vandana",
+   "about": "Šrīpāda B. Ā. Sāgara Mahārādžas angļu himna Šrīlas Bhakti Sundaras Govindas Dēva-Gosvāmī Mahārādžas lotospēdām."
+  },
+  "guru-arati": {
+   "name": "Šrī Guru Ārati",
+   "about": "Šrīpāda B. A. Paramahamsas Mahārādžas ārati dziesma Šrīlas Bhakti Sundaras Govindas Dēva-Gosvāmī Mahārādžas slavai."
   }
  }
 }

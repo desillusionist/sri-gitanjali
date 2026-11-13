@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Builds client/src/data/holy-names.json: personalities and holy places named in the translations.
 
-Each entry: id, kind (person = a Vaiṣṇava | divine | place | realm | other = any other personality), name, about (one sentence),
+Each entry: id, kind (person = a Vaiṣṇava | divine | place | realm | other = any other personality | book = a scripture, book or poem), name, about (one sentence),
 aliases (Latin spellings; matching ignores diacritics, so "Vrndavan" also finds "Vṛndāvan"),
 ru (Cyrillic stems; a trailing * lets Russian case endings follow), optional authorId (a page
 under /author/) and maps (a Google Maps search for places on Earth).
@@ -10,7 +10,7 @@ Edit the table below and re-run: python3 scripts/build-holy-names.py
 import json
 import pathlib
 
-P, D, PL, R, O = "person", "divine", "place", "realm", "other"
+P, D, PL, R, O, B = "person", "divine", "place", "realm", "other", "book"
 
 E = [
     # --- The Divine ---
@@ -290,6 +290,121 @@ E += [
      ["Viṣṇupur", "Bishnupur"], ["Вишнупур*"], None, "Bishnupur, Bankura, West Bengal, India"),
 ]
 
+# --- Scriptures, books and poems ---
+E += [
+    ("bhagavatam", B, "Śrīmad Bhāgavatam", "Vyāsadeva’s last and ripest work, the spotless Purāṇa of Krishna’s pastimes and pure devotion.",
+     ["Śrīmad-Bhāgavata-Purāṇa", "Śrīmad Bhāgavata Purāṇa", "Śrīmad-Bhāgavatam", "Śrīmad Bhāgavatam", "Śrīmad-Bhāgavata", "Bhāgavata Purāṇa", "Bhāgavatam"],
+     ["Шримад-Бхагаватам*", "Шримад‑Бхагаватам*", "Шримад Бхагаватам*", "Бхагаватам*"], None, None),
+    ("bhagavad-gita", B, "Bhagavad-gītā", "Krishna’s teaching to Arjuna on the battlefield of Kurukṣetra, spoken in the Mahābhārata.",
+     ["Śrīmad Bhagavad-gītā", "Bhagavad-gītā", "Bhagavad-Gītā", "Bhagavad gītā"], ["Бхагавад-гит*", "Бхагавад‑гит*"], None, None),
+    ("vedas", B, "The Vedas", "The original revealed scriptures, divided by Vyāsadeva into four: Ṛg, Sāma, Yajur and Atharva.",
+     ["Vedas", "Veda"], ["Веды", "Вед", "Ведах", "Ведам", "Ведами", "Веда", "Веде", "Веду"], None, None),
+    ("puranas", B, "The Purāṇas", "The ancient histories compiled by Vyāsadeva that explain the Vedas through the stories of the Lord and His devotees.",
+     ["Purāṇas", "Purāṇa"], ["Пураны", "Пуран", "Пуранах", "Пуранам", "Пуранами", "Пурана", "Пуране", "Пурану"], None, None),
+    ("upanisads", B, "The Upaniṣads", "The philosophical portions of the Vedas, which describe the Absolute Truth.",
+     ["Upaniṣads", "Upaniṣad"], ["Упанишад*"], None, None),
+    ("vedanta-sutra", B, "Vedānta-sūtra", "Vyāsadeva’s aphorisms that sum up the Vedas; Śrīmad Bhāgavatam is their natural commentary.",
+     ["Vedānta-sūtras", "Vedānta-sūtra", "Brahma-sūtras", "Brahma-sūtra"], ["Веданта-сутр*"], None, None),
+    ("mahabharata", B, "Mahābhārata", "Vyāsadeva’s great epic of the Pāṇḍavas, which contains the Bhagavad-gītā.",
+     ["Mahābhārata"], ["Махабхарат*"], None, None),
+    ("padma-purana", B, "Padma Purāṇa", "One of the great Purāṇas; it contains the Dāmodarāṣṭakam and many glories of the Holy Name.",
+     ["Padma Purāṇa", "Padma-purāṇa"], ["Падма-пуран*", "Падма Пуран*"], None, None),
+    ("kurma-purana", B, "Kūrma Purāṇa", "The Purāṇa Mahāprabhu quoted in South India to show that Sītā was never touched by Rāvaṇa.",
+     ["Kūrma Purāṇa", "Kūrma-purāṇa"], ["Курма-пуран*", "Курма Пуран*"], None, None),
+    ("brahma-samhita", B, "Brahma-saṁhitā", "Lord Brahmā’s prayers to Govinda, which Mahāprabhu found in South India and brought to His devotees.",
+     ["Śrī Brahma-saṁhitā", "Brahma-saṁhitā", "Brahmā-saṁhitā", "Brahma Saṁhitā"], ["Брахма-самхит*", "Брахма-санхит*"], None, None),
+    ("garga-samhita", B, "Garga Saṁhitā", "Garga Muni’s account of Krishna’s pastimes in Vraja and Dvārakā.",
+     ["Garga Saṁhitā", "Garga-saṁhitā"], ["Гарга-самхит*", "Гарга Самхит*"], None, None),
+    ("krsna-karnamrta", B, "Śrī Krishna-karṇāmṛta", "Bilvamaṅgal Ṭhākur’s poem of Krishna’s sweetness, which Mahāprabhu found in South India and cherished.",
+     ["Śrī Krishna Karṇāmṛtam", "Śrī Krishna-karṇāmṛta", "Krishna-karṇāmṛta", "Kṛṣṇa-karṇāmṛta"], ["Кришна-карнамрит*"], None, None),
+    ("gita-govinda", B, "Śrī Gīta-govinda", "Jayadeva Goswāmī’s Sanskrit song of the love of Rādhā and Krishna, which Mahāprabhu relished in Purī.",
+     ["Śrī Gīta-govinda", "Gīta-govinda", "Gītā-govinda"], ["Гита-говинд*"], None, None),
+    ("siksastakam", B, "Śrī Śikṣāṣṭakam", "Mahāprabhu’s eight verses on the chanting of the Holy Name, the only writing He left.",
+     ["Śrī Śikṣāṣṭakam", "Śikṣāṣṭakam", "Śikṣāṣṭaka"], ["Шикшаштак*"], None, None),
+    ("chaitanya-charitamrta", B, "Śrī Chaitanya-charitāmṛta", "Śrīla Kṛṣṇadās Kavirāj Goswāmī’s account of Mahāprabhu’s life and teachings, written in Vṛndāvan.",
+     ["Śrī Chaitanya-charitāmṛta", "Chaitanya-charitāmṛta", "Śrī Chaitanya-Charitāmṛta", "Chaitanya-Charitāmṛta", "Śrī Chaitanya Charitāmṛta"], ["Шри Чайтанья-чаритамрит*", "Чайтанья-чаритамрит*"], None, None),
+    ("chaitanya-bhagavata", B, "Śrī Chaitanya-bhāgavata", "Śrīla Vṛndāvan Dās Ṭhākur’s biography of Mahāprabhu, above all of His pastimes in Nabadwīp.",
+     ["Śrī Chaitanya-bhāgavata", "Chaitanya-bhāgavata", "Śrī Chaitanya-bhāgavat", "Chaitanya-bhāgavat"], ["Шри Чайтанья-бхагават*", "Чайтанья-бхагават*"], None, None),
+    ("chaitanya-mangala", B, "Śrī Chaitanya-maṅgala", "Śrīla Lochan Dās Ṭhākur’s biography of Mahāprabhu in song.",
+     ["Śrī Chaitanya-maṅgala", "Chaitanya-maṅgala"], ["Чайтанья-мангал*"], None, None),
+    ("bhakti-rasamrta-sindhu", B, "Bhakti-rasāmṛta-sindhu", "Śrīla Rūpa Goswāmī’s ocean of the nectar of devotion: the science of devotional service and its rasas.",
+     ["Śrī Bhakti-rasāmṛta-sindhu", "Bhakti-rasāmṛta-sindhu"], ["Бхакти-расамрита-синдху"], None, None),
+    ("ujjvala-nilamani", B, "Ujjvala-nīlamaṇi", "Śrīla Rūpa Goswāmī’s study of the highest devotional mood, the love of the gopīs of Vraja.",
+     ["Ujjvala-nīlamaṇi"], ["Уджвала-ниламан*"], None, None),
+    ("upadesamrta", B, "Śrī Upadeśāmṛta", "Śrīla Rūpa Goswāmī’s eleven verses of instruction for devotees.",
+     ["Śrī Upadeśāmṛta", "Upadeśāmṛta"], ["Упадешамрит*"], None, None),
+    ("vidagdha-madhava", B, "Vidagdha-mādhava", "Śrīla Rūpa Goswāmī’s play of Krishna’s pastimes in Vṛndāvan.",
+     ["Vidagdha-mādhava"], ["Видагдха-мадхав*"], None, None),
+    ("lalita-madhava", B, "Lalita-mādhava", "Śrīla Rūpa Goswāmī’s play of Krishna’s pastimes in Mathurā and Dvārakā.",
+     ["Lalita-mādhava"], ["Лалита-мадхав*"], None, None),
+    ("stava-mala", B, "Stava-mālā", "The garland of Śrīla Rūpa Goswāmī’s prayers, gathered by Śrīla Jīva Goswāmī.",
+     ["Stava-mālā"], ["Става-мал*"], None, None),
+    ("hari-bhakti-vilasa", B, "Hari-bhakti-vilāsa", "The book of Vaiṣṇava practice and worship compiled by Śrīla Sanātan and Gopāl Bhaṭṭa Goswāmīs.",
+     ["Hari-bhakti-vilāsa"], ["Хари-бхакти-вилас*"], None, None),
+    ("brhad-bhagavatamrta", B, "Bṛhad-bhāgavatāmṛta", "Śrīla Sanātan Goswāmī’s story of Nārada’s search for the Lord’s dearest devotee, which ends with the gopīs of Vraja.",
+     ["Bṛhad-bhāgavatāmṛta"], ["Брихад-бхагаватамрит*"], None, None),
+    ("brhad-vaisnava-tosani", B, "Bṛhad-vaiṣṇava-toṣaṇī", "Śrīla Sanātan Goswāmī’s commentary on the Tenth Canto of Śrīmad Bhāgavatam.",
+     ["Bṛhad-vaiṣṇava-toṣaṇī"], ["Брихад-вайшнава-тошан*"], None, None),
+    ("sat-sandarbha", B, "Ṣaṭ Sandarbhas", "Śrīla Jīva Goswāmī’s six books that set out the philosophy of acintya-bhedābheda from Śrīmad Bhāgavatam.",
+     ["Ṣaṭ Sandarbhas", "Ṣaṭ Sandarbha", "Ṣaṭ-sandarbha"], ["Шат-сандарбх*", "Шат Сандарбх*"], None, None),
+    ("tattva-sandarbha", B, "Tattva Sandarbha", "The first of Śrīla Jīva Goswāmī’s Ṣaṭ Sandarbhas, on the sources of knowledge and the authority of Śrīmad Bhāgavatam.",
+     ["Tattva Sandarbha", "Tattva-sandarbha"], ["Таттва-сандарбх*", "Таттва Сандарбх*"], None, None),
+    ("paramatma-sandarbha", B, "Paramātma Sandarbha", "The third of Śrīla Jīva Goswāmī’s Ṣaṭ Sandarbhas, on the Lord who lives within every heart.",
+     ["Paramātma Sandarbha", "Paramātma-sandarbha"], ["Параматма-сандарбх*", "Параматма Сандарбх*"], None, None),
+    ("govinda-lilamrta", B, "Govinda-līlāmṛta", "Śrīla Kṛṣṇadās Kavirāj Goswāmī’s Sanskrit poem of Rādhā and Krishna’s pastimes through the eight periods of the day.",
+     ["Govinda-līlāmṛta"], ["Говинда-лиламрит*"], None, None),
+    ("govinda-bhasya", B, "Govinda-bhāṣya", "Śrīla Baladeva Vidyābhūṣaṇa’s Gauḍīya commentary on the Vedānta-sūtra, said to be revealed by Govindadev Himself.",
+     ["Govinda-bhāṣya"], ["Говинда-бхашь*"], None, None),
+    ("madhurya-kadambini", B, "Mādhurya-kādambinī", "Śrīla Viśvanāth Chakravartī Ṭhākur’s book on the stages of devotion, from faith to love.",
+     ["Mādhurya-kādambinī"], ["Мадхурья-кадамбин*"], None, None),
+    ("prema-bhakti-chandrika", B, "Prema-bhakti-chandrikā", "Śrīla Narottam Dās Ṭhākur’s songs on the path of loving devotion.",
+     ["Prema-bhakti-chandrikā"], ["Према-бхакти-чандрик*"], None, None),
+    ("vilapa-kusumanjali", B, "Vilāpa-kusumāñjali", "Śrīla Raghunāth Dās Goswāmī’s prayers to Śrīmatī Rādhārāṇī in separation.",
+     ["Vilāpa-kusumāñjali"], ["Вилапа-кусуманджал*"], None, None),
+    ("govardhana-dasakam", B, "Govardhana-vāsa-prārthanā-daśakam", "Śrīla Raghunāth Dās Goswāmī’s ten verses praying to live at Govardhan.",
+     ["Govardhana-vāsa-prārthanā-daśakam"], ["Говардхана-васа-прартхана-дашак*"], None, None),
+    ("vaisnava-vandana", B, "Vaiṣṇava-vandanā", "Devakīnandana Dās Ṭhākur’s glorification of the devotees, which bows to them one by one.",
+     ["Vaiṣṇava-vandanā", "Vaiṣṇava-vandana"], ["Вайшнава-вандан*"], None, None),
+    ("sad-gosvamy-astakam", B, "Śrī Ṣaḍ-gosvāmy-aṣṭakam", "Śrīla Śrīnivās Āchārya’s eight verses in praise of the Six Goswāmīs of Vṛndāvan.",
+     ["Śrī Ṣaḍ-gosvāmy-aṣṭakam", "Ṣaḍ-gosvāmy-aṣṭakam", "Ṣaḍ-gosvāmy-aṣṭaka"], ["Шад-госвами-аштак*"], None, None),
+    ("rupa-manjari-pada", B, "Śrī Rūpa-mañjarī-pada", "Śrīla Narottam Dās Ṭhākur’s song to the feet of Śrī Rūpa Mañjarī, which Śrīla Saraswatī Ṭhākur asked to hear before his departure.",
+     ["Śrī Rūpa-mañjarī-pada", "Śrī-rūpa-mañjarī-pada", "Rūpa-mañjarī-pada"], ["Рупа-манджари-пад*"], None, None),
+    ("damodarastakam", B, "Śrī Dāmodarāṣṭakam", "Satyavrat Muni’s eight verses to Lord Dāmodar from the Padma Purāṇa, sung every evening in the month of Kārttika.",
+     ["Śrī Śrī Dāmodarāṣṭakam", "Śrī Dāmodarāṣṭakam", "Dāmodarāṣṭakam"], ["Дамодараштак*"], None, None),
+    ("saranagati", B, "Śaraṇāgati", "Śrīla Bhakti Vinod Ṭhākur’s songbook on the six limbs of surrender.",
+     ["Śaraṇāgati"], ["Шаранагати"], None, None),
+    ("gitavali", B, "Gītāvalī", "Śrīla Bhakti Vinod Ṭhākur’s songbook for the holy days and for the Holy Name.",
+     ["Gītāvalī"], ["Гитавали"], None, None),
+    ("kalyana-kalpataru", B, "Kalyāṇa-kalpataru", "Śrīla Bhakti Vinod Ṭhākur’s first songbook, the wish-fulfilling tree of auspiciousness.",
+     ["Kalyāṇa-kalpataru"], ["Кальяна-кальпатару", "Кальяна-калпатару"], None, None),
+    ("gita-mala", B, "Gīta-mālā", "Śrīla Bhakti Vinod Ṭhākur’s garland of songs, among them songs on the teachings of Śrīla Rūpa Goswāmī.",
+     ["Gīta-mālā"], ["Гита-мал*"], None, None),
+    ("bhaktivinoda-viraha-dasakam", B, "Śrī Bhaktivinoda-viraha-daśakam", "Śrīla Śrīdhar Mahārāja’s ten Sanskrit verses in separation from Śrīla Bhakti Vinod Ṭhākur, prized by his guru.",
+     ["Śrī Bhaktivinoda-viraha-daśakam", "Bhaktivinoda-viraha-daśakam"], ["Бхактивинода-вираха-дашак*"], None, None),
+    ("prapanna-jivanamrtam", B, "Śrī Śrī Prapanna-jīvanāmṛtam", "Śrīla Śrīdhar Mahārāja’s anthology of verses on surrender, the nectar of life for the surrendered.",
+     ["Śrī Śrī Prapanna-jīvanāmṛtam", "Śrī Prapanna-jīvanāmṛtam", "Prapanna-jīvanāmṛtam", "Prapanna-jīvanāmṛta"], ["Прапанна-дживанамрит*"], None, None),
+    ("premadhama-deva-stotram", B, "Śrī Śrī Premadhāma-deva-stotram", "Śrīla Śrīdhar Mahārāja’s Sanskrit hymn to Śrī Chaitanya Mahāprabhu, the Lord who is the abode of divine love.",
+     ["Śrī Śrī Premadhāma-deva-stotram", "Premadhāma-deva-stotram"], ["Премадхама-дева-стотр*"], None, None),
+    ("search-for-krsna", B, "The Search for Śrī Kṛṣṇa — Reality the Beautiful", "Śrīla Śrīdhar Mahārāja’s talks presenting Krishna as Reality the Beautiful.",
+     ["The Search for Śrī Kṛṣṇa — Reality the Beautiful", "The Search for Śrī Kṛṣṇa", "Search for Śrī Kṛṣṇa"], [], None, None),
+    ("sri-guru-and-his-grace", B, "Śrī Guru and His Grace", "Śrīla Śrīdhar Mahārāja’s talks on the spiritual master and his mercy.",
+     ["Śrī Guru and His Grace"], [], None, None),
+    ("loving-search", B, "The Loving Search for the Lost Servant", "Śrīla Śrīdhar Mahārāja’s talks on the soul’s eternal place as Krishna’s servant.",
+     ["The Loving Search for the Lost Servant", "Loving Search for the Lost Servant"], [], None, None),
+    ("golden-volcano", B, "The Golden Volcano of Divine Love", "Śrīla Śrīdhar Mahārāja’s talks on Śrī Chaitanya Mahāprabhu and His eight verses, the Śikṣāṣṭakam.",
+     ["The Golden Volcano of Divine Love", "Golden Volcano of Divine Love"], [], None, None),
+    ("subjective-evolution", B, "Subjective Evolution of Consciousness", "Śrīla Śrīdhar Mahārāja’s answer to the theory of material evolution: consciousness comes first.",
+     ["Subjective Evolution of Consciousness"], [], None, None),
+    ("gita-pearl", B, "Bhagavad-gītā, Pearl of Wisdom of the East", "Śrīla Bhakti Bimal Avadhūt Mahārāja’s book on the Bhagavad-gītā.",
+     ["Bhagavad-gītā, Pearl of Wisdom of the East"], [], None, None),
+    ("acharya-vandana", B, "Āchārya-vandana", "Gopāl Govinda Mahanta’s long Bengali hymn glorifying Śrīla Bhakti Siddhānta Saraswatī Ṭhākur.",
+     ["Āchārya-vandana"], ["Ачарья-вандан*"], None, None),
+    ("acharya-charana-vandana", B, "Āchārya-charaṇa-vandana", "Śrīpād B.Ā. Sāgar Mahārāja’s English hymn to the lotus feet of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+     ["Āchārya-charaṇa-vandana"], ["Ачарья-чарана-вандан*"], None, None),
+    ("guru-arati", B, "Śrī Guru Ārati", "Śrīpād B.A. Paramahaṁsa Mahārāja’s ārati song in praise of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+     ["Śrī Guru Ārati"], [], None, None),
+]
+
 # More spellings of names above, as the biographies write them.
 MORE_ALIASES = {
     "ramananda": ["Rāya Rāmānanda"],
@@ -310,7 +425,7 @@ E = [(i, k, n, a, al + MORE_ALIASES.get(i, []), ru, AUTHOR_IDS.get(i, au), m) fo
 assert set(MORE_ALIASES) | set(AUTHOR_IDS) <= {e[0] for e in E}
 
 # Words that contain a name but mean something else, left plain.
-IGNORE = ["Hari-kathā", "Hari-bhakti-vilāsa", "Lalita-mādhava", "Govinda-līlāmṛta", "Govinda and Mādhava Ghoṣa", "servants Govinda", "Vyāsa-pūjā", "Вьяса-пуджа", "Вьяса-пуджи", "Вьяса-пудже", "Вьяса-пуджу"]
+IGNORE = ["Hari-kathā", "Govinda and Mādhava Ghoṣa", "servants Govinda", "Vyāsa-pūjā", "Вьяса-пуджа", "Вьяса-пуджи", "Вьяса-пудже", "Вьяса-пуджу"]
 
 VARIANTS = {
     "krishna": [
