@@ -80,10 +80,12 @@ type HolyNameTextProps = {
   renderFootnote?: (text: string, index: number) => ReactNode;
   /** The search state of each footnote, by the same index. */
   footnoteSearch?: (index: number) => FootnoteSearchState | undefined;
+  /** An author whose own page this is: their name stays plain, as a note would only point back here. */
+  exceptAuthorId?: string;
 };
 
 /** Translation text with its personalities and holy places underlined, each with a short note. */
-export function HolyNameText({ value, renderText = (text) => text, noteLanguage, footnotes = [], footnoteId = "footnote", renderFootnote = (text) => text, footnoteSearch }: HolyNameTextProps) {
+export function HolyNameText({ value, renderText = (text) => text, noteLanguage, footnotes = [], footnoteId = "footnote", renderFootnote = (text) => text, footnoteSearch, exceptAuthorId }: HolyNameTextProps) {
   const locale = useHolyNameLocale(noteLanguage?.code);
   const localNames = locale && noteLanguage ? { code: noteLanguage.code, entries: locale.entries, ignore: locale.ignore } : null;
   // The text is split at footnote markers; each piece keeps its offset in the whole text.
@@ -103,7 +105,7 @@ export function HolyNameText({ value, renderText = (text) => text, noteLanguage,
               const start = offset;
               offset += segment.text.length;
               const content = renderText(segment.text, start);
-              return segment.entry
+              return segment.entry && !(exceptAuthorId && segment.entry.authorId === exceptAuthorId)
                 ? <HolyNameTrigger key={`${index}-${segment.entry.id}`} entry={segment.entry} variant={segment.variant} locale={locale} lang={noteLanguage?.lang}>{content}</HolyNameTrigger>
                 : <span key={index}>{content}</span>;
             })}

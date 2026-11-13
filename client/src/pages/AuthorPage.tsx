@@ -2,6 +2,7 @@
 
 import { AppShell } from "@/components/AppShell";
 import { AuthorPortrait } from "@/components/AuthorPortrait";
+import { HolyNameText } from "@/components/HolyNameText";
 import { PortraitViewer } from "@/components/PortraitViewer";
 import { SongListItem } from "@/components/SongListItem";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
@@ -12,12 +13,15 @@ import { useMemo } from "react";
 import { usePageMeta } from "@/lib/pageMeta";
 import { Link, useRoute } from "wouter";
 
-/** A bio paragraph; "## " starts a heading, "### " a small caption (a closing note when last) and "> " a quotation. */
-function BioParagraph({ value, isLast }: { value: string; isLast: boolean }) {
+/**
+ * A bio paragraph; "## " starts a heading, "### " a small caption (a closing note when last) and "> " a quotation.
+ * Personalities and holy places in the text carry the same notes as in the songs.
+ */
+function BioParagraph({ value, isLast, authorId }: { value: string; isLast: boolean; authorId: string }) {
   if (value.startsWith("## ")) return <h2 className="author-bio-heading">{value.slice(3)}</h2>;
   if (value.startsWith("### ")) return <p className={isLast ? "author-bio-note" : "author-bio-caption"}>{value.slice(4)}</p>;
-  if (value.startsWith("> ")) return <blockquote className="author-bio-quote"><p>{value.slice(2)}</p></blockquote>;
-  return <p>{value}</p>;
+  if (value.startsWith("> ")) return <blockquote className="author-bio-quote"><p><HolyNameText value={value.slice(2)} exceptAuthorId={authorId} /></p></blockquote>;
+  return <p><HolyNameText value={value} exceptAuthorId={authorId} /></p>;
 }
 
 function AuthorContent({ author }: { author: Author }) {
@@ -45,7 +49,7 @@ function AuthorContent({ author }: { author: Author }) {
       </header>
 
       <section className="author-bio">
-        {author.bio.map((paragraph, index) => <BioParagraph key={index} value={paragraph} isLast={index === author.bio.length - 1} />)}
+        {author.bio.map((paragraph, index) => <BioParagraph key={index} value={paragraph} isLast={index === author.bio.length - 1} authorId={author.id} />)}
         {author.sources.length > 0 && (
           <p className="author-sources">
             {copy.author.sources}:{" "}

@@ -32,6 +32,8 @@ function allNames(field: "aliases" | "ru") {
 }
 
 export const HOLY_NAMES = (data as { entries: HolyName[] }).entries;
+/** Words that contain a name but mean something else (e.g. "Vyāsa-pūjā"), left plain in every language. */
+const IGNORED_WORDS = (data as { ignore?: string[] }).ignore ?? [];
 
 export function holyNameMapsUrl(entry: HolyName): string | undefined {
   return entry.maps ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(entry.maps)}` : undefined;
@@ -121,7 +123,7 @@ function getMatcher(cyrillic: boolean, local?: LocalHolyNames | null): Matcher {
   const key = `${cyrillic ? "cyrillic" : "latin"}:${local?.code ?? ""}`;
   let matcher = matchers.get(key);
   if (!matcher) {
-    matcher = buildMatcher([...allNames(cyrillic ? "ru" : "aliases"), ...(local ? localNames(local) : [])], { cyrillic, unspaced: UNSPACED_LANGUAGES.has(local?.code ?? "") });
+    matcher = buildMatcher([...allNames(cyrillic ? "ru" : "aliases"), ...IGNORED_WORDS.map((name) => ({ name, match: null })), ...(local ? localNames(local) : [])], { cyrillic, unspaced: UNSPACED_LANGUAGES.has(local?.code ?? "") });
     matchers.set(key, matcher);
   }
   return matcher;

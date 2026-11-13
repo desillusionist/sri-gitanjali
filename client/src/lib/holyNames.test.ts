@@ -50,6 +50,15 @@ describe("holy names", () => {
     ]);
   });
 
+  it("finds the people and places of the Vaiṣṇava biographies, and leaves look-alikes plain", () => {
+    expect(named("Śrīla A.C. Bhaktivedānta Swāmī Prabhupāda; born at Kheturi in northern Bengal; Śrīla Kṛṣṇadās Kavirāj Goswāmī")).toEqual([
+      ["Śrīla A.C. Bhaktivedānta Swāmī Prabhupāda", "bhaktivedanta-swami"], ["Kheturi", "kheturi"], ["Bengal", "bengal"], ["Śrīla Kṛṣṇadās Kavirāj Goswāmī", "krsnadas"],
+    ]);
+    expect(named("Goswāmī Mahārāja's Vyāsa-pūjā")).toEqual([]);
+    expect(named("With his brothers Govinda and Mādhava Ghoṣa he sang")).toEqual([]);
+    expect(named("He came to Purī and served Śrī Govindadev.")).toEqual([["Purī", "puri"], ["Śrī Govindadev", "krishna"]]);
+  });
+
   it("finds Russian names written as one word or two", () => {
     expect(named("О Шри Бхакти Винод, Шри Сарасвати Тхакур; Бхактивинода; Шрила Бхакти Сиддханта Сарасвати Тхакур, Шрила Бхакти Сиддханта Сарасвати Госвами")).toEqual([
       ["Бхакти Винод", "bhakti-vinod"], ["Сарасвати Тхакур", "saraswati-thakur"], ["Бхактивинода", "bhakti-vinod"],

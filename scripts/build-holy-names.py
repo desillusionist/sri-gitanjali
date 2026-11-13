@@ -203,8 +203,118 @@ E = [
 
 # Other names of the same personality or place, each with its own short note.
 # Their aliases and Russian stems are taken out of the main entry, so they no longer show its note.
+# --- Named in the Vaiṣṇava biographies (and the authors who have a page there) ---
+E += [
+    ("bhakti-lalita-devi-dasi", P, "Śrīmatī Bhakti Lalitā Devī Dāsī", "A disciple of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja, for many years his correspondence secretary, who now teaches in Chiang Mai, Thailand.",
+     ["Śrīmatī Bhakti Lalitā Devī Dāsī", "Bhakti Lalitā Devī Dāsī", "Lalitā Devī Dāsī"], ["Бхакти Лалит* Деви Даси"], "bhakti-lalita-devi-dasi", None),
+    ("ba-paramahamsa-maharaja", P, "Śrīpād B.A. Paramahaṁsa Mahārāja", "Author of Śrī Guru Ārati, sung in praise of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+     ["Śrīpād B.A. Paramahaṁsa Mahārāja", "B.A. Paramahaṁsa Mahārāja", "Paramahaṁsa Mahārāja"], ["Парамахамс* Махарадж*"], "ba-paramahamsa-maharaja", None),
+    ("ba-sagar-maharaja", P, "Śrīpād B.Ā. Sāgar Mahārāja", "Author of Āchārya-charaṇa-vandana, an English hymn to the lotus feet of Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja.",
+     ["Śrīpād B.Ā. Sāgar Mahārāja", "B.Ā. Sāgar Mahārāja", "Śrīpād Sāgar Mahārāja", "Sāgar Mahārāja"], ["Сагар* Махарадж*"], "ba-sagar-maharaja", None),
+    ("gopal-govinda-mahanta", P, "Gopāl Govinda Mahanta", "Author of the Bengali Āchārya-vandana, a hymn glorifying Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and his preaching.",
+     ["Gopāl Govinda Mahanta"], ["Гопал* Говинд* Махант*"], "gopal-govinda-mahanta", None),
+    ("vrndavan-das-thakur", P, "Śrīla Vṛndāvan Dās Ṭhākur", "Śrī Nityānanda Prabhu’s dear disciple, author of Śrī Chaitanya-bhāgavata, the first great biography of Mahāprabhu.",
+     ["Śrīla Vṛndāvan Dās Ṭhākur", "Vṛndāvan Dās Ṭhākur", "Vṛndāvan Dās"], ["Вриндаван* Дас*"], "vrndavan-das-thakur", None),
+    ("jayadeva-goswami", P, "Śrīla Jayadeva Goswāmī", "The 12th-century Sanskrit poet of Gīta-govinda, whose songs of Rādhā and Krishna Mahāprabhu relished with His closest associates.",
+     ["Śrīla Jayadeva Goswāmī", "Jayadeva Goswāmī", "Śrī Jayadeva", "Jayadeva"], ["Джаядев*"], "jayadeva-goswami", None),
+    ("vasudeva-ghosa", P, "Śrīla Vāsudeva Ghoṣa", "One of three brothers who sang kīrtan with Mahāprabhu and Nityānanda Prabhu; his songs describe the Lord’s Pastimes as he saw them.",
+     ["Śrīla Vāsudeva Ghoṣa", "Vāsudeva Ghoṣa", "Vāsu Ghoṣa"], ["Васудев* Гхош*", "Васу Гхош*"], "vasudeva-ghosa", None),
+    ("govinda-das-kaviraj", P, "Śrīla Govinda Dās Kavirāj", "One of the great Vaiṣṇava poets of Bengal, the younger brother of Rāmachandra Kavirāj and a disciple of Śrīnivās Āchārya.",
+     ["Śrīla Govinda Dās Kavirāj", "Govinda Dās Kavirāj", "Govinda Dās"], ["Говинд* Дас*"], "govinda-das-kaviraj", None),
+    ("devakinandana-das-thakur", P, "Śrīla Devakīnandana Dās Ṭhākur", "Poet of Vaiṣṇava-vandanā, the glorification of the devotees, with its famous ‘sakala vaiṣṇava-pade mora namaskāra’.",
+     ["Śrīla Devakīnandana Dās Ṭhākur", "Devakīnandana Dās Ṭhākur", "Devakīnandana Dās"], ["Девакинандан* Дас*"], "devakinandana-das-thakur", None),
+    ("nayanananda-das", P, "Śrīla Nayanānanda Dās", "Gadādhara Paṇḍit’s nephew and disciple, who served the Deity of Gopīnāth and wrote songs glorifying Gaurāṅga.",
+     ["Śrīla Nayanānanda Dās", "Nayanānanda Dās", "Nayanānanda"], ["Наянананд*"], "nayanananda-das", None),
+    ("premananda-das", P, "Śrīla Premānanda Dās", "A Bengali Vaiṣṇava poet who praised Mahāprabhu as the incarnation who gave divine love even to the lowest.",
+     ["Śrīla Premānanda Dās", "Premānanda Dās"], ["Премананд* Дас*"], "premananda-das", None),
+    ("visvanath-chakravarti-thakur", P, "Śrīla Viśvanāth Chakravartī Ṭhākur", "The great āchārya after Narottam Dās Ṭhākur, whose commentaries and poems guard the line of rāgānuga devotion; author of Śrī Gurvāṣṭakam.",
+     ["Śrīla Viśvanāth Chakravartī Ṭhākur", "Viśvanāth Chakravartī Ṭhākur", "Viśvanātha Chakravartī Ṭhākur", "Viśvanāth Chakravartī", "Viśvanātha Chakravartī"], ["Вишванатх* Чакраварти*"], "visvanath-chakravarti-thakur", None),
+    ("chandrasekhara-kavi", P, "Śrīla Chandraśekhara Kavi", "The poet of ‘Namo namaḥ tulasī mahārāṇī’, sung while circling Śrī Tulasī Devī.",
+     ["Śrīla Chandraśekhara Kavi", "Chandraśekhara Kavi"], ["Чандрашекхар* Кави"], "chandrasekhara-kavi", None),
+    ("kalidas", P, "Kālidās", "A Vaiṣṇava poet who wrote ‘E ghora saṁsare’: whoever has taken shelter of Gaura-Nityānanda is his shelter in life and death.",
+     ["Kālidās"], ["Калидас*"], "kalidas", None),
+    ("satyavrat-muni", P, "Śrī Satyavrat Muni", "The sage of the Padma Purāṇa who spoke Śrī Dāmodarāṣṭakam, sung every evening of the month of Kārttika.",
+     ["Śrī Satyavrat Muni", "Satyavrat Muni", "Satyavrata Muni"], ["Сатьяврат* Муни"], "satyavrat-muni", None),
+    ("garga-muni", P, "Śrī Garga Muni", "The priest of the Yadu dynasty who secretly gave Krishna His name in Gokul; honoured as author of the Garga Saṁhitā.",
+     ["Śrī Garga Muni", "Garga Muni", "Gargamuni"], ["Гарг* Муни"], "garga-muni", None),
+    ("vidyapati", P, "Śrīla Vidyāpati", "The poet of Mithilā whose songs of Rādhā and Krishna Mahāprabhu relished in His last years with Svarūp Dāmodar and Rāmānanda Rāy.",
+     ["Śrīla Vidyāpati", "Vidyāpati"], ["Видьяпати"], "vidyapati", None),
+    ("bhaktivedanta-swami", P, "Śrīla A.C. Bhaktivedānta Swāmī Prabhupāda", "Śrīla Bhakti Siddhānta Saraswatī Ṭhākur’s disciple who founded ISKCON in New York in 1966 and spread the Holy Name around the world.",
+     ["Śrīla A.C. Bhaktivedānta Swāmī Mahārāja Prabhupāda", "Śrīla A.C. Bhaktivedānta Swāmī Prabhupāda", "Śrīla A.C. Bhaktivedānta Swāmī Prabhupād", "Śrīla A.C. Bhaktivedānta Swāmī Mahārāja", "Śrīla A.C. Bhaktivedānta Swāmī",
+      "His Divine Grace A.C. Bhaktivedānta Swāmī Prabhupāda", "A.C. Bhaktivedānta Swāmī Prabhupāda", "A.C. Bhaktivedānta Swāmī", "Śrīla Bhaktivedānta Swāmī Mahārāja", "Bhaktivedānta Swāmī Mahārāja",
+      "Bhaktivedānta Swāmī", "Śrīla Prabhupāda Swāmī Mahārāja", "Swāmī Mahārāja Prabhupāda", "Śrīla Swāmī Mahārāja", "Swāmī Mahārāja", "Śrīla Prabhupāda"],
+     ["Бхактиведант* Свам*", "Свами Махарадж*"], None, None),
+    ("syamananda", P, "Śrī Śyāmānanda Prabhu", "The devotee from Orissa who studied under Śrīla Jīva Goswāmī with Narottam and Śrīnivās and spread Mahāprabhu’s teachings in Orissa.",
+     ["Śrī Śyāmānanda Prabhu", "Śyāmānanda Prabhu", "Śyāmānanda Paṇḍit", "Śyāmānanda"], ["Шьямананд*"], None, None),
+    ("narahari-sarkar", P, "Śrī Narahari Sarkār Ṭhākur", "Mahāprabhu’s associate from Śrīkhaṇḍa, a poet and one of the first to sing of Gaura’s Pastimes.",
+     ["Śrī Narahari Sarkār Ṭhākur", "Narahari Sarkār Ṭhākur", "Narahari Sarkār"], ["Нарахари Саркар*"], None, None),
+    ("venkata-bhatta", P, "Veṅkaṭa Bhaṭṭa", "The Śrī Vaiṣṇava brāhmaṇa of Śrī Raṅgam in whose home Mahāprabhu stayed through the four months of the rains; father of Gopāl Bhaṭṭa Goswāmī.",
+     ["Veṅkaṭa Bhaṭṭa"], ["Венкат* Бхатт*"], None, None),
+    ("tapan-misra", P, "Tapan Miśra", "The scholar of East Bengal whom Mahāprabhu told to chant the Holy Name and settle in Vārāṇasī; father of Raghunāth Bhaṭṭa Goswāmī.",
+     ["Tapan Miśra"], ["Тапан* Мишр*"], None, None),
+    ("kasisvara", P, "Kāśīśvara", "Īśvara Purī’s disciple who, with Govinda, served Mahāprabhu in Purī as His attendant.",
+     ["Kāśīśvara Paṇḍit", "Kāśīśvara"], ["Кашишвар*"], None, None),
+    ("malini-devi", P, "Mālinī Devī", "Śrīvās Ṭhākur’s wife, who cared for Mahāprabhu like a mother.",
+     ["Mālinī Devī"], ["Малини Деви"], None, None),
+    ("nandanacharya", P, "Nandanāchārya", "The devotee of Nabadwīp in whose house Nityānanda Prabhu stayed when He came to meet Mahāprabhu.",
+     ["Nandana Āchārya", "Nandanāchārya"], ["Нанданачар*"], None, None),
+    ("bir-hambir", P, "King Bīr Hāmbīr", "The king of Viṣṇupur whose men stole the Goswāmīs’ books; hearing Śrīnivās Āchārya read the Bhāgavatam, he became a devoted Vaiṣṇava.",
+     ["King Bīr Hāmbīr", "Bīr Hāmbīr", "Vīra Hāmvīra"], ["Бир Хамбир*"], None, None),
+    ("laksmana-sena", O, "King Lakṣmaṇa Sena", "The 12th-century king of Bengal at whose court Jayadeva Goswāmī lived.",
+     ["King Lakṣmaṇa Sena", "Lakṣmaṇa Sena"], ["Лакшман* Сен*"], None, None),
+    ("kesava-bharati", P, "Śrī Keśava Bhāratī", "The sannyāsī from whom Mahāprabhu accepted sannyās at Kāṭwā in 1510.",
+     ["Śrī Keśava Bhāratī", "Keśava Bhāratī"], ["Кешав* Бхарати"], None, None),
+    ("purusottama-das", P, "Śrī Puruṣottama Dās Ṭhākur", "An associate of Śrī Nityānanda Prabhu and the guru of Devakīnandana Dās.",
+     ["Puruṣottama Dās Ṭhākur", "Puruṣottama Dās"], ["Пурушоттам* Дас*"], None, None),
+    ("bengal", PL, "Bengal", "The land in eastern India where Mahāprabhu appeared and where Gauḍīya Vaiṣṇavism took root.",
+     ["West Bengal", "East Bengal", "Bengal", "Gauḍa-deśa"], ["Бенгали*", "Бенгалия", "Бенгалию", "Бенгалией"], None, "West Bengal, India"),
+    ("kolkata", PL, "Kolkata", "The great city of Bengal, formerly Calcutta, where Śrīla Bhakti Siddhānta Saraswatī Ṭhākur began the Gauḍīya Maṭh.",
+     ["Kolkata", "Calcutta"], ["Калькутт*"], None, "Kolkata, West Bengal, India"),
+    ("kheturi", PL, "Kheturi", "Narottam Dās Ṭhākur’s birthplace in northern Bengal, where his great festival united the devotees of Mahāprabhu.",
+     ["Kheturi", "Khetarī"], ["Кхетур*"], None, "Kheturi, Rajshahi, Bangladesh"),
+    ("ekachakra", PL, "Ekachakra", "Nityānanda Prabhu’s birthplace in the Birbhum district of Bengal.",
+     ["Ekachakra", "Ekachakrā"], ["Экачакр*"], None, "Ekachakra, Birbhum, West Bengal, India"),
+    ("phuliya", PL, "Phuliyā", "The village near Śāntipur where Haridās Ṭhākur chanted the Holy Name.",
+     ["Phuliyā", "Phulia"], ["Пхулия", "Пхулии", "Пхулию"], None, "Phulia, Nadia, West Bengal, India"),
+    ("remuna", PL, "Remuṇā", "The village in Orissa where the Deity Kṣīra-chora Gopīnāth stole sweet rice for Mādhavendra Purī.",
+     ["Remuṇā", "Remuna"], ["Ремун*"], None, "Remuna, Balasore, Odisha, India"),
+    ("siddha-bakula", PL, "Siddha Bakula", "The place in Purī where Haridās Ṭhākur lived and chanted under a bakula tree.",
+     ["Siddha Bakula"], ["Сиддха Бакул*"], None, "Siddha Bakula Math, Puri, Odisha, India"),
+    ("yogapith", PL, "Śrī Yogapīṭh", "Mahāprabhu’s birthplace in Māyāpur, revealed by Śrīla Bhakti Vinod Ṭhākur.",
+     ["Śrī Yogapīṭh", "Yogapīṭh"], ["Йогапитх*"], None, "Sri Yogapith, Mayapur, West Bengal, India"),
+    ("galta", PL, "Galtā", "The holy place near Jaipur where Baladeva Vidyābhūṣaṇa defended the Gauḍīya line before the scholars.",
+     ["Galtā", "Galta"], ["Галта", "Галте", "Галту"], None, "Galta Ji, Jaipur, Rajasthan, India"),
+    ("badarikasram", PL, "Badarikāśram", "The Himalayan abode of Nara-Nārāyaṇa, where Vyāsadeva composed the scriptures.",
+     ["Badarikāśrama", "Badarikāśram", "Badrinath"], ["Бадарикашрам*"], None, "Badrinath, Uttarakhand, India"),
+    ("visnupur", PL, "Viṣṇupur", "King Bīr Hāmbīr’s capital in Bengal, where the Goswāmīs’ stolen books were recovered.",
+     ["Viṣṇupur", "Bishnupur"], ["Вишнупур*"], None, "Bishnupur, Bankura, West Bengal, India"),
+]
+
+# More spellings of names above, as the biographies write them.
+MORE_ALIASES = {
+    "ramananda": ["Rāya Rāmānanda"],
+    "krsnadas": ["Śrīla Kṛṣṇadās Kavirāj Goswāmī", "Kṛṣṇadās Kavirāj Goswāmī", "Śrīla Kṛṣṇadās Kavirāj", "Kṛṣṇadās Kavirāj"],
+    "gaura-kisora": ["Śrīla Gaura Kiśor Dās Bābājī Mahārāja", "Śrīla Gaura Kiśor Dās Bābājī", "Gaura Kiśor Dās Bābājī", "Gaura Kiśor Dās", "Gaura Kiśor"],
+    "bhakti-vinod": ["Kedārnāth Datta"],
+    "saraswati-thakur": ["Śrīla Bhaktisiddhānta Saraswatī Ṭhākur", "Śrīla Bhaktisiddhānta Saraswatī", "Bhaktisiddhānta Saraswatī", "Śrīla Bhaktisiddhānta", "Bimala Prasād"],
+    "nrsimha": ["Lord Nṛsiṁhadev", "Nṛsiṁhadev"],
+    "vyasa": ["Kṛṣṇa Dvaipāyana Vyāsa"],
+    "govinda-maharaj": ["Bhakti Sundar Govinda Dev-Goswāmī Mahārāja"],
+    "avadhut": ["Śrīla B.B. Avadhūt Mahārāja", "B.B. Avadhūt Mahārāja", "Śrīla Avadhūt Mahārāja", "Avadhūt Mahārāja"],
+    "sudhir": ["Śrīpād Sudhīr Goswāmī Mahārāja", "Sudhīr Goswāmī Mahārāja", "Sudhīr Goswāmī"],
+    "puri": ["Purī"],
+    "madhusudan": ["Madhusūdan Mahārāja"],
+}
+AUTHOR_IDS = {"baladeva-vidyabhusana": "baladeva-vidyabhusana"}
+E = [(i, k, n, a, al + MORE_ALIASES.get(i, []), ru, AUTHOR_IDS.get(i, au), m) for i, k, n, a, al, ru, au, m in E]
+assert set(MORE_ALIASES) | set(AUTHOR_IDS) <= {e[0] for e in E}
+
+# Words that contain a name but mean something else, left plain.
+IGNORE = ["Hari-kathā", "Hari-bhakti-vilāsa", "Lalita-mādhava", "Govinda-līlāmṛta", "Govinda and Mādhava Ghoṣa", "servants Govinda", "Vyāsa-pūjā", "Вьяса-пуджа", "Вьяса-пуджи", "Вьяса-пудже", "Вьяса-пуджу"]
+
 VARIANTS = {
     "krishna": [
+        ("govindadev", "Śrī Govindadev", "The Deity of Krishna that Śrīla Rūpa Goswāmī revealed in Vṛndāvan.", ["Śrī Govindadev", "Govindadev", "Śrī Govindajī"], ["Говиндадев*"]),
         ("govinda", "Govinda", "A name of Krishna: the one who gives pleasure to the cows, the land and the senses.", ["Lord Govinda", "Govinda"], ["Говинд*"]),
         ("gopinath", "Gopīnāth", "A name of Krishna: the Lord and beloved of the gopīs.", ["Gopīnāth"], ["Гопинатх*"]),
         ("madhava", "Mādhava", "A name of Krishna: the sweet Lord of springtime, born in the Madhu dynasty, the husband of Mā, the goddess of fortune.", ["Mādhava"], ["Мадхава", "Мадхавы", "Мадхаве", "Мадхаву", "Мадхавой"]),
@@ -233,7 +343,7 @@ VARIANTS = {
         ("gaurahari", "Gaurahari", "A name of Śrī Chaitanya Mahāprabhu: Hari, Krishna Himself, in golden form.", ["Lord Gaurahari", "Śrī Gaurahari", "Gaurahari"], ["Гаурахари"]),
         ("gaurachandra", "Gaurachandra", "A name of Śrī Chaitanya Mahāprabhu: the golden moon.", ["Lord Gaurachandra", "Śrī Gaurachandra", "Gaurachandra"], ["Гаурачандр*"]),
         ("nimai", "Nimāi", "Mahāprabhu’s childhood name: He was born under a neem tree.", ["Nimāi"], ["Нима*"]),
-        ("visvambhara", "Viśvambhara", "Mahāprabhu’s given name: the one who sustains the universe.", ["Viśvambhara"], ["Вишвамбхар*"]),
+        ("visvambhara", "Viśvambhara", "Mahāprabhu’s given name: the one who sustains the universe.", ["Viśvambhara", "Viśvambhar"], ["Вишвамбхар*"]),
     ],
     "rama": [
         ("rama-name", "Rāma", "A name meaning “the one who gives delight”. In the Holy Name the Gauḍīyas see Krishna Himself, who delights Śrī Rādhā; it is also a name of Balarām and of Lord Rāmachandra.", ["Rāma"], ["Рама", "Рамы", "Раме", "Раму", "Рамой"]),
@@ -293,5 +403,5 @@ for entry in E:
 
 root = pathlib.Path(__file__).resolve().parent.parent
 path = root / "client/src/data/holy-names.json"
-path.write_text(json.dumps({"_note": "Generated by scripts/build-holy-names.py — edit the table there.", "entries": out}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+path.write_text(json.dumps({"_note": "Generated by scripts/build-holy-names.py — edit the table there.", "ignore": IGNORE, "entries": out}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 print(f"{len(out)} entries -> {path}")
