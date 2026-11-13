@@ -167,6 +167,34 @@
       ],
       "songIds": [
         "srila-bhakti-nirmal-acharya-maharaja-006"
+      ],
+      "portrait": "author-bhakti-nirmal-acharya-maharaja.webp",
+      "portraitLarge": "author-bhakti-nirmal-acharya-maharaja-large.webp",
+      "portraitInfo": {
+        "credit": "Sri Chaitanya Saraswat Math",
+        "source": "https://scsmathinternational.com/archive/SrilaAcharyaMaharaj/"
+      },
+      "gallery": [
+        {
+          "src": "author-bhakti-nirmal-acharya-maharaja-2.webp",
+          "credit": "Sri Chaitanya Saraswat Math",
+          "source": "https://scsmathinternational.com/archive/SrilaAcharyaMaharaj/"
+        },
+        {
+          "src": "author-bhakti-nirmal-acharya-maharaja-3.webp",
+          "credit": "Sri Chaitanya Saraswat Math",
+          "source": "https://scsmathinternational.com/archive/SrilaAcharyaMaharaj/"
+        },
+        {
+          "src": "author-bhakti-nirmal-acharya-maharaja-4.webp",
+          "credit": "Sri Chaitanya Saraswat Math",
+          "source": "https://scsmathinternational.com/archive/SrilaAcharyaMaharaj/"
+        },
+        {
+          "src": "author-bhakti-nirmal-acharya-maharaja-5.webp",
+          "credit": "Sri Chaitanya Saraswat Math",
+          "source": "https://scsmathinternational.com/archive/SrilaAcharyaMaharaj/"
+        }
       ]
     },
     {
@@ -348,6 +376,12 @@
           "caption": "As Bimala Prasād, aged five",
           "credit": "Public domain · Wikimedia Commons",
           "source": "https://commons.wikimedia.org/wiki/File:Bhaktisiddhanta_child.jpg"
+        },
+        {
+          "src": "author-saraswati-thakur-6.webp",
+          "caption": "Photograph",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/09/Bhaktisiddhanta-Saraswati-Thakur-6.jpg"
         }
       ]
     },
@@ -368,6 +402,27 @@
       "songIds": [
         "srila-gaura-kisora-das-babaji-maharaja-010",
         "sri-srimad-gaura-kisora-namaskara-dasakam-153"
+      ],
+      "portrait": "author-gaura-kisora-das-babaji.webp",
+      "portraitLarge": "author-gaura-kisora-das-babaji-large.webp",
+      "portraitInfo": {
+        "caption": "Photograph",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/09/Bhaktisiddhanta-Saraswati-Thakur-11.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-gaura-kisora-das-babaji-2.webp",
+          "caption": "Painting",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Gaura-Kishora-Dasa-Babaji-Maharaja.jpg"
+        },
+        {
+          "src": "author-gaura-kisora-das-babaji-3.webp",
+          "caption": "Painting",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/09/Gaura-Kishora-Dasa-Babaji-Maharaja-6.jpg"
+        }
       ]
     },
     {
@@ -455,7 +510,21 @@
         "caption": "c. 1890",
         "credit": "Public domain · Wikimedia Commons",
         "source": "https://commons.wikimedia.org/wiki/File:Jagannatha_Dasa_Babaji.jpg"
-      }
+      },
+      "gallery": [
+        {
+          "src": "author-jagannath-das-babaji-2.webp",
+          "caption": "Painting",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jagannatha-Dasa-Babaji.jpg"
+        },
+        {
+          "src": "author-jagannath-das-babaji-3.webp",
+          "caption": "Illustration",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jagannatha-Dasa-Babaji-16.jpg"
+        }
+      ]
     },
     {
       "id": "bhakti-lalita-devi-dasi",
@@ -560,7 +629,15 @@
         "His Bengali songs put the deepest teachings of Śrīla Rūpa Goswāmī into words anyone can sing. Prayers such as Śrī Guru-charaṇa-padma and Gaurāṅga bolite habe are sung every day in Gauḍīya temples."
       ],
       "sources": [],
-      "group": "acharyas"
+      "group": "acharyas",
+      "gallery": [
+        {
+          "src": "author-narottam-das-thakur-2.webp",
+          "caption": "Painting",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Narottama-Dasa-Thakura.jpg"
+        }
+      ]
     },
     {
       "id": "lochan-das-thakur",
@@ -594,7 +671,22 @@
         "In his old age, at the request of the Vṛndāvan devotees, he wrote Śrī Chaitanya-charitāmṛta. It joins Mahāprabhu's pastimes to the full philosophy of the Goswāmīs, and Gauḍīya Vaiṣṇavas regard it as their essential scripture. He also wrote the Sanskrit poem Govinda-līlāmṛta."
       ],
       "sources": [],
-      "group": "goswamis"
+      "group": "goswamis",
+      "portrait": "author-krsnadas-kaviraj-goswami.webp",
+      "portraitLarge": "author-krsnadas-kaviraj-goswami-large.webp",
+      "portraitInfo": {
+        "caption": "Writing Śrī Chaitanya-charitāmṛta",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Krishnadasa-Kaviraja-Goswami.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-krsnadas-kaviraj-goswami-2.webp",
+          "caption": "Drawing",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Krishnadasa-Kaviraja-Goswami-4.jpg"
+        }
+      ]
     },
     {
       "id": "rupa-goswami",
@@ -619,6 +711,21 @@
         "sri-sri-sad-gosvami-astakam-083",
         "sri-rupa-manjari-pada-106",
         "srimad-rupa-pada-rajah-prarthana-dasakam-155"
+      ],
+      "portrait": "author-rupa-goswami.webp",
+      "portraitLarge": "author-rupa-goswami-large.webp",
+      "portraitInfo": {
+        "caption": "Falling at Mahāprabhu’s feet",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Rupa-Goswami-8.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-rupa-goswami-2.webp",
+          "caption": "With Śrī Sanātan Goswāmī",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Sanatana-Goswami-2.jpg"
+        }
       ]
     },
     {
@@ -653,7 +760,14 @@
         "His Gīta-govinda sings the pastimes of Śrī Rādhā and Kṛṣṇa in lyrical Sanskrit. Śrī Chaitanya Mahāprabhu relished its songs night after night with Svarūp Dāmodar and Rāya Rāmānanda, and its opening hymn to the ten avatāras is still sung widely."
       ],
       "sources": [],
-      "group": "ancient"
+      "group": "ancient",
+      "portrait": "author-jayadeva-goswami.webp",
+      "portraitLarge": "author-jayadeva-goswami-large.webp",
+      "portraitInfo": {
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jayadeva-Goswami.jpg"
+      }
     },
     {
       "id": "chaitanya-mahaprabhu",
@@ -719,6 +833,24 @@
           "caption": "Dancing in kīrtan with His associates; Kishangarh painting, c. 1750",
           "credit": "Public domain · Wikimedia Commons",
           "source": "https://commons.wikimedia.org/wiki/File:Chaitanya_dances_with_followers.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-6.webp",
+          "caption": "In ecstasy",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Caitanya-Mahaprabhu-15.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-7.webp",
+          "caption": "Saṅkīrtan with His associates",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Caitanya-Mahaprabhu-4.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-8.webp",
+          "caption": "With Śrī Nityānanda Prabhu",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Caitanya-Mahaprabhu-23.jpg"
         }
       ]
     },
@@ -784,16 +916,31 @@
       ],
       "portrait": "author-advaita-acharya.webp",
       "portraitLarge": "author-advaita-acharya-large.webp",
-      "face": [
-        49,
-        33,
-        24
-      ],
       "portraitInfo": {
-        "caption": "The wooden Deities of Advaita Āchārya and Sītā Devī, Sītānāth Advaita Mandir, Nabadwīp",
-        "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
-        "source": "https://commons.wikimedia.org/wiki/File:Wooden_idols_of_Advaita_Acharya_and_Sita_Devi,_Sitanath_Advaita_Mandir,_Nabadwip_6.jpg"
-      }
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Advaita-Acharya-20.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-advaita-acharya-2.webp",
+          "caption": "Worshipping with Ganges water and tulasī, calling for the Lord to appear",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Advaita-Acharya-1.jpg"
+        },
+        {
+          "src": "author-advaita-acharya-3.webp",
+          "caption": "Calling for the Lord to descend",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Advaita-Acharya.jpg"
+        },
+        {
+          "src": "author-advaita-acharya-4.webp",
+          "caption": "The wooden Deities of Advaita Āchārya and Sītā Devī, Sītānāth Advaita Mandir, Nabadwīp",
+          "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Wooden_idols_of_Advaita_Acharya_and_Sita_Devi,_Sitanath_Advaita_Mandir,_Nabadwip_6.jpg"
+        }
+      ]
     },
     {
       "id": "gadadhara-pandit",
@@ -810,7 +957,14 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
-      ]
+      ],
+      "portrait": "author-gadadhara-pandit.webp",
+      "portraitLarge": "author-gadadhara-pandit-large.webp",
+      "portraitInfo": {
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/09/Gadadhara-Pandit.jpg"
+      }
     },
     {
       "id": "srivas-thakur",
@@ -844,6 +998,33 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "portrait": "author-haridas-thakur.webp",
+      "portraitLarge": "author-haridas-thakur-large.webp",
+      "portraitInfo": {
+        "caption": "Chanting the Holy Name",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Haridasa-Thakura1.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-haridas-thakur-2.webp",
+          "caption": "With Māyā Devī, who came to test him",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Haridasa-Thakura-161.jpg"
+        },
+        {
+          "src": "author-haridas-thakur-3.webp",
+          "caption": "Mahāprabhu dancing with Haridās Ṭhākur’s body",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Haridasa-Thakura-27.jpg"
+        },
+        {
+          "src": "author-haridas-thakur-4.webp",
+          "caption": "Drawing",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/09/Haridasa-Thakura-10.jpg"
+        }
       ]
     },
     {
@@ -878,7 +1059,14 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
-      ]
+      ],
+      "portrait": "author-ramananda-ray.webp",
+      "portraitLarge": "author-ramananda-ray-large.webp",
+      "portraitInfo": {
+        "caption": "Embraced by Mahāprabhu",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Ramananda-Raya.jpg"
+      }
     },
     {
       "id": "vasudeva-ghosa",
@@ -912,7 +1100,14 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
-      ]
+      ],
+      "portrait": "author-madhavendra-puri.webp",
+      "portraitLarge": "author-madhavendra-puri-large.webp",
+      "portraitInfo": {
+        "caption": "Gopāl brings him milk at Govardhan",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Madhavendra-Puri.jpg"
+      }
     },
     {
       "id": "isvara-puri",
@@ -949,6 +1144,27 @@
       ],
       "songIds": [
         "sri-sri-sad-gosvami-astakam-083"
+      ],
+      "portrait": "author-sanatan-goswami.webp",
+      "portraitLarge": "author-sanatan-goswami-large.webp",
+      "portraitInfo": {
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Sanatana-Goswami-13.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-sanatan-goswami-2.webp",
+          "caption": "Embraced by Mahāprabhu",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Sanatana-Goswami-19.jpg"
+        },
+        {
+          "src": "author-sanatan-goswami-3.webp",
+          "caption": "With Śrī Rūpa Goswāmī",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Sanatana-Goswami-2.jpg"
+        }
       ]
     },
     {
@@ -971,7 +1187,14 @@
       ],
       "songIds": [
         "sri-sri-sad-gosvami-astakam-083"
-      ]
+      ],
+      "portrait": "author-raghunath-das-goswami.webp",
+      "portraitLarge": "author-raghunath-das-goswami-large.webp",
+      "portraitInfo": {
+        "caption": "Chanting the Holy Name",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Raghunatha-Dasa-Goswami.jpg"
+      }
     },
     {
       "id": "raghunath-bhatta-goswami",
@@ -1011,6 +1234,21 @@
       ],
       "songIds": [
         "sri-sri-sad-gosvami-astakam-083"
+      ],
+      "portrait": "author-jiva-goswami.webp",
+      "portraitLarge": "author-jiva-goswami-large.webp",
+      "portraitInfo": {
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jiva-Goswami-51.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-jiva-goswami-2.webp",
+          "caption": "Writing",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jiva-Goswami-8.jpg"
+        }
       ]
     },
     {
@@ -1031,6 +1269,21 @@
       ],
       "songIds": [
         "sri-sri-sad-gosvami-astakam-083"
+      ],
+      "portrait": "author-gopal-bhatta-goswami.webp",
+      "portraitLarge": "author-gopal-bhatta-goswami-large.webp",
+      "portraitInfo": {
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Gopala-Bhatta-Goswami.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-gopal-bhatta-goswami-2.webp",
+          "caption": "Writing",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Gopala-Bhatta-Goswami-12.jpg"
+        }
       ]
     },
     {
@@ -1154,6 +1407,21 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "portrait": "author-baladeva-vidyabhusana.webp",
+      "portraitLarge": "author-baladeva-vidyabhusana-large.webp",
+      "portraitInfo": {
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Baladeva-Vidyabhusana.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-baladeva-vidyabhusana-2.webp",
+          "caption": "Drawing",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/10/Baladeva-Vidyabhusana-3.jpg"
+        }
       ]
     },
     {
