@@ -250,6 +250,44 @@
       "sources": [],
       "songIds": [
         "pranam-mantra-to-srila-swami-maharaja-023"
+      ],
+      "portrait": "author-bhaktivedanta-swami.webp",
+      "portraitLarge": "author-bhaktivedanta-swami-large.webp",
+      "face": [
+        49.5,
+        48.7,
+        36
+      ],
+      "portraitInfo": {
+        "caption": "Leading kīrtan, Germany, 1974",
+        "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_singing_(Germany_1974).jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-bhaktivedanta-swami-2.webp",
+          "caption": "With his daṇḍa, Germany, 1974",
+          "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_with_danda_(Germany_1974).jpg"
+        },
+        {
+          "src": "author-bhaktivedanta-swami-3.webp",
+          "caption": "On a morning walk, Germany, 1974",
+          "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_on_a_morning_walk_in_Germany_1974.jpg"
+        },
+        {
+          "src": "author-bhaktivedanta-swami-4.webp",
+          "caption": "Recording “Krishna Meditations”, Germany, 1974",
+          "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_Germany_Studio.jpg"
+        },
+        {
+          "src": "author-bhaktivedanta-swami-5.webp",
+          "caption": "With Lord Jagannāth in Golden Gate Park, San Francisco, February 1967",
+          "credit": "Mukunda Goswami, CC BY-SA 3.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktivedanta_Swami_with_Jagannath_in_Golden_Gate_Park,_February_1967.jpg"
+        }
       ]
     },
     {
@@ -285,6 +323,32 @@
         "sri-dayita-das-pranati-panchakam-138",
         "acharya-vandana-139",
         "sri-sri-dayita-das-dasakam-154"
+      ],
+      "gallery": [
+        {
+          "src": "author-saraswati-thakur-2.webp",
+          "caption": "Published in The Harmonist, before 1931",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktisiddhanta3.jpg"
+        },
+        {
+          "src": "author-saraswati-thakur-3.webp",
+          "caption": "After accepting sannyās, 1918",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktisiddhanta_sannyasa.jpg"
+        },
+        {
+          "src": "author-saraswati-thakur-4.webp",
+          "caption": "During his vow to chant the Holy Name in Māyāpur, c. 1901–1910",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktisiddhanta_Saraswati_during_his_vrata_in_Mayapur.jpg"
+        },
+        {
+          "src": "author-saraswati-thakur-5.webp",
+          "caption": "As Bimala Prasād, aged five",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktisiddhanta_child.jpg"
+        }
       ]
     },
     {
@@ -335,6 +399,32 @@
       "songIds": [
         "srila-bhakti-vinod-thakur-011",
         "srimad-bhakti-vinod-viraha-dasakam-152"
+      ],
+      "gallery": [
+        {
+          "src": "author-bhakti-vinod-thakur-2.webp",
+          "caption": "As a Vaiṣṇava recluse, c. 1910",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktivinoda_Thakur_ca.1910.jpg"
+        },
+        {
+          "src": "author-bhakti-vinod-thakur-3.webp",
+          "caption": "As a magistrate, late 1880s",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktivinoda_Thakur_in_Magistrate_dress.jpg"
+        },
+        {
+          "src": "author-bhakti-vinod-thakur-4.webp",
+          "caption": "As a teacher, 1870s",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktivinoda_Thakur_young.jpg"
+        },
+        {
+          "src": "author-bhakti-vinod-thakur-5.webp",
+          "caption": "As a student, c. 1858",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Bhaktivinoda_Thakur_in_suit.jpg"
+        }
       ]
     },
     {
@@ -353,7 +443,19 @@
       "sources": [],
       "songIds": [
         "srila-jagannath-das-babaji-maharaja-012"
-      ]
+      ],
+      "portrait": "author-jagannath-das-babaji.webp",
+      "portraitLarge": "author-jagannath-das-babaji-large.webp",
+      "face": [
+        38.9,
+        50,
+        32
+      ],
+      "portraitInfo": {
+        "caption": "c. 1890",
+        "credit": "Public domain · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Jagannatha_Dasa_Babaji.jpg"
+      }
     },
     {
       "id": "bhakti-lalita-devi-dasi",
@@ -580,6 +682,44 @@
         "sriman-mahaprabhur-sata-nama-143",
         "sri-gaura-purnima-147",
         "sri-gaurahari-kusuma-stavastakam-157"
+      ],
+      "portrait": "author-chaitanya-mahaprabhu.webp",
+      "portraitLarge": "author-chaitanya-mahaprabhu-large.webp",
+      "face": [
+        42,
+        20,
+        22
+      ],
+      "portraitInfo": {
+        "caption": "Painting, c. 1900",
+        "credit": "Public domain · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Chaitanya-Mahabrabhu-at-Jagannath.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-chaitanya-mahaprabhu-2.webp",
+          "caption": "Listening to the Bhāgavatam; from Dinesh Chandra Sen’s History of Bengali Language and Literature, 1911",
+          "credit": "Public domain · Dinesh Chandra Sen · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Chaitanya_Deva_listening_to_the_Bhagabata_-_History_of_Bengali_Language_and_Literature.png"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-3.webp",
+          "caption": "Śrī Dhāmeśvar Mahāprabhu, the Deity served by Viṣṇupriyā Devī, Nabadwīp",
+          "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Dhameswar_Mahaprabhu_in_Dhameswar_Mahaprabhu_Temple,_Nabadwip_1.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-4.webp",
+          "caption": "Nagar-kīrtan; Calcutta Art Studio, 19th century",
+          "credit": "Public domain · Calcutta Art Studio · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Chaitanya_sankirtan.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-5.webp",
+          "caption": "Dancing in kīrtan with His associates; Kishangarh painting, c. 1750",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Chaitanya_dances_with_followers.jpg"
+        }
       ]
     },
     {
@@ -604,6 +744,26 @@
         "sri-sri-gaura-nityanander-daya-063",
         "dayal-nitai-chaitanya-064",
         "sriman-nityananda-dvadasakam-156"
+      ],
+      "portrait": "author-nityananda-prabhu.webp",
+      "portraitLarge": "author-nityananda-prabhu-large.webp",
+      "face": [
+        50,
+        40,
+        33
+      ],
+      "portraitInfo": {
+        "caption": "The Deity at Nitāi Bāṛī, Nabadwīp",
+        "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Idol_of_Nityananda_Prabhu,_Nitai_Bari,_Nabadwip_1.jpg"
+      },
+      "gallery": [
+        {
+          "src": "author-nityananda-prabhu-2.webp",
+          "caption": "The Deity at Nitāi Bāṛī, Nabadwīp",
+          "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Idol_of_Nityananda_Prabhu,_Nitai_Bari,_Nabadwip_6.jpg"
+        }
       ]
     },
     {
@@ -621,7 +781,19 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
-      ]
+      ],
+      "portrait": "author-advaita-acharya.webp",
+      "portraitLarge": "author-advaita-acharya-large.webp",
+      "face": [
+        49,
+        33,
+        24
+      ],
+      "portraitInfo": {
+        "caption": "The wooden Deities of Advaita Āchārya and Sītā Devī, Sītānāth Advaita Mandir, Nabadwīp",
+        "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Wooden_idols_of_Advaita_Acharya_and_Sita_Devi,_Sitanath_Advaita_Mandir,_Nabadwip_6.jpg"
+      }
     },
     {
       "id": "gadadhara-pandit",
@@ -1044,7 +1216,19 @@
         "In the line of disciplic succession he received the teachings from Brahmā and gave them to Vyāsadeva. In Gaura-līlā he appears as Śrīvās Ṭhākur.",
         "Bhakti Vinod Ṭhākur's Nāmāṣṭaka in this book describes how the Holy Name descends when Nārada plays his vīṇā."
       ],
-      "sources": []
+      "sources": [],
+      "portrait": "author-narada-muni.webp",
+      "portraitLarge": "author-narada-muni-large.webp",
+      "face": [
+        49,
+        34,
+        16
+      ],
+      "portraitInfo": {
+        "caption": "From The Modern Review, 1908",
+        "credit": "Public domain · Ramananda Chatterjee · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:The_Sage_Narada_in_The_Modern_Review_Vol_3_(January_to_June_1908)_(page_349_crop).jpg"
+      }
     },
     {
       "id": "satyavrat-muni",

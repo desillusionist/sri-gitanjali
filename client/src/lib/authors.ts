@@ -6,6 +6,17 @@ import { STORAGE_URL } from "@/data/sources";
 export const VAISNAVA_GROUPS = ["saraswat", "exalted", "mahaprabhu", "goswamis", "acharyas", "ancient"] as const;
 export type VaisnavaGroup = (typeof VAISNAVA_GROUPS)[number];
 
+/** A further picture of an author, shown in the enlarged view's slideshow. */
+export type AuthorImage = {
+  src: string;
+  /** What the picture shows, e.g. "As a magistrate, late 1880s". */
+  caption?: string;
+  /** Who made it and its licence, as the source states them. */
+  credit: string;
+  /** The page the picture comes from. */
+  source: string;
+};
+
 export type Author = {
   id: string;
   /** Every spelling of this author's name used in the songs' poet field. */
@@ -17,9 +28,12 @@ export type Author = {
   portrait?: string;
   /** A sharper copy for the enlarged view on the author's page. */
   portraitLarge?: string;
-  /** CSS object-position that keeps the face in view in a round crop. */
   /** Face box for round crops: centre x, centre y and diameter, each in % of the image width. */
   face?: [number, number, number];
+  /** Caption, credit and source of the portrait itself, when it comes from an outside source. */
+  portraitInfo?: Omit<AuthorImage, "src">;
+  /** More pictures for the slideshow in the enlarged view, after the portrait (at most ten in all). */
+  gallery?: AuthorImage[];
   /** Where the person sits on the Vaiṣṇavas page. */
   group?: VaisnavaGroup;
   /** Songs in this book written in their honour. */
@@ -54,6 +68,15 @@ export function authorPortraitUrl(author: Author): string | undefined {
 
 export function authorLargePortraitUrl(author: Author): string | undefined {
   return author.portraitLarge ? STORAGE_URL + author.portraitLarge : authorPortraitUrl(author);
+}
+
+/** The pictures of the enlarged view: the portrait first, then the gallery. */
+export function authorSlides(author: Author): (Omit<AuthorImage, "credit" | "source"> & Partial<AuthorImage>)[] {
+  const portrait = authorLargePortraitUrl(author);
+  return [
+    ...(portrait ? [{ ...author.portraitInfo, src: portrait }] : []),
+    ...(author.gallery ?? []).map((image) => ({ ...image, src: STORAGE_URL + image.src })),
+  ].slice(0, 10);
 }
 
 /** Up to two initials, skipping honorifics, for authors without a portrait. */

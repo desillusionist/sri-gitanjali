@@ -759,9 +759,16 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .portrait-viewer-overlay { position: fixed; inset: 0; z-index: 80; background: rgba(12, 10, 8, 0.9); backdrop-filter: blur(6px); }
 .portrait-viewer { position: fixed; inset: 0; z-index: 81; display: grid; grid-template-rows: minmax(0, 1fr) auto; place-items: center; gap: 0.8rem; padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)); outline: none; }
 .portrait-viewer-frame { display: grid; place-items: center; width: 100%; height: 100%; min-height: 0; padding: 0; border: 0; background: none; cursor: zoom-out; }
-.portrait-viewer-frame img { display: block; width: auto; height: auto; max-width: min(100%, 896px); max-height: calc(100dvh - 7rem); object-fit: contain; border-radius: 3px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45); }
-.portrait-viewer-caption { margin: 0; color: rgba(255, 250, 240, 0.92); font-family: var(--font-display); font-size: 1.15rem; text-align: center; }
-.portrait-viewer-caption span { display: block; margin-top: 0.1rem; font-size: 0.78rem; letter-spacing: 0.06em; opacity: 0.65; }
+.portrait-viewer-frame img { display: block; width: auto; height: auto; max-width: min(100%, 896px); max-height: calc(100dvh - 11rem); object-fit: contain; border-radius: 3px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45); }
+.portrait-viewer-caption { display: grid; justify-items: center; gap: 0.35rem; color: rgba(255, 250, 240, 0.92); text-align: center; }
+.portrait-viewer-caption > p { margin: 0; font-family: var(--font-display); font-size: 1.15rem; }
+.portrait-viewer-caption > p span { display: block; margin-top: 0.1rem; font-size: 0.78rem; letter-spacing: 0.06em; opacity: 0.65; }
+.portrait-viewer-caption .portrait-viewer-credit { max-width: 36rem; font-family: "DM Sans", Arial, sans-serif; font-size: 0.68rem; opacity: 0.55; }
+.portrait-viewer-credit a { color: inherit; }
+.portrait-viewer-nav { display: flex; align-items: center; gap: 0.9rem; font-family: "DM Sans", Arial, sans-serif; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.portrait-viewer-nav button { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border: 0; border-radius: 50%; color: #fff; background: rgba(255, 255, 255, 0.12); cursor: pointer; }
+.portrait-viewer-nav button:hover, .portrait-viewer-nav button:focus-visible { background: rgba(255, 255, 255, 0.22); outline: none; }
+.portrait-viewer-frame img { touch-action: pan-y; user-select: none; }
 .portrait-viewer-close { position: absolute; top: max(0.75rem, env(safe-area-inset-top)); right: 0.75rem; display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border: 0; border-radius: 50%; color: #fff; background: rgba(255, 255, 255, 0.12); cursor: pointer; }
 .portrait-viewer-close:hover { background: rgba(255, 255, 255, 0.22); }
 .portrait-viewer, .portrait-viewer-overlay { animation: portrait-viewer-in 180ms var(--ease-out); }
