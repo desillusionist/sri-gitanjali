@@ -804,6 +804,36 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .vaisnava-group { margin: 2.4rem 0 0; }
 .vaisnava-group > h2 { display: block; margin: 0 0 0.8rem; }
 .vaisnava-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: 0.4rem 1.2rem; margin: 0; padding: 0; list-style: none; }
+
+/* Portrait circles: the page that adjusts the round crops. */
+.vaisnavas-adjust { margin: 3rem 0 0; font-size: 0.85rem; }
+.vaisnavas-adjust a, .portrait-crops-back a { color: var(--ink-soft); text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 0.2em; }
+.portrait-crops-page .favorites-header { padding-bottom: 2rem; }
+.portrait-crops-page .favorites-header h1 { max-width: 14ch; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 0.9; }
+.portrait-crops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); gap: 1.2rem 0.8rem; margin: 0; padding: 0 0 6rem; list-style: none; }
+.portrait-crops-grid button { display: grid; justify-items: center; gap: 0.5rem; width: 100%; padding: 0.4rem; border: 0; border-radius: 0.8rem; color: var(--ink); background: none; font: inherit; font-size: 0.74rem; line-height: 1.25; text-align: center; cursor: pointer; }
+.portrait-crops-grid button:hover, .portrait-crops-grid button:focus-visible { background: rgba(var(--saffron-rgb), 0.1); outline: none; }
+.portrait-crops-grid .author-portrait-round { width: 4.6rem; height: 4.6rem; }
+.portrait-crops-grid button.is-changed .author-portrait-round { box-shadow: 0 0 0 2px var(--saffron-deep); }
+.portrait-crops-bar { position: sticky; bottom: calc(env(safe-area-inset-bottom) + 0.8rem); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; padding: 0.7rem 0.8rem 0.7rem 1.1rem; border: 1px solid var(--hairline); border-radius: 999px; background: var(--paper-bright); box-shadow: 0 10px 30px rgba(var(--ink-rgb), 0.12); font-size: 0.82rem; }
+.portrait-crops-bar > span { flex: 1 1 auto; color: var(--ink-soft); }
+.portrait-crops-bar button, .crop-editor-actions button { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.4rem; padding: 0 1rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink); background: transparent; font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+.portrait-crops-bar button.is-primary, .crop-editor-actions button.is-primary { border-color: var(--saffron-deep); color: #fff; background: var(--saffron-deep); }
+.portrait-crops-back { margin: 1.6rem 0 0; font-size: 0.85rem; }
+.crop-editor { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 1rem; background: rgba(20, 14, 8, 0.72); }
+.crop-editor-panel { display: grid; gap: 0.9rem; justify-items: center; width: min(100%, 24rem); max-height: 100%; overflow: auto; padding: 1rem 1.1rem 1.2rem; border-radius: 1.2rem; color: var(--ink); background: var(--paper-bright); }
+.crop-editor-panel header { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; width: 100%; font-size: 0.95rem; }
+.crop-editor-icon { display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border: 0; border-radius: 50%; color: var(--ink); background: rgba(var(--ink-rgb), 0.06); cursor: pointer; }
+.crop-editor-stage { position: relative; width: min(72vw, 17rem); aspect-ratio: 1; overflow: hidden; border-radius: 50%; background: var(--saffron-tint); box-shadow: 0 0 0 3px rgba(var(--saffron-rgb), 0.5); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.crop-editor-stage:active { cursor: grabbing; }
+.crop-editor-stage img { position: absolute; max-width: none; height: auto; pointer-events: none; -webkit-user-drag: none; }
+.crop-editor-hint { margin: 0; color: var(--ink-soft); font-size: 0.78rem; }
+.crop-editor-zoom { display: flex; align-items: center; gap: 0.7rem; width: 100%; font-size: 0.8rem; }
+.crop-editor-zoom input { flex: 1; accent-color: var(--saffron-deep); }
+.crop-editor-previews { display: flex; align-items: center; gap: 1rem; }
+.crop-editor-preview { display: inline-grid; }
+.crop-editor-preview .author-portrait-round { width: 100%; height: 100%; }
+.crop-editor-actions { display: flex; justify-content: flex-end; gap: 0.6rem; width: 100%; }
 .vaisnava-row { display: flex; align-items: center; gap: 0.8rem; min-width: 0; padding: 0.55rem 0.6rem; border-radius: 10px; color: inherit; text-decoration: none; transition: background 160ms var(--ease-out); }
 .vaisnava-row:hover, .vaisnava-row:focus-visible { background: rgba(var(--saffron-rgb), 0.08); }
 .vaisnava-row .author-portrait-round { width: 2.6rem; height: 2.6rem; }

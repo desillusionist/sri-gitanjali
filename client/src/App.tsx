@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import SongPage from "./pages/SongPage";
 import AuthorPage from "./pages/AuthorPage";
 import VaisnavasPage from "./pages/VaisnavasPage";
+import PortraitCropsPage from "./pages/PortraitCropsPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
 import { useEffect, useRef } from "react";
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/song/:id" component={SongPage} />
       <Route path="/author/:id" component={AuthorPage} />
       <Route path="/vaisnavas" component={VaisnavasPage} />
+      <Route path="/portraits" component={PortraitCropsPage} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
