@@ -462,7 +462,7 @@ export const translations = {
     book: {
       songsTitle: "In this songbook",
       notFound: "No such book here",
-      fromBook: "From {book}",
+      fromBook: "From {book}.",
     },
   },
 } as const;

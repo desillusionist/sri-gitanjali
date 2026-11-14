@@ -1060,7 +1060,7 @@ function SongPageContent() {
   const songHref = (songId: string) => `/song/${songId}${normalizeSearchText(query) ? `?q=${encodeURIComponent(query.trim())}` : ""}`;
   const hasTranslations = song.verses.some((verse) => Boolean(verse.translation));
   const selectedSecondaryLanguage = secondaryTranslationLanguages.find((language) => language.code === secondaryTranslationLanguage) ?? null;
-  const hasSongNote = Boolean(song.comment || songLanguageInfo);
+  const hasSongNote = Boolean(song.comment || songLanguageInfo || book);
   const readingTypographyStyle = {
     "--reading-font-size-adjustment": `${READING_FONT_SIZE_ADJUSTMENTS[readingFontSizeStep]}rem`,
     "--reading-line-height": String(READING_LINE_HEIGHTS[readingLineHeightStep]),
@@ -1336,7 +1336,6 @@ function SongPageContent() {
             <h1 lang={verseLang} translate="no"><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
             <div className="song-meta">
               <p className="song-poet">{authorBio && authorFilterHref ? <AuthorChip author={authorBio} libraryHref={authorFilterHref} label={<SongMatchText value={author!} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />} /> : author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
-              {book && <p className="song-book"><Link href={`/book/${book.id}`}>{copy.book.fromBook.replace("{book}", book.name)}</Link></p>}
             </div>
           </div>
         </div>
@@ -1353,7 +1352,17 @@ function SongPageContent() {
               <PopoverContent className="song-note-popover" align="end" side="bottom" sideOffset={8} collisionPadding={12}>
                 <span className="info-card-eyebrow">{copy.song.songNote}</span>
                 {song.comment && <p className="song-note-body"><SongMatchText value={song.comment} query={query} fieldId="comment" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></p>}
-                {songLanguageInfo && <p className="song-note-meta">{copy.song.originalLanguage.replace("{language}", songLanguageInfo.english)}</p>}
+                {(book || songLanguageInfo) && (
+                  <p className="song-note-meta">
+                    {book && (
+                      <span className="song-note-book">
+                        {copy.book.fromBook.split("{book}")[0]}<Link href={`/book/${book.id}`} onClick={() => setIsSongNoteOpen(false)}>{book.name}</Link>{copy.book.fromBook.split("{book}")[1]}
+                      </span>
+                    )}
+                    {book && songLanguageInfo && <br />}
+                    {songLanguageInfo && copy.song.originalLanguage.replace("{language}", songLanguageInfo.english)}
+                  </p>
+                )}
               </PopoverContent>
             </Popover>
           )}

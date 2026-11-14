@@ -2920,6 +2920,21 @@
    ]
   },
   {
+   "id": "nrsimha-purana",
+   "kind": "book",
+   "name": "Nṛsiṁha Purāṇa",
+   "about": "The Purāṇa of Lord Nṛsiṁhadev, who appeared from a pillar to protect His devotee Prahlād.",
+   "aliases": [
+    "Śrī Nṛsiṁha Purāṇa",
+    "Nṛsiṁha Purāṇa",
+    "Nṛsiṁha-purāṇa"
+   ],
+   "ru": [
+    "Нрисимха-пуран*",
+    "Нрисимха Пуран*"
+   ]
+  },
+  {
    "id": "kurma-purana",
    "kind": "book",
    "name": "Kūrma Purāṇa",
@@ -3124,6 +3139,30 @@
    ],
    "ru": [
     "Става-мал*"
+   ]
+  },
+  {
+   "id": "stavavali",
+   "kind": "book",
+   "name": "Stavāvalī",
+   "about": "Śrīla Raghunāth Dās Goswāmī’s collected prayers, among them his ten verses praying to live at Govardhan.",
+   "aliases": [
+    "Stavāvalī"
+   ],
+   "ru": [
+    "Стававали"
+   ]
+  },
+  {
+   "id": "stavamrta-lahari",
+   "kind": "book",
+   "name": "Stavāmṛta-laharī",
+   "about": "Śrīla Viśvanāth Chakravartī Ṭhākur’s waves of nectarean prayers, which open with the Gurvāṣṭaka.",
+   "aliases": [
+    "Stavāmṛta-laharī"
+   ],
+   "ru": [
+    "Ставамрита-лахари"
    ]
   },
   {

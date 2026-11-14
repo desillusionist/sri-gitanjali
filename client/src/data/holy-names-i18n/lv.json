@@ -857,6 +857,14 @@
    ],
    "about": "Viena no lielajām Purānām; tajā ir “Dāmodarāštakam” un daudz Svētā Vārda slavinājumu."
   },
+  "nrsimha-purana": {
+   "name": "Nrisimha Purāna",
+   "aliases": [
+    "Nrisimha Purān*",
+    "Nrisimha-purān*"
+   ],
+   "about": "Kunga Nrisimhadēva Purāna; Viņš iznāca no kolonnas, lai aizsargātu Savu bhaktu Prahlādu."
+  },
   "kurma-purana": {
    "name": "Kūrma Purāna",
    "aliases": [
@@ -941,6 +949,14 @@
   "stava-mala": {
    "name": "Stava-mālā",
    "about": "Šrīlas Rūpas Gosvāmī lūgšanu vītne, ko sakopoja Šrīla Džīva Gosvāmī."
+  },
+  "stavavali": {
+   "name": "Stavāvalī",
+   "about": "Šrīlas Ragunātas Dāsa Gosvāmī sakopotās lūgšanas, starp tām desmit pantu lūgšana dzīvot pie Govardhanas."
+  },
+  "stavamrta-lahari": {
+   "name": "Stavāmrita-laharī",
+   "about": "Šrīlas Višvanātas Čakravartī Thākura nektāra lūgšanu viļņi, kas sākas ar “Gurvāštaku”."
   },
   "hari-bhakti-vilasa": {
    "name": "Hari-bhakti-vilāsa",

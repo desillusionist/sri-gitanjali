@@ -1041,8 +1041,7 @@ html.has-player-dock [data-sonner-toaster] { bottom: 6.5rem !important; }
 .admin-text-editor small { color: var(--ink-soft); font-weight: 400; }
 .admin-pictures-add { flex-wrap: wrap; justify-content: flex-end; }
 
-/* The book a song comes from, beside its poet. */
-.song-book { margin: 0; font-size: 0.85rem; }
-.song-book a { color: var(--ink-soft); text-decoration: underline; text-decoration-color: rgba(var(--saffron-rgb), 0.45); text-underline-offset: 3px; }
-.song-book a:hover { color: var(--saffron-deep); }
+/* The book a song comes from, in "About this song". */
+.song-note-book a { color: inherit; text-decoration: underline; text-decoration-color: rgba(var(--saffron-rgb), 0.55); text-underline-offset: 3px; }
+.song-note-book a:hover { color: var(--saffron-deep); }
 .book-page .favorites-header h1 { font-family: var(--font-display); }
