@@ -231,6 +231,11 @@
         "srila-bhakti-sundar-govinda-dev-goswami-maharaja-007",
         "sri-guru-arati-032",
         "acharya-charana-vandana-136"
+      ],
+      "gallery": [
+        {
+          "src": "author-govinda-maharaj-mwg5ptet-1.jpg"
+        }
       ]
     },
     {
@@ -265,6 +270,14 @@
         "pranati-dasakam-159",
         "sri-guru-prasastih-163",
         "pranati-panchakam-164"
+      ],
+      "gallery": [
+        {
+          "src": "author-sridhar-maharaj-mwg5mhzd-1.jpg"
+        },
+        {
+          "src": "author-sridhar-maharaj-mwg5mqpq-1.jpg"
+        }
       ]
     },
     {
@@ -284,30 +297,30 @@
       "songIds": [
         "pranam-mantra-to-srila-swami-maharaja-023"
       ],
-      "portrait": "author-bhaktivedanta-swami.webp",
-      "portraitLarge": "author-bhaktivedanta-swami-large.webp",
+      "portrait": "author-bhaktivedanta-swami-mwg5r2wn.jpg",
+      "portraitLarge": "author-bhaktivedanta-swami-mwg5r2wn-large.jpg",
       "face": [
-        47.7,
-        46.5,
-        68
+        49,
+        21.4,
+        42.8
       ],
       "portraitInfo": {
-        "caption": "Leading kīrtan, Germany, 1974",
+        "caption": "On a morning walk, Germany, 1974",
         "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
-        "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_singing_(Germany_1974).jpg"
+        "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_on_a_morning_walk_in_Germany_1974.jpg"
       },
       "gallery": [
+        {
+          "src": "author-bhaktivedanta-swami-large.webp",
+          "caption": "Leading kīrtan, Germany, 1974",
+          "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_singing_(Germany_1974).jpg"
+        },
         {
           "src": "author-bhaktivedanta-swami-2.webp",
           "caption": "With his daṇḍa, Germany, 1974",
           "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
           "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_with_danda_(Germany_1974).jpg"
-        },
-        {
-          "src": "author-bhaktivedanta-swami-3.webp",
-          "caption": "On a morning walk, Germany, 1974",
-          "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
-          "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_on_a_morning_walk_in_Germany_1974.jpg"
         },
         {
           "src": "author-bhaktivedanta-swami-4.webp",
@@ -320,6 +333,12 @@
           "caption": "With Lord Jagannāth in Golden Gate Park, San Francisco, February 1967",
           "credit": "Mukunda Goswami, CC BY-SA 3.0 · Wikimedia Commons",
           "source": "https://commons.wikimedia.org/wiki/File:Bhaktivedanta_Swami_with_Jagannath_in_Golden_Gate_Park,_February_1967.jpg"
+        },
+        {
+          "src": "author-bhaktivedanta-swami-mwg5qmj6-1.jpg"
+        },
+        {
+          "src": "author-bhaktivedanta-swami-mwg5z06n-1.jpg"
         }
       ]
     },
@@ -727,25 +746,25 @@
         "sri-rupa-manjari-pada-106",
         "srimad-rupa-pada-rajah-prarthana-dasakam-155"
       ],
-      "portrait": "author-rupa-goswami.webp",
-      "portraitLarge": "author-rupa-goswami-large.webp",
+      "portrait": "author-rupa-goswami-mwg4wk2f.jpg",
+      "portraitLarge": "author-rupa-goswami-mwg4wk2f-large.jpg",
       "portraitInfo": {
-        "caption": "Falling at Mahāprabhu’s feet",
+        "caption": "With Śrī Sanātan Goswāmī",
         "credit": "Gauḍīya History · ISKCON Desire Tree",
-        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Rupa-Goswami-8.jpg"
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Sanatana-Goswami-2.jpg"
       },
       "gallery": [
         {
-          "src": "author-rupa-goswami-2.webp",
-          "caption": "With Śrī Sanātan Goswāmī",
+          "src": "author-rupa-goswami-large.webp",
+          "caption": "Falling at Mahāprabhu’s feet",
           "credit": "Gauḍīya History · ISKCON Desire Tree",
-          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Sanatana-Goswami-2.jpg"
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Rupa-Goswami-8.jpg"
         }
       ],
       "face": [
-        62,
-        77.1,
-        27.5
+        60.1,
+        17.2,
+        24.5
       ]
     },
     {
@@ -817,30 +836,25 @@
         "sri-gaura-purnima-147",
         "sri-gaurahari-kusuma-stavastakam-157"
       ],
-      "portrait": "author-chaitanya-mahaprabhu.webp",
-      "portraitLarge": "author-chaitanya-mahaprabhu-large.webp",
+      "portrait": "author-chaitanya-mahaprabhu-mwg5e10n.jpg",
+      "portraitLarge": "author-chaitanya-mahaprabhu-mwg5e10n-large.jpg",
       "face": [
-        42,
-        20,
-        22
+        51.8,
+        62.1,
+        84.5
       ],
-      "portraitInfo": {
-        "caption": "Painting, c. 1900",
-        "credit": "Public domain · Wikimedia Commons",
-        "source": "https://commons.wikimedia.org/wiki/File:Chaitanya-Mahabrabhu-at-Jagannath.jpg"
-      },
       "gallery": [
+        {
+          "src": "author-chaitanya-mahaprabhu-large.webp",
+          "caption": "Painting, c. 1900",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Chaitanya-Mahabrabhu-at-Jagannath.jpg"
+        },
         {
           "src": "author-chaitanya-mahaprabhu-2.webp",
           "caption": "Listening to the Bhāgavatam; from Dinesh Chandra Sen’s History of Bengali Language and Literature, 1911",
           "credit": "Public domain · Dinesh Chandra Sen · Wikimedia Commons",
           "source": "https://commons.wikimedia.org/wiki/File:Chaitanya_Deva_listening_to_the_Bhagabata_-_History_of_Bengali_Language_and_Literature.png"
-        },
-        {
-          "src": "author-chaitanya-mahaprabhu-3.webp",
-          "caption": "Śrī Dhāmeśvar Mahāprabhu, the Deity served by Viṣṇupriyā Devī, Nabadwīp",
-          "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
-          "source": "https://commons.wikimedia.org/wiki/File:Dhameswar_Mahaprabhu_in_Dhameswar_Mahaprabhu_Temple,_Nabadwip_1.jpg"
         },
         {
           "src": "author-chaitanya-mahaprabhu-4.webp",
@@ -871,6 +885,12 @@
           "caption": "With Śrī Nityānanda Prabhu",
           "credit": "Gauḍīya History · ISKCON Desire Tree",
           "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Caitanya-Mahaprabhu-23.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-mwg5enev-1.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-mwg5irzb-1.jpg"
         }
       ]
     },
@@ -897,24 +917,31 @@
         "dayal-nitai-chaitanya-064",
         "sriman-nityananda-dvadasakam-156"
       ],
-      "portrait": "author-nityananda-prabhu.webp",
-      "portraitLarge": "author-nityananda-prabhu-large.webp",
+      "portrait": "author-nityananda-prabhu-mwg54uvp.jpg",
+      "portraitLarge": "author-nityananda-prabhu-mwg54uvp-large.jpg",
       "face": [
-        51.4,
-        41.7,
-        30.5
+        24.1,
+        45.4,
+        16.5
       ],
-      "portraitInfo": {
-        "caption": "The Deity at Nitāi Bāṛī, Nabadwīp",
-        "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
-        "source": "https://commons.wikimedia.org/wiki/File:Idol_of_Nityananda_Prabhu,_Nitai_Bari,_Nabadwip_1.jpg"
-      },
       "gallery": [
+        {
+          "src": "author-nityananda-prabhu-large.webp",
+          "caption": "The Deity at Nitāi Bāṛī, Nabadwīp",
+          "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Idol_of_Nityananda_Prabhu,_Nitai_Bari,_Nabadwip_1.jpg"
+        },
         {
           "src": "author-nityananda-prabhu-2.webp",
           "caption": "The Deity at Nitāi Bāṛī, Nabadwīp",
           "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
           "source": "https://commons.wikimedia.org/wiki/File:Idol_of_Nityananda_Prabhu,_Nitai_Bari,_Nabadwip_6.jpg"
+        },
+        {
+          "src": "author-nityananda-prabhu-mwg58dwj-1.jpg"
+        },
+        {
+          "src": "author-nityananda-prabhu-mwg5imn8-1.jpg"
         }
       ]
     },
@@ -934,14 +961,15 @@
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
       ],
-      "portrait": "author-advaita-acharya.webp",
-      "portraitLarge": "author-advaita-acharya-large.webp",
-      "portraitInfo": {
-        "caption": "Painting",
-        "credit": "Gauḍīya History · ISKCON Desire Tree",
-        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Advaita-Acharya-20.jpg"
-      },
+      "portrait": "author-advaita-acharya-mwg4v7um.jpg",
+      "portraitLarge": "author-advaita-acharya-mwg4v7um-large.jpg",
       "gallery": [
+        {
+          "src": "author-advaita-acharya-large.webp",
+          "caption": "Painting",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Advaita-Acharya-20.jpg"
+        },
         {
           "src": "author-advaita-acharya-2.webp",
           "caption": "Worshipping with Ganges water and tulasī, calling for the Lord to appear",
@@ -959,12 +987,18 @@
           "caption": "The wooden Deities of Advaita Āchārya and Sītā Devī, Sītānāth Advaita Mandir, Nabadwīp",
           "credit": "বাক্যবাগীশ, CC BY-SA 4.0 · Wikimedia Commons",
           "source": "https://commons.wikimedia.org/wiki/File:Wooden_idols_of_Advaita_Acharya_and_Sita_Devi,_Sitanath_Advaita_Mandir,_Nabadwip_6.jpg"
+        },
+        {
+          "src": "author-advaita-acharya-mwg582br-1.jpg"
+        },
+        {
+          "src": "author-advaita-acharya-mwg5ih4r-1.jpg"
         }
       ],
       "face": [
-        55.7,
-        34.3,
-        68.5
+        10.3,
+        55.5,
+        20
       ]
     },
     {
@@ -983,17 +1017,26 @@
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
       ],
-      "portrait": "author-gadadhara-pandit.webp",
-      "portraitLarge": "author-gadadhara-pandit-large.webp",
-      "portraitInfo": {
-        "caption": "Painting",
-        "credit": "Gauḍīya History · ISKCON Desire Tree",
-        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/09/Gadadhara-Pandit.jpg"
-      },
+      "portrait": "author-gadadhara-pandit-mwg4syl0.jpg",
+      "portraitLarge": "author-gadadhara-pandit-mwg4syl0-large.jpg",
       "face": [
-        39.6,
-        33.7,
-        46
+        72.6,
+        43.4,
+        15.5
+      ],
+      "gallery": [
+        {
+          "src": "author-gadadhara-pandit-large.webp",
+          "caption": "Painting",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/09/Gadadhara-Pandit.jpg"
+        },
+        {
+          "src": "author-gadadhara-pandit-mwg5fg6i-1.jpg"
+        },
+        {
+          "src": "author-gadadhara-pandit-mwg5iaab-1.jpg"
+        }
       ]
     },
     {
@@ -1011,6 +1054,24 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "portrait": "author-srivas-thakur-mwg5fxl7.jpg",
+      "portraitLarge": "author-srivas-thakur-mwg5fxl7-large.jpg",
+      "face": [
+        51.9,
+        53.6,
+        96.3
+      ],
+      "gallery": [
+        {
+          "src": "author-srivas-thakur-mwg5gg1l-1.jpg"
+        },
+        {
+          "src": "author-srivas-thakur-mwg5gp89-1.jpg"
+        },
+        {
+          "src": "author-srivas-thakur-mwg5i3sd-1.jpg"
+        }
       ]
     },
     {
@@ -1077,7 +1138,15 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
-      ]
+      ],
+      "portrait": "author-svarup-damodar-mwg6021g.jpg",
+      "portraitLarge": "author-svarup-damodar-mwg6021g-large.jpg",
+      "face": [
+        77.1,
+        40.7,
+        45.2
+      ],
+      "gallery": []
     },
     {
       "id": "ramananda-ray",
@@ -1152,6 +1221,20 @@
         41.6,
         48.7,
         22.5
+      ],
+      "gallery": [
+        {
+          "src": "author-madhavendra-puri-mwg5040g-1.jpg"
+        },
+        {
+          "src": "author-madhavendra-puri-mwg50l4x-1.jpg"
+        },
+        {
+          "src": "author-madhavendra-puri-mwg52gq6-1.jpg"
+        },
+        {
+          "src": "author-madhavendra-puri-mwg53cin-1.jpg"
+        }
       ]
     },
     {
@@ -1249,6 +1332,29 @@
         52,
         32.2,
         36
+      ],
+      "gallery": [
+        {
+          "src": "author-raghunath-das-goswami-mwg65m9r-1.jpg"
+        },
+        {
+          "src": "author-raghunath-das-goswami-mwg660lw-1.jpg"
+        },
+        {
+          "src": "author-raghunath-das-goswami-mwg66unr-1.jpg"
+        },
+        {
+          "src": "author-raghunath-das-goswami-mwg682ct-1.jpg"
+        },
+        {
+          "src": "author-raghunath-das-goswami-mwg696vo-1.jpg"
+        },
+        {
+          "src": "author-raghunath-das-goswami-mwg69thg-1.jpg"
+        },
+        {
+          "src": "author-raghunath-das-goswami-mwg6dbkl-1.jpg"
+        }
       ]
     },
     {
@@ -1564,10 +1670,7 @@
       ],
       "gallery": [
         {
-          "src": "author-narada-muni-large.webp",
-          "caption": "From The Modern Review, 1908",
-          "credit": "Public domain · Ramananda Chatterjee · Wikimedia Commons",
-          "source": "https://commons.wikimedia.org/wiki/File:The_Sage_Narada_in_The_Modern_Review_Vol_3_(January_to_June_1908)_(page_349_crop).jpg"
+          "src": "author-narada-muni-mwg4pmdv-1.jpg"
         }
       ]
     },
