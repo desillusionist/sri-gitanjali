@@ -129,25 +129,3 @@ export async function fetchPictures(urls: string[]): Promise<Blob[]> {
   }
   return blobs;
 }
-
-/**
- * Pictures on the clipboard, when the browser lets the page read it (desktop browsers do; iPhone
- * Safari often hands over no picture here, so the paste box catches an ordinary paste instead).
- * Returns an empty list when there is no picture to be had this way.
- */
-export async function readClipboardImages(): Promise<Blob[]> {
-  if (!navigator.clipboard?.read) return [];
-  const items = await navigator.clipboard.read();
-  const blobs: Blob[] = [];
-  let html = "";
-  let text = "";
-  for (const item of items) {
-    const imageType = item.types.find((candidate) => candidate.startsWith("image/"));
-    if (imageType) { blobs.push(await item.getType(imageType)); continue; }
-    if (item.types.includes("text/html")) html += await (await item.getType("text/html")).text();
-    if (item.types.includes("text/uri-list")) text += `\n${await (await item.getType("text/uri-list")).text()}`;
-    if (item.types.includes("text/plain")) text += `\n${await (await item.getType("text/plain")).text()}`;
-  }
-  if (blobs.length) return blobs;
-  return fetchPictures(pictureUrlsIn(html, text));
-}

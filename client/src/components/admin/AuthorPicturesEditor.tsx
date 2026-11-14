@@ -1,17 +1,17 @@
 /** The admin's picture tools on an author's page: main portrait, circle, slideshow pictures and their captions. */
 
-import { useEffect, useRef, useState, type ClipboardEvent as ReactClipboardEvent } from "react";
-import { ArrowLeft, ArrowRight, Circle, ClipboardPaste, Crop, ImagePlus, Info, Star, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState, type ClipboardEvent as ReactClipboardEvent, type DragEvent as ReactDragEvent } from "react";
+import { ArrowLeft, ArrowRight, Circle, Crop, ImagePlus, Info, Star, Trash2, X } from "lucide-react";
 import { FrameEditor } from "@/components/FrameEditor";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { storageUrl, type Author } from "@/lib/authors";
 import { addPictures, movePicture, removePicture, setCircle, setMainPortrait, setPictureInfo, type PictureInfo } from "@/lib/admin/drafts";
-import { fetchPictures, pictureUrlsIn, readClipboardImages } from "@/lib/admin/images";
+import { fetchPictures, pictureUrlsIn } from "@/lib/admin/images";
 import { defaultFace, faceStyle, fullFrame, useAuthorFace, type Face } from "@/lib/portraitCrops";
 
 const IS_TOUCH = typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)").matches;
 
-/** Picture files in a paste, read at once (the browser empties the clipboard data after the event). */
+/** Picture files in a paste or drop, read at once (the browser empties the clipboard data after the event). */
 function fileItems(data: DataTransfer | null): File[] {
   if (!data) return [];
   const files = Array.from(data.files ?? []).filter((file) => file.type.startsWith("image/"));
@@ -36,7 +36,7 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
   const [message, setMessage] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const pasteBox = useRef<HTMLDivElement>(null);
-  const [pasting, setPasting] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const gallery = author.gallery ?? [];
   const slideCount = (author.portrait ? 1 : 0) + gallery.length;
 
@@ -70,45 +70,39 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
     return () => document.removeEventListener("paste", onPaste);
   });
 
-  const openPasteBox = () => {
-    setPasting(true);
-    setMessage(null);
-    requestAnimationFrame(() => pasteBox.current?.focus());
-  };
-
-  // On a phone, Paste opens the box (an ordinary long-press Paste brings the picture, as in Notes);
-  // elsewhere the clipboard is read directly, falling back to the box.
-  const paste = () => {
-    if (IS_TOUCH) { openPasteBox(); return; }
-    void run(async () => {
-      const blobs = await readClipboardImages().catch(() => []);
-      if (blobs.length) await add(blobs);
-      else openPasteBox();
-    });
+  /** Pictures from a paste or a drop: files first, else <img> and picture addresses in the HTML or text. */
+  const takePictures = (data: DataTransfer, landed?: () => string[]) => {
+    const html = data.getData("text/html");
+    const text = `${data.getData("text/uri-list")}\n${data.getData("text/plain")}`;
+    window.setTimeout(() => {
+      const box = pasteBox.current;
+      const urls = [...(landed?.() ?? []), ...pictureUrlsIn(html, text)];
+      if (box) box.innerHTML = "";
+      void run(async () => {
+        const blobs = await fetchPictures(Array.from(new Set(urls)));
+        if (!blobs.length) throw new Error(t.noPicturePasted);
+        await add(blobs);
+      });
+    }, 60);
   };
 
   const onBoxPaste = (event: ReactClipboardEvent<HTMLDivElement>) => {
     const files = fileItems(event.clipboardData);
     if (files.length) {
       event.preventDefault();
-      setPasting(false);
       void add(files);
       return;
     }
     // No file: let the paste land in the box, then look for a picture in what arrived.
-    const html = event.clipboardData.getData("text/html");
-    const text = `${event.clipboardData.getData("text/uri-list")}\n${event.clipboardData.getData("text/plain")}`;
-    window.setTimeout(() => {
-      const box = pasteBox.current;
-      const urls = [...Array.from(box?.querySelectorAll("img") ?? [], (image) => image.src), ...pictureUrlsIn(html, text)];
-      if (box) box.innerHTML = "";
-      void run(async () => {
-        const blobs = await fetchPictures(Array.from(new Set(urls)));
-        if (!blobs.length) throw new Error(t.noPicturePasted);
-        setPasting(false);
-        await add(blobs);
-      });
-    }, 60);
+    takePictures(event.clipboardData, () => Array.from(pasteBox.current?.querySelectorAll("img") ?? [], (image) => image.src));
+  };
+
+  const onBoxDrop = (event: ReactDragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragging(false);
+    const files = fileItems(event.dataTransfer);
+    if (files.length) void add(files);
+    else takePictures(event.dataTransfer);
   };
 
   const mainSrc = author.portraitLarge ?? author.portrait;
@@ -120,27 +114,24 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
         <div className="admin-pictures-add">
           <input ref={fileInput} type="file" accept="image/*" multiple hidden onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ""; if (files.length) void add(files); }} />
           <button type="button" disabled={busy} onClick={() => fileInput.current?.click()}><ImagePlus size={15} aria-hidden="true" />{t.addPhotos}</button>
-          <button type="button" disabled={busy} onClick={paste}><ClipboardPaste size={15} aria-hidden="true" />{t.paste}</button>
         </div>
       </header>
 
-      {pasting && (
-        <div className="admin-paste">
-          <div
-            ref={pasteBox}
-            className="admin-paste-box"
-            contentEditable
-            suppressContentEditableWarning
-            role="textbox"
-            aria-label={t.pasteBox}
-            inputMode="none"
-            onPaste={onBoxPaste}
-            onInput={(event) => { if (!event.currentTarget.querySelector("img")) event.currentTarget.textContent = ""; }}
-          />
-          <p>{t.pasteHint}</p>
-          <button type="button" onClick={() => setPasting(false)}>{copy.portraitCrops.cancel}</button>
-        </div>
-      )}
+      <div
+        ref={pasteBox}
+        className={`admin-paste-box${dragging ? " is-dragging" : ""}`}
+        contentEditable={!busy}
+        suppressContentEditableWarning
+        role="textbox"
+        aria-label={t.pasteBox}
+        data-placeholder={IS_TOUCH ? t.pasteHintTouch : t.pasteHint}
+        inputMode="none"
+        onPaste={onBoxPaste}
+        onDragOver={(event) => { event.preventDefault(); event.dataTransfer.dropEffect = "copy"; setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onBoxDrop}
+        onInput={(event) => { if (!event.currentTarget.querySelector("img")) event.currentTarget.textContent = ""; }}
+      />
 
       <ul className="admin-pictures-list">
         {author.portrait && mainSrc && (
@@ -177,7 +168,13 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
       {message && <p className="admin-pictures-note" role="status">{message}</p>}
 
       {editing?.kind === "info" && (
-        <form className="admin-pictures-info" onSubmit={(event) => { event.preventDefault(); setPictureInfo(author, editing.src, editing.info); setEditing(null); }}>
+        <div className="crop-editor" role="dialog" aria-modal="true" aria-label={t.details}>
+        <form className="crop-editor-panel admin-pictures-info" onSubmit={(event) => { event.preventDefault(); setPictureInfo(author, editing.src, editing.info); setEditing(null); }}>
+          <header>
+            <strong>{t.details}</strong>
+            <button type="button" className="crop-editor-icon" onClick={() => setEditing(null)} aria-label={copy.portraitCrops.cancel}><X size={18} /></button>
+          </header>
+          <img className="admin-pictures-info-thumb" src={storageUrl(editing.src === "portrait" ? author.portrait! : editing.src)} alt="" />
           <label>{t.caption}<input value={editing.info.caption ?? ""} onChange={(event) => setEditing({ ...editing, info: { ...editing.info, caption: event.target.value } })} /></label>
           <label>{t.credit}<input value={editing.info.credit ?? ""} onChange={(event) => setEditing({ ...editing, info: { ...editing.info, credit: event.target.value } })} /></label>
           <label>{t.source}<input type="url" inputMode="url" value={editing.info.source ?? ""} onChange={(event) => setEditing({ ...editing, info: { ...editing.info, source: event.target.value } })} /></label>
@@ -186,6 +183,7 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
             <button type="submit" className="is-primary">{copy.portraitCrops.save}</button>
           </div>
         </form>
+        </div>
       )}
 
       {editing?.kind === "circle" && author.portrait && (

@@ -817,12 +817,12 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .admin-pictures { margin: 0 0 2.4rem; padding: 1rem; border: 1px dashed rgba(var(--saffron-rgb), 0.55); border-radius: 1rem; background: rgba(var(--saffron-rgb), 0.05); }
 .admin-pictures > header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.9rem; }
 .admin-pictures-add { display: flex; gap: 0.5rem; }
-.admin-paste { display: grid; gap: 0.5rem; margin: 0 0 1rem; }
-.admin-paste-box { min-height: 5.5rem; padding: 0.8rem; border: 2px dashed rgba(var(--saffron-rgb), 0.7); border-radius: 0.8rem; background: var(--paper-cream); -webkit-user-select: text; user-select: text; outline: none; }
-.admin-paste-box:focus { border-color: var(--saffron-deep); }
+.admin-paste-box { position: relative; display: grid; place-items: center; min-height: 4.2rem; margin: 0 0 1rem; padding: 0.8rem; border: 2px dashed rgba(var(--saffron-rgb), 0.6); border-radius: 0.8rem; color: var(--ink-soft); background: var(--paper-cream); font-size: 0.82rem; text-align: center; -webkit-user-select: text; user-select: text; outline: none; cursor: text; transition: border-color 160ms var(--ease-out), background 160ms var(--ease-out); }
+.admin-paste-box:empty::before { content: attr(data-placeholder); pointer-events: none; }
+.admin-paste-box:focus, .admin-paste-box.is-dragging { border-color: var(--saffron-deep); background: rgba(var(--saffron-rgb), 0.1); }
 .admin-paste-box img { max-width: 6rem; max-height: 6rem; }
-.admin-paste p { margin: 0; color: var(--ink-soft); font-size: 0.8rem; }
-.admin-paste button { justify-self: start; }
+.admin-pictures-info-thumb { max-width: 100%; max-height: 12rem; border-radius: 0.5rem; object-fit: contain; }
+.admin-pictures-info.crop-editor-panel { justify-items: stretch; }
 .admin-pictures-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.9rem; margin: 0; padding: 0; list-style: none; }
 .admin-pictures-list li { display: grid; align-content: start; gap: 0.4rem; min-width: 0; font-size: 0.74rem; }
 .admin-pictures-list li.is-main strong { color: var(--saffron-deep); }
@@ -837,7 +837,6 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .admin-pictures-note { margin: 0.8rem 0 0; color: var(--ink-soft); font-size: 0.8rem; }
 .admin-pictures-note.is-error { color: #a3271b; }
 .admin-pictures-info, .admin-note-editor { display: grid; gap: 0.7rem; }
-.admin-pictures-info { margin-top: 1rem; max-width: 30rem; }
 .admin-pictures-info label, .admin-note-editor label { display: grid; gap: 0.25rem; width: 100%; font-size: 0.78rem; font-weight: 600; }
 .admin-pictures-info input, .admin-note-editor input:not([type="checkbox"]), .admin-note-editor textarea, .admin-note-editor select, .admin-note-local select { width: 100%; padding: 0.5rem 0.6rem; border: 1px solid var(--hairline); border-radius: 0.5rem; color: var(--ink); background: var(--paper-cream); font: inherit; font-size: 0.9rem; font-weight: 400; }
 .admin-note-editor { justify-items: stretch; width: min(100%, 30rem); }

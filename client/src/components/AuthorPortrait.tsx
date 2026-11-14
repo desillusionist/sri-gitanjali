@@ -10,7 +10,9 @@ export function AuthorPortrait({ author: published, variant = "round" }: { autho
   return (
     <span className={`author-portrait author-portrait-${variant} ${url ? "" : "is-monogram"}`} aria-hidden="true">
       {url ? (
-        <img src={url} alt="" loading="lazy" decoding="async" style={variant === "round" && face ? faceStyle(face) : undefined} />
+        // Round portraits load at once: a picture shifted inside its small circle can look off-screen to
+        // Safari's lazy loading, which then left some circles blank until the page was shown again.
+        <img src={url} alt="" loading={variant === "round" ? "eager" : "lazy"} decoding="async" style={variant === "round" && face ? faceStyle(face) : undefined} />
       ) : (
         <span>{authorInitials(author)}</span>
       )}
