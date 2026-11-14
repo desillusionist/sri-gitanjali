@@ -10,7 +10,7 @@ Edit the table below and re-run: python3 scripts/build-holy-names.py
 import json
 import pathlib
 
-P, D, PL, R, O, B = "person", "divine", "place", "realm", "other", "book"
+P, D, PL, R, O, B, T = "person", "divine", "place", "realm", "other", "book", "term"
 
 E = [
     # --- The Divine ---
@@ -413,8 +413,37 @@ E += [
      ["Śrī Guru Ārati"], [], None, None),
 ]
 
+# --- Terms: ideas, practices and festivals ---
+E += [
+    ("gaudiya", T, "Gauḍīya", "“Of Gauḍa”, old Bengal: the Gauḍīya Vaiṣṇavas are the followers of Śrī Chaitanya Mahāprabhu, who appeared there.",
+     ["Gauḍīya"], ["Гаудий*"], None, None),
+    ("maya", T, "Māyā", "The Lord’s illusory energy, which makes the soul forget Krishna and binds it to this world.",
+     ["Māyā"], ["Майя", "Майи", "Майе", "Майю", "Майей"], None, None),
+    ("pancha-tattva", D, "Pañcha-tattva", "Śrī Chaitanya Mahāprabhu in His five features: Himself, Śrī Nityānanda Prabhu, Śrī Advaita Āchārya, Śrī Gadādhar Paṇḍit and Śrīvās Ṭhākur.",
+     ["Pañcha-tattva"], ["Панча-таттв*"], None, None),
+    ("rupanuga", T, "Rūpānuga", "A follower of Śrīla Rūpa Goswāmī, serving Śrīmatī Rādhārāṇī’s wishes under his guidance; the line of Śrī Chaitanya Sāraswat Maṭh.",
+     ["Rūpānuga"], ["Рупануг*"], None, None),
+    ("mahabhava", T, "Mahābhāva", "The highest stage of divine love, found in full only in Śrīmatī Rādhārāṇī, who is called Mahābhāva Herself.",
+     ["Mahābhāva"], ["Махабхав*"], None, None),
+    ("gayatri", T, "Gāyatrī", "The Vedic prayer given at initiation and chanted at dawn, noon and dusk; Śrīmad Bhāgavatam unfolds its meaning.",
+     ["Gāyatrī"], ["Гаятри"], None, None),
+    ("ekadasi", T, "Ekādaśī", "The eleventh day of the waxing and of the waning moon: a day of fasting from grains and of more chanting, dear to Lord Hari.",
+     ["Ekādaśī"], ["Экадаши"], None, None),
+    ("harinam", T, "Harinām", "The Holy Name of the Lord, above all the Hare Krishna mahāmantra, chanted alone or together in saṅkīrtan.",
+     ["Harinām Saṅkīrtan", "Harināma", "Harinām"], ["Харинам*"], None, None),
+    ("ratha-yatra", T, "Ratha Yātrā", "The chariot festival of Lord Jagannāth in Purī, where Mahāprabhu danced and sang before the cart.",
+     ["Ratha Yātrā", "Ratha-yātrā"], ["Ратха-ятр*", "Ратха Ятр*"], None, None),
+    ("rasa", T, "Rāsa", "Krishna’s circle dance with the gopīs on autumn nights in Vṛndāvan, the summit of His pastimes.",
+     ["Rāsa dance", "Rāsa-līlā", "Rāsa"], ["Раса-лил*", "Раса"], None, None),
+    ("sampradaya", T, "Sampradāya", "A line of teachers through whom the truth comes down unchanged from the Lord; the Gauḍīyas belong to the line of Brahmā and Madhva.",
+     ["Guru-paramparā", "Guru-varga", "Sampradāya"], ["Сампрадай*", "Гуру-парампар*"], None, None),
+    ("kartika", T, "Kārttika", "The autumn month of Lord Dāmodar (October–November), also called Ūrja, the best month for devotion.",
+     ["Kārttika"], ["Картик*"], None, None),
+]
+
 # More spellings of names above, as the biographies write them.
 MORE_ALIASES = {
+    "vedanta-sutra": ["Vedānta"],
     "ramananda": ["Rāya Rāmānanda"],
     "krsnadas": ["Śrīla Kṛṣṇadās Kavirāj Goswāmī", "Kṛṣṇadās Kavirāj Goswāmī", "Śrīla Kṛṣṇadās Kavirāj", "Kṛṣṇadās Kavirāj"],
     "gaura-kisora": ["Śrīla Gaura Kiśor Dās Bābājī Mahārāja", "Śrīla Gaura Kiśor Dās Bābājī", "Gaura Kiśor Dās Bābājī", "Gaura Kiśor Dās", "Gaura Kiśor"],

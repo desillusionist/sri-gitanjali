@@ -1045,3 +1045,20 @@ html.has-player-dock [data-sonner-toaster] { bottom: 6.5rem !important; }
 .song-note-book a { color: inherit; text-decoration: underline; text-decoration-color: rgba(var(--saffron-rgb), 0.55); text-underline-offset: 3px; }
 .song-note-book a:hover { color: var(--saffron-deep); }
 .book-page .favorites-header h1 { font-family: var(--font-display); }
+
+/* Notes in one language beside the English, for review. */
+.notes-review-languages { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0.6rem; margin: 0; padding: 0; list-style: none; }
+.notes-review-languages a { display: grid; gap: 0.15rem; padding: 0.9rem 1rem; border: 1px solid var(--hairline); border-radius: 0.8rem; color: var(--ink); text-decoration: none; }
+.notes-review-languages a span { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; }
+.notes-review-languages small, .notes-review-count { color: var(--ink-soft); font-size: 0.8rem; }
+.notes-review-kind { margin: 0 0 2.5rem; }
+.notes-review-kind h2 { margin: 0 0 0.8rem; font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; }
+.notes-review-kind h2 span { color: var(--ink-soft); }
+.notes-review-kind ol { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.notes-review-kind li { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 1.4rem; padding: 0.8rem 0; border-top: 1px solid var(--hairline); }
+.notes-review-kind li strong { font-size: 0.95rem; }
+.notes-review-kind li p { margin: 0.2rem 0 0; font-size: 0.88rem; line-height: 1.45; }
+.notes-review-kind li small { display: block; margin-top: 0.3rem; color: var(--ink-soft); font-size: 0.75rem; }
+.notes-review-kind li .is-missing p { color: #a3271b; }
+.notes-review-key { grid-column: 1 / -1; color: var(--ink-soft); font-family: ui-monospace, monospace; font-size: 0.7rem; }
+@media (max-width: 640px) { .notes-review-kind li { grid-template-columns: 1fr; } }

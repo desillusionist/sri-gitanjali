@@ -11,7 +11,7 @@ describe("translated name and place notes", () => {
   it.each(secondaryTranslationLanguages.map((language) => language.code))("%s covers every entry and label", async (code) => {
     const locale = await loadHolyNameLocale(code);
     expect(locale).not.toBeNull();
-    for (const kind of ["person", "divine", "place", "realm", "other"] as const) expect(locale!.ui.kinds[kind]).toBeTruthy();
+    for (const kind of ["person", "divine", "place", "realm", "other", "book", "term"] as const) expect(locale!.ui.kinds[kind]).toBeTruthy();
     expect(locale!.ui.page && locale!.ui.map).toBeTruthy();
     for (const entry of HOLY_NAMES) {
       expect(locale!.entries[entry.id]?.about, entry.id).toBeTruthy();

@@ -6,7 +6,8 @@
    "place": "Svēta vieta",
    "realm": "Garīgā pasaule",
    "other": "Personība",
-   "book": "Svētā grāmata"
+   "book": "Svētā grāmata",
+   "term": "Termins"
   },
   "page": "Lasīt vairāk",
   "map": "Skatīt Google Maps",
@@ -1087,6 +1088,98 @@
   "guru-arati": {
    "name": "Šrī Guru Ārati",
    "about": "Šrīpāda B. A. Paramahamsas Mahārādžas ārati dziesma Šrīlas Bhakti Sundaras Govindas Dēva-Gosvāmī Mahārādžas slavai."
+  },
+  "gaudiya": {
+   "name": "Gaudīja",
+   "aliases": [
+    "Gaudīj*",
+    "Gauḍīya"
+   ],
+   "about": "“No Gaudas”, senās Bengālijas: gaudīju vaišnavi ir tur dzimušā Šrī Čaitanjas Mahāprabhu sekotāji."
+  },
+  "maya": {
+   "name": "Māja",
+   "aliases": [
+    "Māj*"
+   ],
+   "about": "Kunga maldinošā enerģija, kas liek dvēselei aizmirst Krišnu un piesaista to šai pasaulei."
+  },
+  "pancha-tattva": {
+   "name": "Panča-tatva",
+   "aliases": [
+    "Panča-tatv*",
+    "Pañcha-tattva"
+   ],
+   "about": "Šrī Čaitanja Mahāprabhu Savos piecos veidolos: Viņš pats, Šrī Nitjānanda Prabhu, Šrī Advaita Āčārja, Šrī Gadādhara Pandits un Šrīvāss Thākurs."
+  },
+  "rupanuga": {
+   "name": "Rūpānuga",
+   "aliases": [
+    "Rūpānug*"
+   ],
+   "about": "Šrīlas Rūpas Gosvāmī sekotājs, kas viņa vadībā kalpo Šrīmatī Rādhārānī vēlmēm; Šrī Čaitanjas Sārasvata Mata līnija."
+  },
+  "mahabhava": {
+   "name": "Mahābhāva",
+   "aliases": [
+    "Mahābhāv*"
+   ],
+   "about": "Dievišķās mīlestības augstākā pakāpe, kas pilnībā ir tikai Šrīmatī Rādhārānī; Viņu sauc pašu par Mahābhāvu."
+  },
+  "gayatri": {
+   "name": "Gājatrī",
+   "aliases": [
+    "Gājatrī",
+    "Gāyatrī"
+   ],
+   "about": "Vēdiskā lūgšana, ko saņem iesvētībās un skaita rītausmā, pusdienlaikā un vakarā; “Šrīmad Bhāgavatam” atklāj tās nozīmi."
+  },
+  "ekadasi": {
+   "name": "Ēkādašī",
+   "aliases": [
+    "Ēkādaš*",
+    "Ekādaśī"
+   ],
+   "about": "Augošā un dilstošā mēness vienpadsmitā diena: gavēnis no graudiem un vairāk dziedāšanas, dārga Kungam Hari."
+  },
+  "harinam": {
+   "name": "Harināma",
+   "aliases": [
+    "Harinām*"
+   ],
+   "about": "Kunga Svētais Vārds, īpaši Harē Krišna mahāmantra, ko dzied vienatnē vai kopā sankīrtanā."
+  },
+  "ratha-yatra": {
+   "name": "Ratha-jātrā",
+   "aliases": [
+    "Ratha-jātr*",
+    "Ratha Yātrā"
+   ],
+   "about": "Kunga Džagannātas ratu svētki Purī, kur Mahāprabhu dejoja un dziedāja ratu priekšā."
+  },
+  "rasa": {
+   "name": "Rāsa",
+   "aliases": [
+    "Rāsa dej*",
+    "Rāsa"
+   ],
+   "about": "Krišnas apļa deja ar gopī rudens naktīs Vrindāvanā, Viņa spēļu virsotne."
+  },
+  "sampradaya": {
+   "name": "Sampradāja",
+   "aliases": [
+    "Sampradāj*",
+    "Guru-parampar*"
+   ],
+   "about": "Skolotāju līnija, pa kuru patiesība nemainīta nonāk no Kunga; gaudīji pieder Brahmas un Madhvas līnijai."
+  },
+  "kartika": {
+   "name": "Kārtika",
+   "aliases": [
+    "Kārtik*",
+    "Kārttika"
+   ],
+   "about": "Kunga Dāmodaras rudens mēnesis (oktobris–novembris), sauktas arī Ūrdža, labākais mēnesis kalpošanai."
   }
  }
 }

@@ -2887,7 +2887,8 @@
     "Vedānta-sūtras",
     "Vedānta-sūtra",
     "Brahma-sūtras",
-    "Brahma-sūtra"
+    "Brahma-sūtra",
+    "Vedānta"
    ],
    "ru": [
     "Веданта-сутр*"
@@ -3570,6 +3571,164 @@
     "Śrī Guru Ārati"
    ],
    "ru": []
+  },
+  {
+   "id": "gaudiya",
+   "kind": "term",
+   "name": "Gauḍīya",
+   "about": "“Of Gauḍa”, old Bengal: the Gauḍīya Vaiṣṇavas are the followers of Śrī Chaitanya Mahāprabhu, who appeared there.",
+   "aliases": [
+    "Gauḍīya"
+   ],
+   "ru": [
+    "Гаудий*"
+   ]
+  },
+  {
+   "id": "maya",
+   "kind": "term",
+   "name": "Māyā",
+   "about": "The Lord’s illusory energy, which makes the soul forget Krishna and binds it to this world.",
+   "aliases": [
+    "Māyā"
+   ],
+   "ru": [
+    "Майя",
+    "Майи",
+    "Майе",
+    "Майю",
+    "Майей"
+   ]
+  },
+  {
+   "id": "pancha-tattva",
+   "kind": "divine",
+   "name": "Pañcha-tattva",
+   "about": "Śrī Chaitanya Mahāprabhu in His five features: Himself, Śrī Nityānanda Prabhu, Śrī Advaita Āchārya, Śrī Gadādhar Paṇḍit and Śrīvās Ṭhākur.",
+   "aliases": [
+    "Pañcha-tattva"
+   ],
+   "ru": [
+    "Панча-таттв*"
+   ]
+  },
+  {
+   "id": "rupanuga",
+   "kind": "term",
+   "name": "Rūpānuga",
+   "about": "A follower of Śrīla Rūpa Goswāmī, serving Śrīmatī Rādhārāṇī’s wishes under his guidance; the line of Śrī Chaitanya Sāraswat Maṭh.",
+   "aliases": [
+    "Rūpānuga"
+   ],
+   "ru": [
+    "Рупануг*"
+   ]
+  },
+  {
+   "id": "mahabhava",
+   "kind": "term",
+   "name": "Mahābhāva",
+   "about": "The highest stage of divine love, found in full only in Śrīmatī Rādhārāṇī, who is called Mahābhāva Herself.",
+   "aliases": [
+    "Mahābhāva"
+   ],
+   "ru": [
+    "Махабхав*"
+   ]
+  },
+  {
+   "id": "gayatri",
+   "kind": "term",
+   "name": "Gāyatrī",
+   "about": "The Vedic prayer given at initiation and chanted at dawn, noon and dusk; Śrīmad Bhāgavatam unfolds its meaning.",
+   "aliases": [
+    "Gāyatrī"
+   ],
+   "ru": [
+    "Гаятри"
+   ]
+  },
+  {
+   "id": "ekadasi",
+   "kind": "term",
+   "name": "Ekādaśī",
+   "about": "The eleventh day of the waxing and of the waning moon: a day of fasting from grains and of more chanting, dear to Lord Hari.",
+   "aliases": [
+    "Ekādaśī"
+   ],
+   "ru": [
+    "Экадаши"
+   ]
+  },
+  {
+   "id": "harinam",
+   "kind": "term",
+   "name": "Harinām",
+   "about": "The Holy Name of the Lord, above all the Hare Krishna mahāmantra, chanted alone or together in saṅkīrtan.",
+   "aliases": [
+    "Harinām Saṅkīrtan",
+    "Harināma",
+    "Harinām"
+   ],
+   "ru": [
+    "Харинам*"
+   ]
+  },
+  {
+   "id": "ratha-yatra",
+   "kind": "term",
+   "name": "Ratha Yātrā",
+   "about": "The chariot festival of Lord Jagannāth in Purī, where Mahāprabhu danced and sang before the cart.",
+   "aliases": [
+    "Ratha Yātrā",
+    "Ratha-yātrā"
+   ],
+   "ru": [
+    "Ратха-ятр*",
+    "Ратха Ятр*"
+   ]
+  },
+  {
+   "id": "rasa",
+   "kind": "term",
+   "name": "Rāsa",
+   "about": "Krishna’s circle dance with the gopīs on autumn nights in Vṛndāvan, the summit of His pastimes.",
+   "aliases": [
+    "Rāsa dance",
+    "Rāsa-līlā",
+    "Rāsa"
+   ],
+   "ru": [
+    "Раса-лил*",
+    "Раса"
+   ]
+  },
+  {
+   "id": "sampradaya",
+   "kind": "term",
+   "name": "Sampradāya",
+   "about": "A line of teachers through whom the truth comes down unchanged from the Lord; the Gauḍīyas belong to the line of Brahmā and Madhva.",
+   "aliases": [
+    "Guru-paramparā",
+    "Guru-varga",
+    "Sampradāya"
+   ],
+   "ru": [
+    "Сампрадай*",
+    "Гуру-парампар*"
+   ]
+  },
+  {
+   "id": "kartika",
+   "kind": "term",
+   "name": "Kārttika",
+   "about": "The autumn month of Lord Dāmodar (October–November), also called Ūrja, the best month for devotion.",
+   "aliases": [
+    "Kārttika"
+   ],
+   "ru": [
+    "Картик*"
+   ]
   }
  ]
 }

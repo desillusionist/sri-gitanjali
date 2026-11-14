@@ -52,6 +52,7 @@ function AdminContent() {
             <li>{t.helpPublish}</li>
           </ul>
           <p><Link href="/vaisnavas">{t.goToVaisnavas}</Link></p>
+          <p><Link href="/notes">{t.goToNotesReview}</Link></p>
           <button type="button" onClick={signOut}><LogOut size={15} aria-hidden="true" />{t.signOut}</button>
         </div>
       ) : (

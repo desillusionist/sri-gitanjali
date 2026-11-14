@@ -6,7 +6,8 @@
    "place": "Lugar sagrado",
    "realm": "Mundo espiritual",
    "other": "Personaje",
-   "book": "Libro sagrado"
+   "book": "Libro sagrado",
+   "term": "Término"
   },
   "page": "Leer más",
   "map": "Ver en Google Maps",
@@ -788,6 +789,42 @@
   },
   "guru-arati": {
    "about": "La canción de ārati de Śrīpād B.A. Paramahaṁsa Mahārāja en alabanza de Śrīla Bhakti Sundar Govinda Dev-Goswāmī Mahārāja."
+  },
+  "gaudiya": {
+   "about": "«De Gauḍa», la antigua Bengala: los vaiṣṇavas gauḍīyas son los seguidores de Śrī Chaitanya Mahāprabhu, que apareció allí."
+  },
+  "maya": {
+   "about": "La energía ilusoria del Señor, que hace que el alma olvide a Krishna y la ata a este mundo."
+  },
+  "pancha-tattva": {
+   "about": "Śrī Chaitanya Mahāprabhu en Sus cinco aspectos: Él mismo, Śrī Nityānanda Prabhu, Śrī Advaita Āchārya, Śrī Gadādhar Paṇḍit y Śrīvās Ṭhākur."
+  },
+  "rupanuga": {
+   "about": "Seguidor de Śrīla Rūpa Goswāmī, que sirve los deseos de Śrīmatī Rādhārāṇī bajo su guía; la línea de Śrī Chaitanya Sāraswat Maṭh."
+  },
+  "mahabhava": {
+   "about": "La etapa más alta del amor divino, que solo se halla en plenitud en Śrīmatī Rādhārāṇī, a quien se llama Mahābhāva misma."
+  },
+  "gayatri": {
+   "about": "La oración védica que se recibe en la iniciación y se canta al alba, al mediodía y al anochecer; el Śrīmad Bhāgavatam revela su sentido."
+  },
+  "ekadasi": {
+   "about": "El undécimo día de la luna creciente y de la menguante: día de ayuno de granos y de más canto, querido por el Señor Hari."
+  },
+  "harinam": {
+   "about": "El Santo Nombre del Señor, sobre todo el mahāmantra Hare Krishna, cantado a solas o en conjunto en saṅkīrtan."
+  },
+  "ratha-yatra": {
+   "about": "El festival de los carros del Señor Jagannāth en Purī, donde Mahāprabhu bailaba y cantaba ante el carro."
+  },
+  "rasa": {
+   "about": "La danza en círculo de Krishna con las gopīs en las noches de otoño de Vṛndāvan, la cumbre de Sus pasatiempos."
+  },
+  "sampradaya": {
+   "about": "Una línea de maestros por la que la verdad desciende del Señor sin cambios; los gauḍīyas pertenecen a la línea de Brahmā y Madhva."
+  },
+  "kartika": {
+   "about": "El mes otoñal del Señor Dāmodar (octubre–noviembre), también llamado Ūrja, el mejor mes para la devoción."
   }
  }
 }

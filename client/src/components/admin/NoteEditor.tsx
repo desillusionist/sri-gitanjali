@@ -7,7 +7,7 @@ import { HOLY_NAMES, type HolyNameEdit, type HolyNameKind, type HolyNameLocalEdi
 import { HOLY_NAME_LOCALES, loadHolyNameLocale } from "@/lib/holyNamesI18n";
 import { getDrafts, setLocalNoteEdit, setNoteEdit } from "@/lib/admin/drafts";
 
-const KINDS: HolyNameKind[] = ["person", "divine", "place", "realm", "other", "book"];
+const KINDS: HolyNameKind[] = ["person", "divine", "place", "realm", "other", "book", "term"];
 
 // Which note is open: its key ("id" or "id/variant"), "" for a new note, or null.
 let openKey: string | null = null;

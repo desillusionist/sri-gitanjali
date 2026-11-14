@@ -2,7 +2,7 @@
 import data from "@/data/holy-names.json";
 import edits from "@/data/holy-names-edits.json";
 
-export type HolyNameKind = "person" | "divine" | "place" | "realm" | "other" | "book";
+export type HolyNameKind = "person" | "divine" | "place" | "realm" | "other" | "book" | "term";
 
 export type HolyName = {
   id: string;
