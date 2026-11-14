@@ -1,13 +1,26 @@
 /** The admin's picture tools on an author's page: main portrait, circle, slideshow pictures and their captions. */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ClipboardEvent as ReactClipboardEvent } from "react";
 import { ArrowLeft, ArrowRight, Circle, ClipboardPaste, Crop, ImagePlus, Info, Star, Trash2 } from "lucide-react";
 import { FrameEditor } from "@/components/FrameEditor";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { storageUrl, type Author } from "@/lib/authors";
 import { addPictures, movePicture, removePicture, setCircle, setMainPortrait, setPictureInfo, type PictureInfo } from "@/lib/admin/drafts";
-import { readClipboardImages } from "@/lib/admin/images";
+import { fetchPictures, pictureUrlsIn, readClipboardImages } from "@/lib/admin/images";
 import { defaultFace, faceStyle, fullFrame, useAuthorFace, type Face } from "@/lib/portraitCrops";
+
+const IS_TOUCH = typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)").matches;
+
+/** Picture files in a paste, read at once (the browser empties the clipboard data after the event). */
+function fileItems(data: DataTransfer | null): File[] {
+  if (!data) return [];
+  const files = Array.from(data.files ?? []).filter((file) => file.type.startsWith("image/"));
+  if (files.length) return files;
+  return Array.from(data.items ?? [])
+    .filter((item) => item.kind === "file" && item.type.startsWith("image/"))
+    .map((item) => item.getAsFile())
+    .filter((file): file is File => file !== null);
+}
 
 type Editing =
   | { kind: "main"; src: string }
@@ -22,6 +35,8 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const pasteBox = useRef<HTMLDivElement>(null);
+  const [pasting, setPasting] = useState(false);
   const gallery = author.gallery ?? [];
   const slideCount = (author.portrait ? 1 : 0) + gallery.length;
 
@@ -42,10 +57,11 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
     setMessage(t.added.replace("{count}", String(added)));
   });
 
-  // A picture pasted anywhere on the page (⌘V, or Paste on a phone's text field) goes to the slideshow.
+  // A picture pasted anywhere on the page (⌘V) goes to the slideshow; the paste box handles its own.
   useEffect(() => {
     const onPaste = (event: ClipboardEvent) => {
-      const files = Array.from(event.clipboardData?.files ?? []).filter((file) => file.type.startsWith("image/"));
+      if (pasteBox.current?.contains(event.target as Node)) return;
+      const files = fileItems(event.clipboardData);
       if (!files.length) return;
       event.preventDefault();
       void add(files);
@@ -53,6 +69,47 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
     document.addEventListener("paste", onPaste);
     return () => document.removeEventListener("paste", onPaste);
   });
+
+  const openPasteBox = () => {
+    setPasting(true);
+    setMessage(null);
+    requestAnimationFrame(() => pasteBox.current?.focus());
+  };
+
+  // On a phone, Paste opens the box (an ordinary long-press Paste brings the picture, as in Notes);
+  // elsewhere the clipboard is read directly, falling back to the box.
+  const paste = () => {
+    if (IS_TOUCH) { openPasteBox(); return; }
+    void run(async () => {
+      const blobs = await readClipboardImages().catch(() => []);
+      if (blobs.length) await add(blobs);
+      else openPasteBox();
+    });
+  };
+
+  const onBoxPaste = (event: ReactClipboardEvent<HTMLDivElement>) => {
+    const files = fileItems(event.clipboardData);
+    if (files.length) {
+      event.preventDefault();
+      setPasting(false);
+      void add(files);
+      return;
+    }
+    // No file: let the paste land in the box, then look for a picture in what arrived.
+    const html = event.clipboardData.getData("text/html");
+    const text = `${event.clipboardData.getData("text/uri-list")}\n${event.clipboardData.getData("text/plain")}`;
+    window.setTimeout(() => {
+      const box = pasteBox.current;
+      const urls = [...Array.from(box?.querySelectorAll("img") ?? [], (image) => image.src), ...pictureUrlsIn(html, text)];
+      if (box) box.innerHTML = "";
+      void run(async () => {
+        const blobs = await fetchPictures(Array.from(new Set(urls)));
+        if (!blobs.length) throw new Error(t.noPicturePasted);
+        setPasting(false);
+        await add(blobs);
+      });
+    }, 60);
+  };
 
   const mainSrc = author.portraitLarge ?? author.portrait;
 
@@ -63,9 +120,27 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
         <div className="admin-pictures-add">
           <input ref={fileInput} type="file" accept="image/*" multiple hidden onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ""; if (files.length) void add(files); }} />
           <button type="button" disabled={busy} onClick={() => fileInput.current?.click()}><ImagePlus size={15} aria-hidden="true" />{t.addPhotos}</button>
-          <button type="button" disabled={busy} onClick={() => run(async () => add(await readClipboardImages()))}><ClipboardPaste size={15} aria-hidden="true" />{t.paste}</button>
+          <button type="button" disabled={busy} onClick={paste}><ClipboardPaste size={15} aria-hidden="true" />{t.paste}</button>
         </div>
       </header>
+
+      {pasting && (
+        <div className="admin-paste">
+          <div
+            ref={pasteBox}
+            className="admin-paste-box"
+            contentEditable
+            suppressContentEditableWarning
+            role="textbox"
+            aria-label={t.pasteBox}
+            inputMode="none"
+            onPaste={onBoxPaste}
+            onInput={(event) => { if (!event.currentTarget.querySelector("img")) event.currentTarget.textContent = ""; }}
+          />
+          <p>{t.pasteHint}</p>
+          <button type="button" onClick={() => setPasting(false)}>{copy.portraitCrops.cancel}</button>
+        </div>
+      )}
 
       <ul className="admin-pictures-list">
         {author.portrait && mainSrc && (

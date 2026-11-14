@@ -108,15 +108,46 @@ export async function preparePortrait(source: Blob | string, [x, y, width]: Face
   }
 }
 
-/** Pictures on the clipboard (from a copy in Photos or a browser), when the browser lets us read them. */
+/** Picture addresses in pasted HTML or text (a picture copied from a web page often comes this way). */
+export function pictureUrlsIn(html: string, text = ""): string[] {
+  const urls = Array.from(html.matchAll(/<img\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/gi), (match) => match[1].replace(/&amp;/g, "&"));
+  for (const line of text.split(/\s+/)) if (/^(https?:|data:image\/)/.test(line) && /(\.(jpe?g|png|webp|gif|heic|avif)(\?|#|$)|^data:image\/)/i.test(line)) urls.push(line);
+  return Array.from(new Set(urls));
+}
+
+/** Fetches pictures by address; ones another site does not let us read are skipped. */
+export async function fetchPictures(urls: string[]): Promise<Blob[]> {
+  const blobs: Blob[] = [];
+  for (const url of urls) {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      if (response.ok && blob.type.startsWith("image/")) blobs.push(blob);
+    } catch {
+      // Another site that does not allow reading its pictures.
+    }
+  }
+  return blobs;
+}
+
+/**
+ * Pictures on the clipboard, when the browser lets the page read it (desktop browsers do; iPhone
+ * Safari often hands over no picture here, so the paste box catches an ordinary paste instead).
+ * Returns an empty list when there is no picture to be had this way.
+ */
 export async function readClipboardImages(): Promise<Blob[]> {
-  if (!navigator.clipboard?.read) throw new Error("This browser cannot paste pictures here; use “Add photos” instead.");
+  if (!navigator.clipboard?.read) return [];
   const items = await navigator.clipboard.read();
   const blobs: Blob[] = [];
+  let html = "";
+  let text = "";
   for (const item of items) {
-    const type = item.types.find((candidate) => candidate.startsWith("image/"));
-    if (type) blobs.push(await item.getType(type));
+    const imageType = item.types.find((candidate) => candidate.startsWith("image/"));
+    if (imageType) { blobs.push(await item.getType(imageType)); continue; }
+    if (item.types.includes("text/html")) html += await (await item.getType("text/html")).text();
+    if (item.types.includes("text/uri-list")) text += `\n${await (await item.getType("text/uri-list")).text()}`;
+    if (item.types.includes("text/plain")) text += `\n${await (await item.getType("text/plain")).text()}`;
   }
-  if (!blobs.length) throw new Error("There is no picture on the clipboard.");
-  return blobs;
+  if (blobs.length) return blobs;
+  return fetchPictures(pictureUrlsIn(html, text));
 }
