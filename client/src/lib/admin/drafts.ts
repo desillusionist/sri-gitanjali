@@ -23,7 +23,12 @@ export type Drafts = {
   removeFiles: string[];
   /** Whether there are changes not yet published. */
   dirty: boolean;
+  /** When the changes were last published, in ms since 1970. */
+  publishedAt?: number;
 };
+
+/** After publishing, changes stay shown here until the rebuilt site carries them, but no longer than this. */
+const SHOW_PUBLISHED_FOR_MS = 15 * 60 * 1000;
 
 const EMPTY: Drafts = { authors: {}, notes: {}, localNotes: {}, removeFiles: [], dirty: false };
 const STORAGE_KEY = "kirtan-guide:admin-drafts";
@@ -130,6 +135,10 @@ function bundledPictures(author: Author): AuthorPictures {
  */
 export async function initDrafts() {
   if (typeof indexedDB === "undefined") return;
+  // Published long enough ago that the site carries it (or something newer): the site is right.
+  if (!drafts.dirty && (!drafts.publishedAt || Date.now() - drafts.publishedAt > SHOW_PUBLISHED_FOR_MS)) {
+    if (draftCount(drafts) || drafts.removeFiles.length) save(EMPTY);
+  }
   const authors = { ...drafts.authors };
   for (const [id, pictures] of Object.entries(authors)) {
     const author = findAuthorById(id);
@@ -326,5 +335,5 @@ export function discardDrafts() {
 }
 
 export function markPublished() {
-  save({ ...drafts, removeFiles: [], dirty: false });
+  save({ ...drafts, removeFiles: [], dirty: false, publishedAt: Date.now() });
 }
