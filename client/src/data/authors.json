@@ -915,6 +915,15 @@
         },
         {
           "src": "author-chaitanya-mahaprabhu-mwg5irzb-1.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-mwg7ygsq-1.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-mwg7yyyl-1.jpg"
+        },
+        {
+          "src": "author-chaitanya-mahaprabhu-mwg7zd9g-1.jpg"
         }
       ]
     },
@@ -1216,7 +1225,14 @@
         "With his brothers Govinda and Mādhava Ghoṣa he was a kīrtan singer in Mahāprabhu's party at Nabadwīp and Purī, and later accompanied Nityānanda Prabhu in Bengal.",
         "His Bengali songs on Gaurāṅga are among the earliest eyewitness poems of the Lord's life. His song in this book asks what would have become of us if Gaura had not come."
       ],
-      "sources": []
+      "sources": [],
+      "portrait": "author-vasudeva-ghosa-mwg7thwj.jpg",
+      "portraitLarge": "author-vasudeva-ghosa-mwg7thwj-large.jpg",
+      "face": [
+        53,
+        31.3,
+        26.4
+      ]
     },
     {
       "id": "madhavendra-puri",
@@ -1276,6 +1292,21 @@
       ],
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
+      ],
+      "portrait": "author-isvara-puri-mwg7xo7s.jpg",
+      "portraitLarge": "author-isvara-puri-mwg7xo7s-large.jpg",
+      "face": [
+        51.8,
+        24.3,
+        35.8
+      ],
+      "gallery": [
+        {
+          "src": "author-isvara-puri-mwg7v29z-1.jpg"
+        },
+        {
+          "src": "author-isvara-puri-mwg7v9oe-1.jpg"
+        }
       ]
     },
     {
@@ -1399,6 +1430,18 @@
       ],
       "songIds": [
         "sri-sri-sad-gosvami-astakam-083"
+      ],
+      "portrait": "author-raghunath-bhatta-goswami-mwg8377e.jpg",
+      "portraitLarge": "author-raghunath-bhatta-goswami-mwg8377e-large.jpg",
+      "face": [
+        74.4,
+        27.2,
+        40.9
+      ],
+      "gallery": [
+        {
+          "src": "author-raghunath-bhatta-goswami-mwg823dd-1.jpg"
+        }
       ]
     },
     {
@@ -1433,6 +1476,15 @@
           "caption": "Writing",
           "credit": "Gauḍīya History · ISKCON Desire Tree",
           "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jiva-Goswami-8.jpg"
+        },
+        {
+          "src": "author-jiva-goswami-mwg7ks8o-1.jpg"
+        },
+        {
+          "src": "author-jiva-goswami-mwg7m1wn-1.jpg"
+        },
+        {
+          "src": "author-jiva-goswami-mwg7mjg7-1.jpg"
         }
       ],
       "face": [
