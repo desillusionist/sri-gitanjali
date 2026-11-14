@@ -308,20 +308,21 @@
       "songIds": [
         "pranam-mantra-to-srila-swami-maharaja-023"
       ],
-      "portrait": "author-bhaktivedanta-swami-mwg5r2wn.jpg",
-      "portraitLarge": "author-bhaktivedanta-swami-mwg5r2wn-large.jpg",
+      "portrait": "author-bhaktivedanta-swami-mwg85jz4.jpg",
+      "portraitLarge": "author-bhaktivedanta-swami-mwg85jz4-large.jpg",
       "face": [
-        49,
-        21.4,
-        42.8
+        50.9,
+        52.6,
+        88
       ],
-      "circle": "circles/author-bhaktivedanta-swami-mwg5r2wn@49_21.4_42.8.webp",
-      "portraitInfo": {
-        "caption": "On a morning walk, Germany, 1974",
-        "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
-        "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_on_a_morning_walk_in_Germany_1974.jpg"
-      },
+      "circle": "circles/author-bhaktivedanta-swami-mwg85jz4@50.9_52.6_88.jpg",
       "gallery": [
+        {
+          "src": "author-bhaktivedanta-swami-mwg5r2wn-large.jpg",
+          "caption": "On a morning walk, Germany, 1974",
+          "credit": "Christian Jansen, CC BY 3.0 · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Prabhupada_on_a_morning_walk_in_Germany_1974.jpg"
+        },
         {
           "src": "author-bhaktivedanta-swami-large.webp",
           "caption": "Leading kīrtan, Germany, 1974",
@@ -354,9 +355,6 @@
         },
         {
           "src": "author-bhaktivedanta-swami-mwg6jjn1-1.jpg"
-        },
-        {
-          "src": "author-bhaktivedanta-swami-mwg6jyhi-1.jpg"
         },
         {
           "src": "author-bhaktivedanta-swami-mwg6kuba-1.jpg"
@@ -882,7 +880,7 @@
         62.1,
         84.5
       ],
-      "circle": "circles/author-chaitanya-mahaprabhu-mwg5e10n@51.8_62.1_84.5.webp",
+      "circle": "circles/author-chaitanya-mahaprabhu-mwg5e10n@51.8_62.1_84.5.jpg",
       "gallery": [
         {
           "src": "author-chaitanya-mahaprabhu-large.webp",
@@ -1256,7 +1254,7 @@
         31.3,
         26.4
       ],
-      "circle": "circles/author-vasudeva-ghosa-mwg7thwj@53_31.3_26.4.webp"
+      "circle": "circles/author-vasudeva-ghosa-mwg7thwj@53_31.3_26.4.jpg"
     },
     {
       "id": "madhavendra-puri",
@@ -1325,7 +1323,7 @@
         24.3,
         35.8
       ],
-      "circle": "circles/author-isvara-puri-mwg7xo7s@51.8_24.3_35.8.webp",
+      "circle": "circles/author-isvara-puri-mwg7xo7s@51.8_24.3_35.8.jpg",
       "gallery": [
         {
           "src": "author-isvara-puri-mwg7v29z-1.jpg"
@@ -1466,7 +1464,7 @@
         27.2,
         40.9
       ],
-      "circle": "circles/author-raghunath-bhatta-goswami-mwg8377e@74.4_27.2_40.9.webp",
+      "circle": "circles/author-raghunath-bhatta-goswami-mwg8377e@74.4_27.2_40.9.jpg",
       "gallery": [
         {
           "src": "author-raghunath-bhatta-goswami-mwg823dd-1.jpg"
@@ -1521,7 +1519,7 @@
         38.8,
         38
       ],
-      "circle": "circles/author-jiva-goswami@45_38.8_38.webp"
+      "circle": "circles/author-jiva-goswami@45_38.8_38.jpg"
     },
     {
       "id": "gopal-bhatta-goswami",
