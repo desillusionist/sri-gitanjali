@@ -157,6 +157,7 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
 
 // Singers whose SoundCloud accounts are named in the recording picker and the library filter.
 export const SOUNDCLOUD_SINGER_LIST: readonly { account: string; name: string }[] = [
+  { account: "kostya-netrebenko", name: "Śrīla Govinda Mahārāja" },
   { account: "huron", name: "Manasa Krishna" },
   { account: "bhakti-lalita-devi", name: "Bhakti Lalita Devi" },
 ];
