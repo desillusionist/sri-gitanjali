@@ -108,6 +108,21 @@ export async function preparePortrait(source: Blob | string, [x, y, width]: Face
   }
 }
 
+/** The small square picture for the round portrait, cut from the portrait as its face box frames it. */
+export async function prepareCircle(source: Blob | string, [x, y, diameter]: readonly number[], size: number): Promise<PreparedImage> {
+  const image = await decode(source);
+  try {
+    const unit = image.width / 100;
+    const side = Math.min(diameter * unit, image.width, image.height);
+    const sx = Math.min(Math.max(0, x * unit - side / 2), image.width - side);
+    const sy = Math.min(Math.max(0, y * unit - side / 2), image.height - side);
+    assertDrawn(image, sx, sy, side, side);
+    return await encode(draw(image, sx, sy, side, side, size, size));
+  } finally {
+    image.release();
+  }
+}
+
 /** Picture addresses in pasted HTML or text (a picture copied from a web page often comes this way). */
 export function pictureUrlsIn(html: string, text = ""): string[] {
   const urls = Array.from(html.matchAll(/<img\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/gi), (match) => match[1].replace(/&amp;/g, "&"));

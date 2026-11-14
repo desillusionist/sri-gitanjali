@@ -11,9 +11,11 @@ import { HOLY_NAME_EDITS, type HolyNameEdit, type HolyNameLocalEdit } from "@/li
 import { clearFaceOverrides, sameFace, setFaceOverride, type Face } from "@/lib/portraitCrops";
 import { preparePortrait, prepareGalleryImage, type PreparedImage } from "./images";
 
-/** The picture fields of an author that the admin tools change. */
-export type AuthorPictures = Pick<Author, "portrait" | "portraitLarge" | "face" | "portraitInfo" | "gallery">;
-const PICTURE_FIELDS = ["portrait", "portraitLarge", "face", "portraitInfo", "gallery"] as const;
+/** The fields of an author that the admin tools change: the pictures, and the texts. */
+export const TEXT_FIELDS = ["name", "role", "dates", "place", "summary", "bio", "sources"] as const;
+export type AuthorText = Pick<Author, (typeof TEXT_FIELDS)[number]>;
+export type AuthorPictures = Pick<Author, "portrait" | "portraitLarge" | "face" | "circle" | "portraitInfo" | "gallery"> & Partial<AuthorText>;
+export const PICTURE_FIELDS = ["portrait", "portraitLarge", "face", "circle", "portraitInfo", "gallery", ...TEXT_FIELDS] as const;
 
 export type Drafts = {
   authors: Record<string, AuthorPictures>;
@@ -25,6 +27,8 @@ export type Drafts = {
   dirty: boolean;
   /** When the changes were last published, in ms since 1970. */
   publishedAt?: number;
+  /** The commit they were published in. */
+  publishedSha?: string;
 };
 
 /** After publishing, changes stay shown here until the rebuilt site carries them, but no longer than this. */
@@ -123,6 +127,14 @@ function sameJson(a: unknown, b: unknown) {
   return JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 }
 
+/** Text fields left out (in changes kept before texts could be edited) mean "unchanged". */
+export const isTextField = (field: string) => (TEXT_FIELDS as readonly string[]).includes(field);
+
+function sameField(field: (typeof PICTURE_FIELDS)[number], pictures: AuthorPictures, author: Author) {
+  if (isTextField(field) && pictures[field] === undefined) return true;
+  return sameJson(pictures[field], author[field]);
+}
+
 function bundledPictures(author: Author): AuthorPictures {
   const out = {} as AuthorPictures;
   for (const field of PICTURE_FIELDS) if (author[field] !== undefined) (out as Record<string, unknown>)[field] = author[field];
@@ -142,7 +154,7 @@ export async function initDrafts() {
   const authors = { ...drafts.authors };
   for (const [id, pictures] of Object.entries(authors)) {
     const author = findAuthorById(id);
-    if (!author || PICTURE_FIELDS.every((field) => sameJson(pictures[field], author[field]))) delete authors[id];
+    if (!author || PICTURE_FIELDS.every((field) => sameField(field, pictures, author))) delete authors[id];
   }
   const notes = { ...drafts.notes };
   for (const [key, edit] of Object.entries(notes)) if (sameJson(edit, HOLY_NAME_EDITS.entries[key])) delete notes[key];
@@ -175,7 +187,7 @@ export function liveAuthor(author: Author, value: Drafts = drafts): Author {
   if (!pictures) return author;
   const merged = { ...author };
   for (const field of PICTURE_FIELDS) {
-    if (pictures[field] === undefined) delete merged[field];
+    if (pictures[field] === undefined) { if (!isTextField(field)) delete merged[field]; }
     else (merged as Record<string, unknown>)[field] = pictures[field];
   }
   return merged;
@@ -195,7 +207,7 @@ function current(author: Author): AuthorPictures {
 function setPictures(given: Author, pictures: AuthorPictures, removed: (string | undefined)[] = []) {
   const author = published(given);
   const authors = { ...drafts.authors, [author.id]: pictures };
-  if (PICTURE_FIELDS.every((field) => sameJson(pictures[field], author[field]))) delete authors[author.id];
+  if (PICTURE_FIELDS.every((field) => sameField(field, pictures, author))) delete authors[author.id];
   const removeFiles = new Set(drafts.removeFiles);
   const stillUsed = new Set(filesOf(pictures));
   for (const name of removed) {
@@ -290,6 +302,11 @@ export async function setMainPortrait(author: Author, src: string, frame: Face) 
   setPictures(author, next, [pictures.portrait, isReframe ? pictures.portraitLarge : undefined, isReframe ? undefined : src]);
 }
 
+/** The texts of an author's page: name, role, dates, place, summary, biography and sources. */
+export function setAuthorText(author: Author, text: AuthorText) {
+  setPictures(author, { ...current(author), ...text });
+}
+
 /** The circle: kept with the picture changes when the admin is signed in. */
 export function setCircle(given: Author, face: Face | null) {
   const author = published(given);
@@ -302,6 +319,71 @@ export function setCircle(given: Author, face: Face | null) {
     setPictures(author, { ...pictures, face });
   }
   setFaceOverride(author, null);
+}
+
+// --- Reviewing and undoing single changes ---
+
+/** What changed in an author's pictures, for the list shown before publishing. */
+export type AuthorChange = { main: boolean; circle: boolean; added: number; removed: number; captions: boolean; order: boolean; text: boolean };
+
+export function describeAuthorChange(before: Partial<AuthorPictures>, after: Partial<AuthorPictures>): AuthorChange {
+  const main = before.portrait !== after.portrait;
+  const beforeFiles = new Set(filesOf(before));
+  const afterFiles = new Set(filesOf(after));
+  const beforeGallery = (before.gallery ?? []).map((image) => image.src);
+  const afterGallery = (after.gallery ?? []).map((image) => image.src);
+  const added = afterGallery.filter((src) => !beforeFiles.has(src)).length;
+  // A slideshow picture made the main portrait leaves the slideshow: that is no removal.
+  const removed = Math.max(0, beforeGallery.filter((src) => !afterFiles.has(src)).length - (main && before.gallery?.length ? 1 : 0));
+  const common = afterGallery.filter((src) => beforeGallery.includes(src));
+  const info = (pictures: Partial<AuthorPictures>, src: string) => pictures.gallery?.find((image) => image.src === src);
+  return {
+    main,
+    circle: !main && !sameJson(before.face, after.face),
+    added,
+    removed,
+    captions: (!main && !sameJson(before.portraitInfo, after.portraitInfo)) || common.some((src) => !sameJson(info(before, src), info(after, src))),
+    order: !sameJson(common, beforeGallery.filter((src) => common.includes(src))),
+    text: TEXT_FIELDS.some((field) => after[field] !== undefined && !sameJson(before[field], after[field])),
+  };
+}
+
+/** The published pictures of an author, for comparing with the changes. */
+export function publishedPictures(id: string): AuthorPictures {
+  const author = findAuthorById(id);
+  return author ? bundledPictures(author) : {};
+}
+
+function settle(next: Drafts) {
+  save({ ...next, dirty: next.dirty && (draftCount(next) > 0 || next.removeFiles.length > 0) });
+}
+
+/** Takes back the unpublished picture changes of one author. */
+export function undoAuthor(id: string) {
+  const pictures = drafts.authors[id];
+  const author = findAuthorById(id);
+  if (author) setFaceOverride(author, null);
+  if (!pictures) return;
+  const authors = { ...drafts.authors };
+  delete authors[id];
+  const stillUsed = new Set(Object.values(authors).flatMap(filesOf));
+  for (const name of filesOf(pictures)) if (isDraftFile(name) && !stillUsed.has(name)) void dropFile(name);
+  const own = new Set(author ? filesOf(author) : []);
+  settle({ ...drafts, authors, removeFiles: drafts.removeFiles.filter((name) => !own.has(name)) });
+}
+
+export function undoNote(key: string) {
+  const notes = { ...drafts.notes };
+  delete notes[key];
+  settle({ ...drafts, notes });
+}
+
+export function undoLocalNote(language: string, key: string) {
+  const forLanguage = { ...drafts.localNotes[language] };
+  delete forLanguage[key];
+  const localNotes = { ...drafts.localNotes, [language]: forLanguage };
+  if (!Object.keys(forLanguage).length) delete localNotes[language];
+  settle({ ...drafts, localNotes });
 }
 
 // --- Notes ---
@@ -334,6 +416,6 @@ export function discardDrafts() {
   save(EMPTY);
 }
 
-export function markPublished() {
-  save({ ...drafts, removeFiles: [], dirty: false, publishedAt: Date.now() });
+export function markPublished(sha?: string) {
+  save({ ...drafts, removeFiles: [], dirty: false, publishedAt: Date.now(), publishedSha: sha });
 }

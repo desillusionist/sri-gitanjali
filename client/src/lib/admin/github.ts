@@ -66,3 +66,10 @@ export async function commitChanges(message: string, changes: RepoChange[]): Pro
   }
   return commit.sha;
 }
+
+/** Whether `head` is `base` or comes after it on the branch (so it carries base's changes). */
+export async function includesCommit(head: string, base: string): Promise<boolean> {
+  if (head === base) return true;
+  const comparison = await github<{ status: string }>(repoPath(`/compare/${base}...${head}`));
+  return comparison.status === "ahead" || comparison.status === "identical";
+}

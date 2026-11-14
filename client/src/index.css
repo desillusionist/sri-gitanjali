@@ -1024,3 +1024,19 @@ html.has-player-dock [data-sonner-toaster] { bottom: 6.5rem !important; }
 .author-card-actions a, .holy-name-popup-links a { display: inline-flex; gap: 0.28rem; align-items: center; color: var(--saffron-deep); text-decoration: none; }
 .author-card-actions a.author-card-library { color: var(--ink-soft); font-weight: 600; }
 .author-card-actions a:hover, .holy-name-popup-links a:hover { text-decoration: underline; text-underline-offset: 0.2rem; }
+
+/* The changes waiting to be published, before Publish. */
+.admin-bar button.admin-bar-status.is-link { min-width: 0; padding: 0 0.6rem; border-color: transparent; color: var(--saffron-deep); text-decoration: underline; text-underline-offset: 3px; }
+.admin-review { justify-items: stretch; width: min(32rem, 100%); max-height: calc(100dvh - 2rem); overflow: auto; }
+.admin-review-list { display: grid; gap: 0.2rem; width: 100%; margin: 0; padding: 0; list-style: none; }
+.admin-review-list li { display: flex; align-items: center; gap: 0.8rem; padding: 0.55rem 0; border-bottom: 1px solid var(--hairline); }
+.admin-review-list li > span { display: grid; flex: 1; min-width: 0; gap: 0.1rem; }
+.admin-review-list a, .admin-review-list strong { color: var(--ink); font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; text-decoration: none; }
+.admin-review-list small { color: var(--ink-soft); font-size: 0.78rem; }
+.admin-review-list button { display: inline-flex; flex: none; align-items: center; gap: 0.3rem; min-height: 2.1rem; padding: 0 0.75rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink); background: transparent; font: inherit; font-size: 0.76rem; font-weight: 600; cursor: pointer; }
+.admin-review-list button:disabled { opacity: 0.45; }
+.admin-bar-link { display: inline-grid; flex: none; place-items: center; width: 2.2rem; height: 2.2rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink); }
+.admin-text-editor.crop-editor-panel { width: min(40rem, 100%); }
+.admin-text-editor textarea { width: 100%; padding: 0.5rem 0.6rem; border: 1px solid var(--hairline); border-radius: 0.5rem; color: var(--ink); background: var(--paper-cream); font: inherit; font-size: 0.9rem; font-weight: 400; line-height: 1.45; resize: vertical; }
+.admin-text-editor small { color: var(--ink-soft); font-weight: 400; }
+.admin-pictures-add { flex-wrap: wrap; justify-content: flex-end; }

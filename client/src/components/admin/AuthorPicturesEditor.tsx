@@ -1,8 +1,9 @@
 /** The admin's picture tools on an author's page: main portrait, circle, slideshow pictures and their captions. */
 
 import { useEffect, useRef, useState, type ClipboardEvent as ReactClipboardEvent, type DragEvent as ReactDragEvent } from "react";
-import { ArrowLeft, ArrowRight, Circle, Crop, ImagePlus, Info, Star, Trash2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Circle, Crop, ImagePlus, Info, Pencil, Star, Trash2, X } from "lucide-react";
 import { FrameEditor } from "@/components/FrameEditor";
+import { AuthorTextEditor } from "./AuthorTextEditor";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { storageUrl, type Author } from "@/lib/authors";
 import { addPictures, movePicture, removePicture, setCircle, setMainPortrait, setPictureInfo, type PictureInfo } from "@/lib/admin/drafts";
@@ -25,7 +26,8 @@ function fileItems(data: DataTransfer | null): File[] {
 type Editing =
   | { kind: "main"; src: string }
   | { kind: "circle" }
-  | { kind: "info"; src: string; info: PictureInfo };
+  | { kind: "info"; src: string; info: PictureInfo }
+  | { kind: "text" };
 
 export function AuthorPicturesEditor({ author }: { author: Author }) {
   const { copy } = useTranslation();
@@ -113,6 +115,7 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
         <span className="eyebrow">{t.picturesTitle}</span>
         <div className="admin-pictures-add">
           <input ref={fileInput} type="file" accept="image/*" multiple hidden onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ""; if (files.length) void add(files); }} />
+          <button type="button" disabled={busy} onClick={() => setEditing({ kind: "text" })}><Pencil size={15} aria-hidden="true" />{t.editText}</button>
           <button type="button" disabled={busy} onClick={() => fileInput.current?.click()}><ImagePlus size={15} aria-hidden="true" />{t.addPhotos}</button>
         </div>
       </header>
@@ -185,6 +188,8 @@ export function AuthorPicturesEditor({ author }: { author: Author }) {
         </form>
         </div>
       )}
+
+      {editing?.kind === "text" && <AuthorTextEditor author={author} onClose={() => setEditing(null)} />}
 
       {editing?.kind === "circle" && author.portrait && (
         <FrameEditor

@@ -30,6 +30,8 @@ export type Author = {
   portraitLarge?: string;
   /** Face box for round crops: centre x, centre y and diameter, each in % of the image width. */
   face?: [number, number, number];
+  /** The circle cut out ahead of time: a small square picture, named after the portrait and face box it shows. */
+  circle?: string;
   /** Caption, credit and source of the portrait itself, when it comes from an outside source. */
   portraitInfo?: Omit<AuthorImage, "src">;
   /** More pictures for the slideshow in the enlarged view, after the portrait (at most ten in all). */
@@ -73,6 +75,24 @@ export function registerDraftImage(file: string, url: string | null) {
 /** The address of a picture file: the site's copy, or this device's copy while it waits to be published. */
 export function storageUrl(file: string): string {
   return draftImages.get(file) ?? STORAGE_URL + file;
+}
+
+/** Face box when an author has none: the picture fills the circle, held 15% from the top (3:4 portrait). */
+export const DEFAULT_FACE: [number, number, number] = [50, 55, 100];
+/** The width and height of a circle picture: sharp at three times the largest circle shown (4.6rem). */
+export const CIRCLE_SIZE = 240;
+
+const round1 = (value: number) => Math.round(value * 10) / 10;
+
+/** The name, without extension, of the circle picture for a portrait and face box. */
+export function circleStem(portrait: string, face: readonly number[] = DEFAULT_FACE): string {
+  return `circles/${portrait.replace(/\.\w+$/, "")}@${face.map((value) => String(round1(value))).join("_")}`;
+}
+
+/** The circle picture, only when it was cut from this very portrait and face box (else it is out of date). */
+export function authorCircleUrl(author: Author, face: readonly number[] | undefined): string | undefined {
+  if (!author.portrait || !author.circle) return undefined;
+  return author.circle.replace(/\.\w+$/, "") === circleStem(author.portrait, face ?? DEFAULT_FACE) ? storageUrl(author.circle) : undefined;
 }
 
 export function authorPortraitUrl(author: Author): string | undefined {

@@ -77,6 +77,8 @@ self.addEventListener("fetch", (event) => {
   if (!url.pathname.startsWith(BASE)) return;
   const path = url.pathname.slice(BASE.length - 1);
   if (path.startsWith("/src/") || path.startsWith("/@") || path.startsWith("/node_modules/") || path.startsWith("/api/")) return;
+  // Which commit the site was built from: always asked of the network (the admin tools wait for it).
+  if (path === "/version.txt") return;
 
   if (event.request.mode === "navigate") {
     event.respondWith(
