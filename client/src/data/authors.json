@@ -682,8 +682,8 @@
       ],
       "sources": [],
       "group": "goswamis",
-      "portrait": "author-krsnadas-kaviraj-goswami-mwg36o8n.jpg",
-      "portraitLarge": "author-krsnadas-kaviraj-goswami-mwg36o8n-large.jpg",
+      "portrait": "author-krsnadas-kaviraj-goswami-main.webp",
+      "portraitLarge": "author-krsnadas-kaviraj-goswami-main-large.webp",
       "portraitInfo": {
         "caption": "Drawing",
         "credit": "Gauḍīya History · ISKCON Desire Tree",
@@ -696,6 +696,11 @@
           "credit": "Gauḍīya History · ISKCON Desire Tree",
           "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Krishnadasa-Kaviraja-Goswami.jpg"
         }
+      ],
+      "face": [
+        70,
+        24,
+        32
       ]
     },
     {
