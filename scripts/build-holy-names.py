@@ -359,6 +359,8 @@ E += [
      ["Mādhurya-kādambinī"], ["Мадхурья-кадамбин*"], None, None),
     ("prema-bhakti-chandrika", B, "Prema-bhakti-chandrikā", "Śrīla Narottam Dās Ṭhākur’s songs on the path of loving devotion.",
      ["Prema-bhakti-chandrikā"], ["Према-бхакти-чандрик*"], None, None),
+    ("prarthana", B, "Prārthanā", "Śrīla Narottam Dās Ṭhākur’s songs of prayer and longing, sung every day in Gauḍīya kīrtan.",
+     ["Prārthanā"], ["Прартхан*"], None, None),
     ("vilapa-kusumanjali", B, "Vilāpa-kusumāñjali", "Śrīla Raghunāth Dās Goswāmī’s prayers to Śrīmatī Rādhārāṇī in separation.",
      ["Vilāpa-kusumāñjali"], ["Вилапа-кусуманджал*"], None, None),
     ("govardhana-dasakam", B, "Govardhana-vāsa-prārthanā-daśakam", "Śrīla Raghunāth Dās Goswāmī’s ten verses praying to live at Govardhan.",

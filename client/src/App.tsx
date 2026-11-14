@@ -13,6 +13,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 import SongPage from "./pages/SongPage";
 import AuthorPage from "./pages/AuthorPage";
+import BookPage from "./pages/BookPage";
 import VaisnavasPage from "./pages/VaisnavasPage";
 import PortraitCropsPage from "./pages/PortraitCropsPage";
 import AdminPage from "./pages/AdminPage";
@@ -47,6 +48,7 @@ function Router() {
       <Route path="/playlist" component={PlaylistPage} />
       <Route path="/song/:id" component={SongPage} />
       <Route path="/author/:id" component={AuthorPage} />
+      <Route path="/book/:id" component={BookPage} />
       <Route path="/vaisnavas" component={VaisnavasPage} />
       <Route path="/portraits" component={PortraitCropsPage} />
       <Route path="/admin" component={AdminPage} />

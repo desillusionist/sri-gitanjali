@@ -3254,6 +3254,18 @@
    ]
   },
   {
+   "id": "prarthana",
+   "kind": "book",
+   "name": "Prārthanā",
+   "about": "Śrīla Narottam Dās Ṭhākur’s songs of prayer and longing, sung every day in Gauḍīya kīrtan.",
+   "aliases": [
+    "Prārthanā"
+   ],
+   "ru": [
+    "Прартхан*"
+   ]
+  },
+  {
    "id": "vilapa-kusumanjali",
    "kind": "book",
    "name": "Vilāpa-kusumāñjali",

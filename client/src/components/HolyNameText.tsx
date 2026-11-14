@@ -9,6 +9,7 @@ import { authorHref, findAuthorById } from "@/lib/authors";
 import { getHolyNameSegments, holyNameMapsUrl, type HolyName, type HolyNameVariant } from "@/lib/holyNames";
 import { holyNameNoteKey, useHolyNameLocale, type HolyNameLocale } from "@/lib/holyNamesI18n";
 import { placeFootnotes, type Footnote } from "@/lib/footnotes";
+import { bookSongIds } from "@/lib/songBooks";
 
 function HolyNameTrigger({ entry, variant, locale, lang, children }: { entry: HolyName; variant?: HolyNameVariant; locale: HolyNameLocale | null; lang?: string; children: ReactNode }) {
   const { copy } = useTranslation();
@@ -17,6 +18,7 @@ function HolyNameTrigger({ entry, variant, locale, lang, children }: { entry: Ho
   const note = locale?.entries[holyNameNoteKey(entry.id, variant?.key)];
   const name = note?.name ?? variant?.name ?? entry.name;
   const isAdmin = useIsAdmin();
+  const songCount = entry.kind === "book" ? bookSongIds(entry.id).length : 0;
   return (
     <LongPressTooltip
       className={`holy-name-trigger is-${entry.kind}`}
@@ -35,9 +37,10 @@ function HolyNameTrigger({ entry, variant, locale, lang, children }: { entry: Ho
               <Pencil size={13} aria-hidden="true" />{copy.admin.editNote}
             </button>
           )}
-          {(author || mapsUrl) && (
+          {(author || mapsUrl || songCount > 0) && (
             <span className="holy-name-popup-links">
               {author && <Link href={authorHref(author)}>{locale?.ui.page ?? copy.song.holyNamePage} →</Link>}
+              {songCount > 0 && <Link href={`/book/${entry.id}`}>{(locale?.ui.songs ?? copy.song.holyNameSongs).replace("{count}", String(songCount))} →</Link>}
               {mapsUrl && <a href={mapsUrl} target="_blank" rel="noreferrer"><MapPin size={13} aria-hidden="true" />{locale?.ui.map ?? copy.song.holyNameMap}<ExternalLink size={11} aria-hidden="true" /></a>}
             </span>
           )}

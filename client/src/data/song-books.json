@@ -1,0 +1,330 @@
+{
+  "_note": "Which book each song comes from (`from`), which songs are themselves a book or poem with a note of its own (`is`), and which are songs on a work (`about`). Keys are the notes' ids in holy-names.json. Checked against the song pages on kksongs.org (Book Name) and the songs' own comments; songs whose source is not known are left out. Edit this file directly.",
+  "from": {
+    "vandana-001": [
+      "chaitanya-charitamrta"
+    ],
+    "pancha-tattvatmakam-krsnam-014": [
+      "chaitanya-charitamrta"
+    ],
+    "namo-maha-vadanyaya-015": [
+      "chaitanya-charitamrta"
+    ],
+    "prayers-to-the-vaisnavas-022": [
+      "vaisnava-vandana"
+    ],
+    "prabhati-giti-034": [
+      "kalyana-kalpataru"
+    ],
+    "sri-nam-kirtan-035": [
+      "gitavali"
+    ],
+    "gurudeva-037": [
+      "saranagati"
+    ],
+    "arunodoya-kirtan-1-038": [
+      "gitavali"
+    ],
+    "arunodoya-kirtan-2-039": [
+      "gitavali"
+    ],
+    "auspicious-invocation-to-saranagati-041": [
+      "saranagati"
+    ],
+    "bhajan-giti-042": [
+      "gitavali"
+    ],
+    "vibhavari-sesa-043": [
+      "kalyana-kalpataru"
+    ],
+    "thakura-vaisnava-gana-044": [
+      "prarthana"
+    ],
+    "sri-bhog-arati-giti-046": [
+      "gitavali"
+    ],
+    "sri-prasada-sevaya-giti-048": [
+      "gitavali"
+    ],
+    "sri-gaura-arati-049": [
+      "gitavali"
+    ],
+    "dainya-prarthana-giti-051": [
+      "kalyana-kalpataru"
+    ],
+    "sri-guru-vaisnava-mahatmya-giti-053": [
+      "prema-bhakti-chandrika"
+    ],
+    "savarana-sri-gaura-pada-padme-prarthana-054": [
+      "prarthana"
+    ],
+    "sri-vaisnava-mahima-giti-055": [
+      "saranagati"
+    ],
+    "ajna-tahal-058": [
+      "gitavali"
+    ],
+    "manah-siksa-059": [
+      "prarthana"
+    ],
+    "nitai-gunamani-amara-061": [
+      "chaitanya-mangala"
+    ],
+    "akrodha-paramananda-062": [
+      "chaitanya-mangala"
+    ],
+    "dayal-nitai-chaitanya-064": [
+      "gitavali"
+    ],
+    "savarana-sri-gaura-mahima-065": [
+      "prarthana"
+    ],
+    "gaura-pahu-066": [
+      "prarthana"
+    ],
+    "sri-nama-068": [
+      "gitavali"
+    ],
+    "siddhi-lalasa-069": [
+      "gita-mala"
+    ],
+    "gauranga-bolite-habe-075": [
+      "prarthana"
+    ],
+    "thakura-vaisnava-pada-078": [
+      "prarthana"
+    ],
+    "viraha-giti-079": [
+      "prarthana"
+    ],
+    "prarthana-lalasamayi-081": [
+      "kalyana-kalpataru"
+    ],
+    "sri-namastakam-8-082": [
+      "gitavali"
+    ],
+    "sri-namastakam-7-084": [
+      "gitavali"
+    ],
+    "ki-rupe-paibo-seva-085": [
+      "prarthana"
+    ],
+    "manasa-deho-geho-087": [
+      "saranagati"
+    ],
+    "dainyatmika-090": [
+      "saranagati"
+    ],
+    "goptrtve-varana-091": [
+      "saranagati"
+    ],
+    "dainya-092": [
+      "saranagati"
+    ],
+    "bhajan-lalasa-093": [
+      "saranagati"
+    ],
+    "ista-deve-vijnapti-094": [
+      "prarthana"
+    ],
+    "atma-nivedana-095": [
+      "saranagati"
+    ],
+    "amara-jivana-096": [
+      "saranagati"
+    ],
+    "tumi-sarvesvaresvara-097": [
+      "saranagati"
+    ],
+    "sarvasva-tomara-098": [
+      "saranagati"
+    ],
+    "atma-samarpane-101": [
+      "saranagati"
+    ],
+    "nivedana-1-103": [
+      "kalyana-kalpataru"
+    ],
+    "nivedana-2-104": [
+      "kalyana-kalpataru"
+    ],
+    "nivedana-3-105": [
+      "kalyana-kalpataru"
+    ],
+    "sri-rupa-manjari-pada-106": [
+      "prarthana"
+    ],
+    "durlabha-manava-janma-107": [
+      "kalyana-kalpataru"
+    ],
+    "anya-abhilasa-chadi-108": [
+      "prema-bhakti-chandrika"
+    ],
+    "sri-siksastakam-109": [
+      "chaitanya-charitamrta"
+    ],
+    "sri-siksastakam-1-110": [
+      "gitavali"
+    ],
+    "sri-siksastakam-2-111": [
+      "gitavali"
+    ],
+    "sri-siksastakam-3-112": [
+      "gitavali"
+    ],
+    "sri-siksastakam-4-113": [
+      "gitavali"
+    ],
+    "sri-siksastakam-5-114": [
+      "gitavali"
+    ],
+    "sri-siksastakam-6-115": [
+      "gitavali"
+    ],
+    "sri-siksastakam-7a-116": [
+      "gitavali"
+    ],
+    "sri-siksastakam-7b-117": [
+      "gitavali"
+    ],
+    "sri-siksastakam-7c-118": [
+      "gitavali"
+    ],
+    "sri-siksastakam-8a-119": [
+      "gitavali"
+    ],
+    "sri-siksastakam-8b-120": [
+      "gitavali"
+    ],
+    "sri-radhastaka-1-121": [
+      "gitavali"
+    ],
+    "sri-radhastaka-2-122": [
+      "gitavali"
+    ],
+    "sri-radhastaka-8-123": [
+      "gitavali"
+    ],
+    "radha-kundatata-kunja-kutira-124": [
+      "saranagati"
+    ],
+    "sri-radhika-stava-125": [
+      "stava-mala"
+    ],
+    "jaya-radha-madhava-127": [
+      "gitavali"
+    ],
+    "sakhi-vrnde-vijnaptih-130": [
+      "prarthana"
+    ],
+    "rupa-kirtan-132": [
+      "kalyana-kalpataru"
+    ],
+    "guna-kirtan-133": [
+      "kalyana-kalpataru"
+    ],
+    "jaya-yasoda-nandana-krsna-134": [
+      "gitavali"
+    ],
+    "srita-kamala-135": [
+      "gita-govinda"
+    ],
+    "sri-dasavatar-stotram-140": [
+      "gita-govinda"
+    ],
+    "sri-sri-damodarastakam-142": [
+      "padma-purana"
+    ],
+    "sriman-mahaprabhur-sata-nama-143": [
+      "gitavali"
+    ],
+    "sri-krsnera-vimsottara-sata-nama-144": [
+      "gitavali"
+    ],
+    "suddha-bhakata-146": [
+      "saranagati"
+    ],
+    "sri-gaura-purnima-147": [
+      "chaitanya-charitamrta"
+    ],
+    "prabhu-kohe-148": [
+      "chaitanya-bhagavata"
+    ],
+    "sri-nagara-kirtana-4-150": [
+      "gitavali"
+    ],
+    "sri-nagara-kirtana-8-151": [
+      "gitavali"
+    ],
+    "sri-govinda-kunda-mahatmya-160": [
+      "garga-samhita"
+    ]
+  },
+  "is": {
+    "sri-sri-govardhana-vasa-prarthana-dasakam-028": [
+      "govardhana-dasakam"
+    ],
+    "sri-guru-arati-032": [
+      "guru-arati"
+    ],
+    "sri-sri-premadhama-deva-stotram-057": [
+      "premadhama-deva-stotram"
+    ],
+    "sri-sri-sad-gosvami-astakam-083": [
+      "sad-gosvamy-astakam"
+    ],
+    "sri-rupa-manjari-pada-106": [
+      "rupa-manjari-pada"
+    ],
+    "sri-siksastakam-109": [
+      "siksastakam"
+    ],
+    "acharya-charana-vandana-136": [
+      "acharya-charana-vandana"
+    ],
+    "acharya-vandana-139": [
+      "acharya-vandana"
+    ],
+    "sri-sri-damodarastakam-142": [
+      "damodarastakam"
+    ],
+    "srimad-bhakti-vinod-viraha-dasakam-152": [
+      "bhaktivinoda-viraha-dasakam"
+    ]
+  },
+  "about": {
+    "sri-siksastakam-1-110": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-2-111": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-3-112": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-4-113": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-5-114": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-6-115": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-7a-116": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-7b-117": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-7c-118": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-8a-119": [
+      "siksastakam"
+    ],
+    "sri-siksastakam-8b-120": [
+      "siksastakam"
+    ]
+  }
+}

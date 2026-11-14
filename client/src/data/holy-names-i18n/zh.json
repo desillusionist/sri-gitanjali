@@ -9,7 +9,8 @@
    "book": "圣典"
   },
   "page": "了解更多",
-  "map": "在 Google 地图中查看"
+  "map": "在 Google 地图中查看",
+  "songs": "歌曲（{count}）"
  },
  "ignore": [
   "哈瑞奎师那",
@@ -1045,6 +1046,11 @@
    "name": "爱的奉献之月光",
    "aliases": [],
    "about": "圣纳罗塔姆·达斯·塔库尔关于爱的奉献之路的歌曲。"
+  },
+  "prarthana": {
+   "name": "祈祷之歌",
+   "aliases": [],
+   "about": "圣纳罗塔姆·达斯·塔库尔祈祷与渴慕的歌曲，每天在高迪亚吉尔坦中颂唱。"
   },
   "vilapa-kusumanjali": {
    "name": "哀歌花束",

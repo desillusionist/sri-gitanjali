@@ -9,7 +9,8 @@
    "book": "Svētā grāmata"
   },
   "page": "Lasīt vairāk",
-  "map": "Skatīt Google Maps"
+  "map": "Skatīt Google Maps",
+  "songs": "Dziesmas ({count})"
  },
  "entries": {
   "krishna": {
@@ -980,6 +981,10 @@
   "prema-bhakti-chandrika": {
    "name": "Prēma-bhakti-čandrikā",
    "about": "Šrīlas Narotamas Dāsa Thākura dziesmas par mīlestībpilnas kalpošanas ceļu."
+  },
+  "prarthana": {
+   "name": "Prārthanā",
+   "about": "Šrīlas Narotamas Dāsa Thākura lūgšanu un ilgu dziesmas, ko gaudīju kīrtanā dzied katru dienu."
   },
   "vilapa-kusumanjali": {
    "name": "Vilāpa-kusumāndžali",

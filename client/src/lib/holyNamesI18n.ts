@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { HOLY_NAME_EDITS, type HolyNameKind, type HolyNameLocalEdit } from "@/lib/holyNames";
 
 export type HolyNameLocale = {
-  ui: { kinds: Record<HolyNameKind, string>; page: string; map: string };
+  ui: { kinds: Record<HolyNameKind, string>; page: string; map: string; songs?: string };
   /**
    * Per entry id (or "id/variant" for another name): the translated note, and the name where the
    * language spells it differently. A translation in the language finds the entry by that name, or

@@ -33,6 +33,8 @@ import { findAuthorByPoet } from "@/lib/authors";
 import { getSongLanguage, SONG_LANGUAGES } from "@/lib/songLanguages";
 import { toast } from "sonner";
 import { usePageMeta } from "@/lib/pageMeta";
+import { HOLY_NAMES } from "@/lib/holyNames";
+import { songBook } from "@/lib/songBooks";
 import { buildSongShareText, parseSongShareParams, songShareParams } from "@/lib/songShare";
 
 const READING_FONT_SIZE_ADJUSTMENTS = [-0.18, -0.09, 0, 0.12, 0.24] as const;
@@ -937,6 +939,8 @@ function SongPageContent() {
   const authorBio = findAuthorByPoet(author);
   const songLanguage = getSongLanguage(song.id);
   const songLanguageInfo = songLanguage ? SONG_LANGUAGES[songLanguage] : undefined;
+  const bookId = songBook(song.id);
+  const book = bookId ? HOLY_NAMES.find((entry) => entry.id === bookId) : undefined;
   // Verses are Bengali or Sanskrit in Latin letters: tagged so, and kept out of machine translation.
   const verseLang = songLanguageInfo ? `${songLanguageInfo.lang}-Latn` : undefined;
   const toggleSongFavorite = () => {
@@ -1332,6 +1336,7 @@ function SongPageContent() {
             <h1 lang={verseLang} translate="no"><SongMatchText value={song.title} query={query} fieldId="title" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></h1>
             <div className="song-meta">
               <p className="song-poet">{authorBio && authorFilterHref ? <AuthorChip author={authorBio} libraryHref={authorFilterHref} label={<SongMatchText value={author!} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />} /> : author && authorFilterHref ? <Link className="song-poet-link" href={authorFilterHref} aria-label={copy.song.filterByAuthor.replace("{author}", author)}><SongMatchText value={author} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} /></Link> : <SongMatchText value={copy.library.noAuthor} query={query} fieldId="author" matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} />}</p>
+              {book && <p className="song-book"><Link href={`/book/${book.id}`}>{copy.book.fromBook.replace("{book}", book.name)}</Link></p>}
             </div>
           </div>
         </div>

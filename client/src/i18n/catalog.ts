@@ -280,6 +280,7 @@ export const translations = {
       holyNameKinds: { person: "Vaiṣṇava", divine: "The Lord and His own", place: "Holy place", realm: "Spiritual world", other: "Personality", book: "Sacred book" },
       holyNamePage: "Read more",
       holyNameMap: "Show on Google Maps",
+      holyNameSongs: "Songs ({count})",
       holyNameLabel: "About {name}",
       wordForWordSourceReference: "Vedabase synonyms",
       wordForWordSourceEditorial: "Editorial gloss",
@@ -457,6 +458,11 @@ export const translations = {
       notFoundTitle: "No page for this author yet",
       notFoundDetail: "Author pages are being written one by one.",
       backToLibrary: "Back to the library",
+    },
+    book: {
+      songsTitle: "In this songbook",
+      notFound: "No such book here",
+      fromBook: "From {book}",
     },
   },
 } as const;

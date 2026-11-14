@@ -9,7 +9,8 @@
    "book": "Livro sagrado"
   },
   "page": "Ler mais",
-  "map": "Ver no Google Maps"
+  "map": "Ver no Google Maps",
+  "songs": "Canções ({count})"
  },
  "entries": {
   "krishna": {
@@ -709,6 +710,9 @@
   },
   "prema-bhakti-chandrika": {
    "about": "As canções de Śrīla Narottam Dās Ṭhākur sobre o caminho da devoção amorosa."
+  },
+  "prarthana": {
+   "about": "As canções de oração e anseio de Śrīla Narottam Dās Ṭhākur, cantadas todos os dias no kīrtan gauḍīya."
   },
   "vilapa-kusumanjali": {
    "about": "As orações em separação de Śrīla Raghunāth Dās Goswāmī a Śrīmatī Rādhārāṇī."
