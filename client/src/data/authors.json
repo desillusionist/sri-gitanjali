@@ -1555,18 +1555,21 @@
         "Bhakti Vinod Ṭhākur's Nāmāṣṭaka in this book describes how the Holy Name descends when Nārada plays his vīṇā."
       ],
       "sources": [],
-      "portrait": "author-narada-muni.webp",
-      "portraitLarge": "author-narada-muni-large.webp",
+      "portrait": "author-narada-muni-mwg4ecdu.jpg",
+      "portraitLarge": "author-narada-muni-mwg4ecdu-large.jpg",
       "face": [
-        44.7,
-        32.4,
-        21
+        52.6,
+        49.2,
+        47
       ],
-      "portraitInfo": {
-        "caption": "From The Modern Review, 1908",
-        "credit": "Public domain · Ramananda Chatterjee · Wikimedia Commons",
-        "source": "https://commons.wikimedia.org/wiki/File:The_Sage_Narada_in_The_Modern_Review_Vol_3_(January_to_June_1908)_(page_349_crop).jpg"
-      }
+      "gallery": [
+        {
+          "src": "author-narada-muni-large.webp",
+          "caption": "From The Modern Review, 1908",
+          "credit": "Public domain · Ramananda Chatterjee · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:The_Sage_Narada_in_The_Modern_Review_Vol_3_(January_to_June_1908)_(page_349_crop).jpg"
+        }
+      ]
     },
     {
       "id": "satyavrat-muni",
