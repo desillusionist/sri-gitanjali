@@ -1,8 +1,10 @@
 import { authorInitials, authorPortraitUrl, type Author } from "@/lib/authors";
 import { faceStyle, useAuthorFace } from "@/lib/portraitCrops";
+import { useLiveAuthor } from "@/lib/admin/drafts";
 
 /** A round (or tall) portrait, or the author's initials when there is no picture yet. */
-export function AuthorPortrait({ author, variant = "round" }: { author: Author; variant?: "round" | "tall" }) {
+export function AuthorPortrait({ author: published, variant = "round" }: { author: Author; variant?: "round" | "tall" }) {
+  const author = useLiveAuthor(published);
   const url = authorPortraitUrl(author);
   const face = useAuthorFace(author);
   return (

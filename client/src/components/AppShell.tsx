@@ -8,6 +8,7 @@ import { useTranslation } from "@/i18n/LanguageContext";
 import { BookOpenText, Bookmark, ChevronDown, LibraryBig, ListMusic, Palette, Search, Users } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { THEMES, setTheme, useTheme, type Theme } from "@/lib/theme";
+import { AdminBar } from "@/components/admin/AdminBar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link, useLocation } from "wouter";
 import { useState, type MouseEvent, type ReactNode } from "react";
@@ -107,6 +108,7 @@ export function AppShell({ children }: AppShellProps) {
       </header>
 
       <main className="app-main">{children}</main>
+      <AdminBar />
     </div>
   );
 }

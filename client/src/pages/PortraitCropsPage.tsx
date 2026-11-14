@@ -8,6 +8,8 @@ import { AuthorPortrait } from "@/components/AuthorPortrait";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { AUTHORS, authorPortraitUrl, type Author } from "@/lib/authors";
 import { usePageMeta } from "@/lib/pageMeta";
+import { setCircle, useDrafts, useLiveAuthor } from "@/lib/admin/drafts";
+import { useIsAdmin } from "@/lib/admin/session";
 import {
   clampFace, clearFaceOverrides, defaultFace, dragFace, faceStyle, formatFaceChanges, PORTRAIT_HEIGHT, setFaceOverride, useFaceOverrides, zoomFace, type Face,
 } from "@/lib/portraitCrops";
@@ -19,9 +21,11 @@ function CropEditor({ author, onClose }: { author: Author; onClose: () => void }
   const { copy } = useTranslation();
   const t = copy.portraitCrops;
   const overrides = useFaceOverrides();
+  const isAdmin = useIsAdmin();
+  const live = useLiveAuthor(author);
   const original = author.face as Face | undefined;
   const [height, setHeight] = useState(PORTRAIT_HEIGHT);
-  const [face, setFace] = useState<Face>(() => overrides[author.id] ?? original ?? defaultFace());
+  const [face, setFace] = useState<Face>(() => overrides[author.id] ?? (live.face as Face | undefined) ?? defaultFace());
   const stage = useRef<HTMLDivElement>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const pinch = useRef<{ distance: number; face: Face } | null>(null);
@@ -65,11 +69,12 @@ function CropEditor({ author, onClose }: { author: Author; onClose: () => void }
   const onWheel = (event: ReactWheelEvent<HTMLDivElement>) => setFace((current) => zoomFace(current, Math.exp(-event.deltaY * 0.002), height));
 
   const save = () => {
-    setFaceOverride(author, face);
+    if (isAdmin) setCircle(author, face);
+    else setFaceOverride(author, face);
     onClose();
   };
-  const url = authorPortraitUrl(author);
-  const preview = { ...author, face };
+  const url = authorPortraitUrl(live);
+  const preview = { ...live, face };
 
   return (
     <div className="crop-editor" role="dialog" aria-modal="true" aria-label={t.editLabel.replace("{name}", author.name)}>
@@ -140,6 +145,8 @@ function PortraitCropsContent() {
   const t = copy.portraitCrops;
   usePageMeta(t.title);
   const overrides = useFaceOverrides();
+  const isAdmin = useIsAdmin();
+  const drafts = useDrafts();
   const [editing, setEditing] = useState<Author | null>(null);
   const [sent, setSent] = useState<"copied" | "shared" | null>(null);
   const changed = Object.keys(overrides).length;
@@ -173,14 +180,14 @@ function PortraitCropsContent() {
       <ul className="portrait-crops-grid">
         {WITH_PORTRAIT.map((author) => (
           <li key={author.id}>
-            <button type="button" onClick={() => { setEditing(author); setSent(null); }} className={overrides[author.id] ? "is-changed" : undefined}>
+            <button type="button" onClick={() => { setEditing(author); setSent(null); }} className={overrides[author.id] || drafts.authors[author.id] ? "is-changed" : undefined}>
               <AuthorPortrait author={author} />
               <span translate="no">{author.name}</span>
             </button>
           </li>
         ))}
       </ul>
-      <div className="portrait-crops-bar" role="status">
+      {!isAdmin && <div className="portrait-crops-bar" role="status">
         <span>{changed ? t.changed.replace("{count}", String(changed)) : t.noChanges}</span>
         {changed > 0 && (
           <>
@@ -191,7 +198,7 @@ function PortraitCropsContent() {
             </button>
           </>
         )}
-      </div>
+      </div>}
       <p className="portrait-crops-back"><Link href="/vaisnavas">{t.back}</Link></p>
       {editing && <CropEditor author={editing} onClose={() => setEditing(null)} />}
     </div>

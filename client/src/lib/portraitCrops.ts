@@ -14,11 +14,14 @@ export const PORTRAIT_HEIGHT = 400 / 3;
 
 const MIN_DIAMETER = 8;
 
-/** Scales and shifts the picture so the face box fills the circle, centred. */
-export function faceStyle(face: Face): CSSProperties {
+/**
+ * Scales and shifts the picture so the box fills its frame, centred. `aspect` is the frame's height
+ * over its width: 1 for the circle, 4/3 for a portrait; the box's third number is always its width.
+ */
+export function faceStyle(face: Face, aspect = 1): CSSProperties {
   const [x, y, diameter] = face;
   const percent = (value: number) => `${Math.round(value * 1000) / 1000}%`;
-  return { width: percent((100 * 100) / diameter), left: percent(50 - (x / diameter) * 100), top: percent(50 - (y / diameter) * 100) };
+  return { width: percent((100 * 100) / diameter), left: percent(50 - (x / diameter) * 100), top: percent(50 - (y / (diameter * aspect)) * 100) };
 }
 
 /** The box the circle shows when an author has none: the picture fills it, held 15% from the top. */
@@ -29,21 +32,27 @@ export function defaultFace(height = PORTRAIT_HEIGHT): Face {
   return [50, round(height / 2), round(height)];
 }
 
-/** Keeps the circle inside the picture so no empty corner shows. */
-export function clampFace([x, y, diameter]: Face, height = PORTRAIT_HEIGHT): Face {
-  const d = Math.min(Math.max(diameter, MIN_DIAMETER), Math.min(100, height));
-  const clamp = (value: number, max: number) => Math.min(Math.max(value, d / 2), max - d / 2);
-  return [round(clamp(x, 100)), round(clamp(y, height)), round(d)];
+/** Keeps the frame inside the picture so no empty corner shows. */
+export function clampFace([x, y, diameter]: Face, height = PORTRAIT_HEIGHT, aspect = 1): Face {
+  const d = Math.min(Math.max(diameter, MIN_DIAMETER), Math.min(100, height / aspect));
+  const clamp = (value: number, half: number, max: number) => Math.min(Math.max(value, half), max - half);
+  return [round(clamp(x, d / 2, 100)), round(clamp(y, (d * aspect) / 2, height)), round(d)];
+}
+
+/** The largest frame of this shape that fits the picture, centred. */
+export function fullFrame(height: number, aspect: number): Face {
+  const d = Math.min(100, height / aspect);
+  return [50, round(height / 2), round(d)];
 }
 
 /** Moves the picture by a drag of (dx, dy) pixels inside a circle `size` pixels wide. */
-export function dragFace([x, y, diameter]: Face, dx: number, dy: number, size: number, height = PORTRAIT_HEIGHT): Face {
-  return clampFace([x - (dx * diameter) / size, y - (dy * diameter) / size, diameter], height);
+export function dragFace([x, y, diameter]: Face, dx: number, dy: number, size: number, height = PORTRAIT_HEIGHT, aspect = 1): Face {
+  return clampFace([x - (dx * diameter) / size, y - (dy * diameter) / size, diameter], height, aspect);
 }
 
 /** Zooms around the circle's centre: a factor above 1 brings the face closer. */
-export function zoomFace([x, y, diameter]: Face, factor: number, height = PORTRAIT_HEIGHT): Face {
-  return clampFace([x, y, diameter / factor], height);
+export function zoomFace([x, y, diameter]: Face, factor: number, height = PORTRAIT_HEIGHT, aspect = 1): Face {
+  return clampFace([x, y, diameter / factor], height, aspect);
 }
 
 export const sameFace = (a: Face | undefined, b: Face | undefined) => !!a && !!b && a.every((value, index) => Math.abs(value - b[index]) < 0.05);

@@ -1,5 +1,6 @@
 /** Personalities, holy places and sacred books named in the translations, found so they can be underlined with a short note. */
 import data from "@/data/holy-names.json";
+import edits from "@/data/holy-names-edits.json";
 
 export type HolyNameKind = "person" | "divine" | "place" | "realm" | "other" | "book";
 
@@ -31,7 +32,46 @@ function allNames(field: "aliases" | "ru") {
   ]);
 }
 
-export const HOLY_NAMES = (data as { entries: HolyName[] }).entries;
+/** A change made in the admin tools to a note (by id) or to another name of it (by "id/variant"). */
+export type HolyNameEdit = Partial<Pick<HolyName, "kind" | "name" | "about" | "aliases" | "ru" | "maps" | "authorId">> & { hidden?: boolean };
+/** A change to a note in one language. */
+export type HolyNameLocalEdit = { name?: string; about?: string; aliases?: string[]; hidden?: boolean };
+export type HolyNameEdits = { entries: Record<string, HolyNameEdit>; i18n: Record<string, Record<string, HolyNameLocalEdit>> };
+
+export const HOLY_NAME_EDITS = edits as unknown as HolyNameEdits;
+
+/** The generated notes with the admin's changes laid over them: changed fields, hidden notes and new ones. */
+export function applyHolyNameEdits(entries: HolyName[], changes: Record<string, HolyNameEdit>): HolyName[] {
+  const result = entries.map((entry) => {
+    const edit = changes[entry.id];
+    if (edit?.hidden) return null;
+    const fields = pick(edit ?? {}, ["kind", "name", "about", "aliases", "ru", "maps", "authorId"]);
+    const variants = entry.variants
+      ?.map((variant) => {
+        const variantEdit = changes[`${entry.id}/${variant.key}`];
+        if (variantEdit?.hidden) return null;
+        return variantEdit ? { ...variant, ...pick(variantEdit, ["name", "about", "aliases", "ru"]) } : variant;
+      })
+      .filter((variant): variant is HolyNameVariant => variant !== null);
+    return { ...entry, ...fields, ...(variants ? { variants } : {}) } as HolyName;
+  }).filter((entry): entry is HolyName => entry !== null);
+  const known = new Set(entries.map((entry) => entry.id));
+  for (const [id, edit] of Object.entries(changes)) {
+    if (id.includes("/") || known.has(id) || edit.hidden || !edit.kind || !edit.name || !edit.about) continue;
+    result.push({ id, kind: edit.kind, name: edit.name, about: edit.about, aliases: edit.aliases?.length ? edit.aliases : [edit.name], ru: edit.ru ?? [], ...(edit.maps ? { maps: edit.maps } : {}), ...(edit.authorId ? { authorId: edit.authorId } : {}) });
+  }
+  return result;
+}
+
+function pick<T extends object, K extends keyof T>(value: T, keys: K[]): Partial<Pick<T, K>> {
+  const out: Partial<Pick<T, K>> = {};
+  for (const key of keys) if (value[key] !== undefined) out[key] = value[key];
+  return out;
+}
+
+/** The notes as generated, before the admin's changes. */
+export const GENERATED_HOLY_NAMES = (data as { entries: HolyName[] }).entries;
+export const HOLY_NAMES = applyHolyNameEdits(GENERATED_HOLY_NAMES, HOLY_NAME_EDITS.entries);
 /** Words that contain a name but mean something else (e.g. "Vyāsa-pūjā"), left plain in every language. */
 const IGNORED_WORDS = (data as { ignore?: string[] }).ignore ?? [];
 

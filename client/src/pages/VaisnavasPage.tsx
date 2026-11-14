@@ -46,7 +46,7 @@ function VaisnavasContent() {
           </section>
         );
       })}
-      <p className="vaisnavas-adjust"><Link href="/portraits">{copy.portraitCrops.link}</Link></p>
+      <p className="vaisnavas-adjust"><Link href="/portraits">{copy.portraitCrops.link}</Link> · <Link href="/admin">{copy.portraitCrops.adminLink}</Link></p>
     </div>
   );
 }

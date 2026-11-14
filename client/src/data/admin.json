@@ -1,0 +1,6 @@
+{
+  "_note": "Admin tools: the sign-in service (workers/github-auth, deployed on Cloudflare) and the repository the tools publish to. An empty authUrl hides the sign-in button.",
+  "authUrl": "",
+  "repo": "desillusionist/sri-gitanjali",
+  "branch": "main"
+}

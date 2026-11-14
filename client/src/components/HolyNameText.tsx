@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
-import { ExternalLink, MapPin } from "lucide-react";
+import { ExternalLink, MapPin, Pencil } from "lucide-react";
+import { openNoteEditor } from "@/components/admin/NoteEditor";
+import { useIsAdmin } from "@/lib/admin/session";
 import { Link } from "wouter";
 import { LongPressTooltip } from "@/components/LongPressTooltip";
 import { useTranslation } from "@/i18n/LanguageContext";
@@ -14,6 +16,7 @@ function HolyNameTrigger({ entry, variant, locale, lang, children }: { entry: Ho
   const mapsUrl = holyNameMapsUrl(entry);
   const note = locale?.entries[holyNameNoteKey(entry.id, variant?.key)];
   const name = note?.name ?? variant?.name ?? entry.name;
+  const isAdmin = useIsAdmin();
   return (
     <LongPressTooltip
       className={`holy-name-trigger is-${entry.kind}`}
@@ -27,6 +30,11 @@ function HolyNameTrigger({ entry, variant, locale, lang, children }: { entry: Ho
           <span className="word-for-word-popup-source">{locale?.ui.kinds[entry.kind] ?? copy.song.holyNameKinds[entry.kind]}</span>
           <span className="word-for-word-popup-term" translate="no">{name}</span>
           <span className="holy-name-popup-about">{note?.about ?? variant?.about ?? entry.about}</span>
+          {isAdmin && (
+            <button type="button" className="holy-name-popup-edit" onClick={() => openNoteEditor(holyNameNoteKey(entry.id, variant?.key))}>
+              <Pencil size={13} aria-hidden="true" />{copy.admin.editNote}
+            </button>
+          )}
           {(author || mapsUrl) && (
             <span className="holy-name-popup-links">
               {author && <Link href={authorHref(author)}>{locale?.ui.page ?? copy.song.holyNamePage} →</Link>}

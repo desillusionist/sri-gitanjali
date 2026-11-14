@@ -9,6 +9,9 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { findAuthorById, type Author } from "@/lib/authors";
 import { LibraryBig } from "lucide-react";
+import { AuthorPicturesEditor } from "@/components/admin/AuthorPicturesEditor";
+import { useLiveAuthor } from "@/lib/admin/drafts";
+import { useIsAdmin } from "@/lib/admin/session";
 import { useMemo } from "react";
 import { usePageMeta } from "@/lib/pageMeta";
 import { Link, useRoute } from "wouter";
@@ -24,7 +27,9 @@ function BioParagraph({ value, isLast, authorId }: { value: string; isLast: bool
   return <p><HolyNameText value={value} exceptAuthorId={authorId} /></p>;
 }
 
-function AuthorContent({ author }: { author: Author }) {
+function AuthorContent({ author: published }: { author: Author }) {
+  const author = useLiveAuthor(published);
+  const isAdmin = useIsAdmin();
   const { songs, status } = useSongLibrary();
   const { copy } = useTranslation();
   usePageMeta(author.name, author.summary);
@@ -47,6 +52,8 @@ function AuthorContent({ author }: { author: Author }) {
           <p className="author-summary">{author.summary}</p>
         </div>
       </header>
+
+      {isAdmin && <AuthorPicturesEditor author={author} />}
 
       <section className="author-bio">
         {author.bio.map((paragraph, index) => <BioParagraph key={index} value={paragraph} isLast={index === author.bio.length - 1} authorId={author.id} />)}

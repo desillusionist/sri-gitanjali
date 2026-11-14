@@ -10,8 +10,13 @@ import "./index.css";
 import { loadWordForWord } from "./lib/wordForWordLoader";
 import { initTheme } from "./lib/theme";
 import { installTranslationGuard } from "./lib/translationGuard";
+import { consumeSignInRedirect, verifySession } from "./lib/admin/session";
+import { initDrafts } from "./lib/admin/drafts";
 
 installTranslationGuard();
+consumeSignInRedirect();
+void verifySession();
+void initDrafts();
 initTheme();
 
 if ("serviceWorker" in navigator) {

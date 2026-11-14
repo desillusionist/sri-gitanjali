@@ -1,6 +1,6 @@
 /** Name and place notes in the reader's second language, loaded only when that language is chosen. */
 import { useEffect, useState } from "react";
-import type { HolyNameKind } from "@/lib/holyNames";
+import { HOLY_NAME_EDITS, type HolyNameKind, type HolyNameLocalEdit } from "@/lib/holyNames";
 
 export type HolyNameLocale = {
   ui: { kinds: Record<HolyNameKind, string>; page: string; map: string };
@@ -22,12 +22,25 @@ export function holyNameNoteKey(id: string, variant?: string) {
   return variant ? `${id}/${variant}` : id;
 }
 
+/** A language's notes with the admin's changes laid over them. */
+export function applyLocalEdits(locale: HolyNameLocale, changes: Record<string, HolyNameLocalEdit> | undefined): HolyNameLocale {
+  if (!changes) return locale;
+  const entries = { ...locale.entries };
+  for (const [key, edit] of Object.entries(changes)) {
+    if (edit.hidden) { delete entries[key]; continue; }
+    const merged = { ...entries[key], ...edit };
+    delete merged.hidden;
+    if (merged.about) entries[key] = merged as HolyNameLocale["entries"][string];
+  }
+  return { ...locale, entries };
+}
+
 export const HOLY_NAME_LOCALES = Object.keys(loaders).map((path) => path.replace(/^.*\/(\w+)\.json$/, "$1"));
 
 export function loadHolyNameLocale(language: string): Promise<HolyNameLocale | null> {
   const loader = loaders[`../data/holy-names-i18n/${language}.json`];
   if (!loader) return Promise.resolve(null);
-  if (!cache.has(language)) cache.set(language, loader().catch(() => null));
+  if (!cache.has(language)) cache.set(language, loader().then((locale) => applyLocalEdits(locale, HOLY_NAME_EDITS.i18n[language])).catch(() => null));
   return cache.get(language)!;
 }
 

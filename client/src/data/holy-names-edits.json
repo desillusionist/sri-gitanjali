@@ -1,0 +1,5 @@
+{
+  "_note": "Changes to the name, place and book notes made in the app's admin tools. Laid over holy-names.json and the holy-names-i18n files (which scripts/build-holy-names.py regenerates), so they survive a rebuild. entries: per id (or id/variant) the changed fields, or {\"hidden\": true}; a new id adds a note. i18n: per language, per id the name, note and spellings.",
+  "entries": {},
+  "i18n": {}
+}

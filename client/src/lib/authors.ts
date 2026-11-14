@@ -12,9 +12,9 @@ export type AuthorImage = {
   /** What the picture shows, e.g. "As a magistrate, late 1880s". */
   caption?: string;
   /** Who made it and its licence, as the source states them. */
-  credit: string;
+  credit?: string;
   /** The page the picture comes from. */
-  source: string;
+  source?: string;
 };
 
 export type Author = {
@@ -62,12 +62,25 @@ export function authorHref(author: Author): string {
   return `/author/${author.id}`;
 }
 
+/** Pictures added in the admin tools and not published yet: file name → a local object URL. */
+const draftImages = new Map<string, string>();
+
+export function registerDraftImage(file: string, url: string | null) {
+  if (url) draftImages.set(file, url);
+  else draftImages.delete(file);
+}
+
+/** The address of a picture file: the site's copy, or this device's copy while it waits to be published. */
+export function storageUrl(file: string): string {
+  return draftImages.get(file) ?? STORAGE_URL + file;
+}
+
 export function authorPortraitUrl(author: Author): string | undefined {
-  return author.portrait ? STORAGE_URL + author.portrait : undefined;
+  return author.portrait ? storageUrl(author.portrait) : undefined;
 }
 
 export function authorLargePortraitUrl(author: Author): string | undefined {
-  return author.portraitLarge ? STORAGE_URL + author.portraitLarge : authorPortraitUrl(author);
+  return author.portraitLarge ? storageUrl(author.portraitLarge) : authorPortraitUrl(author);
 }
 
 /** The pictures of the enlarged view: the portrait first, then the gallery. */
@@ -75,7 +88,7 @@ export function authorSlides(author: Author): (Omit<AuthorImage, "credit" | "sou
   const portrait = authorLargePortraitUrl(author);
   return [
     ...(portrait ? [{ ...author.portraitInfo, src: portrait }] : []),
-    ...(author.gallery ?? []).map((image) => ({ ...image, src: STORAGE_URL + image.src })),
+    ...(author.gallery ?? []).map((image) => ({ ...image, src: storageUrl(image.src) })),
   ].slice(0, 10);
 }
 

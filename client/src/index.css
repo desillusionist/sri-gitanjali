@@ -805,6 +805,46 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .vaisnava-group > h2 { display: block; margin: 0 0 0.8rem; }
 .vaisnava-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: 0.4rem 1.2rem; margin: 0; padding: 0; list-style: none; }
 
+/* Admin tools: shown only to a signed-in GitHub account that may write to the repository. */
+.admin-bar { position: fixed; right: max(0.8rem, env(safe-area-inset-right)); bottom: calc(env(safe-area-inset-bottom) + 0.8rem); z-index: 55; display: flex; align-items: center; gap: 0.45rem; max-width: calc(100vw - 1.6rem); padding: 0.4rem 0.45rem 0.4rem 0.5rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink); background: var(--paper-bright); box-shadow: 0 10px 30px rgba(var(--ink-rgb), 0.16); font-size: 0.78rem; }
+.admin-bar-who { display: inline-flex; align-items: center; gap: 0.35rem; padding-right: 0.2rem; color: var(--saffron-deep); font-weight: 700; text-decoration: none; }
+.admin-bar-who img { width: 1.6rem; height: 1.6rem; border-radius: 50%; }
+.admin-bar-status { min-width: 0; overflow: hidden; color: var(--ink-soft); white-space: nowrap; text-overflow: ellipsis; }
+.admin-bar button, .admin-pictures button, .admin-page-panel button { display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 0.35rem; min-width: 2.2rem; min-height: 2.2rem; padding: 0 0.7rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink); background: transparent; font: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+.admin-bar button.is-primary, .admin-page-panel button.is-primary, .crop-editor-actions button.is-primary { border-color: var(--saffron-deep); color: #fff; background: var(--saffron-deep); }
+.admin-bar button:disabled, .admin-pictures button:disabled, .crop-editor-actions button:disabled { opacity: 0.45; cursor: default; }
+.admin-bar.is-limited { padding-left: 1rem; }
+.admin-pictures { margin: 0 0 2.4rem; padding: 1rem; border: 1px dashed rgba(var(--saffron-rgb), 0.55); border-radius: 1rem; background: rgba(var(--saffron-rgb), 0.05); }
+.admin-pictures > header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.9rem; }
+.admin-pictures-add { display: flex; gap: 0.5rem; }
+.admin-pictures-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.9rem; margin: 0; padding: 0; list-style: none; }
+.admin-pictures-list li { display: grid; align-content: start; gap: 0.4rem; min-width: 0; font-size: 0.74rem; }
+.admin-pictures-list li.is-main strong { color: var(--saffron-deep); }
+.admin-pictures-list small { overflow: hidden; color: var(--ink-soft); white-space: nowrap; text-overflow: ellipsis; }
+.admin-pictures-thumb { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 0.6rem; background: var(--saffron-tint); }
+.admin-pictures-thumb > img { width: 100%; height: 100%; object-fit: cover; }
+.admin-pictures-circle { position: absolute; right: 0.4rem; bottom: 0.4rem; width: 2.6rem; height: 2.6rem; overflow: hidden; border-radius: 50%; box-shadow: 0 0 0 2px #fff; }
+.admin-pictures-circle img { position: absolute; max-width: none; height: auto; }
+.admin-pictures-actions { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.admin-pictures-actions button { min-width: 2rem; min-height: 2rem; padding: 0 0.5rem; font-size: 0.7rem; }
+.admin-pictures-actions button.is-danger { color: #a3271b; }
+.admin-pictures-note { margin: 0.8rem 0 0; color: var(--ink-soft); font-size: 0.8rem; }
+.admin-pictures-note.is-error { color: #a3271b; }
+.admin-pictures-info, .admin-note-editor { display: grid; gap: 0.7rem; }
+.admin-pictures-info { margin-top: 1rem; max-width: 30rem; }
+.admin-pictures-info label, .admin-note-editor label { display: grid; gap: 0.25rem; width: 100%; font-size: 0.78rem; font-weight: 600; }
+.admin-pictures-info input, .admin-note-editor input:not([type="checkbox"]), .admin-note-editor textarea, .admin-note-editor select, .admin-note-local select { width: 100%; padding: 0.5rem 0.6rem; border: 1px solid var(--hairline); border-radius: 0.5rem; color: var(--ink); background: var(--paper-cream); font: inherit; font-size: 0.9rem; font-weight: 400; }
+.admin-note-editor { justify-items: stretch; width: min(100%, 30rem); }
+.admin-note-editor small { color: var(--ink-soft); font-weight: 400; }
+.admin-note-editor .admin-check { display: flex; align-items: center; gap: 0.5rem; }
+.admin-note-local { display: grid; gap: 0.6rem; margin: 0; padding: 0.7rem; border: 1px solid var(--hairline); border-radius: 0.7rem; }
+.admin-note-local legend { display: flex; align-items: center; gap: 0.5rem; padding: 0 0.3rem; font-size: 0.78rem; font-weight: 600; }
+.admin-note-local legend select { width: auto; }
+.holy-name-popup-edit { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; padding: 0.25rem 0.6rem; border: 1px solid rgba(var(--saffron-rgb), 0.5); border-radius: 999px; color: var(--saffron-deep); background: transparent; font: inherit; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+.crop-editor-stage.is-frame { width: min(58vw, 13.5rem); border-radius: 0.6rem; }
+.admin-page-panel { display: grid; justify-items: start; gap: 1rem; max-width: 40rem; font-size: 0.95rem; line-height: 1.6; }
+.admin-page-panel ul { margin: 0; padding-left: 1.2rem; }
+
 /* Portrait circles: the page that adjusts the round crops. */
 .vaisnavas-adjust { margin: 3rem 0 0; font-size: 0.85rem; }
 .vaisnavas-adjust a, .portrait-crops-back a { color: var(--ink-soft); text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 0.2em; }
