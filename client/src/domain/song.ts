@@ -215,10 +215,48 @@ export function soundCloudSingerName(url: string): string | null {
   return SOUNDCLOUD_SINGER_LIST.find((singer) => singer.id === id)?.name ?? null;
 }
 
-/** Known track length in seconds (from soundcloudDurations.ts), or null. */
+/** A part of a SoundCloud track, in seconds; `end` null means to the end of the track. */
+export type SoundCloudSegment = { start: number; end: number | null };
+
+const SEGMENT_TIME = /^(?:(\d+):)?(\d{1,2}):(\d{2})$/;
+const parseTime = (value: string) => {
+  const match = value.match(SEGMENT_TIME);
+  return match ? Number(match[1] ?? 0) * 3600 + Number(match[2]) * 60 + Number(match[3]) : null;
+};
+
+/**
+ * The part of a track a recording stands for, written after the track address as SoundCloud
+ * marks a start time, with an optional end: "…/track#t=0:52-1:06" or "…/track#t=12:40".
+ * Several songs sung in one track each point at their own part this way.
+ */
+export function soundCloudSegment(url: string): SoundCloudSegment | null {
+  const match = url.match(/#t=([\d:]+)(?:-([\d:]+))?$/);
+  if (!match) return null;
+  const start = parseTime(match[1]);
+  const end = match[2] ? parseTime(match[2]) : null;
+  if (start === null || (match[2] && (end === null || end <= start))) return null;
+  return { start, end };
+}
+
+/** The track itself, without the part marker: what the SoundCloud player loads. */
+export function soundCloudTrackUrl(url: string): string {
+  return url.replace(/#.*$/, "");
+}
+
+/** The address to open on soundcloud.com: SoundCloud understands only the start time. */
+export function soundCloudPageUrl(url: string): string {
+  const segment = soundCloudSegment(url);
+  return segment ? `${soundCloudTrackUrl(url)}#t=${formatTrackLength(segment.start)}` : url;
+}
+
+/** Known length in seconds (from soundcloudDurations.ts, or of the marked part), or null. */
 export function soundCloudTrackSecondsFor(url: string): number | null {
   try {
-    return soundCloudTrackSeconds[new URL(url).pathname.replace(/\/+$/, "")] ?? null;
+    const whole = soundCloudTrackSeconds[new URL(url).pathname.replace(/\/+$/, "")] ?? null;
+    const segment = soundCloudSegment(url);
+    if (!segment) return whole;
+    const end = segment.end ?? whole;
+    return end === null ? null : end - segment.start;
   } catch {
     return null;
   }

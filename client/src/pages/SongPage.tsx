@@ -14,7 +14,7 @@ import { getFootnotes } from "@/lib/footnotes";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { footnoteFieldId, getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudSingerName, soundCloudTrackSecondsFor, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
+import { footnoteFieldId, getHighlightParts, getSongSearchMatches, getSoundCloudRecordingUrls, soundCloudPageUrl, soundCloudSegment, soundCloudSingerName, soundCloudTrackSecondsFor, soundCloudTrackUrl, formatTrackLength, hideSecondarySongOrnamentsInLines, normalizeSearchText, songFirstLine, type SongSearchMatch } from "@/domain/song";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useTeleprompter } from "@/hooks/useTeleprompter";
 import { useTeleprompterGestures } from "@/hooks/useTeleprompterGestures";
@@ -23,7 +23,7 @@ import { PlaylistToggleButton } from "@/components/PlaylistToggleButton";
 import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
 import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingingFollower";
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
-import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
+import { createSegmentFollower, loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, Share2, SlidersHorizontal, Volume2, X, Pencil } from "lucide-react";
 import { openTranslationEditor } from "@/components/admin/TranslationEditor";
@@ -619,7 +619,7 @@ function SongPageContent() {
     let isActive = true;
     setSoundCloudPlayerStatus("loading");
 
-    void fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(soundCloudSourceUrl)}`)
+    void fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(soundCloudTrackUrl(soundCloudSourceUrl))}`)
       .then(async (response) => {
         if (!response.ok) throw new Error("SoundCloud oEmbed request failed");
         const payload = await response.json() as { html?: unknown };
@@ -646,13 +646,22 @@ function SongPageContent() {
     void loadSoundCloudWidgetApi()
       .then((soundCloud) => {
         const widget = soundCloud.Widget(iframe);
+        // A recording that is one part of a longer track plays from its start to its end only.
+        const segment = soundCloudSegment(soundCloudSourceUrl);
         const readDuration = () => widget.getDuration((durationMs) => {
           if (!isActive || !Number.isFinite(durationMs) || durationMs <= 0) return;
-          setSoundCloudDurationMs(durationMs);
+          setSoundCloudDurationMs(segment ? ((segment.end ?? durationMs / 1000) - segment.start) * 1000 : durationMs);
         });
 
         widget.bind(soundCloud.Widget.Events.READY, readDuration);
         readDuration();
+        if (segment) {
+          const follower = createSegmentFollower(widget);
+          widget.bind(soundCloud.Widget.Events.PLAY, () => follower.onPlay(segment));
+          widget.bind(soundCloud.Widget.Events.PLAY_PROGRESS, (event) => {
+            if (follower.onProgress(segment, event?.currentPosition)) widget.pause();
+          });
+        }
       })
       .catch(() => {
         // The reader retains its manual tempo when the official widget API is unavailable.
@@ -1440,7 +1449,7 @@ function SongPageContent() {
                     {isCurrent && (
                       <div className="audio-row-player">
                         {isOpen && soundCloudPlayerStatus === "loading" && <p className="song-audio-status" role="status">{copy.song.audioPlayerLoading}</p>}
-                        {isOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={url} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
+                        {isOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={soundCloudPageUrl(url)} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
                         {soundCloudPlayerUrl && (
                           <iframe
                             id={`soundcloud-player-${song.id}`}

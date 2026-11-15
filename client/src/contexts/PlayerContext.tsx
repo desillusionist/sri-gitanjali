@@ -4,9 +4,9 @@
  */
 
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
-import { getSongRecordings, type SongRecording } from "@/domain/song";
+import { getSongRecordings, soundCloudSegment, soundCloudTrackUrl, type SongRecording } from "@/domain/song";
 import { usePlaylist } from "@/hooks/usePlaylist";
-import { loadSoundCloudWidgetApi, soundCloudPlayerSrc, SOUNDCLOUD_LOAD_OPTIONS, type SoundCloudWidget } from "@/lib/soundCloudWidget";
+import { createSegmentFollower, loadSoundCloudWidgetApi, soundCloudPlayerSrc, SOUNDCLOUD_LOAD_OPTIONS, type SoundCloudWidget } from "@/lib/soundCloudWidget";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 
 const PLAYER_STORAGE_KEY = "kirtan-guide.player";
@@ -63,6 +63,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const widgetRef = useRef<SoundCloudWidget | null>(null);
+  const followerRef = useRef<ReturnType<typeof createSegmentFollower> | null>(null);
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
@@ -91,7 +92,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     setCurrentUrl(url);
     setIsOpen(true);
     const widget = widgetRef.current;
-    if (widget) widget.load(url, { ...SOUNDCLOUD_LOAD_OPTIONS, auto_play: true });
+    const follower = followerRef.current;
+    follower?.hold();
+    if (widget) widget.load(soundCloudTrackUrl(url), { ...SOUNDCLOUD_LOAD_OPTIONS, auto_play: true, callback: () => follower?.reset() });
     else setInitialSrc(soundCloudPlayerSrc(url, true));
   }, []);
 
@@ -122,15 +125,29 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       if (!active) return;
       const widget = api.Widget(iframe);
       widgetRef.current = widget;
-      widget.bind(api.Widget.Events.PLAY, () => setIsPlaying(true));
-      widget.bind(api.Widget.Events.PAUSE, () => setIsPlaying(false));
-      widget.bind(api.Widget.Events.FINISH, () => {
+      // A recording that is one part of a longer track starts and ends there.
+      const follower = createSegmentFollower(widget);
+      followerRef.current = follower;
+      const segment = () => (currentRef.current ? soundCloudSegment(currentRef.current.url) : null);
+      const next = () => {
         if (!step(1)) setIsPlaying(false);
+      };
+      widget.bind(api.Widget.Events.PLAY, () => {
+        setIsPlaying(true);
+        follower.onPlay(segment());
       });
+      widget.bind(api.Widget.Events.PLAY_PROGRESS, (event) => {
+        if (!follower.onProgress(segment(), event?.currentPosition)) return;
+        widget.pause();
+        next();
+      });
+      widget.bind(api.Widget.Events.PAUSE, () => setIsPlaying(false));
+      widget.bind(api.Widget.Events.FINISH, next);
     }).catch(() => {});
     return () => {
       active = false;
       widgetRef.current = null;
+      followerRef.current = null;
     };
   }, [initialSrc, step]);
 

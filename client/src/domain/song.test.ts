@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, ALL_LANGUAGES_FILTER, defaultSongSearchFilters, filterSongs, footnoteFieldId, getOriginalMatchRanges, getSongRecordings, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, soundCloudSingerName, verseFootnoteTexts, type Song } from "./song";
+import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, ALL_LANGUAGES_FILTER, defaultSongSearchFilters, filterSongs, footnoteFieldId, getOriginalMatchRanges, getSongRecordings, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, soundCloudPageUrl, soundCloudSegment, soundCloudSingerName, soundCloudTrackSecondsFor, soundCloudTrackUrl, verseFootnoteTexts, type Song } from "./song";
 
 describe("search phrase normalization", () => {
   it("treats spaces, hyphens, and n-dashes as equivalent separators", () => {
@@ -120,5 +120,24 @@ describe("footnotes in search", () => {
     expect(filterSongs(songs, { ...defaultSongSearchFilters, query }).map((item) => item.id)).toContain(song.id);
     expect(getSongSearchMatches(song, query).some((match) => match.kind === "footnote" && match.fieldId === footnoteFieldId("verse-2", 0))).toBe(true);
     expect(getSongSearchExcerpt(song, query)?.source).toBe("footnote");
+  });
+});
+
+describe("a song that is one part of a longer track", () => {
+  const track = "https://soundcloud.com/jayasri-sound/vandana-srila-govinda-maharaj";
+
+  it("reads the part from the address", () => {
+    expect(soundCloudSegment(`${track}#t=0:52-1:06`)).toEqual({ start: 52, end: 66 });
+    expect(soundCloudSegment(`${track}#t=1:02:03`)).toEqual({ start: 3723, end: null });
+    expect(soundCloudSegment(track)).toBeNull();
+    expect(soundCloudSegment(`${track}#t=1:06-0:52`)).toBeNull();
+  });
+
+  it("plays the whole track but shows the part's length and singer", () => {
+    expect(soundCloudTrackUrl(`${track}#t=0:52-1:06`)).toBe(track);
+    expect(soundCloudPageUrl(`${track}#t=0:52-1:06`)).toBe(`${track}#t=0:52`);
+    expect(soundCloudTrackSecondsFor(`${track}#t=0:52-1:06`)).toBe(14);
+    expect(soundCloudTrackSecondsFor(`${track}#t=1:35`)).toBe(104 - 95);
+    expect(soundCloudSingerName(`${track}#t=0:52-1:06`)).toBe("Śrīla Govinda Mahārāja");
   });
 });
