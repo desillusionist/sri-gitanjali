@@ -559,25 +559,25 @@
       "songIds": [
         "srila-jagannath-das-babaji-maharaja-012"
       ],
-      "portrait": "author-jagannath-das-babaji.webp",
-      "portraitLarge": "author-jagannath-das-babaji-large.webp",
+      "portrait": "author-jagannath-das-babaji-mwheu46n.jpg",
+      "portraitLarge": "author-jagannath-das-babaji-mwheu46n-large.jpg",
       "face": [
-        51.2,
-        58.9,
-        51
+        56.2,
+        15.8,
+        31.5
       ],
-      "circle": "circles/author-jagannath-das-babaji@51.2_58.9_51.webp",
+      "circle": "circles/author-jagannath-das-babaji-mwheu46n@56.2_15.8_31.5.jpg",
       "portraitInfo": {
-        "caption": "c. 1890",
-        "credit": "Public domain · Wikimedia Commons",
-        "source": "https://commons.wikimedia.org/wiki/File:Jagannatha_Dasa_Babaji.jpg"
+        "caption": "Painting",
+        "credit": "Gauḍīya History · ISKCON Desire Tree",
+        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jagannatha-Dasa-Babaji.jpg"
       },
       "gallery": [
         {
-          "src": "author-jagannath-das-babaji-2.webp",
-          "caption": "Painting",
-          "credit": "Gauḍīya History · ISKCON Desire Tree",
-          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jagannatha-Dasa-Babaji.jpg"
+          "src": "author-jagannath-das-babaji-large.webp",
+          "caption": "c. 1890",
+          "credit": "Public domain · Wikimedia Commons",
+          "source": "https://commons.wikimedia.org/wiki/File:Jagannatha_Dasa_Babaji.jpg"
         },
         {
           "src": "author-jagannath-das-babaji-3.webp",
