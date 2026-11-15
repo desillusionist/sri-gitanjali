@@ -57,17 +57,18 @@ export function parseLanguageFilter(value: string | null): string {
   return isSongLanguage(value) ? value : ALL_LANGUAGES_FILTER;
 }
 
-/** Filter by recordings: any song, songs with a recording, or songs recorded by one singer (`singer:<SoundCloud account>`). */
+/** Filter by recordings: any song, songs with a recording, or songs recorded by one singer (`singer:<singer id>`). */
 export type RecordingFilter = typeof ALL_RECORDINGS_FILTER | typeof WITH_RECORDINGS_FILTER | `singer:${string}`;
 
-export function singerRecordingFilter(account: string): RecordingFilter {
-  return `singer:${account}`;
+export function singerRecordingFilter(singerId: string): RecordingFilter {
+  return `singer:${singerId}`;
 }
 
 export function parseRecordingFilter(value: string | null): RecordingFilter {
   if (value === WITH_RECORDINGS_FILTER) return WITH_RECORDINGS_FILTER;
-  const account = value?.startsWith("singer:") ? value.slice("singer:".length) : null;
-  return account && SOUNDCLOUD_SINGER_LIST.some((singer) => singer.account === account) ? singerRecordingFilter(account) : ALL_RECORDINGS_FILTER;
+  const given = value?.startsWith("singer:") ? value.slice("singer:".length) : null;
+  const singerId = given ? SINGER_ID_ALIASES[given] ?? given : null;
+  return singerId && SOUNDCLOUD_SINGER_LIST.some((singer) => singer.id === singerId) ? singerRecordingFilter(singerId) : ALL_RECORDINGS_FILTER;
 }
 
 export type SongSearchFilters = {
@@ -155,22 +156,27 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
   return Array.from(new Set(validUrls));
 }
 
-/**
- * Singers named in the recording picker and the library filter. `account` is the
- * singer's id: mostly their SoundCloud account, except where one account holds
- * more than one singer (see ACCOUNT_TRACK_SINGERS).
- */
-export const SOUNDCLOUD_SINGER_LIST: readonly { account: string; name: string }[] = [
-  { account: "kostya-netrebenko", name: "Śrīla Govinda Mahārāja" },
-  { account: "acharya-maharaja", name: "Śrīla Āchārya Mahārāja" },
-  { account: "huron", name: "Manasa Krishna" },
-  { account: "bhakti-lalita-devi", name: "Bhakti Lalita Devi" },
+/** Singers named in the recording picker and the library filter, in the order the picker lists them. */
+export const SOUNDCLOUD_SINGER_LIST: readonly { id: string; name: string }[] = [
+  { id: "sridhar-maharaja", name: "Śrīla Śrīdhar Mahārāja" },
+  { id: "govinda-maharaja", name: "Śrīla Govinda Mahārāja" },
+  { id: "acharya-maharaja", name: "Śrīla Āchārya Mahārāja" },
+  { id: "huron", name: "Manasa Krishna" },
+  { id: "bhakti-lalita-devi", name: "Bhakti Lalita Devi" },
 ];
 
+/** SoundCloud accounts whose tracks are by one singer (otherwise the account is the singer's id). */
+const ACCOUNT_SINGERS: Readonly<Record<string, string>> = {
+  "kostya-netrebenko": "govinda-maharaja",
+  "jayasri-sound": "govinda-maharaja",
+  "kijaya": "govinda-maharaja",
+  "abiramthakur": "govinda-maharaja",
+};
+
 /**
- * Tracks on an account sung by someone other than its main singer, as SoundCloud's
- * "artist" field names them. On soundcloud.com/kostya-netrebenko the tracks numbered
- * with three digits are by Śrīla B.N. Āchārya Mahārāja.
+ * Tracks sung by someone other than their account's singer, as SoundCloud's "artist" field or the
+ * track title names them. On soundcloud.com/kostya-netrebenko the tracks numbered with three digits
+ * are by Śrīla B.N. Āchārya Mahārāja.
  */
 const ACCOUNT_TRACK_SINGERS: Readonly<Record<string, Readonly<Record<string, string>>>> = {
   "kostya-netrebenko": Object.fromEntries([
@@ -181,14 +187,18 @@ const ACCOUNT_TRACK_SINGERS: Readonly<Record<string, Readonly<Record<string, str
     "100-srisrisiksastakam1-6", "101-srisrisiksastakam2-1", "102-srisrisiksastakam3-7", "103-srisrisiksastakam4-4",
     "104-srisrisiksastakam5-3", "105-srisrisiksastakam6-5", "106-srisrisiksastakam7-2", "107-srisrisiksastakam8-8",
   ].map((track) => [track, "acharya-maharaja"])),
+  "jayasri-sound": { "sri-rupa-manjari-pada-srila-sridhar-maharaj-1": "sridhar-maharaja" },
 };
+
+/** Old filter ids still found in saved links. */
+const SINGER_ID_ALIASES: Readonly<Record<string, string>> = { "kostya-netrebenko": "govinda-maharaja" };
 
 /** The singer's id for a SoundCloud track URL (see SOUNDCLOUD_SINGER_LIST), or null. */
 function soundCloudSingerId(url: string): string | null {
   try {
     const [, account, track] = new URL(url).pathname.split("/");
     if (!account) return null;
-    return ACCOUNT_TRACK_SINGERS[account]?.[track ?? ""] ?? account;
+    return ACCOUNT_TRACK_SINGERS[account]?.[track ?? ""] ?? ACCOUNT_SINGERS[account] ?? account;
   } catch {
     return null;
   }
@@ -196,7 +206,7 @@ function soundCloudSingerId(url: string): string | null {
 
 export function soundCloudSingerName(url: string): string | null {
   const id = soundCloudSingerId(url);
-  return SOUNDCLOUD_SINGER_LIST.find((singer) => singer.account === id)?.name ?? null;
+  return SOUNDCLOUD_SINGER_LIST.find((singer) => singer.id === id)?.name ?? null;
 }
 
 /** Known track length in seconds (from soundcloudDurations.ts), or null. */
@@ -215,8 +225,8 @@ export function formatTrackLength(seconds: number): string {
   return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
 }
 
-export function hasRecordingBySinger(song: Pick<Song, "audioLink" | "audioLinks">, account: string): boolean {
-  return getSoundCloudRecordingUrls(song).some((url) => soundCloudSingerId(url) === account);
+export function hasRecordingBySinger(song: Pick<Song, "audioLink" | "audioLinks">, singerId: string): boolean {
+  return getSoundCloudRecordingUrls(song).some((url) => soundCloudSingerId(url) === singerId);
 }
 
 export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioLinks">): string | null {

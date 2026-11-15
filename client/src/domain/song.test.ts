@@ -44,15 +44,18 @@ describe("recording filter by singer", () => {
       song("govinda", ["https://soundcloud.com/kostya-netrebenko/16-durlabha-manava-janma-9"]),
       song("acharya", ["https://soundcloud.com/kostya-netrebenko/017-amarajivana-1"]),
     ];
-    expect(filterSongs(shared, { ...filters, recording: singerRecordingFilter("kostya-netrebenko") }).map((item) => item.id)).toEqual(["govinda"]);
+    expect(filterSongs(shared, { ...filters, recording: singerRecordingFilter("govinda-maharaja") }).map((item) => item.id)).toEqual(["govinda"]);
     expect(filterSongs(shared, { ...filters, recording: singerRecordingFilter("acharya-maharaja") }).map((item) => item.id)).toEqual(["acharya"]);
     expect(soundCloudSingerName("https://soundcloud.com/kostya-netrebenko/017-amarajivana-1")).toBe("Śrīla Āchārya Mahārāja");
     expect(soundCloudSingerName("https://soundcloud.com/kostya-netrebenko/16-durlabha-manava-janma-9")).toBe("Śrīla Govinda Mahārāja");
+    expect(soundCloudSingerName("https://soundcloud.com/kijaya/radhe-jaya-jaya")).toBe("Śrīla Govinda Mahārāja");
+    expect(soundCloudSingerName("https://soundcloud.com/jayasri-sound/sri-rupa-manjari-pada-srila-sridhar-maharaj-1")).toBe("Śrīla Śrīdhar Mahārāja");
   });
 
   it("reads the filter from the address bar, ignoring unknown singers", () => {
     expect(parseRecordingFilter("singer:huron")).toBe("singer:huron");
     expect(parseRecordingFilter("singer:someone-else")).toBe(ALL_RECORDINGS_FILTER);
+    expect(parseRecordingFilter("singer:kostya-netrebenko")).toBe("singer:govinda-maharaja");
     expect(parseRecordingFilter(null)).toBe(ALL_RECORDINGS_FILTER);
   });
 });

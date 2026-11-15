@@ -279,7 +279,7 @@ function LibraryHome() {
               <SelectContent className="filter-select-content" collisionPadding={listClearance}>
                 <SelectItem value={ALL_RECORDINGS_FILTER}>{copy.library.allRecordings}</SelectItem>
                 <SelectItem value={WITH_RECORDINGS_FILTER}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.withRecordings}</span></SelectItem>
-                {SOUNDCLOUD_SINGER_LIST.map((singer) => <SelectItem value={singerRecordingFilter(singer.account)} key={singer.account}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}
+                {SOUNDCLOUD_SINGER_LIST.map((singer) => <SelectItem value={singerRecordingFilter(singer.id)} key={singer.id}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}
               </SelectContent>
             </Select>
           </label>
