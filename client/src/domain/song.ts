@@ -160,6 +160,7 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
 export const SOUNDCLOUD_SINGER_LIST: readonly { id: string; name: string }[] = [
   { id: "sridhar-maharaja", name: "Śrīla Śrīdhar Mahārāja" },
   { id: "govinda-maharaja", name: "Śrīla Govinda Mahārāja" },
+  { id: "goswami-maharaja", name: "Śrīla Goswāmī Mahārāja" },
   { id: "acharya-maharaja", name: "Śrīla Āchārya Mahārāja" },
   { id: "huron", name: "Manasa Krishna" },
   { id: "bhakti-lalita-devi", name: "Bhakti Lalita Devi" },
@@ -188,6 +189,11 @@ const ACCOUNT_TRACK_SINGERS: Readonly<Record<string, Readonly<Record<string, str
     "104-srisrisiksastakam5-3", "105-srisrisiksastakam6-5", "106-srisrisiksastakam7-2", "107-srisrisiksastakam8-8",
   ].map((track) => [track, "acharya-maharaja"])),
   "jayasri-sound": { "sri-rupa-manjari-pada-srila-sridhar-maharaj-1": "sridhar-maharaja" },
+  // Śrīla B.S. Goswāmī Mahārāja (Bhakti Sudhīr Goswāmī).
+  "soundnektar": Object.fromEntries([
+    "bhakti-sudhir-goswami-vandana", "sri-sri-gaura-nityanander-doya-parama-koruna-bhakti-sudhir-goswami",
+    "viraha-giti-bhakti-sudhir-goswami", "sri-vraja-dhama-mahimamrta-jaya-radhe-jaya-krsna-bhakti-sudhir-goswami",
+  ].map((track) => [track, "goswami-maharaja"])),
 };
 
 /** Old filter ids still found in saved links. */

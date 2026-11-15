@@ -227,4 +227,8 @@ export const soundCloudTrackSeconds: Readonly<Record<string, number>> = {
   "/kostya-netrebenko/25-gaurangera-duti-pada-3": 325,
   "/kostya-netrebenko/26-bimala-hema-jini-2": 443,
   "/kostya-netrebenko/27-kali-ghora-timire-1": 227,
+  "/soundnektar/bhakti-sudhir-goswami-vandana": 139,
+  "/soundnektar/sri-sri-gaura-nityanander-doya-parama-koruna-bhakti-sudhir-goswami": 462,
+  "/soundnektar/sri-vraja-dhama-mahimamrta-jaya-radhe-jaya-krsna-bhakti-sudhir-goswami": 1154,
+  "/soundnektar/viraha-giti-bhakti-sudhir-goswami": 486,
 };

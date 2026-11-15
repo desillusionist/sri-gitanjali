@@ -1,7 +1,8 @@
 /**
  * SoundCloud matches rebuilt from the corrected user-supplied source list.
  * The source title/first-line matching report is kept outside the deployed app.
- * Each song lists Śrīla Śrīdhar Mahārāja first, then Śrīla Govinda Mahārāja, then Śrīla Āchārya Mahārāja, then the rest
+ * Each song lists Śrīla Śrīdhar Mahārāja first, then Śrīla Govinda Mahārāja, Śrīla Goswāmī Mahārāja (soundcloud.com/soundnektar)
+ * and Śrīla Āchārya Mahārāja, then the rest
  * (singers per track: ACCOUNT_SINGERS and ACCOUNT_TRACK_SINGERS in domain/song.ts).
  * - soundcloud.com/kostya-netrebenko: Govinda Mahārāja (tracks numbered with two digits) and Āchārya Mahārāja (three
  *   digits). “Jaya Dhvani” has no song in the book, and Śikṣāṣṭakam 7 covers songs 7a–7c.
@@ -105,7 +106,7 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "sri-siksastakam-7c-118": ["https://soundcloud.com/kostya-netrebenko/106-srisrisiksastakam7-2", "https://soundcloud.com/huron/sakhi-go-kemote", "https://soundcloud.com/bhakti-lalita-devi/sakhi-go-kemote"],
   "sri-siksastakam-8a-119": ["https://soundcloud.com/kostya-netrebenko/107-srisrisiksastakam8-8", "https://soundcloud.com/huron/bondhu-gon", "https://soundcloud.com/bhakti-lalita-devi/bondhu-gon-sunoho-vachana-mora"],
   "sri-sri-damodarastakam-142": ["https://soundcloud.com/kijaya/sri-sri-damodarastakam", "https://soundcloud.com/huron/sri-damodarastakam", "https://soundcloud.com/bhakti-lalita-devi/new-damodarastakam", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-damodarastakam-happy-motif"],
-  "sri-sri-gaura-nityanander-daya-063": ["https://soundcloud.com/huron/parama-koruna-pahu-dui-jana"],
+  "sri-sri-gaura-nityanander-daya-063": ["https://soundcloud.com/soundnektar/sri-sri-gaura-nityanander-doya-parama-koruna-bhakti-sudhir-goswami", "https://soundcloud.com/huron/parama-koruna-pahu-dui-jana"],
   "sri-sri-gaurasundarer-avirbhava-vasare-076": ["https://soundcloud.com/huron/aruna-vasane"],
   "sri-sri-giriraj-govardhan-arati-030": ["https://soundcloud.com/huron/jaya-jaya-girirajer-arotiko"],
   "sri-sri-gurvastaka-040": ["https://soundcloud.com/huron/samsara-davanala", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-sri-sri-gurvvashtakam-samsara-davanala-lidha-loka"],
@@ -115,6 +116,7 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "sri-sri-sad-gosvami-astakam-083": ["https://soundcloud.com/huron/sat-goswami-astaka"],
   "sri-tulasi-parikrama-giti-052": ["https://soundcloud.com/kostya-netrebenko/05-namo-namah-tulasi-maharani-13", "https://soundcloud.com/kostya-netrebenko/025-namonamahtulasimaharani-2", "https://soundcloud.com/huron/namo-namah-tulasi-maharani"],
   "sri-vaisnava-mahima-giti-055": ["https://soundcloud.com/kostya-netrebenko/07-ohe-vaishnava-thakura-dayara-sagara-12", "https://soundcloud.com/huron/ohe-vaisnava-thakura"],
+  "sri-vraja-dhama-mahimamrta-131": ["https://soundcloud.com/soundnektar/sri-vraja-dhama-mahimamrta-jaya-radhe-jaya-krsna-bhakti-sudhir-goswami"],
   "sri-yugala-arati-129": ["https://soundcloud.com/huron/jaya-jaya-radha-krishna"],
   "sriman-mahaprabhur-sata-nama-143": ["https://soundcloud.com/huron/nadiya-nagare-nitai"],
   "sriman-nityananda-dvadasakam-156": ["https://soundcloud.com/jayasri-sound/srilagovindamaharaj"],
@@ -126,8 +128,8 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "thakura-vaisnava-pada-078": ["https://soundcloud.com/kostya-netrebenko/013-thakuravaisnavapadaavanirasusampada-6", "https://soundcloud.com/huron/thakura-vaisnava-pada"],
   "tumi-sarvesvaresvara-097": ["https://soundcloud.com/huron/tumi-sarvvesvaresvara"],
   "vaisnava-ke-089": ["https://soundcloud.com/huron/dusta-mana-tumi-kisera"],
-  "vandana-001": ["https://soundcloud.com/jayasri-sound/vandana-srila-govinda-maharaj"],
+  "vandana-001": ["https://soundcloud.com/jayasri-sound/vandana-srila-govinda-maharaj", "https://soundcloud.com/soundnektar/bhakti-sudhir-goswami-vandana"],
   "vibhavari-sesa-043": ["https://soundcloud.com/huron/vibhavari-sesa-aloka-pravesa"],
   "vimala-hemajini-074": ["https://soundcloud.com/kostya-netrebenko/26-bimala-hema-jini-2", "https://soundcloud.com/huron/bimala-hemajini"],
-  "viraha-giti-079": ["https://soundcloud.com/huron/je-anilo-prema-dhana", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-govinda-viraha-je-anilo-prema-dhana"],
+  "viraha-giti-079": ["https://soundcloud.com/soundnektar/viraha-giti-bhakti-sudhir-goswami", "https://soundcloud.com/huron/je-anilo-prema-dhana", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-govinda-viraha-je-anilo-prema-dhana"],
 };

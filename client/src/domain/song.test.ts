@@ -49,6 +49,7 @@ describe("recording filter by singer", () => {
     expect(soundCloudSingerName("https://soundcloud.com/kostya-netrebenko/017-amarajivana-1")).toBe("Śrīla Āchārya Mahārāja");
     expect(soundCloudSingerName("https://soundcloud.com/kostya-netrebenko/16-durlabha-manava-janma-9")).toBe("Śrīla Govinda Mahārāja");
     expect(soundCloudSingerName("https://soundcloud.com/kijaya/radhe-jaya-jaya")).toBe("Śrīla Govinda Mahārāja");
+    expect(soundCloudSingerName("https://soundcloud.com/soundnektar/viraha-giti-bhakti-sudhir-goswami")).toBe("Śrīla Goswāmī Mahārāja");
     expect(soundCloudSingerName("https://soundcloud.com/jayasri-sound/sri-rupa-manjari-pada-srila-sridhar-maharaj-1")).toBe("Śrīla Śrīdhar Mahārāja");
   });
 
