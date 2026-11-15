@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, ALL_LANGUAGES_FILTER, defaultSongSearchFilters, filterSongs, footnoteFieldId, getOriginalMatchRanges, getSongRecordings, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, verseFootnoteTexts, type Song } from "./song";
+import { ALL_AUTHORS_FILTER, ALL_CATEGORIES_FILTER, ALL_RECORDINGS_FILTER, WITH_RECORDINGS_FILTER, ALL_LANGUAGES_FILTER, defaultSongSearchFilters, filterSongs, footnoteFieldId, getOriginalMatchRanges, getSongRecordings, getSongSearchExcerpt, getSongSearchMatches, normalizeSearchText, parseRecordingFilter, singerRecordingFilter, soundCloudSingerName, verseFootnoteTexts, type Song } from "./song";
 
 describe("search phrase normalization", () => {
   it("treats spaces, hyphens, and n-dashes as equivalent separators", () => {
@@ -11,6 +11,16 @@ describe("search phrase normalization", () => {
   it("keeps the original range wide enough to highlight the source separator", () => {
     expect(getOriginalMatchRanges("gaura–ārati", "gaura ārati")).toEqual([{ start: 0, end: 11 }]);
     expect(getOriginalMatchRanges("gaura ārati", "gaura-ārati")).toEqual([{ start: 0, end: 11 }]);
+  });
+
+  it("runs over a word gap the query lacks only from the start of a word", () => {
+    expect(getOriginalMatchRanges("tatrāpi govardhanaḥ", "pig")).toEqual([]);
+    expect(getOriginalMatchRanges("ihāpi gokula-pateḥ", "pig")).toEqual([]);
+    expect(getOriginalMatchRanges("gaura ārati", "gauraarati")).toEqual([{ start: 0, end: 11 }]);
+    expect(getOriginalMatchRanges("tatrāpi govardhanaḥ", "pi go")).toEqual([{ start: 5, end: 10 }]);
+    expect(getOriginalMatchRanges("the stool of a hog", "hog")).toEqual([{ start: 15, end: 18 }]);
+    // A rejected match does not hide a later one in the same text.
+    expect(getOriginalMatchRanges("tatrāpi govardhanaḥ, pig", "pig")).toEqual([{ start: 21, end: 24 }]);
   });
 });
 
@@ -27,6 +37,17 @@ describe("recording filter by singer", () => {
     expect(filterSongs(songs, { ...filters, recording: singerRecordingFilter("bhakti-lalita-devi") }).map((item) => item.id)).toEqual(["both", "lalita"]);
     expect(filterSongs(songs, { ...filters, recording: singerRecordingFilter("huron") }).map((item) => item.id)).toEqual(["both"]);
     expect(filterSongs(songs, { ...filters, recording: WITH_RECORDINGS_FILTER }).map((item) => item.id)).toEqual(["both", "lalita"]);
+  });
+
+  it("tells apart two singers on one account", () => {
+    const shared = [
+      song("govinda", ["https://soundcloud.com/kostya-netrebenko/16-durlabha-manava-janma-9"]),
+      song("acharya", ["https://soundcloud.com/kostya-netrebenko/017-amarajivana-1"]),
+    ];
+    expect(filterSongs(shared, { ...filters, recording: singerRecordingFilter("kostya-netrebenko") }).map((item) => item.id)).toEqual(["govinda"]);
+    expect(filterSongs(shared, { ...filters, recording: singerRecordingFilter("acharya-maharaja") }).map((item) => item.id)).toEqual(["acharya"]);
+    expect(soundCloudSingerName("https://soundcloud.com/kostya-netrebenko/017-amarajivana-1")).toBe("Śrīla Āchārya Mahārāja");
+    expect(soundCloudSingerName("https://soundcloud.com/kostya-netrebenko/16-durlabha-manava-janma-9")).toBe("Śrīla Govinda Mahārāja");
   });
 
   it("reads the filter from the address bar, ignoring unknown singers", () => {

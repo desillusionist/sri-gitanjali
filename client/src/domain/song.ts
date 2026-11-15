@@ -155,24 +155,48 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
   return Array.from(new Set(validUrls));
 }
 
-// Singers whose SoundCloud accounts are named in the recording picker and the library filter.
+/**
+ * Singers named in the recording picker and the library filter. `account` is the
+ * singer's id: mostly their SoundCloud account, except where one account holds
+ * more than one singer (see ACCOUNT_TRACK_SINGERS).
+ */
 export const SOUNDCLOUD_SINGER_LIST: readonly { account: string; name: string }[] = [
   { account: "kostya-netrebenko", name: "Śrīla Govinda Mahārāja" },
+  { account: "acharya-maharaja", name: "Śrīla Āchārya Mahārāja" },
   { account: "huron", name: "Manasa Krishna" },
   { account: "bhakti-lalita-devi", name: "Bhakti Lalita Devi" },
 ];
 
-function soundCloudAccount(url: string): string | null {
+/**
+ * Tracks on an account sung by someone other than its main singer, as SoundCloud's
+ * "artist" field names them. On soundcloud.com/kostya-netrebenko the tracks numbered
+ * with three digits are by Śrīla B.N. Āchārya Mahārāja.
+ */
+const ACCOUNT_TRACK_SINGERS: Readonly<Record<string, Readonly<Record<string, string>>>> = {
+  "kostya-netrebenko": Object.fromEntries([
+    "003-jayajayagurudeveraratiujjvala-5", "011-thakuravaisnavagana-4", "013-thakuravaisnavapadaavanirasusampada-6",
+    "015-kirupepaibaseva-7", "017-amarajivana-1", "025-namonamahtulasimaharani-2", "034-nitaigunamaniamara-3",
+    "048-yadigauranahata-8", "076-radhabhajaneyadi-10", "082-sriharivasare-9", "083-suddhabhakatacharanarenu-11",
+    "092-bhagyadhisatvadiyo-sriguruprasasti-13", "094-naumisrigurupadabjam-sripranatidasakam-12",
+    "100-srisrisiksastakam1-6", "101-srisrisiksastakam2-1", "102-srisrisiksastakam3-7", "103-srisrisiksastakam4-4",
+    "104-srisrisiksastakam5-3", "105-srisrisiksastakam6-5", "106-srisrisiksastakam7-2", "107-srisrisiksastakam8-8",
+  ].map((track) => [track, "acharya-maharaja"])),
+};
+
+/** The singer's id for a SoundCloud track URL (see SOUNDCLOUD_SINGER_LIST), or null. */
+function soundCloudSingerId(url: string): string | null {
   try {
-    return new URL(url).pathname.split("/")[1] || null;
+    const [, account, track] = new URL(url).pathname.split("/");
+    if (!account) return null;
+    return ACCOUNT_TRACK_SINGERS[account]?.[track ?? ""] ?? account;
   } catch {
     return null;
   }
 }
 
 export function soundCloudSingerName(url: string): string | null {
-  const account = soundCloudAccount(url);
-  return SOUNDCLOUD_SINGER_LIST.find((singer) => singer.account === account)?.name ?? null;
+  const id = soundCloudSingerId(url);
+  return SOUNDCLOUD_SINGER_LIST.find((singer) => singer.account === id)?.name ?? null;
 }
 
 /** Known track length in seconds (from soundcloudDurations.ts), or null. */
@@ -192,7 +216,7 @@ export function formatTrackLength(seconds: number): string {
 }
 
 export function hasRecordingBySinger(song: Pick<Song, "audioLink" | "audioLinks">, account: string): boolean {
-  return getSoundCloudRecordingUrls(song).some((url) => soundCloudAccount(url) === account);
+  return getSoundCloudRecordingUrls(song).some((url) => soundCloudSingerId(url) === account);
 }
 
 export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioLinks">): string | null {
@@ -319,20 +343,29 @@ const SPELLING_PAIRS: Record<string, string> = { sh: "s", ri: "r", ch: "c", aa: 
 // Bengali writes b where Sanskrit has v (Nabadwīp / Navadvīp, Brindāban / Vṛndāvan).
 const SPELLING_SINGLES: Record<string, string> = { w: "b", v: "b" };
 
-/** Search form of a text: no accents, separators or case, with spelling variants folded, plus where each folded letter starts and ends in the source. */
-function foldForSearch(value: string): { folded: string; indexes: number[]; ends: number[] } {
+/**
+ * Search form of a text: no accents, separators or case, with spelling variants folded, plus where each folded
+ * letter starts and ends in the source, and which folded letters had a space or dash before them.
+ */
+function foldForSearch(value: string): { folded: string; indexes: number[]; ends: number[]; gapBefore: boolean[] } {
   const letters: string[] = [];
   const offsets: number[] = [];
   const letterEnds: number[] = [];
+  const letterGaps: boolean[] = [];
   let originalOffset = 0;
+  let pendingGap = false;
   for (const character of value) {
     const plain = character.normalize("NFKD").replace(COMBINING_MARKS, "").toLowerCase();
     for (const letter of plain) {
-      if (!SEPARATORS.test(letter)) {
-        letters.push(letter);
-        offsets.push(originalOffset);
-        letterEnds.push(originalOffset + character.length);
+      if (SEPARATORS.test(letter)) {
+        pendingGap = true;
+        continue;
       }
+      letters.push(letter);
+      offsets.push(originalOffset);
+      letterEnds.push(originalOffset + character.length);
+      letterGaps.push(pendingGap);
+      pendingGap = false;
     }
     originalOffset += character.length;
   }
@@ -340,20 +373,65 @@ function foldForSearch(value: string): { folded: string; indexes: number[]; ends
   let folded = "";
   const indexes: number[] = [];
   const ends: number[] = [];
+  const gapBefore: boolean[] = [];
   for (let index = 0; index < letters.length; index += 1) {
+    // A pair may span a gap ("gaura ārati" folds like the query "gauraarati"); the gap is then inside one letter.
     const pair = SPELLING_PAIRS[letters[index] + (letters[index + 1] ?? "")];
     if (pair) {
       folded += pair;
       indexes.push(offsets[index]);
       ends.push(letterEnds[index + 1]);
+      gapBefore.push(letterGaps[index]);
       index += 1;
       continue;
     }
     folded += SPELLING_SINGLES[letters[index]] ?? letters[index];
     indexes.push(offsets[index]);
     ends.push(letterEnds[index]);
+    gapBefore.push(letterGaps[index]);
   }
-  return { folded, indexes, ends };
+  return { folded, indexes, ends, gapBefore };
+}
+
+const WORD_CHARACTER = new RegExp("[\\p{L}\\p{N}]", "u");
+
+/**
+ * Where the query matches the folded text, as [start, end) in folded letters. Spaces and dashes are
+ * ignored, so "gauraarati" finds "gaura ārati", but a match that runs over a word gap the query does
+ * not have must start at the beginning of a word: "pig" does not find "tatrā·pi g·ovardhanaḥ".
+ */
+function findFoldedMatches(text: ReturnType<typeof foldForSearch>, query: string): Array<[number, number]> {
+  const pattern = searchPattern(query);
+  if (!pattern) return [];
+  const { folded, gapBefore } = text;
+  const wordStart = (index: number) => index === 0 || gapBefore[index] || !WORD_CHARACTER.test(folded[index - 1]);
+  const found: Array<[number, number]> = [];
+  pattern.lastIndex = 0;
+  for (let match = pattern.exec(folded); match; match = pattern.exec(folded)) {
+    const start = match.index;
+    const end = start + match[0].length;
+    if (!match[0].length) {
+      pattern.lastIndex = start + 1;
+      continue;
+    }
+    // Where each query word begins inside the match: gaps there were asked for.
+    const queryGaps = new Set<number>();
+    let cursor = start;
+    for (let group = 1; group < match.length; group += 1) {
+      if (group > 1) queryGaps.add(cursor);
+      cursor += match[group]?.length ?? 0;
+    }
+    let crossesUnaskedGap = false;
+    for (let index = start + 1; index < end; index += 1) {
+      if (gapBefore[index] && !queryGaps.has(index)) crossesUnaskedGap = true;
+    }
+    if (crossesUnaskedGap && !wordStart(start)) {
+      pattern.lastIndex = start + 1;
+      continue;
+    }
+    found.push([start, end]);
+  }
+  return found;
 }
 
 const escapeForPattern = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -367,36 +445,24 @@ function searchPattern(query: string): RegExp | null {
   const words = query.split(new RegExp(SEPARATORS.source + "+")).map((word) => foldForSearch(word).folded).filter(Boolean);
   if (!words.length) return null;
   const source = words.map((word) => {
-    if (word.length > 2 && word.endsWith("a") && CONSONANT.test(word.slice(0, -1))) return `${escapeForPattern(word.slice(0, -1))}a?`;
-    if (word.length > 1 && CONSONANT.test(word)) return `${escapeForPattern(word)}a?`;
-    return escapeForPattern(word);
+    if (word.length > 2 && word.endsWith("a") && CONSONANT.test(word.slice(0, -1))) return `(${escapeForPattern(word.slice(0, -1))}a?)`;
+    if (word.length > 1 && CONSONANT.test(word)) return `(${escapeForPattern(word)}a?)`;
+    return `(${escapeForPattern(word)})`;
   }).join("");
   return new RegExp(source, "g");
 }
 
 /** True when the text contains the query, allowing for spelling variants. */
 export function textMatchesQuery(value: string, query: string): boolean {
-  const pattern = searchPattern(query);
-  return pattern ? pattern.test(foldForSearch(value).folded) : false;
+  return findFoldedMatches(foldForSearch(value), query).length > 0;
 }
 
 export type TextMatchRange = { start: number; end: number };
 
 export function getOriginalMatchRanges(value: string, query: string): TextMatchRange[] {
-  const pattern = searchPattern(query);
-  if (!pattern) return [];
-
-  const { folded, indexes, ends } = foldForSearch(value);
-  const ranges: TextMatchRange[] = [];
-  for (const match of Array.from(folded.matchAll(pattern))) {
-    if (!match[0].length) continue;
-    const matchStart = match.index!;
-    const matchEnd = matchStart + match[0].length;
-    // End at the last matched letter, so a following space or dash is not highlighted.
-    ranges.push({ start: indexes[matchStart], end: ends[matchEnd - 1] });
-  }
-
-  return ranges;
+  const text = foldForSearch(value);
+  // End at the last matched letter, so a following space or dash is not highlighted.
+  return findFoldedMatches(text, query).map(([start, end]) => ({ start: text.indexes[start], end: text.ends[end - 1] }));
 }
 
 export function getHighlightParts(value: string, query: string): HighlightPart[] {

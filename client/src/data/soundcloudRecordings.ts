@@ -1,8 +1,9 @@
 /**
  * SoundCloud matches rebuilt from the corrected user-supplied source list.
  * The source title/first-line matching report is kept outside the deployed app.
- * Śrīla Govinda Mahārāja’s tracks (soundcloud.com/kostya-netrebenko) come first; his “Jaya Dhvani” has no song
- * in the book, and his Śikṣāṣṭakam 7 covers songs 7a–7c.
+ * The tracks from soundcloud.com/kostya-netrebenko come first: Śrīla Govinda Mahārāja’s (numbered with two digits)
+ * and Śrīla Āchārya Mahārāja’s (three digits; see ACCOUNT_TRACK_SINGERS in domain/song.ts). “Jaya Dhvani” has no
+ * song in the book, and Śikṣāṣṭakam 7 covers songs 7a–7c.
  * Bhakti Lalita Devi’s tracks (soundcloud.com/bhakti-lalita-devi) follow each song’s earlier recordings;
  * Śrī Rāma Dhun and both Jagannāthāṣṭakam tracks have no song in the book and are left out.
  */
