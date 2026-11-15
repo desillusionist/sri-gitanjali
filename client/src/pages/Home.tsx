@@ -3,6 +3,7 @@
  * асимметричной reading rail и поиском как главным действием.
  */
 
+import { useRecordingEdits } from "@/lib/recordingEdits";
 import { AppShell } from "@/components/AppShell";
 import { SongListItem } from "@/components/SongListItem";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,7 +15,7 @@ import {
   ALL_RECORDINGS_FILTER,
   UNLISTED_AUTHOR_FILTER,
   WITH_RECORDINGS_FILTER,
-  SOUNDCLOUD_SINGER_LIST,
+  soundCloudSingers,
   parseRecordingFilter,
   parseLanguageFilter,
   ALL_LANGUAGES_FILTER,
@@ -108,7 +109,8 @@ function LibraryHome() {
   const secondarySearch = useSecondarySearch();
   const searchableSecondaryLanguages = useMemo(() => availableSecondaryTranslationLanguages.filter((language) => usesStaticSecondaryTranslation(language.code)), []);
   const secondarySearchLanguage = searchableSecondaryLanguages.find((language) => language.code === secondarySearch.language) ?? null;
-  const filteredSongs = useMemo(() => filterSongs(songs, filters, secondarySearch.lookup), [filters, songs, secondarySearch.lookup]);
+  const recordingEditsInForce = useRecordingEdits();
+  const filteredSongs = useMemo(() => filterSongs(songs, filters, secondarySearch.lookup), [filters, songs, secondarySearch.lookup, recordingEditsInForce]);
   const authors = useMemo(() => getSongAuthors(songs), [songs]);
   const availableCategories = useMemo(() => getSongCategories(songs), [songs]);
   const hasUnlistedAuthors = useMemo(() => songs.some((song) => !song.poet?.trim()), [songs]);
@@ -279,7 +281,7 @@ function LibraryHome() {
               <SelectContent className="filter-select-content" collisionPadding={listClearance}>
                 <SelectItem value={ALL_RECORDINGS_FILTER}>{copy.library.allRecordings}</SelectItem>
                 <SelectItem value={WITH_RECORDINGS_FILTER}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.withRecordings}</span></SelectItem>
-                {SOUNDCLOUD_SINGER_LIST.map((singer) => <SelectItem value={singerRecordingFilter(singer.id)} key={singer.id}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}
+                {soundCloudSingers().map((singer) => <SelectItem value={singerRecordingFilter(singer.id)} key={singer.id}><span className="recording-filter-option"><Volume2 size={14} aria-hidden="true" />{copy.library.recordingsBySinger.replace("{singer}", singer.name)}</span></SelectItem>)}
               </SelectContent>
             </Select>
           </label>

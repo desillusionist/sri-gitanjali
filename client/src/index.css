@@ -564,6 +564,24 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .audio-row:not(.is-open) .audio-row-player { padding: 0; }
 .soundcloud-player { display: block; width: 100%; height: 20px; border: 0; background: transparent; }
 .soundcloud-player.is-duration-probe { position: fixed; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+/* The slim player bar: play, time, waveform (always shown), length, SoundCloud's cloud. */
+.sc-bar { display: flex; align-items: center; gap: 0.45rem; min-height: 2rem; min-width: 0; }
+.sc-bar-play { display: inline-grid; flex: none; place-items: center; width: 1.9rem; height: 1.9rem; padding: 0; border: 0; border-radius: 50%; color: #fff; background: var(--saffron-deep); cursor: pointer; }
+.sc-bar-play svg { margin-left: 1px; }
+.sc-bar-play:disabled { opacity: 0.45; cursor: default; }
+.sc-bar-play:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.6); outline-offset: 2px; }
+.sc-bar-time { flex: none; min-width: 2.2rem; color: var(--ink-soft); font-family: "DM Sans", Arial, sans-serif; font-size: 0.7rem; font-variant-numeric: tabular-nums; text-align: right; }
+.sc-bar-time.is-total { text-align: left; }
+.sc-bar-wave { flex: 1 1 auto; min-width: 3rem; height: 1.6rem; cursor: pointer; touch-action: none; }
+.sc-bar-wave rect { fill: var(--ink-soft); opacity: 0.38; transition: fill 120ms linear, opacity 120ms linear; }
+.sc-bar-wave rect.is-played { fill: var(--saffron); opacity: 1; }
+.sc-bar-wave rect.is-outside { opacity: 0.14; }
+.sc-bar-wave:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.6); outline-offset: 2px; border-radius: 3px; }
+.sc-bar-mark { stroke: var(--saffron-deep); stroke-width: 0.35; vector-effect: non-scaling-stroke; }
+.sc-bar.is-loading .sc-bar-wave rect { opacity: 0.5; }
+.sc-bar-cloud { display: inline-grid; flex: none; place-items: center; width: 1.6rem; height: 1.6rem; color: #f50; }
+.sc-bar-cloud svg { width: 1.35rem; height: 0.7rem; fill: currentColor; }
+.player-dock .sc-bar { padding: 0 0.15rem; }
 .song-category-link, .song-poet-link { color: inherit; text-decoration: none; transition: color 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out); }
 .song-category-link:hover, .song-poet-link:hover { color: var(--saffron-deep); text-decoration: underline; text-decoration-color: rgba(var(--saffron-rgb), 0.5); text-underline-offset: 0.24rem; }
 .song-category-link:focus-visible, .song-poet-link:focus-visible { outline: 2px solid rgba(var(--saffron-rgb), 0.55); outline-offset: 0.2rem; }
@@ -921,6 +939,39 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .admin-translation-english { padding: 0.5rem 0.7rem; border-left: 2px solid var(--hairline); color: var(--ink-soft); font-size: 0.85rem; }
 .admin-translation-english p { margin: 0.2rem 0 0; white-space: pre-line; }
 .admin-translation-english small { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+/* The admin's recordings editor. */
+.admin-recordings-button { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0.2rem 0 0.6rem; padding: 0.3rem 0.75rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink-soft); background: transparent; font-family: "DM Sans", Arial, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+.admin-recordings-button:hover { color: var(--saffron-deep); border-color: rgba(var(--saffron-rgb), 0.5); }
+.admin-recordings { width: min(36rem, 100%); max-height: min(92vh, 52rem); overflow-y: auto; }
+.admin-recordings-list { display: grid; gap: 0.35rem; margin: 0; padding: 0; list-style: none; }
+.admin-recordings-list > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.3rem; padding: 0.35rem 0.5rem; border: 1px solid var(--hairline); border-radius: 0.6rem; }
+.admin-recordings-list > li.is-selected { border-color: rgba(var(--saffron-rgb), 0.55); }
+.admin-recordings-row { display: grid; gap: 0.1rem; min-width: 0; padding: 0; border: 0; color: var(--ink); background: none; text-align: left; cursor: pointer; }
+.admin-recordings-row strong { font-size: 0.85rem; }
+.admin-recordings-row small { overflow: hidden; color: var(--ink-soft); font-size: 0.7rem; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.admin-recordings-actions { display: inline-flex; gap: 0.15rem; }
+.admin-recordings-actions button, .admin-recording-time button { display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; padding: 0; border: 1px solid var(--hairline); border-radius: 0.45rem; color: var(--ink-soft); background: transparent; cursor: pointer; }
+.admin-recordings-actions button:disabled { opacity: 0.35; cursor: default; }
+.admin-recording-detail { grid-column: 1 / -1; display: grid; gap: 0.55rem; padding: 0.4rem 0 0.2rem; }
+.admin-recording-marks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+.admin-recording-marks label { display: grid; gap: 0.25rem; font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); }
+.admin-recording-time { display: flex; gap: 0.2rem; align-items: center; }
+.admin-recording-time input { width: 100%; min-width: 0; padding: 0.3rem 0.4rem; border: 1px solid var(--hairline); border-radius: 0.45rem; font-size: 0.85rem; font-variant-numeric: tabular-nums; text-align: center; background: transparent; color: var(--ink); }
+.admin-recording-here, .admin-recording-buttons button { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.6rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink); background: transparent; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+.admin-recording-here { color: var(--saffron-deep); border-color: rgba(var(--saffron-rgb), 0.45); }
+.admin-recording-buttons { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.admin-recording-buttons button:disabled { opacity: 0.4; cursor: default; }
+.admin-recording-next { display: grid; gap: 0.3rem; }
+.admin-recording-next input, .admin-recordings-add input, .admin-recording-singer select { width: 100%; min-width: 0; padding: 0.4rem 0.55rem; border: 1px solid var(--hairline); border-radius: 0.5rem; color: var(--ink); background: transparent; font-size: 0.85rem; }
+.admin-recording-next ul { display: grid; gap: 0.15rem; margin: 0; padding: 0; list-style: none; }
+.admin-recording-next li button { display: grid; width: 100%; padding: 0.35rem 0.5rem; border: 0; border-radius: 0.45rem; color: var(--ink); background: rgba(var(--saffron-rgb), 0.07); text-align: left; cursor: pointer; }
+.admin-recording-next li small { color: var(--ink-soft); font-style: italic; }
+.admin-recording-singer { display: grid; gap: 0.25rem; font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); }
+.admin-recordings-add { display: flex; gap: 0.35rem; width: 100%; }
+.admin-recordings-add input { flex: 1 1 auto; }
+.admin-recordings-add button { display: inline-flex; flex: none; align-items: center; gap: 0.25rem; padding: 0.35rem 0.75rem; border: 1px solid var(--hairline); border-radius: 0.5rem; color: var(--ink); background: transparent; font-weight: 600; cursor: pointer; }
+.admin-recordings-add button:disabled { opacity: 0.45; cursor: default; }
+.admin-recordings-song-link { margin: 0 0.3rem 0 0; padding: 0; border: 0; color: var(--saffron-deep); background: none; text-decoration: underline; cursor: pointer; }
 
 /* Recording rows: the toggle fills the row; small actions sit at its end. */
 .audio-row-head { display: flex; gap: 0.2rem; align-items: center; }

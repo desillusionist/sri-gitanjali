@@ -6,6 +6,7 @@
 import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getSongRecordings, soundCloudSegment, soundCloudTrackUrl, type SongRecording } from "@/domain/song";
 import { usePlaylist } from "@/hooks/usePlaylist";
+import { useRecordingEdits } from "@/lib/recordingEdits";
 import { createSegmentFollower, loadSoundCloudWidgetApi, soundCloudPlayerSrc, SOUNDCLOUD_LOAD_OPTIONS, type SoundCloudWidget } from "@/lib/soundCloudWidget";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 
@@ -40,6 +41,8 @@ type PlayerContextValue = {
   /** Address the dock's iframe starts with; later tracks are loaded into the same widget. */
   initialSrc: string | null;
   iframeRef: RefObject<HTMLIFrameElement | null>;
+  /** The widget playing in that iframe, once it is ready. */
+  widget: SoundCloudWidget | null;
   play: (url: string) => void;
   step: (offset: -1 | 1) => boolean;
   togglePlay: () => void;
@@ -52,7 +55,9 @@ const PlayerContext = createContext<PlayerContextValue | null>(null);
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const { songs } = useSongLibrary();
   const { tracks } = usePlaylist();
-  const byUrl = useMemo(() => new Map(getSongRecordings(songs).map((recording) => [recording.url, recording])), [songs]);
+  // Recordings changed in the admin tools count at once.
+  const edits = useRecordingEdits();
+  const byUrl = useMemo(() => new Map(getSongRecordings(songs).map((recording) => [recording.url, recording])), [songs, edits]);
   const items = useMemo(() => tracks.map((url) => byUrl.get(url)).filter((item): item is SongRecording => Boolean(item)), [byUrl, tracks]);
 
   const [stored] = useState(readStoredPlayer);
@@ -63,6 +68,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const widgetRef = useRef<SoundCloudWidget | null>(null);
+  const [widget, setWidget] = useState<SoundCloudWidget | null>(null);
   const followerRef = useRef<ReturnType<typeof createSegmentFollower> | null>(null);
   const itemsRef = useRef(items);
   itemsRef.current = items;
@@ -125,6 +131,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       if (!active) return;
       const widget = api.Widget(iframe);
       widgetRef.current = widget;
+      setWidget(widget);
       // A recording that is one part of a longer track starts and ends there.
       const follower = createSegmentFollower(widget);
       followerRef.current = follower;
@@ -148,12 +155,13 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       active = false;
       widgetRef.current = null;
       followerRef.current = null;
+      setWidget(null);
     };
   }, [initialSrc, step]);
 
   const value = useMemo<PlayerContextValue>(() => ({
-    items, current, currentIndex, isPlaying, isOpen: visible, initialSrc, iframeRef, play, step, togglePlay, open, close,
-  }), [items, current, currentIndex, isPlaying, visible, initialSrc, play, step, togglePlay, open, close]);
+    items, current, currentIndex, isPlaying, isOpen: visible, initialSrc, iframeRef, widget, play, step, togglePlay, open, close,
+  }), [items, current, currentIndex, isPlaying, visible, initialSrc, widget, play, step, togglePlay, open, close]);
 
   return <PlayerContext.Provider value={value}>{children}</PlayerContext.Provider>;
 }

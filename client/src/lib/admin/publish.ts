@@ -3,12 +3,14 @@ import type { HolyNameEdits } from "@/lib/holyNames";
 import { CIRCLE_SIZE, circleStem, DEFAULT_FACE } from "@/lib/authors";
 import { STORAGE_URL } from "@/data/sources";
 import { commitChanges, GitHubError, readRepoFile, type RepoChange } from "./github";
-import { draftCount, getDraftFile, isTextField, markPublished, PICTURE_FIELDS, translationCount, type AuthorPictures, type Drafts } from "./drafts";
+import { draftCount, getDraftFile, isTextField, markPublished, PICTURE_FIELDS, recordingCount, translationCount, type AuthorPictures, type Drafts } from "./drafts";
+import { mergeRecordingEdits, type RecordingEdits } from "@/lib/recordingEdits";
 import { prepareCircle } from "./images";
 
 export const AUTHORS_PATH = "client/src/data/authors.json";
 export const EDITS_PATH = "client/src/data/holy-names-edits.json";
 export const TRANSLATION_EDITS_PATH = "client/src/data/translation-edits.json";
+export const RECORDING_EDITS_PATH = "client/src/data/recording-edits.json";
 const STORAGE_DIR = "local-storage/";
 
 type AuthorsFile = { authors: (Record<string, unknown> & { id: string })[] };
@@ -45,6 +47,12 @@ export function applyTranslationEdits(file: TranslationEditsFile, translations: 
   return { ...file, languages };
 }
 
+/** The recording edits file with this device's changes laid over it, keeping its note and the others. */
+export function applyRecordingEdits(file: Record<string, unknown> & Partial<RecordingEdits>, recordings: RecordingEdits): Record<string, unknown> & RecordingEdits {
+  const merged = mergeRecordingEdits({ songs: { ...file.songs }, tracks: { ...file.tracks }, singers: { ...file.singers } }, recordings);
+  return { ...file, ...merged };
+}
+
 /** Every picture file the authors file uses. */
 export function usedFiles(file: AuthorsFile): Set<string> {
   const used = new Set<string>();
@@ -61,10 +69,12 @@ function describe(drafts: Drafts): string {
   const parts = [];
   const authors = Object.keys(drafts.authors).length;
   const verses = translationCount(drafts);
-  const notes = draftCount({ ...drafts, authors: {}, translations: {} });
+  const recordings = recordingCount(drafts);
+  const notes = draftCount({ ...drafts, authors: {}, translations: {}, recordings: { songs: {}, tracks: {}, singers: {} } });
   if (authors) parts.push(`${authors} Vaiṣṇava page${authors === 1 ? "" : "s"}`);
   if (notes) parts.push(`${notes} note${notes === 1 ? "" : "s"}`);
   if (verses) parts.push(`${verses} verse translation${verses === 1 ? "" : "s"}`);
+  if (recordings) parts.push(`recordings of ${recordings} song${recordings === 1 ? "" : "s"}`);
   return `Admin: ${parts.join(", ").replace(/, ([^,]*)$/, " and $1") || "changes"}`;
 }
 
@@ -122,6 +132,11 @@ export async function publishDrafts(drafts: Drafts, login?: string): Promise<str
         const text = await readRepoFile(TRANSLATION_EDITS_PATH);
         const file = text ? JSON.parse(text) : { languages: {} };
         changes.push({ path: TRANSLATION_EDITS_PATH, text: `${JSON.stringify(applyTranslationEdits(file, drafts.translations), null, 2)}\n` });
+      }
+      if (recordingCount(drafts)) {
+        const text = await readRepoFile(RECORDING_EDITS_PATH);
+        const file = text ? JSON.parse(text) : {};
+        changes.push({ path: RECORDING_EDITS_PATH, text: `${JSON.stringify(applyRecordingEdits(file, drafts.recordings), null, 2)}\n` });
       }
       if (!changes.length) return "";
       const sha = await commitChanges(`${describe(drafts)}${login ? `\n\nMade in the app's admin tools by ${login}.` : ""}`, changes);

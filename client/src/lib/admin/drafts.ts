@@ -1,7 +1,7 @@
 /**
  * The admin's unpublished changes, kept on this device until "Publish": the pictures of each
  * Vaiṣṇava (main portrait, circle, slideshow and their captions), the name, place and book
- * notes, and the verse translations in the second languages. New picture files wait in IndexedDB. Everything shows in the app here at once; Publish
+ * notes, the verse translations in the second languages, and the songs' recordings. New picture files wait in IndexedDB. Everything shows in the app here at once; Publish
  * writes it all to the repository in one commit, and the site rebuilds in about two minutes.
  * Changes stay shown here until the rebuilt site carries them, then they are dropped.
  */
@@ -9,6 +9,7 @@ import { useSyncExternalStore } from "react";
 import { AUTHORS, findAuthorById, registerDraftImage, type Author, type AuthorImage } from "@/lib/authors";
 import { HOLY_NAME_EDITS, type HolyNameEdit, type HolyNameLocalEdit } from "@/lib/holyNames";
 import { TRANSLATION_EDITS } from "@/lib/secondaryTranslations";
+import { EMPTY_RECORDING_EDITS, PUBLISHED_RECORDING_EDITS, setDraftRecordingEdits, soundCloudTrackPath, type RecordingEdits } from "@/lib/recordingEdits";
 import { clearFaceOverrides, sameFace, setFaceOverride, type Face } from "@/lib/portraitCrops";
 import { preparePortrait, prepareGalleryImage, type PreparedImage } from "./images";
 
@@ -24,6 +25,8 @@ export type Drafts = {
   localNotes: Record<string, Record<string, HolyNameLocalEdit>>;
   /** Verse translations: per language, per "song-id::verse-id" the new text. */
   translations: Record<string, Record<string, string>>;
+  /** Songs' recordings: a song's new list, and the singers and lengths of the tracks in it. */
+  recordings: RecordingEdits;
   /** Picture files that are no longer used and go when publishing (if nothing else uses them). */
   removeFiles: string[];
   /** Whether there are changes not yet published. */
@@ -37,22 +40,25 @@ export type Drafts = {
 /** After publishing, changes stay shown here until the rebuilt site carries them, but no longer than this. */
 const SHOW_PUBLISHED_FOR_MS = 15 * 60 * 1000;
 
-const EMPTY: Drafts = { authors: {}, notes: {}, localNotes: {}, translations: {}, removeFiles: [], dirty: false };
+const EMPTY: Drafts = { authors: {}, notes: {}, localNotes: {}, translations: {}, recordings: EMPTY_RECORDING_EDITS, removeFiles: [], dirty: false };
 const STORAGE_KEY = "kirtan-guide:admin-drafts";
 const listeners = new Set<() => void>();
 
 function load(): Drafts {
   try {
-    return { ...EMPTY, ...JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") };
+    const stored = { ...EMPTY, ...JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") } as Drafts;
+    return { ...stored, recordings: { ...EMPTY_RECORDING_EDITS, ...stored.recordings } };
   } catch {
     return EMPTY;
   }
 }
 
 let drafts: Drafts = typeof window === "undefined" ? EMPTY : load();
+setDraftRecordingEdits(drafts.recordings);
 
 function save(next: Drafts) {
   drafts = next;
+  setDraftRecordingEdits(next.recordings);
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch {
@@ -77,8 +83,11 @@ export function getDrafts() {
 const countIn = (byLanguage: Record<string, Record<string, unknown>> = {}) => Object.values(byLanguage).reduce((sum, items) => sum + Object.keys(items).length, 0);
 
 export function draftCount(value: Drafts) {
-  return Object.keys(value.authors).length + Object.keys(value.notes).length + countIn(value.localNotes) + countIn(value.translations);
+  return Object.keys(value.authors).length + Object.keys(value.notes).length + countIn(value.localNotes) + countIn(value.translations) + recordingCount(value);
 }
+
+/** How many songs' recordings wait to be published. */
+export const recordingCount = (value: Drafts) => Object.keys(value.recordings?.songs ?? {}).length;
 
 /** How many verse translations wait to be published. */
 export const translationCount = (value: Drafts) => countIn(value.translations);
@@ -176,7 +185,7 @@ export async function initDrafts() {
     const left = Object.fromEntries(Object.entries(edits).filter(([key, text]) => text !== TRANSLATION_EDITS.languages[language]?.[key]));
     if (Object.keys(left).length) translations[language] = left;
   }
-  save({ ...drafts, authors, notes, localNotes, translations });
+  save({ ...drafts, authors, notes, localNotes, translations, recordings: settledRecordings(drafts.recordings) });
 
   try {
     const names = (await withStore("readonly", (store) => store.getAllKeys())) as string[];
@@ -405,6 +414,34 @@ export function undoTranslation(language: string, key: string) {
   const translations = { ...drafts.translations, [language]: forLanguage };
   if (!Object.keys(forLanguage).length) delete translations[language];
   settle({ ...drafts, translations });
+}
+
+// --- Recordings ---
+
+/** Drops song lists the published file already has, and track details no remaining list needs. */
+function settledRecordings(recordings: RecordingEdits = EMPTY_RECORDING_EDITS): RecordingEdits {
+  const songs = Object.fromEntries(Object.entries(recordings.songs).filter(([id, urls]) => !sameJson(urls, PUBLISHED_RECORDING_EDITS.songs[id])));
+  const used = new Set(Object.values(songs).flat().map(soundCloudTrackPath));
+  const tracks = Object.fromEntries(Object.entries(recordings.tracks).filter(([path, track]) => used.has(path) && !sameJson(track, PUBLISHED_RECORDING_EDITS.tracks[path])));
+  const singers = Object.fromEntries(Object.entries(recordings.singers).filter(([id]) => !PUBLISHED_RECORDING_EDITS.singers[id] && Object.values(tracks).some((track) => track.singer === id)));
+  return { songs, tracks, singers };
+}
+
+/**
+ * Sets songs' recordings: each song's full new list, plus the singer and length of tracks
+ * new to the app, and singers added here.
+ */
+export function setRecordings(songs: Record<string, string[]>, tracks: RecordingEdits["tracks"] = {}, singers: RecordingEdits["singers"] = {}) {
+  const recordings = drafts.recordings ?? EMPTY_RECORDING_EDITS;
+  const nextTracks = { ...recordings.tracks };
+  for (const [path, track] of Object.entries(tracks)) nextTracks[path] = { ...nextTracks[path], ...track };
+  save({ ...drafts, recordings: settledRecordings({ songs: { ...recordings.songs, ...songs }, tracks: nextTracks, singers: { ...recordings.singers, ...singers } }), dirty: true });
+}
+
+export function undoRecordings(songId: string) {
+  const songs = { ...drafts.recordings.songs };
+  delete songs[songId];
+  settle({ ...drafts, recordings: settledRecordings({ ...drafts.recordings, songs }) });
 }
 
 // --- Verse translations ---

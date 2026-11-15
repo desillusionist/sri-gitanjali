@@ -5,6 +5,7 @@
 
 import { soundCloudTrackSeconds } from "@/data/soundcloudDurations";
 import { getFootnotes } from "@/lib/footnotes";
+import { recordingEdits, soundCloudTrackPath } from "@/lib/recordingEdits";
 import { getSongLanguage, isSongLanguage } from "@/lib/songLanguages";
 
 export type SongLine = {
@@ -68,7 +69,7 @@ export function parseRecordingFilter(value: string | null): RecordingFilter {
   if (value === WITH_RECORDINGS_FILTER) return WITH_RECORDINGS_FILTER;
   const given = value?.startsWith("singer:") ? value.slice("singer:".length) : null;
   const singerId = given ? SINGER_ID_ALIASES[given] ?? given : null;
-  return singerId && SOUNDCLOUD_SINGER_LIST.some((singer) => singer.id === singerId) ? singerRecordingFilter(singerId) : ALL_RECORDINGS_FILTER;
+  return singerId && soundCloudSingers().some((singer) => singer.id === singerId) ? singerRecordingFilter(singerId) : ALL_RECORDINGS_FILTER;
 }
 
 export type SongSearchFilters = {
@@ -142,8 +143,10 @@ export function songFirstLine(song: Song): string {
   return song.verses[0]?.lines[0]?.transliteration.trim() || song.title;
 }
 
-export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audioLinks">): string[] {
-  const candidates = [...(song.audioLinks ?? []), ...(song.audioLink ? [song.audioLink] : [])];
+export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audioLinks"> & { id?: string }): string[] {
+  // A list set in the admin tools replaces the song's own.
+  const edited = song.id ? recordingEdits().songs[song.id] : undefined;
+  const candidates = edited ?? [...(song.audioLinks ?? []), ...(song.audioLink ? [song.audioLink] : [])];
   const validUrls = candidates.flatMap((candidate) => {
     try {
       const sourceUrl = new URL(candidate);
@@ -156,7 +159,7 @@ export function getSoundCloudRecordingUrls(song: Pick<Song, "audioLink" | "audio
   return Array.from(new Set(validUrls));
 }
 
-/** Singers named in the recording picker and the library filter, in the order the picker lists them. */
+/** Singers named in the recording picker and the library filter, in the order the picker lists them (see soundCloudSingers). */
 export const SOUNDCLOUD_SINGER_LIST: readonly { id: string; name: string }[] = [
   { id: "sridhar-maharaja", name: "Śrīla Śrīdhar Mahārāja" },
   { id: "govinda-maharaja", name: "Śrīla Govinda Mahārāja" },
@@ -199,12 +202,22 @@ const ACCOUNT_TRACK_SINGERS: Readonly<Record<string, Readonly<Record<string, str
 /** Old filter ids still found in saved links. */
 const SINGER_ID_ALIASES: Readonly<Record<string, string>> = { "kostya-netrebenko": "govinda-maharaja" };
 
-/** The singer's id for a SoundCloud track URL (see SOUNDCLOUD_SINGER_LIST), or null. */
-function soundCloudSingerId(url: string): string | null {
+/** Every singer: the list above, then those added in the admin tools. */
+export function soundCloudSingers(): { id: string; name: string }[] {
+  const added = Object.entries(recordingEdits().singers)
+    .filter(([id]) => !SOUNDCLOUD_SINGER_LIST.some((singer) => singer.id === id))
+    .map(([id, name]) => ({ id, name }));
+  return [...SOUNDCLOUD_SINGER_LIST, ...added];
+}
+
+/** The singer's id for a SoundCloud track URL (see soundCloudSingers), or null. */
+export function soundCloudSingerId(url: string): string | null {
   try {
     const [, account, track] = new URL(url).pathname.split("/");
     if (!account) return null;
-    return ACCOUNT_TRACK_SINGERS[account]?.[track ?? ""] ?? ACCOUNT_SINGERS[account] ?? account;
+    const path = soundCloudTrackPath(url);
+    const chosen = path ? recordingEdits().tracks[path]?.singer : undefined;
+    return chosen ?? ACCOUNT_TRACK_SINGERS[account]?.[track ?? ""] ?? ACCOUNT_SINGERS[account] ?? account;
   } catch {
     return null;
   }
@@ -212,7 +225,7 @@ function soundCloudSingerId(url: string): string | null {
 
 export function soundCloudSingerName(url: string): string | null {
   const id = soundCloudSingerId(url);
-  return SOUNDCLOUD_SINGER_LIST.find((singer) => singer.id === id)?.name ?? null;
+  return soundCloudSingers().find((singer) => singer.id === id)?.name ?? null;
 }
 
 /** A part of a SoundCloud track, in seconds; `end` null means to the end of the track. */
@@ -252,7 +265,8 @@ export function soundCloudPageUrl(url: string): string {
 /** Known length in seconds (from soundcloudDurations.ts, or of the marked part), or null. */
 export function soundCloudTrackSecondsFor(url: string): number | null {
   try {
-    const whole = soundCloudTrackSeconds[new URL(url).pathname.replace(/\/+$/, "")] ?? null;
+    const path = new URL(url).pathname.replace(/\/+$/, "");
+    const whole = recordingEdits().tracks[path]?.seconds ?? soundCloudTrackSeconds[path] ?? null;
     const segment = soundCloudSegment(url);
     if (!segment) return whole;
     const end = segment.end ?? whole;
@@ -269,19 +283,19 @@ export function formatTrackLength(seconds: number): string {
   return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
 }
 
-export function hasRecordingBySinger(song: Pick<Song, "audioLink" | "audioLinks">, singerId: string): boolean {
+export function hasRecordingBySinger(song: Pick<Song, "audioLink" | "audioLinks"> & { id?: string }, singerId: string): boolean {
   return getSoundCloudRecordingUrls(song).some((url) => soundCloudSingerId(url) === singerId);
 }
 
-export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioLinks">): string | null {
+export function getSoundCloudRecordingUrl(song: Pick<Song, "audioLink" | "audioLinks"> & { id?: string }): string | null {
   return getSoundCloudRecordingUrls(song)[0] ?? null;
 }
 
-export function getSoundCloudRecordingCount(song: Pick<Song, "audioLink" | "audioLinks">): number {
+export function getSoundCloudRecordingCount(song: Pick<Song, "audioLink" | "audioLinks"> & { id?: string }): number {
   return getSoundCloudRecordingUrls(song).length;
 }
 
-export function hasSoundCloudRecording(song: Pick<Song, "audioLink" | "audioLinks">): boolean {
+export function hasSoundCloudRecording(song: Pick<Song, "audioLink" | "audioLinks"> & { id?: string }): boolean {
   return getSoundCloudRecordingCount(song) > 0;
 }
 

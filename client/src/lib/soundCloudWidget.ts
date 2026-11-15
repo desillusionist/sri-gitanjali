@@ -12,6 +12,19 @@ export type SoundCloudWidget = {
   pause: () => void;
   toggle: () => void;
   seekTo: (milliseconds: number) => void;
+  getPosition: (callback: (milliseconds: number) => void) => void;
+  isPaused: (callback: (paused: boolean) => void) => void;
+  getCurrentSound: (callback: (sound: SoundCloudSound | null) => void) => void;
+};
+
+/** The parts of the widget's sound object the app reads. */
+export type SoundCloudSound = {
+  permalink_url?: string;
+  waveform_url?: string;
+  duration?: number;
+  full_duration?: number;
+  title?: string;
+  user?: { permalink?: string; username?: string };
 };
 
 type SoundCloudWidgetApi = {
@@ -101,6 +114,72 @@ export function createSegmentFollower(widget: SoundCloudWidget) {
       return crossed;
     },
   };
+}
+
+/**
+ * The widget address for any SoundCloud track link, short "on.soundcloud.com" links included:
+ * SoundCloud's oEmbed resolves it. Null when SoundCloud does not know the link or forbids embedding.
+ */
+export async function resolveSoundCloudPlayerSrc(link: string): Promise<{ src: string; title: string } | null> {
+  const response = await fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(link.trim())}`);
+  if (!response.ok) return null;
+  const payload = (await response.json()) as { html?: string; title?: string };
+  const match = payload.html?.match(/src="([^"]+)"/i);
+  if (!match) return null;
+  const embedded = new URL(match[1].replaceAll("&amp;", "&"));
+  const trackUrl = embedded.searchParams.get("url");
+  return trackUrl ? { src: soundCloudPlayerSrc(trackUrl), title: payload.title ?? "" } : null;
+}
+
+/**
+ * Loads a track in a hidden player and reads it: its proper soundcloud.com address, account, title
+ * and length. For links pasted in the admin tools.
+ */
+export async function inspectSoundCloudTrack(link: string): Promise<{ url: string; account: string; title: string; seconds: number } | null> {
+  const resolved = await resolveSoundCloudPlayerSrc(link);
+  if (!resolved) return null;
+  const api = await loadSoundCloudWidgetApi();
+  const iframe = document.createElement("iframe");
+  iframe.src = resolved.src;
+  iframe.title = "";
+  iframe.setAttribute("aria-hidden", "true");
+  iframe.className = "soundcloud-player is-duration-probe";
+  document.body.append(iframe);
+  try {
+    const sound = await new Promise<SoundCloudSound | null>((resolve) => {
+      const widget = api.Widget(iframe);
+      const timer = window.setTimeout(() => resolve(null), 15_000);
+      widget.bind(api.Widget.Events.READY, () => widget.getCurrentSound((value) => {
+        window.clearTimeout(timer);
+        resolve(value);
+      }));
+    });
+    if (!sound?.permalink_url) return null;
+    const url = sound.permalink_url.replace(/[?#].*$/, "").replace(/\/+$/, "").replace(/^http:/, "https:");
+    const account = new URL(url).pathname.split("/")[1] ?? "";
+    return { url, account, title: sound.title ?? resolved.title, seconds: Math.round((sound.full_duration ?? sound.duration ?? 0) / 1000) };
+  } finally {
+    iframe.remove();
+  }
+}
+
+const waveforms = new Map<string, Promise<number[] | null>>();
+
+/** A track's waveform (SoundCloud's own samples, 0–1), once per page. */
+export function loadSoundCloudWaveform(waveformUrl: string): Promise<number[] | null> {
+  let promise = waveforms.get(waveformUrl);
+  if (!promise) {
+    promise = fetch(waveformUrl)
+      .then(async (response) => {
+        if (!response.ok) return null;
+        const data = (await response.json()) as { height?: number; samples?: number[] };
+        const height = data.height || Math.max(1, ...(data.samples ?? []));
+        return data.samples?.length ? data.samples.map((sample) => sample / height) : null;
+      })
+      .catch(() => null);
+    waveforms.set(waveformUrl, promise);
+  }
+  return promise;
 }
 
 declare global {

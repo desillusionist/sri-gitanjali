@@ -1,0 +1,6 @@
+{
+  "_note": "Recordings changed in the app's admin tools. \"songs\": a song's full list of SoundCloud recordings (replacing the hand-made list in soundcloudRecordings.ts), each optionally with its part, \"#t=start-end\". \"tracks\": per track path, its singer id and length in seconds. \"singers\": names of singers added here. Written by the admin's Publish; do not regenerate.",
+  "songs": {},
+  "tracks": {},
+  "singers": {}
+}

@@ -23,10 +23,13 @@ import { PlaylistToggleButton } from "@/components/PlaylistToggleButton";
 import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
 import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingingFollower";
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
-import { createSegmentFollower, loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
+import { createSegmentFollower, loadSoundCloudWidgetApi, type SoundCloudWidget } from "@/lib/soundCloudWidget";
+import { SoundCloudBar } from "@/components/SoundCloudBar";
+import { useRecordingEdits } from "@/lib/recordingEdits";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, Share2, SlidersHorizontal, Volume2, X, Pencil } from "lucide-react";
 import { openTranslationEditor } from "@/components/admin/TranslationEditor";
+import { openRecordingsEditor } from "@/components/admin/RecordingsEditor";
 import { useDrafts } from "@/lib/admin/drafts";
 import { useIsAdmin } from "@/lib/admin/session";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
@@ -345,12 +348,15 @@ function SongPageContent() {
   const teleprompterScrollRef = useRef<HTMLDivElement>(null);
   const readerPanelRef = useRef<HTMLElement>(null);
   const soundCloudPlayerRef = useRef<HTMLIFrameElement>(null);
+  const [soundCloudWidget, setSoundCloudWidget] = useState<SoundCloudWidget | null>(null);
   const song = songs.find((item) => item.id === params?.id);
   usePageMeta(song?.title ?? (status === "ready" ? copy.song.notFoundTitle : null), song ? [song.poet, song.verses.find((verse) => verse.translation)?.translation].filter(Boolean).join(" — ") : null);
   const index = song ? songs.findIndex((item) => item.id === song.id) : -1;
   const previous = index > 0 ? songs[index - 1] : null;
   const next = index >= 0 && index < songs.length - 1 ? songs[index + 1] : null;
-  const soundCloudSourceUrls = useMemo(() => (song ? getSoundCloudRecordingUrls(song) : []), [song]);
+  // Recordings changed in the admin tools count at once.
+  const recordingEditsInForce = useRecordingEdits();
+  const soundCloudSourceUrls = useMemo(() => (song ? getSoundCloudRecordingUrls(song) : []), [song, recordingEditsInForce]);
   const soundCloudSourceUrl = soundCloudSourceUrls[soundCloudRecordingIndex] ?? soundCloudSourceUrls[0] ?? null;
   const displayedVerses = useMemo(() => {
     if (!song) return [];
@@ -646,6 +652,7 @@ function SongPageContent() {
     void loadSoundCloudWidgetApi()
       .then((soundCloud) => {
         const widget = soundCloud.Widget(iframe);
+        if (isActive) setSoundCloudWidget(widget);
         // A recording that is one part of a longer track plays from its start to its end only.
         const segment = soundCloudSegment(soundCloudSourceUrl);
         const readDuration = () => widget.getDuration((durationMs) => {
@@ -669,6 +676,7 @@ function SongPageContent() {
 
     return () => {
       isActive = false;
+      setSoundCloudWidget(null);
     };
   }, [soundCloudPlayerUrl, soundCloudSourceUrl]);
 
@@ -1450,17 +1458,19 @@ function SongPageContent() {
                       <div className="audio-row-player">
                         {isOpen && soundCloudPlayerStatus === "loading" && <p className="song-audio-status" role="status">{copy.song.audioPlayerLoading}</p>}
                         {isOpen && soundCloudPlayerStatus === "error" && <p className="song-audio-status is-error">{copy.song.audioPlayerUnavailable} <a href={soundCloudPageUrl(url)} target="_blank" rel="noreferrer">{copy.song.openAudioOnSoundCloud}</a></p>}
+                        {/* SoundCloud's own player plays the sound out of sight; the bar shows and drives it. */}
+                        {isOpen && soundCloudPlayerUrl && <SoundCloudBar widget={soundCloudWidget} url={url} />}
                         {soundCloudPlayerUrl && (
                           <iframe
                             id={`soundcloud-player-${song.id}`}
                             ref={soundCloudPlayerRef}
-                            className={`soundcloud-player ${isOpen ? "is-visible" : "is-duration-probe"}`}
+                            className="soundcloud-player is-duration-probe"
                             src={soundCloudPlayerUrl}
                             title={copy.song.soundCloudPlayerTitle.replace("{song}", song.title)}
                             allow="autoplay"
                             loading="eager"
-                            aria-hidden={!isOpen}
-                            tabIndex={isOpen ? 0 : -1}
+                            aria-hidden="true"
+                            tabIndex={-1}
                           />
                         )}
                       </div>
@@ -1470,6 +1480,11 @@ function SongPageContent() {
               })}
             </ul>
           </section>
+        )}
+        {isAdmin && (
+          <button type="button" className="admin-recordings-button" onClick={() => openRecordingsEditor(song.id)}>
+            <Pencil size={13} aria-hidden="true" />{soundCloudSourceUrls.length ? copy.admin.editRecordings : copy.admin.addRecording}
+          </button>
         )}
 
         {selectedSecondaryLanguage && isSongUntranslatedInPackage && <p className="secondary-translation-status song-untranslated-note" role="status">{copy.song.secondaryTranslationNotYet.replace("{language}", selectedSecondaryLanguage.label)}</p>}

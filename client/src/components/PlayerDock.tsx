@@ -2,6 +2,7 @@
 
 import { usePlayer } from "@/contexts/PlayerContext";
 import { formatTrackLength } from "@/domain/song";
+import { SoundCloudBar } from "@/components/SoundCloudBar";
 import { usePlaylist } from "@/hooks/usePlaylist";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { ArrowRight, ChevronDown, ListMusic, Pause, Play, SkipBack, SkipForward, X } from "lucide-react";
@@ -9,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 
 export function PlayerDock() {
-  const { current, currentIndex, items, isOpen, isPlaying, initialSrc, iframeRef, play, step, togglePlay, close } = usePlayer();
+  const { current, currentIndex, items, isOpen, isPlaying, initialSrc, iframeRef, widget, play, step, togglePlay, close } = usePlayer();
   const { remove } = usePlaylist();
   const { copy } = useTranslation();
   const [location] = useLocation();
@@ -86,7 +87,8 @@ export function PlayerDock() {
             <button type="button" className="playlist-control" onClick={close} aria-label={copy.playlist.hidePlayer} title={copy.playlist.hidePlayer}><X size={16} aria-hidden="true" /></button>
           </div>
         </div>
-        {initialSrc && <iframe ref={iframeRef} className="soundcloud-player player-dock-iframe" src={initialSrc} title={copy.playlist.playerTitle} allow="autoplay" />}
+        {initialSrc && <SoundCloudBar widget={widget} url={current.url} showPlayButton={false} />}
+        {initialSrc && <iframe ref={iframeRef} className="soundcloud-player is-duration-probe" src={initialSrc} title={copy.playlist.playerTitle} allow="autoplay" aria-hidden="true" tabIndex={-1} />}
       </div>
     </aside>
   );

@@ -5,7 +5,8 @@ import { Link } from "wouter";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { findAuthorById } from "@/lib/authors";
 import { HOLY_NAMES } from "@/lib/holyNames";
-import { describeAuthorChange, publishedPictures, undoAuthor, undoLocalNote, undoNote, undoTranslation, useDrafts } from "@/lib/admin/drafts";
+import { describeAuthorChange, publishedPictures, undoAuthor, undoLocalNote, undoNote, undoRecordings, undoTranslation, useDrafts } from "@/lib/admin/drafts";
+import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { useFaceOverrides } from "@/lib/portraitCrops";
 
 type Row = { key: string; title: string; detail: string; href?: string; undo: () => void };
@@ -30,6 +31,7 @@ export function ChangesReview({ busy, status, onPublish, onClose }: { busy: bool
   const t = copy.admin;
   const drafts = useDrafts();
   const overrides = useFaceOverrides();
+  const { songs } = useSongLibrary();
   const rows: Row[] = [];
 
   if (drafts.dirty) {
@@ -63,6 +65,10 @@ export function ChangesReview({ busy, status, onPublish, onClose }: { busy: bool
         const { songId, title } = verseTitle(key, t.verseLabel);
         rows.push({ key: `t:${language}:${key}`, title: `${title} · ${language.toUpperCase()}`, detail: t.translationChanged, href: `/song/${songId}`, undo: () => undoTranslation(language, key) });
       }
+    }
+    for (const [songId, urls] of Object.entries(drafts.recordings?.songs ?? {})) {
+      const title = songs.find((song) => song.id === songId)?.title ?? songId;
+      rows.push({ key: `r:${songId}`, title, detail: t.recordingsChanged.replace("{count}", String(urls.length)), href: `/song/${songId}`, undo: () => undoRecordings(songId) });
     }
   } else {
     for (const id of Object.keys(overrides)) {
