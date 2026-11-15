@@ -13,7 +13,7 @@ import { formatTrackLength, getSoundCloudRecordingUrls, soundCloudSegment, sound
 import { useTranslation } from "@/i18n/LanguageContext";
 import { setRecordings } from "@/lib/admin/drafts";
 import { soundCloudTrackPath, type RecordingEdits } from "@/lib/recordingEdits";
-import { inspectSoundCloudTrack, loadSoundCloudWidgetApi, soundCloudPlayerSrc, type SoundCloudWidget } from "@/lib/soundCloudWidget";
+import { createSoundCloudWidget, inspectSoundCloudTrack, loadSoundCloudWidgetApi, soundCloudPlayerSrc, type SoundCloudWidget } from "@/lib/soundCloudWidget";
 
 let openSongId: string | null = null;
 const listeners = new Set<() => void>();
@@ -246,7 +246,7 @@ function RecordingDetail({ url, wholeSeconds, singerId, singerOptions, songs, cu
     let active = true;
     void loadSoundCloudWidgetApi().then((api) => {
       if (!active) return;
-      const next = api.Widget(iframe);
+      const next = createSoundCloudWidget(api, iframe);
       next.bind(api.Widget.Events.READY, () => active && setWidget(next));
     }).catch(() => {});
     return () => {

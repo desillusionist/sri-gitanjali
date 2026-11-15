@@ -23,7 +23,7 @@ import { PlaylistToggleButton } from "@/components/PlaylistToggleButton";
 import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
 import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingingFollower";
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
-import { createSegmentFollower, loadSoundCloudWidgetApi, type SoundCloudWidget } from "@/lib/soundCloudWidget";
+import { createSegmentFollower, createSoundCloudWidget, loadSoundCloudWidgetApi, type SoundCloudWidget } from "@/lib/soundCloudWidget";
 import { SoundCloudBar } from "@/components/SoundCloudBar";
 import { useRecordingEdits } from "@/lib/recordingEdits";
 import { trpc } from "@/lib/trpc";
@@ -347,7 +347,8 @@ function SongPageContent() {
   const matchElements = useRef(new Map<string, HTMLElement>());
   const teleprompterScrollRef = useRef<HTMLDivElement>(null);
   const readerPanelRef = useRef<HTMLElement>(null);
-  const soundCloudPlayerRef = useRef<HTMLIFrameElement>(null);
+  // The frame itself, as state: when React replaces it (the list of recordings changed), the player reconnects.
+  const [soundCloudPlayerFrame, soundCloudPlayerRef] = useState<HTMLIFrameElement | null>(null);
   const [soundCloudWidget, setSoundCloudWidget] = useState<SoundCloudWidget | null>(null);
   const song = songs.find((item) => item.id === params?.id);
   usePageMeta(song?.title ?? (status === "ready" ? copy.song.notFoundTitle : null), song ? [song.poet, song.verses.find((verse) => verse.translation)?.translation].filter(Boolean).join(" — ") : null);
@@ -557,8 +558,11 @@ function SongPageContent() {
     }
   }, [song]);
 
+  // A recording the reader just picked stays open; one that changed under them (another song, an edited list) closes.
+  const pickedRecordingRef = useRef(false);
   useEffect(() => {
-    setIsSoundCloudPlayerOpen(false);
+    if (!pickedRecordingRef.current) setIsSoundCloudPlayerOpen(false);
+    pickedRecordingRef.current = false;
     setSoundCloudPlayerUrl(null);
     setSoundCloudPlayerStatus("idle");
     // A known track length paces the teleprompter at once; the player confirms it when it loads.
@@ -645,13 +649,13 @@ function SongPageContent() {
   }, [isSoundCloudPlayerOpen, isTeleprompterOpen, soundCloudSourceUrl]);
 
   useEffect(() => {
-    const iframe = soundCloudPlayerRef.current;
+    const iframe = soundCloudPlayerFrame;
     if (!iframe || !soundCloudPlayerUrl || !soundCloudSourceUrl) return;
     let isActive = true;
 
     void loadSoundCloudWidgetApi()
       .then((soundCloud) => {
-        const widget = soundCloud.Widget(iframe);
+        const widget = createSoundCloudWidget(soundCloud, iframe);
         if (isActive) setSoundCloudWidget(widget);
         // A recording that is one part of a longer track plays from its start to its end only.
         const segment = soundCloudSegment(soundCloudSourceUrl);
@@ -678,7 +682,7 @@ function SongPageContent() {
       isActive = false;
       setSoundCloudWidget(null);
     };
-  }, [soundCloudPlayerUrl, soundCloudSourceUrl]);
+  }, [soundCloudPlayerFrame, soundCloudPlayerUrl, soundCloudSourceUrl]);
 
   useEffect(() => {
     const syncScrollAffordance = () => setIsPageScrolled(window.scrollY > 260);
@@ -1444,6 +1448,7 @@ function SongPageContent() {
                           setIsSoundCloudPlayerOpen(false);
                           return;
                         }
+                        if (recordingIndex !== soundCloudRecordingIndex) pickedRecordingRef.current = true;
                         setSoundCloudRecordingIndex(recordingIndex);
                         openSoundCloudPlayer();
                       }} aria-expanded={isOpen} aria-controls={`soundcloud-player-${song.id}`} aria-label={`${isOpen ? copy.song.hideAudioPlayer : copy.song.playAudioTrack}: ${singer}`}>

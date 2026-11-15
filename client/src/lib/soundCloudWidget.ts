@@ -117,6 +117,36 @@ export function createSegmentFollower(widget: SoundCloudWidget) {
 }
 
 /**
+ * The widget for an iframe, made safe to call at any time: once its iframe has left the page
+ * (React replaced it, or the dialog closed), calls do nothing instead of throwing from
+ * SoundCloud's script, which would bring down the whole page.
+ */
+export function createSoundCloudWidget(api: SoundCloudWidgetApi, iframe: HTMLIFrameElement): SoundCloudWidget {
+  const raw = api.Widget(iframe);
+  const guard = <A extends unknown[]>(call: (...args: A) => void) => (...args: A) => {
+    if (!iframe.isConnected || !iframe.contentWindow) return;
+    try {
+      call(...args);
+    } catch {
+      // The player went away between the check and the call.
+    }
+  };
+  return {
+    bind: guard(raw.bind.bind(raw)),
+    unbind: guard(raw.unbind.bind(raw)),
+    getDuration: guard(raw.getDuration.bind(raw)),
+    load: guard(raw.load.bind(raw)),
+    play: guard(raw.play.bind(raw)),
+    pause: guard(raw.pause.bind(raw)),
+    toggle: guard(raw.toggle.bind(raw)),
+    seekTo: guard(raw.seekTo.bind(raw)),
+    getPosition: guard(raw.getPosition.bind(raw)),
+    isPaused: guard(raw.isPaused.bind(raw)),
+    getCurrentSound: guard(raw.getCurrentSound.bind(raw)),
+  };
+}
+
+/**
  * The widget address for any SoundCloud track link, short "on.soundcloud.com" links included:
  * SoundCloud's oEmbed resolves it. Null when SoundCloud does not know the link or forbids embedding.
  */
@@ -147,7 +177,7 @@ export async function inspectSoundCloudTrack(link: string): Promise<{ url: strin
   document.body.append(iframe);
   try {
     const sound = await new Promise<SoundCloudSound | null>((resolve) => {
-      const widget = api.Widget(iframe);
+      const widget = createSoundCloudWidget(api, iframe);
       const timer = window.setTimeout(() => resolve(null), 15_000);
       widget.bind(api.Widget.Events.READY, () => widget.getCurrentSound((value) => {
         window.clearTimeout(timer);

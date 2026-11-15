@@ -7,7 +7,7 @@ import { useSongLibrary } from "@/contexts/SongLibraryContext";
 import { getSongRecordings, soundCloudSegment, soundCloudTrackUrl, type SongRecording } from "@/domain/song";
 import { usePlaylist } from "@/hooks/usePlaylist";
 import { useRecordingEdits } from "@/lib/recordingEdits";
-import { createSegmentFollower, loadSoundCloudWidgetApi, soundCloudPlayerSrc, SOUNDCLOUD_LOAD_OPTIONS, type SoundCloudWidget } from "@/lib/soundCloudWidget";
+import { createSegmentFollower, createSoundCloudWidget, loadSoundCloudWidgetApi, soundCloudPlayerSrc, SOUNDCLOUD_LOAD_OPTIONS, type SoundCloudWidget } from "@/lib/soundCloudWidget";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 
 const PLAYER_STORAGE_KEY = "kirtan-guide.player";
@@ -129,7 +129,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     let active = true;
     void loadSoundCloudWidgetApi().then((api) => {
       if (!active) return;
-      const widget = api.Widget(iframe);
+      const widget = createSoundCloudWidget(api, iframe);
       widgetRef.current = widget;
       setWidget(widget);
       // A recording that is one part of a longer track starts and ends there.
