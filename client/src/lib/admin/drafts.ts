@@ -1,13 +1,14 @@
 /**
  * The admin's unpublished changes, kept on this device until "Publish": the pictures of each
- * Vaiṣṇava (main portrait, circle, slideshow and their captions) and the name, place and book
- * notes. New picture files wait in IndexedDB. Everything shows in the app here at once; Publish
+ * Vaiṣṇava (main portrait, circle, slideshow and their captions), the name, place and book
+ * notes, and the verse translations in the second languages. New picture files wait in IndexedDB. Everything shows in the app here at once; Publish
  * writes it all to the repository in one commit, and the site rebuilds in about two minutes.
  * Changes stay shown here until the rebuilt site carries them, then they are dropped.
  */
 import { useSyncExternalStore } from "react";
 import { AUTHORS, findAuthorById, registerDraftImage, type Author, type AuthorImage } from "@/lib/authors";
 import { HOLY_NAME_EDITS, type HolyNameEdit, type HolyNameLocalEdit } from "@/lib/holyNames";
+import { TRANSLATION_EDITS } from "@/lib/secondaryTranslations";
 import { clearFaceOverrides, sameFace, setFaceOverride, type Face } from "@/lib/portraitCrops";
 import { preparePortrait, prepareGalleryImage, type PreparedImage } from "./images";
 
@@ -21,6 +22,8 @@ export type Drafts = {
   authors: Record<string, AuthorPictures>;
   notes: Record<string, HolyNameEdit>;
   localNotes: Record<string, Record<string, HolyNameLocalEdit>>;
+  /** Verse translations: per language, per "song-id::verse-id" the new text. */
+  translations: Record<string, Record<string, string>>;
   /** Picture files that are no longer used and go when publishing (if nothing else uses them). */
   removeFiles: string[];
   /** Whether there are changes not yet published. */
@@ -34,7 +37,7 @@ export type Drafts = {
 /** After publishing, changes stay shown here until the rebuilt site carries them, but no longer than this. */
 const SHOW_PUBLISHED_FOR_MS = 15 * 60 * 1000;
 
-const EMPTY: Drafts = { authors: {}, notes: {}, localNotes: {}, removeFiles: [], dirty: false };
+const EMPTY: Drafts = { authors: {}, notes: {}, localNotes: {}, translations: {}, removeFiles: [], dirty: false };
 const STORAGE_KEY = "kirtan-guide:admin-drafts";
 const listeners = new Set<() => void>();
 
@@ -71,9 +74,14 @@ export function getDrafts() {
   return drafts;
 }
 
+const countIn = (byLanguage: Record<string, Record<string, unknown>> = {}) => Object.values(byLanguage).reduce((sum, items) => sum + Object.keys(items).length, 0);
+
 export function draftCount(value: Drafts) {
-  return Object.keys(value.authors).length + Object.keys(value.notes).length + Object.values(value.localNotes).reduce((sum, notes) => sum + Object.keys(notes).length, 0);
+  return Object.keys(value.authors).length + Object.keys(value.notes).length + countIn(value.localNotes) + countIn(value.translations);
 }
+
+/** How many verse translations wait to be published. */
+export const translationCount = (value: Drafts) => countIn(value.translations);
 
 // --- Picture files waiting on this device (IndexedDB) ---
 
@@ -163,7 +171,12 @@ export async function initDrafts() {
     const left = Object.fromEntries(Object.entries(edits).filter(([key, edit]) => !sameJson(edit, HOLY_NAME_EDITS.i18n[language]?.[key])));
     if (Object.keys(left).length) localNotes[language] = left;
   }
-  save({ ...drafts, authors, notes, localNotes });
+  const translations: Drafts["translations"] = {};
+  for (const [language, edits] of Object.entries(drafts.translations ?? {})) {
+    const left = Object.fromEntries(Object.entries(edits).filter(([key, text]) => text !== TRANSLATION_EDITS.languages[language]?.[key]));
+    if (Object.keys(left).length) translations[language] = left;
+  }
+  save({ ...drafts, authors, notes, localNotes, translations });
 
   try {
     const names = (await withStore("readonly", (store) => store.getAllKeys())) as string[];
@@ -384,6 +397,26 @@ export function undoLocalNote(language: string, key: string) {
   const localNotes = { ...drafts.localNotes, [language]: forLanguage };
   if (!Object.keys(forLanguage).length) delete localNotes[language];
   settle({ ...drafts, localNotes });
+}
+
+export function undoTranslation(language: string, key: string) {
+  const forLanguage = { ...drafts.translations[language] };
+  delete forLanguage[key];
+  const translations = { ...drafts.translations, [language]: forLanguage };
+  if (!Object.keys(forLanguage).length) delete translations[language];
+  settle({ ...drafts, translations });
+}
+
+// --- Verse translations ---
+
+/** A verse's translation in a second language; saving it (even unchanged) marks it proof-read. */
+export function setTranslationEdit(language: string, key: string, text: string) {
+  save({ ...drafts, translations: { ...drafts.translations, [language]: { ...drafts.translations[language], [key]: text.trim() } }, dirty: true });
+}
+
+/** This device's unpublished translation of a verse, if any. */
+export function draftTranslation(value: Drafts, language: string, key: string): string | undefined {
+  return value.translations[language]?.[key];
 }
 
 // --- Notes ---

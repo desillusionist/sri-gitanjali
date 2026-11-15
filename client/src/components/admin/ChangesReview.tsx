@@ -5,7 +5,7 @@ import { Link } from "wouter";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { findAuthorById } from "@/lib/authors";
 import { HOLY_NAMES } from "@/lib/holyNames";
-import { describeAuthorChange, publishedPictures, undoAuthor, undoLocalNote, undoNote, useDrafts } from "@/lib/admin/drafts";
+import { describeAuthorChange, publishedPictures, undoAuthor, undoLocalNote, undoNote, undoTranslation, useDrafts } from "@/lib/admin/drafts";
 import { useFaceOverrides } from "@/lib/portraitCrops";
 
 type Row = { key: string; title: string; detail: string; href?: string; undo: () => void };
@@ -15,6 +15,14 @@ function noteName(key: string, edited?: string) {
   const [id, variantKey] = key.split("/");
   const entry = HOLY_NAMES.find((candidate) => candidate.id === id);
   return (variantKey ? entry?.variants?.find((variant) => variant.key === variantKey)?.name : entry?.name) ?? key;
+}
+
+/** "gurvastaka-040::verse-3" → the song's page and "Gurvastaka · verse 3". */
+export function verseTitle(key: string, verseLabel: string) {
+  const [songId, verseId = ""] = key.split("::");
+  const name = songId.replace(/-\d+$/, "").replace(/-/g, " ");
+  const number = verseId.replace(/^verse-/, "");
+  return { songId, title: `${name.charAt(0).toUpperCase()}${name.slice(1)} · ${verseLabel.replace("{number}", number)}` };
 }
 
 export function ChangesReview({ busy, status, onPublish, onClose }: { busy: boolean; status: { text: string; error?: boolean } | null; onPublish: () => void; onClose: () => void }) {
@@ -48,6 +56,12 @@ export function ChangesReview({ busy, status, onPublish, onClose }: { busy: bool
     for (const [language, edits] of Object.entries(drafts.localNotes)) {
       for (const [key, edit] of Object.entries(edits)) {
         rows.push({ key: `l:${language}:${key}`, title: `${edit.name || noteName(key)} · ${language.toUpperCase()}`, detail: edit.hidden ? t.noteHidden : t.noteChanged, undo: () => undoLocalNote(language, key) });
+      }
+    }
+    for (const [language, edits] of Object.entries(drafts.translations ?? {})) {
+      for (const key of Object.keys(edits)) {
+        const { songId, title } = verseTitle(key, t.verseLabel);
+        rows.push({ key: `t:${language}:${key}`, title: `${title} · ${language.toUpperCase()}`, detail: t.translationChanged, href: `/song/${songId}`, undo: () => undoTranslation(language, key) });
       }
     }
   } else {

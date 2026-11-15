@@ -57,10 +57,11 @@ function fakeGitHub(files: Record<string, string>) {
 
 const AUTHORS_PATH = "client/src/data/authors.json";
 const EDITS_PATH = "client/src/data/holy-names-edits.json";
+const TRANSLATIONS_PATH = "client/src/data/translation-edits.json";
 const authorsFile = (authors: object[]) => `${JSON.stringify({ _note: "kept", authors }, null, 2)}\n`;
 const authorA = { id: "a", names: [], name: "A", dates: "d", place: "p", role: "r", portrait: "a.webp", portraitLarge: "a-large.webp", face: [50, 40, 30], circle: "circles/a@50_40_30.webp", summary: "s", bio: ["b"], sources: [] };
 
-const drafts = (partial: Partial<Drafts>): Drafts => ({ authors: {}, notes: {}, localNotes: {}, removeFiles: [], dirty: true, ...partial });
+const drafts = (partial: Partial<Drafts>): Drafts => ({ authors: {}, notes: {}, localNotes: {}, translations: {}, removeFiles: [], dirty: true, ...partial });
 const lastTree = (state: { trees: TreeItem[][] }) => state.trees[state.trees.length - 1];
 const authorsIn = (tree: TreeItem[]) => JSON.parse(tree.find((item) => item.path === AUTHORS_PATH)!.content!).authors;
 
@@ -125,6 +126,24 @@ describe("publishing to a pretend GitHub", () => {
     expect(tree.map((item) => item.path)).toEqual([EDITS_PATH]);
     expect(JSON.parse(tree[0].content!)).toEqual({ entries: { old: { about: "Old." }, maya: { about: "Changed." } }, i18n: { ru: { old: { about: "Старое." }, maya: { about: "Изменено." } } } });
     expect(state.messages[0]).toBe("Admin: 2 notes");
+  });
+
+  it("lays verse translations over the translation edits file, keeping the others", async () => {
+    const { state, fetchMock } = fakeGitHub({ [TRANSLATIONS_PATH]: JSON.stringify({ _note: "kept", languages: { ru: { "a::verse-1": "Старое." } } }) });
+    vi.stubGlobal("fetch", fetchMock);
+    await publishDrafts(drafts({ translations: { uk: { "a::verse-1": "Нове.", "a::verse-2": "Друге." }, ru: { "a::verse-2": "Второе." } } }));
+    const tree = lastTree(state);
+    expect(tree.map((item) => item.path)).toEqual([TRANSLATIONS_PATH]);
+    expect(JSON.parse(tree[0].content!)).toEqual({ _note: "kept", languages: { ru: { "a::verse-1": "Старое.", "a::verse-2": "Второе." }, uk: { "a::verse-1": "Нове.", "a::verse-2": "Друге." } } });
+    expect(state.messages[0]).toBe("Admin: 3 verse translations");
+  });
+
+  it("names every kind of change in the commit message", async () => {
+    const { state, fetchMock } = fakeGitHub({});
+    vi.stubGlobal("fetch", fetchMock);
+    await publishDrafts(drafts({ notes: { maya: { about: "Changed." } }, translations: { uk: { "a::verse-1": "Нове." } } }));
+    expect(state.messages[0]).toBe("Admin: 1 note and 1 verse translation");
+    expect(lastTree(state).map((item) => item.path).sort()).toEqual([TRANSLATIONS_PATH, EDITS_PATH].sort());
   });
 
   it("starts again from the newest files when someone else saved first", async () => {

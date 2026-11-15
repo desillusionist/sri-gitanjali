@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { describeAuthorChange } from "./drafts";
+import { describeAuthorChange, draftCount, getDrafts, setTranslationEdit, translationCount, undoTranslation } from "./drafts";
 
 describe("describing picture changes", () => {
   const before = { portrait: "a.webp", portraitLarge: "a-large.webp", face: [50, 40, 30] as [number, number, number], gallery: [{ src: "g1.webp" }, { src: "g2.webp", caption: "Two" }] };
@@ -18,5 +18,20 @@ describe("describing picture changes", () => {
   it("sees a moved circle and changed captions", () => {
     const change = describeAuthorChange(before, { ...before, face: [50, 42, 30], gallery: [before.gallery[0], { src: "g2.webp", caption: "Second" }] });
     expect(change).toMatchObject({ circle: true, captions: true, added: 0, removed: 0 });
+  });
+});
+
+describe("verse translation changes", () => {
+  it("counts, keeps and undoes them per language and verse", () => {
+    setTranslationEdit("uk", "a::verse-1", "  Нове.  ");
+    setTranslationEdit("ru", "a::verse-1", "Новое.");
+    expect(getDrafts().translations).toEqual({ uk: { "a::verse-1": "Нове." }, ru: { "a::verse-1": "Новое." } });
+    expect(translationCount(getDrafts())).toBe(2);
+    expect(draftCount(getDrafts())).toBe(2);
+    expect(getDrafts().dirty).toBe(true);
+    undoTranslation("uk", "a::verse-1");
+    undoTranslation("ru", "a::verse-1");
+    expect(getDrafts().translations).toEqual({});
+    expect(getDrafts().dirty).toBe(false);
   });
 });

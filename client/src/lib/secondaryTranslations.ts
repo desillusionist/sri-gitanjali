@@ -1,4 +1,9 @@
 import { SECONDARY_TRANSLATION_PACKAGE_URLS } from "@/data/sources";
+import translationEdits from "@/data/translation-edits.json";
+
+/** Verse translations changed in the admin tools, per language and "song::verse" key; laid over the packages. */
+export type TranslationEdits = { languages: Record<string, Record<string, string>> };
+export const TRANSLATION_EDITS = translationEdits as unknown as TranslationEdits;
 
 export const secondaryTranslationLanguages = [
   { code: "ru", name: "Русский", label: "Russian", lang: "ru" },
@@ -54,7 +59,7 @@ export function usesStaticSecondaryTranslation(language: SecondaryTranslationLan
 }
 
 /** Reads a package file: { schemaVersion: 1, language, sourceLanguage: "en", translations: { "song::verse": text } }. */
-export function parseSecondaryTranslationPackage(value: unknown, language: SecondaryTranslationLanguage): Map<string, string> {
+export function parseSecondaryTranslationPackage(value: unknown, language: SecondaryTranslationLanguage, edits: TranslationEdits["languages"] = TRANSLATION_EDITS.languages): Map<string, string> {
   if (!isRecord(value) || value.schemaVersion !== 1 || value.language !== language || value.sourceLanguage !== "en" || !isRecord(value.translations)) {
     throw new Error(`The ${language} translation package has an unsupported format.`);
   }
@@ -69,7 +74,14 @@ export function parseSecondaryTranslationPackage(value: unknown, language: Secon
 
   if (!translations.size) throw new Error(`The ${language} translation package is empty.`);
   // Optional: verses in an otherwise published package that are still drafts (e.g. our own Spanish fill-ins).
-  draftVerseKeys.set(language, new Set(Array.isArray(value.draftKeys) ? value.draftKeys.filter((key): key is string => typeof key === "string") : []));
+  const drafts = new Set(Array.isArray(value.draftKeys) ? value.draftKeys.filter((key): key is string => typeof key === "string") : []);
+  // The admin's edits win, and an edited verse counts as proof-read.
+  for (const [key, text] of Object.entries(edits[language] ?? {})) {
+    if (!text.trim()) continue;
+    translations.set(key, text);
+    drafts.delete(key);
+  }
+  draftVerseKeys.set(language, drafts);
   return translations;
 }
 

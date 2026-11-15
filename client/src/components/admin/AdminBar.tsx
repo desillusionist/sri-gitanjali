@@ -11,6 +11,7 @@ import { ADMIN_CONFIG, signOut, useAdminSession } from "@/lib/admin/session";
 import { clearFaceOverrides, useFaceOverrides } from "@/lib/portraitCrops";
 import { ChangesReview } from "./ChangesReview";
 import { NoteEditor, openNoteEditor } from "./NoteEditor";
+import { TranslationEditor } from "./TranslationEditor";
 
 export function AdminBar() {
   const { copy } = useTranslation();
@@ -79,6 +80,7 @@ export function AdminBar() {
       </div>
       {reviewing && <ChangesReview busy={busy} status={status} onPublish={publish} onClose={() => setReviewing(false)} />}
       <NoteEditor />
+      <TranslationEditor />
     </>
   );
 }

@@ -25,7 +25,10 @@ import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingi
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
 import { loadSoundCloudWidgetApi } from "@/lib/soundCloudWidget";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, Share2, SlidersHorizontal, Volume2, X } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Copy, Gauge, Languages, Mic, MicOff, Pause, PanelsTopLeft, Play, ScrollText, Search, Share2, SlidersHorizontal, Volume2, X, Pencil } from "lucide-react";
+import { openTranslationEditor } from "@/components/admin/TranslationEditor";
+import { useDrafts } from "@/lib/admin/drafts";
+import { useIsAdmin } from "@/lib/admin/session";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
 import { Link, useRoute } from "wouter";
 import { AuthorChip } from "@/components/AuthorChip";
@@ -366,7 +369,20 @@ function SongPageContent() {
       .map((verse) => ({ verseId: `${song.id}::${verse.id}`, englishText: verse.translation }));
     return verses.length ? { language: secondaryTranslationLanguage, verses } : undefined;
   }, [secondaryTranslationLanguage, song]);
-  const [secondaryTranslationsByVerse, setSecondaryTranslationsByVerse] = useState<Map<string, string>>(() => new Map());
+  const [loadedSecondaryTranslations, setSecondaryTranslationsByVerse] = useState<Map<string, string>>(() => new Map());
+  const isAdmin = useIsAdmin();
+  const adminDrafts = useDrafts();
+  // This device's unpublished translation changes (admin) show in place of the packaged ones.
+  const editedSecondaryTranslations = song && secondaryTranslationLanguage ? adminDrafts.translations[secondaryTranslationLanguage] : undefined;
+  const secondaryTranslationsByVerse = useMemo(() => {
+    if (!song || !editedSecondaryTranslations || !usesStaticSecondaryTranslation(secondaryTranslationLanguage)) return loadedSecondaryTranslations;
+    const merged = new Map(loadedSecondaryTranslations);
+    for (const verse of song.verses) {
+      const edited = editedSecondaryTranslations[`${song.id}::${verse.id}`];
+      if (edited) merged.set(verse.id, edited);
+    }
+    return merged;
+  }, [editedSecondaryTranslations, loadedSecondaryTranslations, secondaryTranslationLanguage, song]);
   const [pendingSecondaryTranslationVerseIds, setPendingSecondaryTranslationVerseIds] = useState<Set<string>>(() => new Set());
   const [failedSecondaryTranslationVerseIds, setFailedSecondaryTranslationVerseIds] = useState<Set<string>>(() => new Set());
   // A packaged language may cover only part of the book; such songs get one quiet note, not an error per verse.
@@ -1044,6 +1060,21 @@ function SongPageContent() {
   };
   // Search hits inside a footnote: its pop-up shows them highlighted, and the * marker stands for them in the page.
   const noRegister = () => () => undefined;
+  const isSecondaryVerseDraft = (verseId: string) => !!song && !!selectedSecondaryLanguage && !editedSecondaryTranslations?.[`${song.id}::${verseId}`] && isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verseId}`);
+  const editSecondaryTranslation = (verse: { id: string; translation: string }, text: string) => {
+    if (!song || !selectedSecondaryLanguage) return;
+    const number = song.verses.filter((candidate) => candidate.translation.trim()).findIndex((candidate) => candidate.id === verse.id) + 1;
+    openTranslationEditor({
+      language: selectedSecondaryLanguage.code,
+      languageName: selectedSecondaryLanguage.name,
+      lang: selectedSecondaryLanguage.lang,
+      key: `${song.id}::${verse.id}`,
+      title: `${song.title} · ${copy.admin.verseLabel.replace("{number}", String(number || verse.id))}`,
+      english: verse.translation,
+      text,
+      isDraft: isSecondaryVerseDraft(verse.id),
+    });
+  };
   const footnoteSearchFor = (verseId: string, isSecondary = false) => (index: number) => {
     const fieldMatches = matchesByField.get(footnoteFieldId(verseId, index, isSecondary)) ?? [];
     if (!fieldMatches.length) return undefined;
@@ -1491,7 +1522,8 @@ function SongPageContent() {
                         <p className="translation"><HolyNameText value={verse.translation} footnotes={getFootnotes("en", song.id, verse.id)} footnoteId={`footnote-${verse.id}`} renderFootnote={renderFootnoteFor(verse.id)} footnoteSearch={footnoteSearchFor(verse.id)} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`translation:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(verse.translation.slice(0, offset), query).filter((part) => part.isMatch).length} />} /></p>
                         {selectedSecondaryLanguage && isSecondaryTranslationLoading && <p className="secondary-translation-status" aria-live="polite">{copy.song.secondaryTranslationsLoading.replace("{language}", selectedSecondaryLanguage.name)}</p>}
                         {selectedSecondaryLanguage && isSecondaryTranslationError && <p className="secondary-translation-status is-error" role="status">{copy.song.secondaryTranslationsUnavailable}</p>}
-                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang} translate="no"><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} footnotes={getFootnotes(selectedSecondaryLanguage.code, song.id, verse.id)} footnoteId={`footnote-${selectedSecondaryLanguage.code}-${verse.id}`} renderFootnote={renderFootnoteFor(verse.id, true)} footnoteSearch={footnoteSearchFor(verse.id, true)} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isDraftPackagedVerse(selectedSecondaryLanguage.code, `${song.id}::${verse.id}`) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}</p>}
+                        {selectedSecondaryLanguage && secondaryTranslation && <p className="translation secondary-translation" lang={selectedSecondaryLanguage.lang} translate="no"><span className="secondary-translation-language" lang="en" aria-hidden="true" title={selectedSecondaryLanguage.label}>{selectedSecondaryLanguage.code.toUpperCase()}</span><HolyNameText noteLanguage={selectedSecondaryLanguage} value={secondaryTranslation} footnotes={getFootnotes(selectedSecondaryLanguage.code, song.id, verse.id)} footnoteId={`footnote-${selectedSecondaryLanguage.code}-${verse.id}`} renderFootnote={renderFootnoteFor(verse.id, true)} footnoteSearch={footnoteSearchFor(verse.id, true)} renderText={(text, offset) => <SongMatchText value={text} query={query} fieldId={`secondary:${verse.id}`} matchesByField={matchesByField} activeMatchId={activeMatch?.id ?? null} registerMatch={registerMatch} matchIndexOffset={getHighlightParts(secondaryTranslation.slice(0, offset), query).filter((part) => part.isMatch).length} />} />{isSecondaryVerseDraft(verse.id) && <small className="secondary-translation-draft" lang="en" title={copy.song.secondaryTranslationDraftVerseHint}>{copy.song.secondaryTranslationDraftVerse}</small>}{isAdmin && usesStaticSecondaryTranslation(selectedSecondaryLanguage.code) && <button type="button" className="secondary-translation-edit" lang="en" onClick={() => editSecondaryTranslation(verse, secondaryTranslation)} title={copy.admin.editTranslation} aria-label={copy.admin.editTranslation}><Pencil size={13} aria-hidden="true" /></button>}</p>}
+                        {isAdmin && selectedSecondaryLanguage && usesStaticSecondaryTranslation(selectedSecondaryLanguage.code) && !secondaryTranslation && !isSecondaryTranslationLoading && verse.translation.trim() && <p className="translation secondary-translation is-missing"><button type="button" className="secondary-translation-edit is-add" lang="en" onClick={() => editSecondaryTranslation(verse, "")}><Pencil size={13} aria-hidden="true" />{copy.admin.editTranslation} · {selectedSecondaryLanguage.code.toUpperCase()}</button></p>}
                       </div>
                     </>
                   )}

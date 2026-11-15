@@ -1,0 +1,4 @@
+{
+  "_note": "Verse translations corrected in the app's admin tools, by language and \"song-id::verse-id\". They take the place of the packaged text, and an edited verse is no longer marked as a draft. Written by the admin's Publish; do not regenerate.",
+  "languages": {}
+}

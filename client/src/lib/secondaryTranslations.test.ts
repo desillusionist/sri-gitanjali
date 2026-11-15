@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  isDraftPackagedVerse,
   isDraftSecondaryTranslation,
   loadPackagedSecondaryTranslations,
   loadRussianSecondaryTranslations,
@@ -120,5 +121,34 @@ describe("Thai packaged translation", () => {
     const fetchImplementation: typeof fetch = async () => new Response(JSON.stringify(raw), { status: 200 });
     const translations = await loadPackagedSecondaryTranslations("th", fetchImplementation);
     expect(translations.get("vandana-001::verse-1")).toContain("กฤษณทาส");
+  });
+});
+
+describe("Ukrainian packaged translation", () => {
+  const storage = path.resolve(import.meta.dirname, "../../../local-storage");
+  const songs = JSON.parse(fs.readFileSync(path.join(storage, "songs_577f33d4.json"), "utf8")) as Array<{ id: string; verses: Array<{ id: string; translation: string }> }>;
+  const raw = JSON.parse(fs.readFileSync(path.join(storage, "secondary-translations-uk.json"), "utf8"));
+
+  it("has a Ukrainian meaning for every verse, ours marked as drafts", () => {
+    const translations = parseSecondaryTranslationPackage(raw, "uk", {});
+    const missing = songs.flatMap((song) => song.verses
+      .filter((verse) => verse.translation?.trim() && !translations.get(`${song.id}::${verse.id}`))
+      .map((verse) => `${song.id}::${verse.id}`));
+    expect(missing).toEqual([]);
+    expect(isDraftPackagedVerse("uk", "maya-duratyaya-165::verse-1")).toBe(true);
+    // A human verse from kirtan.site is no draft.
+    expect(isDraftPackagedVerse("uk", "akrodha-paramananda-062::verse-1")).toBe(false);
+  });
+
+  it("writes Cyrillic words without stray Latin letters", () => {
+    const mixed = Object.entries(raw.translations as Record<string, string>).flatMap(([id, text]) => (text.match(/\S*(?:[a-z][а-яґєії]|[а-яґєії][a-z])\S*/gi) ?? []).map((word) => `${id}: ${word}`));
+    expect(mixed).toEqual([]);
+  });
+
+  it("lays the admin's edits over the package, and an edited verse is no longer a draft", () => {
+    const translations = parseSecondaryTranslationPackage(raw, "uk", { uk: { "maya-duratyaya-165::verse-1": "Виправлено." } });
+    expect(translations.get("maya-duratyaya-165::verse-1")).toBe("Виправлено.");
+    expect(isDraftPackagedVerse("uk", "maya-duratyaya-165::verse-1")).toBe(false);
+    expect(isDraftPackagedVerse("uk", "maya-duratyaya-165::verse-2")).toBe(true);
   });
 });

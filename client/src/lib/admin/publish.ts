@@ -3,11 +3,12 @@ import type { HolyNameEdits } from "@/lib/holyNames";
 import { CIRCLE_SIZE, circleStem, DEFAULT_FACE } from "@/lib/authors";
 import { STORAGE_URL } from "@/data/sources";
 import { commitChanges, GitHubError, readRepoFile, type RepoChange } from "./github";
-import { draftCount, getDraftFile, isTextField, markPublished, PICTURE_FIELDS, type AuthorPictures, type Drafts } from "./drafts";
+import { draftCount, getDraftFile, isTextField, markPublished, PICTURE_FIELDS, translationCount, type AuthorPictures, type Drafts } from "./drafts";
 import { prepareCircle } from "./images";
 
 export const AUTHORS_PATH = "client/src/data/authors.json";
 export const EDITS_PATH = "client/src/data/holy-names-edits.json";
+export const TRANSLATION_EDITS_PATH = "client/src/data/translation-edits.json";
 const STORAGE_DIR = "local-storage/";
 
 type AuthorsFile = { authors: (Record<string, unknown> & { id: string })[] };
@@ -35,6 +36,15 @@ export function applyNoteEdits(file: HolyNameEdits & Record<string, unknown>, dr
   return { ...file, entries: { ...file.entries, ...drafts.notes }, i18n };
 }
 
+type TranslationEditsFile = Record<string, unknown> & { languages?: Record<string, Record<string, string>> };
+
+/** The translation edits file with this device's verse translations laid over it, keeping the others. */
+export function applyTranslationEdits(file: TranslationEditsFile, translations: Drafts["translations"]): TranslationEditsFile {
+  const languages = { ...file.languages };
+  for (const [language, edits] of Object.entries(translations)) languages[language] = { ...languages[language], ...edits };
+  return { ...file, languages };
+}
+
 /** Every picture file the authors file uses. */
 export function usedFiles(file: AuthorsFile): Set<string> {
   const used = new Set<string>();
@@ -50,10 +60,12 @@ const indentOf = (text: string) => text.match(/^\{\n( +)/)?.[1].length ?? 2;
 function describe(drafts: Drafts): string {
   const parts = [];
   const authors = Object.keys(drafts.authors).length;
-  const notes = draftCount({ ...drafts, authors: {} });
+  const verses = translationCount(drafts);
+  const notes = draftCount({ ...drafts, authors: {}, translations: {} });
   if (authors) parts.push(`${authors} Vaiṣṇava page${authors === 1 ? "" : "s"}`);
   if (notes) parts.push(`${notes} note${notes === 1 ? "" : "s"}`);
-  return `Admin: ${parts.join(" and ") || "changes"}`;
+  if (verses) parts.push(`${verses} verse translation${verses === 1 ? "" : "s"}`);
+  return `Admin: ${parts.join(", ").replace(/, ([^,]*)$/, " and $1") || "changes"}`;
 }
 
 /**
@@ -105,6 +117,11 @@ export async function publishDrafts(drafts: Drafts, login?: string): Promise<str
         const text = await readRepoFile(EDITS_PATH);
         const file = text ? JSON.parse(text) : { entries: {}, i18n: {} };
         changes.push({ path: EDITS_PATH, text: `${JSON.stringify(applyNoteEdits(file, drafts), null, 2)}\n` });
+      }
+      if (translationCount(drafts)) {
+        const text = await readRepoFile(TRANSLATION_EDITS_PATH);
+        const file = text ? JSON.parse(text) : { languages: {} };
+        changes.push({ path: TRANSLATION_EDITS_PATH, text: `${JSON.stringify(applyTranslationEdits(file, drafts.translations), null, 2)}\n` });
       }
       if (!changes.length) return "";
       const sha = await commitChanges(`${describe(drafts)}${login ? `\n\nMade in the app's admin tools by ${login}.` : ""}`, changes);
