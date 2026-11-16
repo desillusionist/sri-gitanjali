@@ -1,6 +1,14 @@
 {
   "_note": "Recordings changed in the app's admin tools. \"songs\": a song's full list of SoundCloud recordings (replacing the hand-made list in soundcloudRecordings.ts), each optionally with its part, \"#t=start-end\". \"tracks\": per track path, its singer id and length in seconds. \"singers\": names of singers added here. Written by the admin's Publish; do not regenerate.",
-  "songs": {},
+  "songs": {
+    "vandana-001": [
+      "https://soundcloud.com/jayasri-sound/vandana-srila-govinda-maharaj#t=0:00-0:53",
+      "https://soundcloud.com/soundnektar/bhakti-sudhir-goswami-vandana"
+    ],
+    "prayers-to-the-guru-002": [
+      "https://soundcloud.com/jayasri-sound/vandana-srila-govinda-maharaj#t=0:53-1:07"
+    ]
+  },
   "tracks": {},
   "singers": {}
 }
