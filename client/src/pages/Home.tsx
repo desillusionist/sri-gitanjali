@@ -34,7 +34,7 @@ import { useSecondarySearch } from "@/hooks/useSecondarySearch";
 import { availableSecondaryTranslationLanguages, usesStaticSecondaryTranslation } from "@/lib/secondaryTranslations";
 import { ArrowUpRight, ArrowDownAZ, BookOpen, Clock3, DatabaseZap, LibraryBig, Loader2, Search, Sparkles, Trash2, Volume2, X } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
-import { useEffect, useMemo, useState, type FocusEvent, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FocusEvent, type KeyboardEvent, type TouchEvent } from "react";
 import { Link } from "wouter";
 import { SONG_LANGUAGE_ORDER, SONG_LANGUAGES } from "@/lib/songLanguages";
 import { usePageMeta } from "@/lib/pageMeta";
@@ -200,6 +200,37 @@ function LibraryHome() {
       noteLibraryLeft();
     };
   }, []);
+
+  // A sideways swipe over the list switches views: left to the A–Z index, right back to the library.
+  const viewSwipeRef = useRef<{ x: number; y: number; at: number } | null>(null);
+  const startViewSwipe = (event: TouchEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement;
+    // Not from a field, or from something that scrolls sideways itself.
+    const scrollsSideways = (element: HTMLElement | null): boolean => {
+      for (let node = element; node && node !== event.currentTarget; node = node.parentElement) {
+        if (node.scrollWidth > node.clientWidth + 1 && /(auto|scroll)/.test(getComputedStyle(node).overflowX)) return true;
+      }
+      return false;
+    };
+    viewSwipeRef.current = event.touches.length === 1 && !target.closest("input, textarea, select, [contenteditable='true']") && !scrollsSideways(target)
+      ? { x: event.touches[0].clientX, y: event.touches[0].clientY, at: Date.now() }
+      : null;
+  };
+  const endViewSwipe = (event: TouchEvent<HTMLDivElement>) => {
+    const start = viewSwipeRef.current;
+    viewSwipeRef.current = null;
+    const touch = event.changedTouches[0];
+    if (!start || !touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.8 || Date.now() - start.at > 800) return;
+    const next = dx < 0 ? "index" : "library";
+    if (next === libraryView) return;
+    setLibraryView(next);
+    // Show the top of the new view when the old one was scrolled past it.
+    const heading = document.getElementById("library-heading");
+    if (heading && heading.getBoundingClientRect().top < 0) heading.scrollIntoView({ block: "start" });
+  };
 
   const updateFilters = (patch: Partial<typeof filters>) => setFilters((current) => ({ ...current, ...patch }));
   const clearFilters = () => setFilters(defaultSongSearchFilters);
@@ -396,7 +427,7 @@ function LibraryHome() {
 
       {status === "ready" ? (
         <>
-          <Tabs value={libraryView} onValueChange={(value) => setLibraryView(value as "library" | "index")} className="library-content" id="library">
+          <Tabs value={libraryView} onValueChange={(value) => setLibraryView(value as "library" | "index")} className="library-content" id="library" onTouchStart={startViewSwipe} onTouchEnd={endViewSwipe} onTouchCancel={() => { viewSwipeRef.current = null; }}>
             <div className="section-heading">
               <div>
                 <span className="eyebrow">{libraryView === "index" ? copy.library.indexEyebrow : copy.library.structureEyebrow}</span>
