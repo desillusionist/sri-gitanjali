@@ -37,6 +37,10 @@
       "https://soundcloud.com/bhakti-lalita-devi/mahamantra",
       "https://soundcloud.com/bhakti-lalita-devi/maha-mantra",
       "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-mahamantra"
+    ],
+    "sri-sri-sad-gosvami-astakam-083": [
+      "https://soundcloud.com/beautyoverpower/sri-sri-sad-goswami-astakam",
+      "https://soundcloud.com/huron/sat-goswami-astaka"
     ]
   },
   "tracks": {
@@ -45,6 +49,10 @@
     },
     "/soundnektar/sri-sri-gaura-nityanander-doya-parama-koruna-bhakti-sudhir-goswami": {
       "seconds": 462
+    },
+    "/beautyoverpower/sri-sri-sad-goswami-astakam": {
+      "seconds": 951,
+      "singer": "goswami-maharaja"
     }
   },
   "singers": {}
