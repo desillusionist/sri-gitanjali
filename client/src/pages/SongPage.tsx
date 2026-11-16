@@ -23,7 +23,8 @@ import { PlaylistToggleButton } from "@/components/PlaylistToggleButton";
 import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
 import { useSingingFollower, type SingingFollowerStatus } from "@/hooks/useSingingFollower";
 import { availableSecondaryTranslationLanguages, isDraftPackagedVerse, isDraftSecondaryTranslation, loadPackagedSecondaryTranslations, secondaryTranslationLanguages, isSecondaryTranslationLanguage, usesStaticSecondaryTranslation, type SecondaryTranslationLanguage } from "@/lib/secondaryTranslations";
-import { createSegmentFollower, createSoundCloudWidget, loadSoundCloudWidgetApi, type SoundCloudWidget } from "@/lib/soundCloudWidget";
+import { createSegmentFollower, createSoundCloudWidget, loadSoundCloudWidgetApi, needsSoundCloudPriming, primeSoundCloudWidget, type SoundCloudWidget } from "@/lib/soundCloudWidget";
+import { usePlayer } from "@/contexts/PlayerContext";
 import { SoundCloudBar } from "@/components/SoundCloudBar";
 import { useRecordingEdits } from "@/lib/recordingEdits";
 import { trpc } from "@/lib/trpc";
@@ -332,6 +333,11 @@ function SongPageContent() {
   const [isTeleprompterPacePanelOpen, setIsTeleprompterPacePanelOpen] = useState(false);
   const [isReaderPanelOpen, setIsReaderPanelOpen] = useState(false);
   const [isSoundCloudPlayerOpen, setIsSoundCloudPlayerOpen] = useState(false);
+  const isSoundCloudPlayerOpenRef = useRef(false);
+  isSoundCloudPlayerOpenRef.current = isSoundCloudPlayerOpen;
+  const { isPlaying: isDockPlaying } = usePlayer();
+  const isDockPlayingRef = useRef(false);
+  isDockPlayingRef.current = isDockPlaying;
   // Songs with many recordings fold their list, so the lyrics stay near the top.
   const [isAudioListExpanded, setIsAudioListExpanded] = useState(false);
   const [soundCloudRecordingIndex, setSoundCloudRecordingIndex] = useState(0);
@@ -656,24 +662,38 @@ function SongPageContent() {
     void loadSoundCloudWidgetApi()
       .then((soundCloud) => {
         const widget = createSoundCloudWidget(soundCloud, iframe);
-        if (isActive) setSoundCloudWidget(widget);
         // A recording that is one part of a longer track plays from its start to its end only.
         const segment = soundCloudSegment(soundCloudSourceUrl);
+        const follower = segment ? createSegmentFollower(widget) : null;
         const readDuration = () => widget.getDuration((durationMs) => {
           if (!isActive || !Number.isFinite(durationMs) || durationMs <= 0) return;
           setSoundCloudDurationMs(segment ? ((segment.end ?? durationMs / 1000) - segment.start) * 1000 : durationMs);
         });
-
-        widget.bind(soundCloud.Widget.Events.READY, readDuration);
-        readDuration();
-        if (segment) {
-          const follower = createSegmentFollower(widget);
-          // Wait at the part's start, and go back there when it ends, so playing it (again) needs no jump.
-          widget.bind(soundCloud.Widget.Events.READY, () => follower.prepare(segment));
-          follower.prepare(segment);
+        // On phones the open player is primed before its bar works, so that the first tap plays
+        // (not while the playlist plays: SoundCloud would pause it).
+        let isPrimed = !needsSoundCloudPriming() || !isSoundCloudPlayerOpenRef.current || isDockPlayingRef.current;
+        if (isPrimed && isActive) setSoundCloudWidget(widget);
+        const onReady = () => {
+          readDuration();
+          // Wait at the part's start, so playing it needs no jump.
+          follower?.prepare(segment);
+          if (isPrimed) return;
+          isPrimed = true;
+          void primeSoundCloudWidget(widget, (segment?.start ?? 0) * 1000).then(() => {
+            follower?.reset();
+            if (isActive) setSoundCloudWidget(widget);
+          });
+        };
+        widget.bind(soundCloud.Widget.Events.READY, onReady);
+        // Already loaded before the listener was bound.
+        widget.getDuration((durationMs) => {
+          if (isActive && Number.isFinite(durationMs) && durationMs > 0) onReady();
+        });
+        if (follower) {
           widget.bind(soundCloud.Widget.Events.PLAY, () => follower.onPlay(segment));
           widget.bind(soundCloud.Widget.Events.PLAY_PROGRESS, (event) => {
             if (!follower.onProgress(segment, event?.currentPosition)) return;
+            // Go back to the part's start when it ends, so playing it again needs no jump.
             widget.pause();
             follower.rewind(segment);
           });

@@ -231,4 +231,9 @@ export const soundCloudTrackSeconds: Readonly<Record<string, number>> = {
   "/soundnektar/sri-sri-gaura-nityanander-doya-parama-koruna-bhakti-sudhir-goswami": 462,
   "/soundnektar/sri-vraja-dhama-mahimamrta-jaya-radhe-jaya-krsna-bhakti-sudhir-goswami": 1154,
   "/soundnektar/viraha-giti-bhakti-sudhir-goswami": 486,
+  "/soundnektar/sri-guru-charana-padma-malati": 406,
+  "/soundnektar/amara-jivana-malati-and": 283,
+  "/soundnektar/dayal-nitai-chaitanya-malati": 404,
+  "/soundnektar/nitai-pada-kamala-malati-and": 293,
+  "/soundnektar/gay-gora-madhur-svare-malati": 542,
 };

@@ -167,6 +167,7 @@ export const SOUNDCLOUD_SINGER_LIST: readonly { id: string; name: string }[] = [
   { id: "acharya-maharaja", name: "Śrīla Āchārya Mahārāja" },
   { id: "huron", name: "Manasa Krishna" },
   { id: "bhakti-lalita-devi", name: "Bhakti Lalita Devi" },
+  { id: "malati-devi-dasi", name: "Mālāti Devī Dāsī" },
 ];
 
 /** SoundCloud accounts whose tracks are by one singer (otherwise the account is the singer's id). */
@@ -192,11 +193,18 @@ const ACCOUNT_TRACK_SINGERS: Readonly<Record<string, Readonly<Record<string, str
     "104-srisrisiksastakam5-3", "105-srisrisiksastakam6-5", "106-srisrisiksastakam7-2", "107-srisrisiksastakam8-8",
   ].map((track) => [track, "acharya-maharaja"])),
   "jayasri-sound": { "sri-rupa-manjari-pada-srila-sridhar-maharaj-1": "sridhar-maharaja" },
-  // Śrīla B.S. Goswāmī Mahārāja (Bhakti Sudhīr Goswāmī).
-  "soundnektar": Object.fromEntries([
-    "bhakti-sudhir-goswami-vandana", "sri-sri-gaura-nityanander-doya-parama-koruna-bhakti-sudhir-goswami",
-    "viraha-giti-bhakti-sudhir-goswami", "sri-vraja-dhama-mahimamrta-jaya-radhe-jaya-krsna-bhakti-sudhir-goswami",
-  ].map((track) => [track, "goswami-maharaja"])),
+  // Śrīla B.S. Goswāmī Mahārāja (Bhakti Sudhīr Goswāmī), and Mālāti Devī Dāsī.
+  "soundnektar": {
+    ...Object.fromEntries([
+      "bhakti-sudhir-goswami-vandana", "sri-sri-gaura-nityanander-doya-parama-koruna-bhakti-sudhir-goswami",
+      "viraha-giti-bhakti-sudhir-goswami", "sri-vraja-dhama-mahimamrta-jaya-radhe-jaya-krsna-bhakti-sudhir-goswami",
+    ].map((track) => [track, "goswami-maharaja"])),
+    // The "Malati and Makhanchor" set.
+    ...Object.fromEntries([
+      "sri-guru-charana-padma-malati", "amara-jivana-malati-and", "dayal-nitai-chaitanya-malati",
+      "nitai-pada-kamala-malati-and", "gay-gora-madhur-svare-malati",
+    ].map((track) => [track, "malati-devi-dasi"])),
+  },
 };
 
 /** Old filter ids still found in saved links. */

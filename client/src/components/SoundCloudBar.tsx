@@ -178,7 +178,7 @@ export function SoundCloudBar({ widget, url, showPlayButton = true, wholeTrack =
         {endMark !== null && <line className="sc-bar-mark" x1={endMark} x2={endMark} y1={0} y2={20} />}
       </svg>
       <span className="sc-bar-time is-total">{duration ? formatTrackLength(Math.round(span / 1000)) : "–:––"}</span>
-      <a className="sc-bar-cloud" href={soundCloudPageUrl(url)} target="_blank" rel="noreferrer" aria-label={copy.song.openAudioOnSoundCloud} title={copy.song.openAudioOnSoundCloud}>
+      <a className="sc-bar-cloud" href={soundCloudPageUrl(url)} target="_blank" rel="noreferrer" onClick={() => { wantsPlayRef.current = false; widget?.pause(); }} aria-label={copy.song.openAudioOnSoundCloud} title={copy.song.openAudioOnSoundCloud}>
         <svg viewBox="0 0 32 16" aria-hidden="true">
           <path d="M14 3.2c.9-.5 2-.8 3.1-.8 3.5 0 6.4 2.6 6.8 6 .3-.1.7-.2 1.1-.2 2.2 0 4 1.7 4 3.9S27.2 16 25 16H14V3.2z" />
           <rect x="11.6" y="4" width="1.2" height="12" rx=".6" />

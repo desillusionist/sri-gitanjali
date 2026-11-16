@@ -12,6 +12,7 @@ export type SoundCloudWidget = {
   pause: () => void;
   toggle: () => void;
   seekTo: (milliseconds: number) => void;
+  setVolume: (volume: number) => void;
   getPosition: (callback: (milliseconds: number) => void) => void;
   isPaused: (callback: (paused: boolean) => void) => void;
   getCurrentSound: (callback: (sound: SoundCloudSound | null) => void) => void;
@@ -136,6 +137,43 @@ export function createSegmentFollower(widget: SoundCloudWidget) {
   };
 }
 
+/** Phones and tablets, where a player needs priming (see primeSoundCloudWidget). */
+export const needsSoundCloudPriming = () => typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
+
+/**
+ * Readies a freshly loaded player so that the reader's first tap plays. On iPhones a tap reaches
+ * SoundCloud's frame as permission to play only for a moment, and the first play spends that
+ * moment fetching the sound, so it starts and stops at once. Playing it silently first fetches
+ * the sound; then it is paused at `startMs`, its volume back. Resolves when done (at most ~3 s).
+ */
+export function primeSoundCloudWidget(widget: SoundCloudWidget, startMs: number): Promise<void> {
+  return new Promise((resolve) => {
+    let finished = false;
+    let firstPosition: number | null = null;
+    const startedAt = Date.now();
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      window.clearInterval(timer);
+      widget.pause();
+      widget.seekTo(startMs);
+      widget.setVolume(100);
+      resolve();
+    };
+    widget.setVolume(0);
+    widget.play();
+    const timer = window.setInterval(() => {
+      if (Date.now() - startedAt > 3000) return finish();
+      // Done once the sound is really moving: fetched and playing.
+      widget.getPosition((position) => {
+        if (!Number.isFinite(position)) return;
+        firstPosition ??= position;
+        if (position > firstPosition + 100) finish();
+      });
+    }, 150);
+  });
+}
+
 /**
  * The widget for an iframe, made safe to call at any time: once its iframe has left the page
  * (React replaced it, or the dialog closed), calls do nothing instead of throwing from
@@ -160,6 +198,7 @@ export function createSoundCloudWidget(api: SoundCloudWidgetApi, iframe: HTMLIFr
     pause: guard(raw.pause.bind(raw)),
     toggle: guard(raw.toggle.bind(raw)),
     seekTo: guard(raw.seekTo.bind(raw)),
+    setVolume: guard(raw.setVolume.bind(raw)),
     getPosition: guard(raw.getPosition.bind(raw)),
     isPaused: guard(raw.isPaused.bind(raw)),
     getCurrentSound: guard(raw.getCurrentSound.bind(raw)),

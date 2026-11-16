@@ -35,9 +35,17 @@ export function RecordingsEditor() {
 }
 
 /** "1:06" or "1:02:03" → seconds; null when not a time. */
+/**
+ * A time typed as "1:20", "1.20" or "1,20" (a phone's number keys have no colon), or as digits
+ * alone, the last two being seconds: "120" is 1:20, "45" is 0:45. Hours may come first: "1:02:03".
+ */
 export function parseTime(value: string): number | null {
-  const match = value.trim().match(/^(?:(\d+):)?(\d{1,2}):(\d{2})$/);
-  return match ? Number(match[1] ?? 0) * 3600 + Number(match[2]) * 60 + Number(match[3]) : null;
+  const text = value.trim().replace(/[.,]/g, ":");
+  const match = text.match(/^(?:(\d+):)?(\d{1,2}):(\d{2})$/);
+  if (match) return Number(match[1] ?? 0) * 3600 + Number(match[2]) * 60 + Number(match[3]);
+  const digits = text.match(/^(\d{0,3}?)(\d{1,2})$/);
+  if (!digits || Number(digits[2]) >= 60 && digits[1]) return null;
+  return Number(digits[1] || 0) * 60 + Number(digits[2]);
 }
 
 /** A recording's address with its part: the whole track when neither time is set. */
@@ -269,6 +277,11 @@ function RecordingDetail({ url, wholeSeconds, singerId, singerOptions, songs, cu
     onChange(withPart(url, from, to));
   };
   const now = () => formatTrackLength(Math.floor(positionRef.current / 1000));
+  // A time typed any way shows as m:ss once the field is left.
+  const tidy = (value: string) => {
+    const seconds = value.trim() ? parseTime(value) : null;
+    return seconds === null ? value : formatTrackLength(seconds);
+  };
   const nudge = (value: string, step: number) => formatTrackLength(Math.max(0, (parseTime(value) ?? 0) + step));
   const playPart = () => {
     if (!widget) return;
@@ -300,7 +313,7 @@ function RecordingDetail({ url, wholeSeconds, singerId, singerOptions, songs, cu
           <span>{t.recordingStart}</span>
           <span className="admin-recording-time">
             <button type="button" onClick={() => apply(nudge(start, -1), end)} aria-label={t.recordingEarlier}><Minus size={12} /></button>
-            <input value={start} onChange={(event) => apply(event.target.value, end)} placeholder="0:00" inputMode="numeric" />
+            <input value={start} onChange={(event) => apply(event.target.value, end)} onBlur={() => apply(tidy(start), end)} placeholder="0:00" inputMode="decimal" />
             <button type="button" onClick={() => apply(nudge(start, 1), end)} aria-label={t.recordingLater}><Plus size={12} /></button>
           </span>
           <button type="button" className="admin-recording-here" onClick={() => apply(now(), end)}>{t.recordingSetHere}</button>
@@ -309,7 +322,7 @@ function RecordingDetail({ url, wholeSeconds, singerId, singerOptions, songs, cu
           <span>{t.recordingEnd}</span>
           <span className="admin-recording-time">
             <button type="button" onClick={() => apply(start, nudge(end, -1))} aria-label={t.recordingEarlier}><Minus size={12} /></button>
-            <input value={end} onChange={(event) => apply(start, event.target.value)} placeholder={t.recordingTrackEnd} inputMode="numeric" />
+            <input value={end} onChange={(event) => apply(start, event.target.value)} onBlur={() => apply(start, tidy(end))} placeholder={t.recordingTrackEnd} inputMode="decimal" />
             <button type="button" onClick={() => apply(start, nudge(end, 1))} aria-label={t.recordingLater}><Plus size={12} /></button>
           </span>
           <button type="button" className="admin-recording-here" onClick={() => apply(start, now())}>{t.recordingSetHere}</button>

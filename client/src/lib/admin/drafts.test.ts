@@ -76,4 +76,14 @@ describe("recording changes", () => {
     expect(parseTime("1:02:03")).toBe(3723);
     expect(parseTime("1:6")).toBeNull();
   });
+
+  it("read times typed on a phone's number keys", () => {
+    expect(parseTime("1.20")).toBe(80);
+    expect(parseTime("1,20")).toBe(80);
+    expect(parseTime("120")).toBe(80);
+    expect(parseTime("45")).toBe(45);
+    expect(parseTime("1035")).toBe(635);
+    expect(parseTime("160")).toBeNull();
+    expect(parseTime("1.5")).toBeNull();
+  });
 });

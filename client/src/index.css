@@ -887,7 +887,7 @@ html.is-teleprompter-open [data-sonner-toaster] { display: none !important; }
 .portrait-crops-bar button, .crop-editor-actions button { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.4rem; padding: 0 1rem; border: 1px solid var(--hairline); border-radius: 999px; color: var(--ink); background: transparent; font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
 .portrait-crops-bar button.is-primary, .crop-editor-actions button.is-primary { border-color: var(--saffron-deep); color: #fff; background: var(--saffron-deep); }
 .portrait-crops-back { margin: 1.6rem 0 0; font-size: 0.85rem; }
-.crop-editor { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 1rem; background: rgba(20, 14, 8, 0.72); }
+.crop-editor { position: fixed; inset: 0; z-index: 130; display: grid; place-items: center; padding: 1rem; background: rgba(20, 14, 8, 0.72); }
 .crop-editor-panel { display: grid; gap: 0.9rem; justify-items: center; width: min(100%, 24rem); max-height: 100%; overflow: auto; padding: 1rem 1.1rem 1.2rem; border-radius: 1.2rem; color: var(--ink); background: var(--paper-bright); }
 .crop-editor-panel header { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; width: 100%; font-size: 0.95rem; }
 .crop-editor-icon { display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border: 0; border-radius: 50%; color: var(--ink); background: rgba(var(--ink-rgb), 0.06); cursor: pointer; }

@@ -56,6 +56,27 @@ function useListClearance() {
 }
 
 const FILTERS_STORAGE_KEY = "kirtan-guide.library-filters";
+const LEFT_AT_STORAGE_KEY = "kirtan-guide.library-left-at";
+/** Away from the library longer than this, it opens with no search or filters. */
+const FILTERS_FORGOTTEN_AFTER_MS = 3 * 60 * 1000;
+
+function noteLibraryLeft() {
+  try {
+    window.sessionStorage.setItem(LEFT_AT_STORAGE_KEY, String(Date.now()));
+  } catch {
+    // Storage blocked: the filters are kept.
+  }
+}
+
+/** Whether the reader has been away from the library long enough for its filters to be forgotten. */
+function libraryFiltersForgotten(): boolean {
+  try {
+    const leftAt = Number(window.sessionStorage.getItem(LEFT_AT_STORAGE_KEY));
+    return leftAt > 0 && Date.now() - leftAt > FILTERS_FORGOTTEN_AFTER_MS;
+  } catch {
+    return false;
+  }
+}
 const FILTER_PARAMETERS = ["q", "author", "category", "recording", "language"];
 
 /** Filters named in the address win; otherwise the ones left behind when the reader opened a song. */
@@ -69,6 +90,10 @@ function initialLibraryFilters(): SongSearchFilters {
       recording: parseRecordingFilter(parameters.get("recording")),
       language: parseLanguageFilter(parameters.get("language")),
     };
+  }
+  if (libraryFiltersForgotten()) {
+    storeLibraryFilters(defaultSongSearchFilters);
+    return defaultSongSearchFilters;
   }
   try {
     const stored = JSON.parse(window.sessionStorage.getItem(FILTERS_STORAGE_KEY) ?? "null") as Partial<Record<keyof SongSearchFilters, unknown>> | null;
@@ -151,6 +176,30 @@ function LibraryHome() {
   }, []);
 
   useEffect(() => storeLibraryFilters(filters), [filters]);
+
+  // Leaving the library (another page, or the app put away) starts the clock; coming back after
+  // FILTERS_FORGOTTEN_AFTER_MS clears the search and filters.
+  useEffect(() => {
+    try {
+      window.sessionStorage.removeItem(LEFT_AT_STORAGE_KEY);
+    } catch {
+      // Storage blocked.
+    }
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") return noteLibraryLeft();
+      if (libraryFiltersForgotten()) setFilters(defaultSongSearchFilters);
+      try {
+        window.sessionStorage.removeItem(LEFT_AT_STORAGE_KEY);
+      } catch {
+        // Storage blocked.
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      noteLibraryLeft();
+    };
+  }, []);
 
   const updateFilters = (patch: Partial<typeof filters>) => setFilters((current) => ({ ...current, ...patch }));
   const clearFilters = () => setFilters(defaultSongSearchFilters);
