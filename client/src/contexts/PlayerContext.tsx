@@ -70,6 +70,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const widgetRef = useRef<SoundCloudWidget | null>(null);
   const [widget, setWidget] = useState<SoundCloudWidget | null>(null);
   const followerRef = useRef<ReturnType<typeof createSegmentFollower> | null>(null);
+  /** The first track is a part of a longer one: start playing it once the player is ready, at the part's start. */
+  const startOnReadyRef = useRef(false);
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
@@ -100,8 +102,22 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     const widget = widgetRef.current;
     const follower = followerRef.current;
     follower?.hold();
-    if (widget) widget.load(soundCloudTrackUrl(url), { ...SOUNDCLOUD_LOAD_OPTIONS, auto_play: true, callback: () => follower?.reset() });
-    else setInitialSrc(soundCloudPlayerSrc(url, true));
+    // A part of a longer track: wait at its start before playing, as a jump right after playing starts can stop the sound on iPhones.
+    const segment = soundCloudSegment(url);
+    if (widget) widget.load(soundCloudTrackUrl(url), {
+      ...SOUNDCLOUD_LOAD_OPTIONS,
+      auto_play: !segment?.start,
+      callback: () => {
+        follower?.reset();
+        if (!segment?.start) return;
+        follower?.prepare(segment);
+        widget.play();
+      },
+    });
+    else {
+      startOnReadyRef.current = Boolean(segment?.start);
+      setInitialSrc(soundCloudPlayerSrc(url, !segment?.start));
+    }
   }, []);
 
   const step = useCallback((offset: -1 | 1) => {
@@ -146,7 +162,16 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       widget.bind(api.Widget.Events.PLAY_PROGRESS, (event) => {
         if (!follower.onProgress(segment(), event?.currentPosition)) return;
         widget.pause();
-        next();
+        if (!step(1)) {
+          setIsPlaying(false);
+          follower.rewind(segment());
+        }
+      });
+      widget.bind(api.Widget.Events.READY, () => {
+        if (!startOnReadyRef.current) return;
+        startOnReadyRef.current = false;
+        follower.prepare(segment());
+        widget.play();
       });
       widget.bind(api.Widget.Events.PAUSE, () => setIsPlaying(false));
       widget.bind(api.Widget.Events.FINISH, next);

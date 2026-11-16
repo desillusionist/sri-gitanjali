@@ -668,9 +668,14 @@ function SongPageContent() {
         readDuration();
         if (segment) {
           const follower = createSegmentFollower(widget);
+          // Wait at the part's start, and go back there when it ends, so playing it (again) needs no jump.
+          widget.bind(soundCloud.Widget.Events.READY, () => follower.prepare(segment));
+          follower.prepare(segment);
           widget.bind(soundCloud.Widget.Events.PLAY, () => follower.onPlay(segment));
           widget.bind(soundCloud.Widget.Events.PLAY_PROGRESS, (event) => {
-            if (follower.onProgress(segment, event?.currentPosition)) widget.pause();
+            if (!follower.onProgress(segment, event?.currentPosition)) return;
+            widget.pause();
+            follower.rewind(segment);
           });
         }
       })

@@ -75,16 +75,23 @@ export function soundCloudPlayerSrc(trackUrl: string, autoPlay = false): string 
 type Segment = { start: number; end: number | null } | null;
 
 /**
- * Keeps a player to one part of its track (see soundCloudSegment). After `reset()` playing jumps to
- * the part's start, checked against the position the player reports until it is there; `onProgress`
- * says when playing has just crossed the part's end. While a new track loads (`hold()` until
- * `reset()`), the old track's late events are ignored.
+ * Keeps a player to one part of its track (see soundCloudSegment). `prepare()` moves a paused
+ * player to the part's start, so that playing needs no jump (on iPhones a jump right as playing
+ * starts can stop the sound). Playing from outside the part jumps to its start, checked against the
+ * position the player reports until it is there; `onProgress` says when playing has just crossed
+ * the part's end, and `rewind()` then readies the part to play again. While a new track loads
+ * (`hold()` until `reset()`), the old track's late events are ignored.
  */
 export function createSegmentFollower(widget: SoundCloudWidget) {
   let isHeld = false;
   let needsStart = true;
   let lastPosition = 0;
   const startAt = (segment: Segment) => (segment?.start ?? 0) * 1000;
+  const endAt = (segment: Segment) => (segment?.end == null ? null : segment.end * 1000);
+  const isOutside = (segment: Segment, position: number) => {
+    const end = endAt(segment);
+    return position < startAt(segment) - 1500 || (end !== null && position >= end - 250);
+  };
   return {
     hold() {
       isHeld = true;
@@ -94,23 +101,36 @@ export function createSegmentFollower(widget: SoundCloudWidget) {
       needsStart = true;
       lastPosition = 0;
     },
+    prepare(segment: Segment) {
+      if (!isHeld && segment && startAt(segment)) widget.seekTo(startAt(segment));
+    },
+    rewind(segment: Segment) {
+      needsStart = true;
+      lastPosition = 0;
+      if (segment) widget.seekTo(startAt(segment));
+    },
     onPlay(segment: Segment) {
-      if (!isHeld && needsStart && startAt(segment)) widget.seekTo(startAt(segment));
+      if (isHeld || !segment) return;
+      widget.getPosition((position) => {
+        if (!isHeld && Number.isFinite(position) && isOutside(segment, position)) widget.seekTo(startAt(segment));
+      });
     },
     /** True once, when the position passes the part's end. */
     onProgress(segment: Segment, position: number | undefined) {
       if (isHeld || position === undefined) return false;
+      const end = endAt(segment);
       if (needsStart) {
-        // Not at the start yet (the jump is still on its way, or was missed): ask again.
-        if (position < startAt(segment) - 1500) {
+        // Not in the part yet (the jump is still on its way, or was missed): ask again.
+        if (segment && isOutside(segment, position)) {
           widget.seekTo(startAt(segment));
           return false;
         }
         needsStart = false;
+        lastPosition = position;
       }
-      const end = segment?.end == null ? null : segment.end * 1000;
       const crossed = end !== null && lastPosition < end && position >= end;
       lastPosition = position;
+      if (crossed) needsStart = true;
       return crossed;
     },
   };

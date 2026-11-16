@@ -106,6 +106,30 @@ export function SoundCloudBar({ widget, url, showPlayButton = true, wholeTrack =
   const endMark = markAt(marks?.end);
   const outside = (index: number) => (startMark !== null && index + 1 <= startMark) || (endMark !== null && index >= endMark);
 
+  // Play or pause as the button shows. On iPhones the first play can stop right after it starts:
+  // when the reader asked to play and the sound stopped on its own, ask once more.
+  const wantsPlayRef = useRef(false);
+  useEffect(() => () => { wantsPlayRef.current = false; }, [widget]);
+  const togglePlay = () => {
+    if (!widget) return;
+    if (isPlaying) {
+      wantsPlayRef.current = false;
+      widget.pause();
+      setIsPlaying(false);
+      return;
+    }
+    wantsPlayRef.current = true;
+    widget.play();
+    setIsPlaying(true);
+    window.setTimeout(() => {
+      if (!wantsPlayRef.current) return;
+      widget.isPaused((paused) => {
+        if (paused && wantsPlayRef.current) widget.play();
+        wantsPlayRef.current = false;
+      });
+    }, 1500);
+  };
+
   const seekFromPointer = (event: ReactPointerEvent<SVGSVGElement>) => {
     if (!widget || !duration) return;
     const box = event.currentTarget.getBoundingClientRect();
@@ -117,7 +141,7 @@ export function SoundCloudBar({ widget, url, showPlayButton = true, wholeTrack =
   return (
     <div className={`sc-bar${ready ? "" : " is-loading"} ${className}`.trim()}>
       {showPlayButton && (
-        <button type="button" className="sc-bar-play" onClick={() => widget?.toggle()} disabled={!widget} aria-label={isPlaying ? copy.playlist.pause : copy.playlist.play} title={isPlaying ? copy.playlist.pause : copy.playlist.play}>
+        <button type="button" className="sc-bar-play" onClick={togglePlay} disabled={!widget} aria-label={isPlaying ? copy.playlist.pause : copy.playlist.play} title={isPlaying ? copy.playlist.pause : copy.playlist.play}>
           {isPlaying ? <Pause size={15} aria-hidden="true" /> : <Play size={15} aria-hidden="true" />}
         </button>
       )}
