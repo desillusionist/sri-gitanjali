@@ -109,8 +109,22 @@ export async function preparePortrait(source: Blob | string, [x, y, width]: Face
 }
 
 /** The small square picture for the round portrait, cut from the portrait as its face box frames it. */
-export async function prepareCircle(source: Blob | string, [x, y, diameter]: readonly number[], size: number): Promise<PreparedImage> {
-  const image = await decode(source);
+/**
+ * The circle picture for a face box, cut from `source` (the portrait's sharp copy). The face box is
+ * measured on the main 3:4 portrait, `portrait`: a sharp copy of another shape is framed differently
+ * (the portrait was cut out of it), so the circle is then cut from the portrait itself.
+ */
+export async function prepareCircle(source: Blob | string, [x, y, diameter]: readonly number[], size: number, portrait?: Blob | string): Promise<PreparedImage> {
+  let image = await decode(source);
+  if (portrait && portrait !== source) {
+    const frame = await decode(portrait);
+    const sameShape = Math.abs(image.height / image.width - frame.height / frame.width) <= 0.01 * (frame.height / frame.width);
+    if (sameShape) frame.release();
+    else {
+      image.release();
+      image = frame;
+    }
+  }
   try {
     const unit = image.width / 100;
     const side = Math.min(diameter * unit, image.width, image.height);

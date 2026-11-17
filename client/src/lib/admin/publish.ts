@@ -91,8 +91,9 @@ export async function cutCircles(authors: Record<string, AuthorPictures>): Promi
     else {
       const stem = circleStem(next.portrait, next.face ?? DEFAULT_FACE);
       if (next.circle?.replace(/\.\w+$/, "") !== stem) {
+        const fileUrl = (file: string) => getDraftFile(file) ?? STORAGE_URL + file;
         const sourceFile = next.portraitLarge ?? next.portrait;
-        const image = await prepareCircle(getDraftFile(sourceFile) ?? STORAGE_URL + sourceFile, next.face ?? DEFAULT_FACE, CIRCLE_SIZE);
+        const image = await prepareCircle(fileUrl(sourceFile), next.face ?? DEFAULT_FACE, CIRCLE_SIZE, fileUrl(next.portrait));
         next.circle = `${stem}.${image.ext}`;
         files.set(next.circle, image.blob);
       }

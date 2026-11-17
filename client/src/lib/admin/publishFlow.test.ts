@@ -97,6 +97,8 @@ describe("publishing to a pretend GitHub", () => {
     expect(a.face).toBeUndefined();
     expect(a.circle).toBe("circles/a2@50_55_100.webp");
     expect(vi.mocked(prepareCircle).mock.calls[0][0]).toBe(draftFiles.get("a2-large.webp"));
+    // With the main portrait, which the face box is measured on, for a sharp copy of another shape.
+    expect(vi.mocked(prepareCircle).mock.calls[0][3]).toBe(draftFiles.get("a2.webp"));
 
     const sent = (path: string) => tree.find((item) => item.path === path);
     for (const name of ["a2.webp", "a2-large.webp", "added.webp", "circles/a2@50_55_100.webp"]) expect(sent(`local-storage/${name}`)?.sha, name).toMatch(/^blob-/);
