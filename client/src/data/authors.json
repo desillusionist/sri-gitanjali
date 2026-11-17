@@ -256,11 +256,11 @@
       "role": "Founder-Āchārya of Śrī Chaitanya Sāraswat Maṭh",
       "portrait": "author-sridhar-maharaj.webp",
       "face": [
-        49,
-        40.5,
+        50,
+        40.4,
         46
       ],
-      "circle": "circles/author-sridhar-maharaj@49_40.5_46.webp",
+      "circle": "circles/author-sridhar-maharaj@50_40.4_46.jpg",
       "portraitLarge": "author-sridhar-maharaj-large.webp",
       "summary": "A senior disciple of Śrīla Bhakti Siddhānta Saraswatī Ṭhākur and founder of Śrī Chaitanya Sāraswat Maṭh in Nabadwīp. His Sanskrit and Bengali prayers, and his treatise Śrī Śrī Prapanna-jīvanāmṛtam, are treasured throughout the Gauḍīya world.",
       "bio": [
@@ -838,12 +838,17 @@
       "group": "ancient",
       "portrait": "author-jayadeva-goswami.webp",
       "portraitLarge": "author-jayadeva-goswami-large.webp",
-      "circle": "circles/author-jayadeva-goswami@50_55_100.webp",
+      "circle": "circles/author-jayadeva-goswami@47.4_51.7_84.2.jpg",
       "portraitInfo": {
         "caption": "Painting",
         "credit": "Gauḍīya History · ISKCON Desire Tree",
         "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Jayadeva-Goswami.jpg"
-      }
+      },
+      "face": [
+        47.4,
+        51.7,
+        84.2
+      ]
     },
     {
       "id": "chaitanya-mahaprabhu",
@@ -1169,11 +1174,11 @@
         }
       ],
       "face": [
-        28.3,
-        31.5,
+        27.8,
+        28.7,
         42
       ],
-      "circle": "circles/author-haridas-thakur@28.3_31.5_42.webp"
+      "circle": "circles/author-haridas-thakur@27.8_28.7_42.jpg"
     },
     {
       "id": "svarup-damodar",
@@ -1272,25 +1277,23 @@
       "sources": [
         "https://gaudiyahistory.iskcondesiretree.com/"
       ],
-      "portrait": "author-madhavendra-puri.webp",
-      "portraitLarge": "author-madhavendra-puri-large.webp",
-      "portraitInfo": {
-        "caption": "Gopāl brings him milk at Govardhan",
-        "credit": "Gauḍīya History · ISKCON Desire Tree",
-        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Madhavendra-Puri.jpg"
-      },
+      "portrait": "author-madhavendra-puri-mwk68z54.jpg",
+      "portraitLarge": "author-madhavendra-puri-mwk68z54-large.jpg",
       "face": [
-        41.4,
-        49.8,
-        26.5
+        47.6,
+        44.3,
+        36
       ],
-      "circle": "circles/author-madhavendra-puri@41.4_49.8_26.5.jpg",
+      "circle": "circles/author-madhavendra-puri-mwk68z54@47.6_44.3_36.jpg",
       "gallery": [
         {
-          "src": "author-madhavendra-puri-mwg5040g-1.jpg"
+          "src": "author-madhavendra-puri-large.webp",
+          "caption": "Gopāl brings him milk at Govardhan",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Madhavendra-Puri.jpg"
         },
         {
-          "src": "author-madhavendra-puri-mwg50l4x-1.jpg"
+          "src": "author-madhavendra-puri-mwg5040g-1.jpg"
         },
         {
           "src": "author-madhavendra-puri-mwg52gq6-1.jpg"
@@ -1401,28 +1404,26 @@
       "songIds": [
         "sri-sri-sad-gosvami-astakam-083"
       ],
-      "portrait": "author-raghunath-das-goswami.webp",
-      "portraitLarge": "author-raghunath-das-goswami-large.webp",
-      "portraitInfo": {
-        "caption": "Chanting the Holy Name",
-        "credit": "Gauḍīya History · ISKCON Desire Tree",
-        "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Raghunatha-Dasa-Goswami.jpg"
-      },
+      "portrait": "author-raghunath-das-goswami-mwk6a8xx.jpg",
+      "portraitLarge": "author-raghunath-das-goswami-mwk6a8xx-large.jpg",
       "face": [
-        53.4,
-        30.7,
-        36
+        41.1,
+        60.6,
+        22.5
       ],
-      "circle": "circles/author-raghunath-das-goswami@53.4_30.7_36.jpg",
+      "circle": "circles/author-raghunath-das-goswami-mwk6a8xx@41.1_60.6_22.5.jpg",
       "gallery": [
+        {
+          "src": "author-raghunath-das-goswami-large.webp",
+          "caption": "Chanting the Holy Name",
+          "credit": "Gauḍīya History · ISKCON Desire Tree",
+          "source": "https://gaudiyahistory.iskcondesiretree.com/wp-content/uploads/2011/08/Raghunatha-Dasa-Goswami.jpg"
+        },
         {
           "src": "author-raghunath-das-goswami-mwg65m9r-1.jpg"
         },
         {
           "src": "author-raghunath-das-goswami-mwg660lw-1.jpg"
-        },
-        {
-          "src": "author-raghunath-das-goswami-mwg66unr-1.jpg"
         },
         {
           "src": "author-raghunath-das-goswami-mwg682ct-1.jpg"
