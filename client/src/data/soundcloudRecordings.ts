@@ -9,6 +9,8 @@
  * - Govinda Mahārāja’s sets on soundcloud.com/jayasri-sound (Song of the Heart; Kīrtan – Swāmī B.S. Govinda;
  *   Śrī Rūpa Mañjarī Pada, which also has Śrīdhar Mahārāja) and soundcloud.com/kijaya (Lahta 2006). Lalitāṣṭakam has
  *   no song in the book; the set's second copy of his Śrī Rūpa Mañjarī Pada is left out.
+ * - Goswāmī Mahārāja's recordings on soundcloud.com/beautyoverpower; its Janmāṣṭamī midnight ārati is Śrī Nām-kīrtan,
+ *   and its Hare Krishna Mahāmantra is also the Pañcha-tattva Mantra's.
  * - Mālāti Devī Dāsī's "Malati and Makhanchor" set on soundcloud.com/soundnektar, listed last.
  * A track with several songs in it is linked to each song with the song's part: "…/track#t=0:52-1:06" (see
  * soundCloudSegment in domain/song.ts). Times are as the user marked them by ear.
@@ -44,11 +46,11 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "goptrtve-varana-091": ["https://soundcloud.com/kostya-netrebenko/12-ki-jani-ki-bale-tomara-dhamete-10", "https://soundcloud.com/huron/ki-jani-ki-bole"],
   "guna-kirtan-133": ["https://soundcloud.com/huron/guna-kirttan"],
   "gurudeva-037": ["https://soundcloud.com/abiramthakur/3-gurudev-kripa-bindu-diya", "https://soundcloud.com/huron/gurudev-kripa-bindu-diya"],
-  "hare-krishna-mahamantra-026": ["https://soundcloud.com/kijaya/hare-krisna-mahamantra", "https://soundcloud.com/huron/mahamantra-kirttan", "https://soundcloud.com/huron/maha-mantra-bhoga", "https://soundcloud.com/huron/maha-mantra-evening-tune", "https://soundcloud.com/huron/maha-mantra-gaura-arati", "https://soundcloud.com/huron/maha-mantra-jaya-radhe", "https://soundcloud.com/huron/maha-mantra-nabadwip-tune-3", "https://soundcloud.com/huron/maha-mantra-ohe-harinama", "https://soundcloud.com/huron/mahamantrasudha", "https://soundcloud.com/huron/mahamantrasware", "https://soundcloud.com/bhakti-lalita-devi/mahamantra", "https://soundcloud.com/bhakti-lalita-devi/maha-mantra", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-mahamantra"],
+  "hare-krishna-mahamantra-026": ["https://soundcloud.com/kijaya/hare-krisna-mahamantra", "https://soundcloud.com/beautyoverpower/hare-krishna-mahamantra", "https://soundcloud.com/huron/mahamantra-kirttan", "https://soundcloud.com/huron/maha-mantra-bhoga", "https://soundcloud.com/huron/maha-mantra-evening-tune", "https://soundcloud.com/huron/maha-mantra-gaura-arati", "https://soundcloud.com/huron/maha-mantra-jaya-radhe", "https://soundcloud.com/huron/maha-mantra-nabadwip-tune-3", "https://soundcloud.com/huron/maha-mantra-ohe-harinama", "https://soundcloud.com/huron/mahamantrasudha", "https://soundcloud.com/huron/mahamantrasware", "https://soundcloud.com/bhakti-lalita-devi/mahamantra", "https://soundcloud.com/bhakti-lalita-devi/maha-mantra", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-mahamantra"],
   "he-deva-bhavantam-vande-126": ["https://soundcloud.com/kijaya/he-deva-bhavantam-vande", "https://soundcloud.com/huron/he-deva-bhavantam", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-kabe-habe-bolo-acapella"],
   "ista-deve-vijnapti-094": ["https://soundcloud.com/jayasri-sound/hari-hari-biphale-janama-goyainu", "https://soundcloud.com/huron/hari-hari-biphole"],
   "jadi-gaura-na-ho-to-071": ["https://soundcloud.com/kostya-netrebenko/23-yadi-gaura-na-haite-5", "https://soundcloud.com/kostya-netrebenko/048-yadigauranahata-8", "https://soundcloud.com/huron/jadi-gora-na-hoto"],
-  "jaya-radha-madhava-127": ["https://soundcloud.com/jayasri-sound/swami-bs-govinda-maharaj-4", "https://soundcloud.com/jayasri-sound/jay-radha-madhav-srila-govinda", "https://soundcloud.com/kijaya/jaya-radha-madhava", "https://soundcloud.com/huron/jaya-radha-madhava", "https://soundcloud.com/huron/jaya-radha-madhava-1"],
+  "jaya-radha-madhava-127": ["https://soundcloud.com/jayasri-sound/swami-bs-govinda-maharaj-4", "https://soundcloud.com/jayasri-sound/jay-radha-madhav-srila-govinda", "https://soundcloud.com/kijaya/jaya-radha-madhava", "https://soundcloud.com/beautyoverpower/jaya-radha-madhava", "https://soundcloud.com/huron/jaya-radha-madhava", "https://soundcloud.com/huron/jaya-radha-madhava-1"],
   "jaya-yasoda-nandana-krsna-134": ["https://soundcloud.com/huron/jaya-jasoda-nandana-krishna"],
   "kali-ghora-timire-070": ["https://soundcloud.com/kostya-netrebenko/27-kali-ghora-timire-1", "https://soundcloud.com/huron/kali-ghora-timire"],
   "ke-jabi-ke-jabi-073": ["https://soundcloud.com/huron/ke-jabi"],
@@ -63,6 +65,7 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "nivedana-1-103": ["https://soundcloud.com/huron/gopinath-mama-nivedana-suno"],
   "nivedana-2-104": ["https://soundcloud.com/huron/gopinath-ghuchao-samsara-jvala"],
   "nivedana-3-105": ["https://soundcloud.com/huron/gopinath-amara-upaya-nai"],
+  "pancha-tattva-mantra-025": ["https://soundcloud.com/beautyoverpower/hare-krishna-mahamantra"],
   "prabhati-giti-034": ["https://soundcloud.com/huron/kali-kukkura-kadana"],
   "prabhu-kohe-148": ["https://soundcloud.com/huron/prabhu-kohe-kohilan"],
   "pranati-dasakam-159": ["https://soundcloud.com/kostya-netrebenko/094-naumisrigurupadabjam-sripranatidasakam-12"],
@@ -87,8 +90,8 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "sri-guru-vaisnava-mahatmya-giti-053": ["https://soundcloud.com/kostya-netrebenko/10-sri-guru-charana-padma-11", "https://soundcloud.com/jayasri-sound/sri-guru-charana-padma-srila", "https://soundcloud.com/huron/sri-guru-charana-padma", "https://soundcloud.com/soundnektar/sri-guru-charana-padma-malati"],
   "sri-hari-vasara-giti-145": ["https://soundcloud.com/kostya-netrebenko/082-sriharivasare-9", "https://soundcloud.com/huron/sri-hari-vasara", "https://soundcloud.com/bhakti-lalita-devi/sri-hari-vasare-hari-kirtana"],
   "sri-krsnera-vimsottara-sata-nama-144": ["https://soundcloud.com/huron/nagare-nagare-gora-gay"],
-  "sri-nam-kirtan-035": ["https://soundcloud.com/jayasri-sound/swami-bs-govinda-maharaj-2", "https://soundcloud.com/jayasri-sound/jashomati-nandana-srila", "https://soundcloud.com/kijaya/sri-nama-kirttan-jasomati", "https://soundcloud.com/huron/yasomati-nandana"],
-  "sri-nama-068": ["https://soundcloud.com/kijaya/sri-nama-gay-gora-madhur-svare", "https://soundcloud.com/huron/gay-gaura-madhura-sware", "https://soundcloud.com/soundnektar/gay-gora-madhur-svare-malati"],
+  "sri-nam-kirtan-035": ["https://soundcloud.com/jayasri-sound/swami-bs-govinda-maharaj-2", "https://soundcloud.com/jayasri-sound/jashomati-nandana-srila", "https://soundcloud.com/kijaya/sri-nama-kirttan-jasomati", "https://soundcloud.com/beautyoverpower/yasomati-nandana", "https://soundcloud.com/beautyoverpower/janmastami-midnight-araty", "https://soundcloud.com/huron/yasomati-nandana"],
+  "sri-nama-068": ["https://soundcloud.com/kijaya/sri-nama-gay-gora-madhur-svare", "https://soundcloud.com/beautyoverpower/gay-gaura-madhur-svare", "https://soundcloud.com/huron/gay-gaura-madhura-sware", "https://soundcloud.com/soundnektar/gay-gora-madhur-svare-malati"],
   "sri-namastakam-7-084": ["https://soundcloud.com/huron/ohe-harinam-tava"],
   "sri-namastakam-8-082": ["https://soundcloud.com/huron/narada-muni", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-namastakam-song-8-narada-muni-bajaya-vina"],
   "sri-nrsimha-pranam-141": ["https://soundcloud.com/huron/namas-te-narasimhaya", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-sri-nrsimha-pranam-namas-te-narisimhaya"],
@@ -96,7 +99,7 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "sri-radhastaka-1-121": ["https://soundcloud.com/huron/radhika-charana-padma"],
   "sri-radhastaka-2-122": ["https://soundcloud.com/huron/viraja-pare-suddha"],
   "sri-radhastaka-8-123": ["https://soundcloud.com/kostya-netrebenko/076-radhabhajaneyadi-10", "https://soundcloud.com/huron/radha-bhajane-jodi"],
-  "sri-radhika-stava-125": ["https://soundcloud.com/kijaya/radhe-jaya-jaya", "https://soundcloud.com/huron/radhe-jaya-jaya", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-sri-radhika-stava"],
+  "sri-radhika-stava-125": ["https://soundcloud.com/kijaya/radhe-jaya-jaya", "https://soundcloud.com/beautyoverpower/radhe-jaya-jaya-madhava-dayite", "https://soundcloud.com/huron/radhe-jaya-jaya", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-sri-radhika-stava"],
   "sri-rupa-manjari-pada-106": ["https://soundcloud.com/jayasri-sound/sri-rupa-manjari-pada-srila-sridhar-maharaj-1", "https://soundcloud.com/jayasri-sound/sri-rupa-manjari-pada-srila-govinda-maharaj-2", "https://soundcloud.com/huron/sri-rupa-manjari-pada"],
   "sri-sachinandana-vandana-036": ["https://soundcloud.com/huron/jaya-sachinandana"],
   "sri-saraswat-arati-050": ["https://soundcloud.com/huron/saraswat-arati"],
@@ -136,7 +139,7 @@ export const soundCloudRecordingOverlay: Readonly<Record<string, readonly string
   "vaisnava-ke-089": ["https://soundcloud.com/huron/dusta-mana-tumi-kisera"],
   "vancha-kalpatarubhyas-cha-013": ["https://soundcloud.com/jayasri-sound/vandana-srila-govinda-maharaj#t=1:06-1:20"],
   "vandana-001": ["https://soundcloud.com/jayasri-sound/vandana-srila-govinda-maharaj#t=0:00-0:52", "https://soundcloud.com/soundnektar/bhakti-sudhir-goswami-vandana"],
-  "vibhavari-sesa-043": ["https://soundcloud.com/huron/vibhavari-sesa-aloka-pravesa"],
+  "vibhavari-sesa-043": ["https://soundcloud.com/beautyoverpower/vibhavari-sesha", "https://soundcloud.com/huron/vibhavari-sesa-aloka-pravesa"],
   "vimala-hemajini-074": ["https://soundcloud.com/kostya-netrebenko/26-bimala-hema-jini-2", "https://soundcloud.com/huron/bimala-hemajini"],
   "viraha-giti-079": ["https://soundcloud.com/soundnektar/viraha-giti-bhakti-sudhir-goswami", "https://soundcloud.com/huron/je-anilo-prema-dhana", "https://soundcloud.com/bhakti-lalita-devi/bhakti-lalita-devi-govinda-viraha-je-anilo-prema-dhana"],
 };

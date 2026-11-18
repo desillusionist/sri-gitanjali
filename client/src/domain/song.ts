@@ -173,6 +173,7 @@ export const SOUNDCLOUD_SINGER_LIST: readonly { id: string; name: string }[] = [
 /** SoundCloud accounts whose tracks are by one singer (otherwise the account is the singer's id). */
 const ACCOUNT_SINGERS: Readonly<Record<string, string>> = {
   "kostya-netrebenko": "govinda-maharaja",
+  "beautyoverpower": "goswami-maharaja",
   "jayasri-sound": "govinda-maharaja",
   "kijaya": "govinda-maharaja",
   "abiramthakur": "govinda-maharaja",

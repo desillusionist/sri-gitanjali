@@ -5,6 +5,13 @@
  */
 export const soundCloudTrackSeconds: Readonly<Record<string, number>> = {
   "/abiramthakur/3-gurudev-kripa-bindu-diya": 478,
+  "/beautyoverpower/jaya-radha-madhava": 630,
+  "/beautyoverpower/yasomati-nandana": 688,
+  "/beautyoverpower/radhe-jaya-jaya-madhava-dayite": 509,
+  "/beautyoverpower/vibhavari-sesha": 616,
+  "/beautyoverpower/janmastami-midnight-araty": 1135,
+  "/beautyoverpower/hare-krishna-mahamantra": 213,
+  "/beautyoverpower/gay-gaura-madhur-svare": 620,
   "/bhakti-lalita-devi/anadi-karama-phole": 124,
   "/bhakti-lalita-devi/aparadha-phole-mama": 124,
   "/bhakti-lalita-devi/atma-samarpane-bhakti-lalita-devi": 243,
