@@ -150,7 +150,15 @@
       "sources": [],
       "songIds": [
         "srila-bhakti-ranjan-madhusudan-maharaja-005"
-      ]
+      ],
+      "portrait": "author-bhakti-ranjan-madhusudan-maharaja-mwnqihle.jpg",
+      "portraitLarge": "author-bhakti-ranjan-madhusudan-maharaja-mwnqihle-large.jpg",
+      "face": [
+        60,
+        40.3,
+        20.9
+      ],
+      "circle": "circles/author-bhakti-ranjan-madhusudan-maharaja-mwnqihle@60_40.3_20.9.jpg"
     },
     {
       "id": "bhakti-nirmal-acharya-maharaja",
@@ -651,7 +659,47 @@
       "bio": [
         "More of his life is yet to be added."
       ],
-      "sources": []
+      "sources": [],
+      "portrait": "author-ba-sagar-maharaja-mwnquhgt.jpg",
+      "portraitLarge": "author-ba-sagar-maharaja-mwnquhgt-large.jpg",
+      "face": [
+        50,
+        55,
+        100
+      ],
+      "circle": "circles/author-ba-sagar-maharaja-mwnquhgt@50_55_100.jpg",
+      "gallery": [
+        {
+          "src": "author-ba-sagar-maharaja-mwnqn985-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqnqr5-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqogin-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqoqwz-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqrl6l-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqsbwz-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqsld2-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqt0hs-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqtl1p-1.jpg"
+        },
+        {
+          "src": "author-ba-sagar-maharaja-mwnqu72s-1.jpg"
+        }
+      ]
     },
     {
       "id": "gopal-govinda-mahanta",
